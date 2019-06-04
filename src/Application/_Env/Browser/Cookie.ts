@@ -3,7 +3,8 @@ import { ICookie, ICookieOptions } from "Application/_Interface/ICookie";
 import { IStore } from 'Application/_Interface/IStore';
 const MS_IN_DAY = 24 * 60 * 60 * 1000;
 const NAME_REPLACE_REGEXP = /=.*/;
-
+/** Разделитель между куками в documents.cookie */
+const SEPARATOR = '; ';
 /**
  * Класс, реализующий интерфейс {@link Core/Request/IStorage},
  * предназначенный для работы с cookie в браузере
@@ -20,7 +21,7 @@ export default class Cookie implements ICookie, IStore<string> {
     }
 
     get(key: string) {
-        const cookies = document.cookie.split(';');
+        const cookies = document.cookie.split(SEPARATOR);
         let value = null;
         let item;
         for (let i = 0; i < cookies.length; i++) {
@@ -52,11 +53,11 @@ export default class Cookie implements ICookie, IStore<string> {
             else {
                 throw new TypeError('Option "expires" should be a Number or Date instance');
             }
-            expires = "; expires=" + date.toUTCString();
+            expires = `${SEPARATOR}expires=${date.toUTCString()}`;
         }
-        let path = options.path ? "; path=" + options.path : '';
-        let domain = options.domain ? "; domain=" + options.domain : '';
-        let secure = options.secure ? '; secure' : '';
+        let path = options.path ? `${SEPARATOR}path=${options.path}` : '';
+        let domain = options.domain ? `${SEPARATOR}domain=${options.domain}` : '';
+        let secure = options.secure ? `${SEPARATOR}secure` : '';
         try {
             document.cookie = [key, '=', encodeURIComponent(value), expires, path, domain, secure].join('');
         } catch (e) {
@@ -70,14 +71,14 @@ export default class Cookie implements ICookie, IStore<string> {
     }
 
     getKeys() {
-        return document.cookie.split(';').map(function (cookie) {
+        return document.cookie.split(SEPARATOR).map(function (cookie) {
             return cookie.replace(NAME_REPLACE_REGEXP, '');
         });
     }
 
     toObject() {
         const result = {};
-        document.cookie.split(';').forEach(function (item) {
+        document.cookie.split(SEPARATOR).forEach(function (item) {
             const _a = item.split('=');
             const key = _a[0]
             const value = _a[1];

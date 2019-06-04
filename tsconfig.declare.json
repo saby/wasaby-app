@@ -2,11 +2,12 @@
   "compilerOptions": {
     "moduleResolution": "classic",
     "target": "es5",
-    "pretty": true,
+    "pretty": false,
     "declaration": true,
+    "skipLibCheck": true,
     "emitDeclarationOnly": true,
     "outFile": "./types",
-    "baseUrl": "src"
+    "baseUrl": "src",
   },
   "include": [
     "src/**/*.ts"

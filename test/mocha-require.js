@@ -1,47 +1,21 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const chai = require("chai");
-const fs = require("fs");
-const pathMod = require("path");
-const requirejs = require("requirejs");
-const global = (0, eval)('this');
-global.requirejs = requirejs;
-global.define = requirejs.define;
-// @ts-ignore
-global.assert = chai.assert;
-const config = {
-    "baseUrl": "src",
-    "paths": {},
-    "waitSeconds": 0
-};
-requirejs.config(config);
-function getTestFromDir(path) {
-    let files = [];
-    fs.readdirSync(path).forEach((fileName) => {
-        const filePath = pathMod.join(path, fileName);
-        if (!fileName.toLowerCase().includes('test')) {
-            return;
-        }
-        if (fs.statSync(filePath).isDirectory()) {
-            return getTestFromDir(filePath).forEach((fileTests) => {
-                files.push(fileTests);
-            });
-        }
-        files.push(filePath);
-    });
-    return files;
-}
-function runTests() {
-    const singleTest = process.argv.length > 2 && process.argv[2].includes('--test=')
-        ? process.argv[2].substring('--test='.length)
-        : false;
-    if (singleTest === false) {
+exports.__esModule = true;
+var chai = require("chai");
+var requirejs = require("requirejs");
+function requireTests() {
+    if (!process.argv.some(function (arg) { return arg.includes('--test='); })) {
         return;
     }
+    var global = (0, eval)('this');
+    global.requirejs = requirejs;
+    global.define = requirejs.define;
+    global.assert = chai.assert;
+    requirejs.config({ baseUrl: __dirname + "/server/src" });
+    var singleTest = process.argv.find(function (arg) { return arg.includes('--test='); }).substring('--test='.length);
     if (singleTest !== 'all') {
         return requirejs(singleTest);
     }
-    const unitTestFolder = pathMod.join(__dirname, 'unit');
-    getTestFromDir(unitTestFolder).forEach(requirejs);
+    var unitTests = require(__dirname + "/server/_settings");
+    unitTests.forEach(requirejs);
 }
-runTests();
+requireTests();

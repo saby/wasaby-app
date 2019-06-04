@@ -20,19 +20,25 @@
       }
    },
    "scripts": {
-      "postinstall": "tsc -p ./tsconfig.declare.json || echo Done.",
+      "postinstall": "tsc -p ./tsconfig.declare.json || echo Installed",
       "build": "tsc -p ./tsconfig.json || tsc -p ./tsconfig.declare.json",
       "declare": "tsc -p ./tsconfig.declare.json",
-      "pretest": "node test/server/build.js",
+      "pretest": "npm run test:clean > ../_.log && tsc -p ./test/tsconfig.json > ../_.log || node test/server/build.js",
       "server": "node test/server/build.js && node test/server/run.js",
-      "test": "mocha test/mocha-require.js --test=all",
+      "test": "cd ./test && mocha mocha-require.js --test=all",
+      "test:browser": "npm run pretest && saby-units --browser --report",
+      "test:browser-coverage": "npm run pretest && saby-units --browser --report --coverage",
+      "test:local_browser": "npm run pretest && start http://localhost:8000/unit-testing.html && npm run server",
       "test:clean": "git clean -xfd ./test/server"
    },
    "demo": {
       "port": 8000
    },
    "devDependencies": {
-      "@types/node": "^10.12.15",
+      "@types/node": "^12.0.4",
+      "@types/chai": "^4.1.7",
+      "@types/mocha": "^5.2.7",
+      "@types/requirejs": "^2.1.31",
       "chai": "^4.2.0",
       "express": "^4.16.4",
       "mocha": "^5.2.0",
@@ -40,9 +46,9 @@
       "saby-ui": "git+https://git@github.com/saby/UI.git#rc-19.400"
    },
    "dependencies": {
+      "saby-typescript": "git+https://github.com/saby/TypeScript.git#rc-19.400",
       "tslib": "^1.9.3",
       "tslint": "^5.12.1",
-      "typescript": "^3.1.3",
-      "saby-typescript": "git+https://github.com/saby/TypeScript.git#rc-19.400"
+      "typescript": "^3.1.3"
    }
 }

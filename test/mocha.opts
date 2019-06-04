@@ -1,3 +1,0 @@
---require=test/mocha-require.js
---delay
-test/unit/**/*.test.js
