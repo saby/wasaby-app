@@ -5,6 +5,10 @@
 
   <items>
     <ui_module id="323fd54f-1fab-42a6-8aea-6726d6392d53" name="Application" url="./src/Application/Application.s3mod"/>
+    <ui_module id="b87dc4eb-f434-4c48-81d9-2bd8bc97d0b2" name="SbisFile" url="./sbis_rmi\src\client\SbisFile\SbisFile.s3mod"/>
+    <ui_module id="dadb8e21-f747-4d58-9d16-f05dc9cbd38e" name="Clipboard" url="./sbis_rmi\src\client\Clipboard\Clipboard.s3mod"/>
+    <ui_module id="821abc3e-744a-4621-bcdb-1d1746def3eb" name="IEMedia" url="./sbis_rmi\src\client\IEMedia\IEMedia.s3mod"/>
+    <ui_module id="e4bbd0f2-f7ce-404e-88b2-5130d105b770" name="ParametersWebAPI" url="./sbis_rmi\src\client\ParametersWebAPI\ParametersWebAPI.s3mod"/>
   </items>
 
   <resources/>
