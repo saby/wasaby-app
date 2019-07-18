@@ -1,5 +1,7 @@
 /// <amd-module name="Application/Env" />
 export { default as EnvBrowser } from 'Application/_Env/Browser/Env';
+import { parseQuery } from 'Application/_Env/QueryParams';
+export { parseQuery };
 export { default as StateReceiver } from 'Application/_Env/Browser/StateReceiver';
 export { LogLevel } from 'Application/_Env/Console';
 import { IConsole } from 'Application/_Interface/IConsole';
@@ -38,6 +40,10 @@ export const location: ILocation = {
 
     get href() {
         return Request.getCurrent().location.href;
+    },
+
+    get query() {
+        return parseQuery(location.href);
     },
 
     get pathname() {

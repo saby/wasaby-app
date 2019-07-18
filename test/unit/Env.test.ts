@@ -3,13 +3,37 @@ import { default as AppInit } from 'Application/Initializer';
 // import { assert } from 'chai';
 
 describe('Application/Env', () => {
-    if (typeof window === typeof void 0) { return; }
+    if (typeof window === 'undefined') { return; }
     AppInit();
 
     describe('location', () => {
+
+        // Времены отключены, webdriver падает т.к не может найти элемент #report
+        // it('query - GET параметры', () => {
+        //     const get_params = {
+        //         g1: 'v1',
+        //         g2: 'v2'
+        //     };
+        //     setParams('?', get_params);
+        //     assert.deepOwnInclude(location.query.get, get_params);
+        // });
+
+        it('query - HASH параметры', () => {
+            const hash_params = {
+                h1: 'v3',
+                h2: 'v4'
+            };
+            setParams('#', hash_params);
+            assert.deepOwnInclude(location.query.hash, hash_params);
+        });
+
         Object.keys(location).forEach((prop) => {
-            it(prop, () => { assert.strictEqual(location[prop], document.location[prop]); })
-        })
+            if (!window.location[prop]) { return; }
+
+            it(prop, () => {
+                assert.strictEqual(location[prop], window.location[prop]);
+            })
+        });
     });
 
     describe('cookie', () => {
@@ -99,4 +123,14 @@ describe('Application/Env', () => {
 
 function getRandomString() {
     return Math.random().toString(36).substr(2, 6);
+}
+
+function setParams(initChar, params) {
+    const paramsKeys = Object.keys(params);
+    if (paramsKeys.some((param) => window.location.href.includes(param))) {
+        return;
+    }
+    const init = (!window.location.href.includes(initChar)) ? initChar : '';
+    const query = paramsKeys.reduce((query, param) => query + `&${param}=${params[param]}`, init);
+    window.location.href += query;
 }
