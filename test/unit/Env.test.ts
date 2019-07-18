@@ -1,7 +1,7 @@
 import { cookie as AppCookie, location, logger } from 'Application/Env';
 import { default as AppInit } from 'Application/Initializer';
 // import { assert } from 'chai';
-
+// useless change
 describe('Application/Env', () => {
     if (typeof window === typeof void 0) { return; }
     AppInit();
