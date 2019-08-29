@@ -66,6 +66,13 @@ export default class AppRequest implements IRequest {
             location
         } = env;
 
+        /**
+         * !NB Получаем функцию хранения окружения из фабрики.
+         * В браузере это просто глобальная замкнутая переменная.
+         * На сервисе представления это process.domain.request
+         * Так сделано потому что StateReciever написа не корректно.
+         *  и хранит данные в глобальной переменной, а не в Store.
+         */
         getGlobal = env.getGlobal.bind(env);
 
         this.console = console;
