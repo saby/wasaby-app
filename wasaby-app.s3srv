@@ -5,6 +5,7 @@
 
   <items>
     <ui_module id="323fd54f-1fab-42a6-8aea-6726d6392d53" name="Application" url="./src/Application/Application.s3mod"/>
+    <ui_module id="c3f015ed-0103-4a03-b153-c0a80bb88293" name="RUM" url="RUM/RUM.s3mod"/>
   </items>
 
   <resources/>
