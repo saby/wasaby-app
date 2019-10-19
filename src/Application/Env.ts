@@ -10,6 +10,16 @@ import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
 import { IStore } from 'Application/_Interface/IStore';
 import Request from 'Application/Request';
 
+/**
+ * @library Application/Env
+ * @includes Browser Application/_Env/Browser
+ * @includes Console Application/_Env/Console
+ * @includes ObjectStore Application/_Env/ObjectStore
+ * @includes QueryParams Application/_Env/QueryParams
+ * @public
+ * @author Санников К.А.
+ */
+
 function isAppInit() {
     if (!Request.getCurrent()) {
         try {
@@ -135,6 +145,7 @@ export function getStateReceiver(): IStateReceiver {
 }
 
 export function getStore(type: string): IStore {
+    
     isAppInit();
     return Request.getCurrent().getStore(type);
 }

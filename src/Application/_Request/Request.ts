@@ -17,8 +17,7 @@ let getGlobal: () => { appRequest: IRequest|undefined } = () => {
 }
 
 /**
- * @class
- * @name Env/_Request/Request
+ * @class Application/_Request/Request
  * @implements Application/Interface/IRequest
  * @public
  * @author Санников К.А.
