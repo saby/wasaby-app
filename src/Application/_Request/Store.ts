@@ -2,10 +2,10 @@
 import { IStore } from "Application/_Interface/IStore";
 
 /**
- * Класс, реализующий интерфейс {@link Core/Request/IStore},
+ * Класс, реализующий интерфейс {@link Application/Interface/IStore/IStore},
  * предназначенный для работы с localStorage и SessionStorage
  * @class Application/_Request/Store
- * @implements Application/_Interface/IStore
+ * @implements Application/Interface/IStore/IStore
  * @author Санников К.А.
  */
 export default class Store implements IStore {
@@ -15,7 +15,7 @@ export default class Store implements IStore {
     }
     /**
      * @param {String} key
-     * @return {*} data
+     * @return {*} Данные
      */
     get(key: string) {
         try {
@@ -27,7 +27,7 @@ export default class Store implements IStore {
     /**
      * @param {String} key
      * @param {String} data
-     * @return {Boolean} success of operation
+     * @return {Boolean} Успех операции
      */
     set(key: string, data: string) {
         try {

@@ -37,17 +37,11 @@ import { HashMap, Native } from "Application/_Type";
 export interface ISerializableState {
     /**
      * Получаем состояние для сериализации
-     * @method
-     * @name Application/Interface/ISerializableState#getState
-     * @return {HashMap<string>}
      */
     getState(): HashMap<Native>;
 
     /**
      * Устанавливаем состояния после десериализации
-     * @method
-     * @name Application/Interface/ISerializableState#setState
-     * @param {HashMap<string>} data
      */
     setState(data: HashMap<Native>): void;
 }

@@ -6,9 +6,12 @@ import { ILocation } from 'Application/_Interface/ILocation';
 import { IRequest } from 'Application/_Interface/IRequest';
 import { IStoreMap } from 'Application/_Interface/IStore';
 
+/***
+ * Модуль с интерфейсами {@link IEnv} и {@link IEnvFactory}
+ * @module
+ */
 /**
- * @interface Application/_Interface/IEnv
- * @public
+ * @interface Application/Interface/IEnv/IEnv
  * @author Санников К.А.
  */
 export interface IEnv {
@@ -19,30 +22,29 @@ export interface IEnv {
     getGlobal: () => { appRequest: IRequest | undefined }
 }
 /**
- * @name Application/_Interface/IEnv#console
- * @cfg {IConsole} console
+ * @name Application/Interface/IEnv/IEnv#console
+ * @cfg {Application/Interface:IConsole} console
  */
 /**
- * @name Application/_Interface/IEnv#cookie
- * @cfg {IConsole} cookie
+ * @name Application/Interface/IEnv/IEnv#cookie
+ * @cfg {Application/Interface:IConsole} cookie
  */
 /**
- * @name Application/_Interface/IEnv#location
- * @cfg {IConsole} location
+ * @name Application/Interface/IEnv/IEnv#location
+ * @cfg {Application/Interface:IConsole} location
  */
 /**
- * @name Application/_Interface/IEnv#storages
- * @cfg {IConsole} storages
+ * @name Application/Interface/IEnv/IEnv#storages
+ * @cfg {Application/Interface:IConsole} storages
  */
 /**
  * @function
- * @name Application/_Interface/IEnv#getGlobal
- * @return {IRequest | undefined}
+ * @name Application/Interface/IEnv/IEnv#getGlobal
+ * @return {IRequest|undefined}
  */
 
 /**
- * @interface Application/_Interface/IEnvFactory
- * @public
+ * @interface Application/Interface/IEnv/IEnvFactory
  * @author Санников К.А.
  */
 export interface IEnvFactory {
@@ -50,7 +52,7 @@ export interface IEnvFactory {
 }
 /**
  * @function
- * @name Application/_Interface/IEnvFactory#create
+ * @name Application/Interface/IEnv/IEnvFactory#create
  * @param {Config} config
  * @return {IEnv}
  */

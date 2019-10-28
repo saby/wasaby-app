@@ -2,16 +2,16 @@
 import { Native } from 'Application/_Type';
 
 /**
- * @interface Application/_Interface/IConfig
+ * @interface Application/Interface/IConfig
  * @public
  * @author Санников К.А.
  */
 export interface IConfig {
+    /**
+     * @function
+     * @name Application/Interface/IConfig#get
+     * @param {String} key
+     * @return {Native}
+     */
     get(key: string): Native
 }
-/**
- * @function
- * @name Application/_Interface/IConfig#get
- * @param {String} key
- * @return {Native}
- */

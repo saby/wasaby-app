@@ -2,7 +2,7 @@
 /**
  * Интерфейс для логгера. Для того что бы избавиться от IoC('ILogger').
  * IoC вызывает у нас много непонятных проблем с цикличной зависимостью.
- * @interface Application/_Interface/IConsole
+ * @interface Application/Interface/IConsole
  * @public
  * @author Санников К.А.
  */
