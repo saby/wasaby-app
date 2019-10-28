@@ -4,7 +4,7 @@ declare module "Application/_Interface/IConsole" {
      * Интерфейс для логгера. Для того что бы избавиться от IoC('ILogger').
      * IoC вызывает у нас много непонятных проблем с цикличной зависимостью.
      * @interface
-     * @name Application/Interface/IConsole
+     * @name Application/_Interface/IConsole
      */
     export interface IConsole {
         setLogLevel(logLevel: number): void;
@@ -299,36 +299,36 @@ declare module "Application/_Request/Request" {
     /**
      * @class
      * @name Env/_Request/Request
-     * @implements Application/Interface/IRequest
+     * @implements Application/_Interface/IRequest
      * @public
      * @author Санников К.А.
-     * @see Application/Interface/IStorage
-     * @see Application/Interface/ILocation
-     * @see Application/Interface/IConsole
-     * @see Application/Interface/ISerializableState
-     * @see Application/Interface/IStateReceiver
+     * @see Application/_Interface/IStorage
+     * @see Application/_Interface/ILocation
+     * @see Application/_Interface/IConsole
+     * @see Application/_Interface/ISerializableState
+     * @see Application/_Interface/IStateReceiver
      * @todo добавить пример
      */
     export default class AppRequest implements IRequest {
         private readonly __config;
         /**
          * @property
-         * @type {Application/Interface.IConsole}
+         * @type {Application/_Interface.IConsole}
          */
         console: IConsole;
         /**
          * @property
-         * @type {Application/Interface.ICookie}
+         * @type {Application/_Interface.ICookie}
          */
         cookie: ICookie;
         /**
          * @property
-         * @type {Application/Interface.ILocation}
+         * @type {Application/_Interface.ILocation}
          */
         location: ILocation;
         /**
          * @property
-         * @type {Application/Interface.IStateReceiver}
+         * @type {Application/_Interface.IStateReceiver}
          */
         private __stateReceiver;
         private readonly __storages;

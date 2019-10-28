@@ -3,7 +3,7 @@
  * Описание интерфейса компонента, для работы неким Storage.
  * Необходим для того что бы создавать хранилище на клиенте и на сервисе представления.
  * @interface
- * @name Application/_Interface/IStorage
+ * @name Application/Interface/IStorage
  */
 export interface IStore < T = string >  {
     get(key: string): T | null;
