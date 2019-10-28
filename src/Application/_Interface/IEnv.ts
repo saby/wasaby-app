@@ -7,46 +7,50 @@ import { IRequest } from 'Application/_Interface/IRequest';
 import { IStoreMap } from 'Application/_Interface/IStore';
 
 /**
- * @interface Application/Interface/IEnv
+ * @interface Application/_Interface/IEnv
  * @public
  * @author Санников К.А.
  */
 export interface IEnv {
-    /**
-     * @name Application/Interface/IEnv#console
-     * @cfg {IConsole} console
-     */
     console: IConsole
-    /**
-     * @name Application/Interface/IEnv#cookie
-     * @cfg {IConsole} cookie
-     */
     cookie: ICookie
-    /**
-     * @name Application/Interface/IEnv#location
-     * @cfg {IConsole} location
-     */
     location: ILocation
-    /**
-     * @name Application/Interface/IEnv#storages
-     * @cfg {IConsole} storages
-     */
     storages: IStoreMap
-    /**
-     * @return {IRequest | undefined}
-     */
     getGlobal: () => { appRequest: IRequest | undefined }
 }
+/**
+ * @name Application/_Interface/IEnv#console
+ * @cfg {IConsole} console
+ */
+/**
+ * @name Application/_Interface/IEnv#cookie
+ * @cfg {IConsole} cookie
+ */
+/**
+ * @name Application/_Interface/IEnv#location
+ * @cfg {IConsole} location
+ */
+/**
+ * @name Application/_Interface/IEnv#storages
+ * @cfg {IConsole} storages
+ */
+/**
+ * @function
+ * @name Application/_Interface/IEnv#getGlobal
+ * @return {IRequest | undefined}
+ */
 
 /**
- * @interface Application/Interface/IEnvFactory
+ * @interface Application/_Interface/IEnvFactory
  * @public
  * @author Санников К.А.
  */
 export interface IEnvFactory {
-    /**
-     * @param {Config} config
-     * @return {IEnv}
-     */
     create(config: Config): IEnv
 }
+/**
+ * @function
+ * @name Application/_Interface/IEnvFactory#create
+ * @param {Config} config
+ * @return {IEnv}
+ */
