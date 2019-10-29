@@ -11,7 +11,15 @@ import { IStore } from 'Application/_Interface/IStore';
 import Request from 'Application/Request';
 
 /**
- * Модуль, с классами, реализующими некоторые интерфейсы, тайпдефом, функциями
+ * @library Application/Env
+ * @includes EnvBrowser Application/_Env/Browser/Env
+ * @includes StateReceiver Application/_Env/Browser/StateReceiver
+ * @includes LogLevel Application/_Env/Console
+ */
+
+/**
+ * Модуль-библиотека, с классами, реализующими некоторые интерфейсы из {@link Application/Interface}
+ * Также содержит ряд полезных функций
  * @module
  * @name Application/Env
  * @author Санников К.А.
