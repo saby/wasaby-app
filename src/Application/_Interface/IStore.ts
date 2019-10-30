@@ -1,9 +1,10 @@
 /// <amd-module name="Application/_Interface/IStore" />
+
 /**
  * Описание интерфейса компонента, для работы неким Storage.
  * Необходим для того что бы создавать хранилище на клиенте и на сервисе представления.
  * @interface
- * @name Application/_Interface/IStorage
+ * @name Application/Interface/IStore/IStore
  */
 export interface IStore < T = string >  {
     get(key: string): T | null;
@@ -12,7 +13,10 @@ export interface IStore < T = string >  {
     getKeys(): string[];
     toObject(): {[key: string]: string};
 }
-
+/**
+ * @interface
+ * @name Application/Interface/IStore/IStoreMap
+ */
 export interface IStoreMap {
     [propName: string]: IStore;
 }

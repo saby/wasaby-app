@@ -2,11 +2,10 @@
 import { IStore } from "Application/_Interface/IStore";
 
 /**
- * Класс, реализующий интерфейс {@link Core/Request/IStore},
+ * Класс, реализующий интерфейс {@link Application/Interface/IStore/IStore},
  * предназначенный для работы с localStorage и SessionStorage
- * @class
- * @name Application/_Env/Browser/Store
- * @implements Application/_Interface/IStore
+ * @class Application/_Request/Store
+ * @implements Application/Interface/IStore/IStore
  * @author Санников К.А.
  */
 export default class Store implements IStore {
@@ -14,7 +13,10 @@ export default class Store implements IStore {
     constructor(storageType: Storage) {
         this.__storage = storageType;
     }
-
+    /**
+     * @param {String} key
+     * @return {*} Данные
+     */
     get(key: string) {
         try {
             return this.__storage.getItem(key);
@@ -22,7 +24,11 @@ export default class Store implements IStore {
             // ignore
         }
     }
-
+    /**
+     * @param {String} key
+     * @param {String} data
+     * @return {Boolean} Успех операции
+     */
     set(key: string, data: string) {
         try {
             this.__storage.setItem(key, data);
@@ -32,7 +38,9 @@ export default class Store implements IStore {
             return false;
         }
     }
-
+    /**
+     * @param {String} key
+     */
     remove(key: string) {
         try {
             this.__storage.removeItem(key);
@@ -40,7 +48,9 @@ export default class Store implements IStore {
             // ignore
         }
     }
-
+    /**
+     * @return {*}
+     */
     getKeys() {
         try {
             return Object.keys(this.__storage);
@@ -48,7 +58,9 @@ export default class Store implements IStore {
             return []
         }
     }
-
+    /**
+     * @return {Object}
+     */
     toObject() {
         try {
             return {

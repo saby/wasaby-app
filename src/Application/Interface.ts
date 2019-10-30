@@ -1,5 +1,20 @@
 /// <amd-module name="Application/Interface" />
 
+/**
+ * @library Application/Interface
+ * @includes IConsole Application/_Interface/IConsole
+ * @includes ICookie Application/_Interface/ICookie
+ * @includes IConfig Application/_Interface/IConfig
+ * @includes IEnv Application/_Interface/IEnv
+ * @includes ILocation Application/_Interface/ILocation
+ * @includes ISerializableState Application/_Interface/ISerializableState
+ * @includes IStore Application/_Interface/IStore
+ * @includes IStateReceiver Application/_Interface/IStateReceiver
+ * @includes IRequest Application/_Interface/IRequest
+ * @public
+ * @author Санников К.А.
+ */
+
 export * from 'Application/_Interface/IConsole';
 export * from 'Application/_Interface/ICookie';
 export * from 'Application/_Interface/IConfig';

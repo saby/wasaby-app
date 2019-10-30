@@ -4,8 +4,7 @@ import { HashMap, Native } from "Application/_Type";
 /**
  * Интерфейс, который нужно поддержать компонентам, что бы их можно было сериализовать
  * и восстановливать их состояние в любой момент
- * @name Core/Request/ISerializableState
- * @interface
+ * @interface Application/Interface/ISerializableState
  * @example
  * <pre>
  * const DEFAULT_STATE = {
@@ -38,17 +37,11 @@ import { HashMap, Native } from "Application/_Type";
 export interface ISerializableState {
     /**
      * Получаем состояние для сериализации
-     * @return {HashMap<string>}
-     * @name Core/Request/ISerializableState#getState
-     * @method
      */
     getState(): HashMap<Native>;
 
     /**
-     * Устанавливаем состоиня после десериализации
-     * @param {HashMap<string>} data
-     * @name Core/Request/ISerializableState#setState
-     * @method
+     * Устанавливаем состояния после десериализации
      */
     setState(data: HashMap<Native>): void;
 }
