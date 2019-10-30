@@ -2,7 +2,7 @@
 import { ISerializableState } from "Application/_Interface/ISerializableState";
 
 /**
- * Инетрфейс компонента для восстановления состояний компонентов.
+ * Интерфейс компонента для восстановления состояний компонентов.
  * Необходим для получения данных состояний компонентов созданных на сервер.
  * @interface Application/Interface/IStateReceiver
  */
@@ -10,9 +10,10 @@ export interface IStateReceiver {
     /**
      * Получение сериализованного состояния всех зарегестрированных компонент
      * Используется для сохранения состояния страницы при построении на сервере
-     * @return {any}
+     * @remark
      * TODO сделал возвращаемый тип any, потому что UI/_base/StateReceiver возвращает ISerializedType.
-     *  Нужно будет переделывать.
+     * Нужно будет переделывать.
+     * @return {any}
      */
     serialize(): any;
 
@@ -26,7 +27,7 @@ export interface IStateReceiver {
     /**
      * Регистрация компонентов, состояние которыех необходимо сохранить.
      * @param {String} uid идентификатор инстанса, для идентификации сохраненного для него состояния
-     * @param {Application/Interface/ISerializableState} component сериализируемый компонент
+     * @param {Application/Interface:ISerializableState} component сериализируемый компонент
      */
     register(uid: string, component: ISerializableState): void;
     unregister(uid: string): void;

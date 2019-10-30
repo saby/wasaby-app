@@ -32,29 +32,26 @@ export default class AppRequest implements IRequest {
     private readonly __config: Config;
 
     /**
-     * @property
-     * @type {Application/Interface.IConsole}
+     * @cfg {Application/Interface:IConsole}
+     * @name Application/_Request/Request#console
+     */
+    /**
+     * @cfg {Application/Interface:ICookie}
+     * @name Application/_Request/Request#cookie
+     */
+    /**
+     * @cfg {Application/Interface:ILocation}
+     * @name Application/_Request/Request#location
+     */
+    /**
+     * @cfg {Application/Interface:IStateReceiver}
+     * @name Application/_Request/Request#__stateReceiver
+     * @private
      */
     console: IConsole;
-
-    /**
-     * @property
-     * @type {Application/Interface.ICookie}
-     */
     cookie: ICookie;
-
-    /**
-     * @property
-     * @type {Application/Interface.ILocation}
-     */
     location: ILocation;
-
-    /**
-     * @property
-     * @type {Application/Interface.IStateReceiver}
-     */
     private __stateReceiver: IStateReceiver;
-
     private readonly __storages: IStoreMap;
 
     constructor(env: IEnv, config: Config) {
@@ -80,35 +77,45 @@ export default class AppRequest implements IRequest {
         this.__config = config;
         this.__storages = storages;
     }
-
+    /**
+     * Получить хранилище
+     */
     getStore(key: string): IStore {
         if (!this.__storages[key]) {
             this.__storages[key] = new Store(new FakeWebStorage());
         }
         return this.__storages[key];
     }
-
+    /**
+     * Задать хранилище
+     */
     setStore(key: string, storage: IStore) {
         // if (this.__storages[key]) {
         //     throw new Error(`attempt to overwrite used storage "${key}"`);
         // }
         this.__storages[key] = storage;
     }
-
+    /**
+     * Получить хранилище
+     */
     setStateReceiver(stateReceiver: IStateReceiver) {
         this.__stateReceiver = stateReceiver;
     }
-
+    /**
+     * Получить хранилище
+     */
     getStateReceiver() {
         return this.__stateReceiver;
     }
-
+    /**
+     * Получить хранилище
+     */
     getConfig(): Config {
         return this.__config;
     }
 
     /**
-     * @param {Env/IRequest} request
+     * @param {Application/Interface:IRequest} request
      * @static
      * @name Env/Request#setCurrent
      */
@@ -117,9 +124,10 @@ export default class AppRequest implements IRequest {
     }
 
     /**
-     * @return {Env/IRequest}
+     * @function
+     * @name Application/_Request/Request#getCurrent
+     * @return {Application/Interface:IRequest}
      * @static
-     * @name Env/Request#getCurrent
      */
     static getCurrent(): IRequest | undefined {
         return getGlobal().appRequest;

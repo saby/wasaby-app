@@ -1,6 +1,14 @@
 /// <amd-module name="Application/_Interface/ICookie" />
 import { IStore } from 'Application/_Interface/IStore';
 
+/**
+ * Набор опций для cookie
+ * @typedef {Object} ICookieOptions
+ * @property {String} domain domain
+ * @property {Number|Date} expires expires
+ * @property {String} path path
+ * @property {String} secure secure
+ */
 export interface ICookieOptions {
     domain: string
     expires: number | Date
@@ -20,7 +28,6 @@ export interface ICookie extends IStore {
      * @param {String}
      */
     get(key: string): string
-
     /**
      * Устанавливаем cookie
      * @param {String} key
@@ -29,7 +36,6 @@ export interface ICookie extends IStore {
      * @throws {Error} ошибка установки значения
      */
     set(key: string, value: string, options ?: Partial<ICookieOptions>): boolean
-
     /**
      * Удаляем cookie
      * @param {String} key

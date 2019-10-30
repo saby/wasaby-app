@@ -12,11 +12,16 @@ import Request from 'Application/Request';
 
 /**
  * @library Application/Env
- * @includes Browser Application/_Env/Browser
- * @includes Console Application/_Env/Console
- * @includes ObjectStore Application/_Env/ObjectStore
- * @includes QueryParams Application/_Env/QueryParams
- * @public
+ * @includes EnvBrowser Application/_Env/Browser/Env
+ * @includes StateReceiver Application/_Env/Browser/StateReceiver
+ * @includes LogLevel Application/_Env/Console
+ */
+
+/**
+ * Модуль-библиотека, с классами, реализующими некоторые интерфейсы из {@link Application/Interface}
+ * Также содержит ряд полезных функций
+ * @module
+ * @name Application/Env
  * @author Санников К.А.
  */
 
@@ -32,9 +37,9 @@ function isAppInit() {
 
 /**
  * Возвращает все GET и HASH параметры
- * @name Application/Env#query
- * @return {Application/_Env/QueryParams/PARAMS.typedef} Извлеченные параметры
- * @public
+ * @typedef {Object} query
+ * @property {Object} hash Извлеченные HASH параметры
+ * @property {Object} get Извлеченные GET параметры
  * @author Ибрагимов А.А
  * @example
  * <pre>
@@ -53,6 +58,12 @@ export const query: PARAMS = {
     }
 };
 
+/**
+ * Реализация {@link Application/Interface/ILocation} - обобщенного window.location.
+ * @class
+ * @name Application/Env/location
+ * @see Application/Interface/ILocation
+ */
 export const location: ILocation = {
     get protocol() {
         return Request.getCurrent().location.protocol;
@@ -87,6 +98,12 @@ export const location: ILocation = {
     }
 }
 
+/**
+ * Реализация {@link Application/Interface/ICookie} - интерфейса по работе с cookie 
+ * @class
+ * @name Application/Env/cookie
+ * @see Application/Interface/ICookie
+ */
 export const cookie: ICookie = {
     get(key) {
         return Request.getCurrent().cookie.get(key);
@@ -109,6 +126,12 @@ export const cookie: ICookie = {
     }
 }
 
+/**
+ * Реализация {@link Application/Interface/IConsole} - логгера
+ * @class
+ * @name Application/Env/logger
+ * @see Application/Interface/IConsole
+ */
 export const logger: IConsole = {
     setLogLevel(level: number) {
         return Request.getCurrent().console.setLogLevel(level);
@@ -139,17 +162,35 @@ export const logger: IConsole = {
     }
 };
 
+/**
+ * Метод, возвращающий компонент для восстановления состояний компонентов
+ * @function
+ * @name Application/Env#getStateReceiver
+ * @see Application/Interface/IStateReceiver
+ */
 export function getStateReceiver(): IStateReceiver {
     isAppInit();
     return Request.getCurrent().getStateReceiver();
 }
 
+/**
+ * Метод, возвращающий текущее хранилище
+ * @function
+ * @name Application/Env#getStore
+ * @see Application/Interface/IStore/IStore
+ */
 export function getStore(type: string): IStore {
     
     isAppInit();
     return Request.getCurrent().getStore(type);
 }
 
+/**
+ * Метод, задающий текущее хранилище
+ * @function
+ * @name Application/Env#setStore
+ * @see Application/Interface/IStore/IStore
+ */
 export function setStore(type: string, store: IStore) {
     isAppInit();
     return Request.getCurrent().setStore(type, store);

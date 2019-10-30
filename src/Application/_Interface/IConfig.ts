@@ -8,6 +8,8 @@ import { Native } from 'Application/_Type';
  */
 export interface IConfig {
     /**
+     * @function
+     * @name Application/Interface/IConfig#get
      * @param {String} key
      * @return {Native}
      */
