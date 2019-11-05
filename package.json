@@ -1,6 +1,6 @@
 {
    "name": "wasaby-app",
-   "version": "19.720.0",
+   "version": "19.710.0",
    "license": "GPL-3.0",
    "repository": {
       "type": "git",
@@ -65,15 +65,15 @@
       "@types/mocha": "^5.2.7",
       "@types/requirejs": "^2.1.31",
       "chai": "^4.2.0",
-      "sbis3-ws": "git+https://git.sbis.ru/sbis/ws.git#rc-19.720",
-      "saby-units": "git+https://github.com/saby/Units.git#rc-19.720",
+      "sbis3-ws": "git+https://git.sbis.ru/sbis/ws.git#rc-19.710",
+      "saby-units": "git+https://github.com/saby/Units.git#rc-19.710",
       "express": "^4.16.4",
       "mocha": "^5.2.0",
       "requirejs": "^2.3.6",
-      "saby-ui": "git+https://git@github.com/saby/UI.git#rc-19.720"
+      "saby-ui": "git+https://git@github.com/saby/UI.git#rc-19.710"
    },
    "dependencies": {
-      "saby-typescript": "git+https://github.com/saby/TypeScript.git#rc-19.720",
+      "saby-typescript": "git+https://github.com/saby/TypeScript.git#rc-19.710",
       "tslib": "^1.9.3",
       "tslint": "^5.12.1"
    }
