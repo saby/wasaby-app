@@ -3,20 +3,25 @@ import { HashMap, Native } from "Application/_Type";
 import { IConsole, ISerializableState, IStateReceiver } from "Application/Interface";
 
 type StateMap = HashMap<HashMap<Native>>;
+
+/**
+ * @typedef {Object} StateReceiverConfig
+ * @property {StateMap} [states] states
+ * @property {Application/_Interface/IConsole} [console] console
+ */
 export type StateReceiverConfig = {
     states?: StateMap,
     console?: IConsole
 }
 
 /**
- * Класс, реализующий интерфейс {@link Core/Request/IStateReceiver},
+ * Класс, реализующий интерфейс {@link Application/_Interface/IStateReceiver},
  * позволяющий сохранять состояние компонентов
  *
- * @class
- * @name _Request/StateReceiver
- * @implements Core/Request/IStateReceiver
+ * @class Application/_Env/Browser/StateReceiver
+ * @implements Application/_Interface/IStateReceiver
  * @author Заляев А.В
- * @private
+ * @public
  */
 // tslint:disable-next-line
 export default class StateReceiver implements IStateReceiver {
@@ -32,9 +37,9 @@ export default class StateReceiver implements IStateReceiver {
     }
     /**
      * Получеие сериализованного состояния всех зарегестрированных компонент
+     * @function
+     * @name Application/_Env/Browser/StateReceiver#serialize
      * @return {String}
-     * @method
-     * @name _Request/StateReceiver#serialize
      */
     serialize(): string {
         let states: StateMap = Object.create(null);
@@ -46,9 +51,9 @@ export default class StateReceiver implements IStateReceiver {
 
     /**
      * Метод, устанавливающий состояние всем зарегестрированным компонентам.
+     * @function
+     * @name Application/_Env/Browser/StateReceiver#deserialize
      * @param {String} data
-     * @method
-     * @name _Request/StateReceiver#deserialize
      */
     deserialize(data: string): void {
         try {
@@ -61,10 +66,10 @@ export default class StateReceiver implements IStateReceiver {
 
     /**
      * Регистрация компонентов, состояние которыех необходимо сохранить.
+     * @function
+     * @name Application/_Env/Browser/StateReceiver#register
      * @param {String} uid идентификатор инстанса, для идентификации сохраненного для него состояния
      * @param {Core/Request/ISerializableState} component Сериализируемый компонент
-     * @method
-     * @name _Request/StateReceiver#register
      */
     register(uid: string, component: ISerializableState): void {
         if (this.__components[uid]) {
@@ -75,6 +80,10 @@ export default class StateReceiver implements IStateReceiver {
             this.__setComponentState(uid);
         }
     };
+    /**
+     * @function
+     * @name Application/_Env/Browser/StateReceiver#unregister
+     */
     unregister(uid: string) {
         delete this.__components[uid];
     }

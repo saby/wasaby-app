@@ -3,15 +3,17 @@ import { ISerializableState } from "Application/_Interface/ISerializableState";
 import { HashMap, Native } from 'Application/_Type';
 
 /**
+ * Класс Config
  * @class Application/_Config/Config
  * @public
- * @implements Application/Interface/ISerializableState
+ * @implements Application/_Interface/ISerializableState
  * @author Санников К.А.
  */
 export default class Config implements ISerializableState {
     constructor(private data: HashMap<Native> = {}, private __uid: string = 'appConfig') {
     }
     /**
+     * Получить данные по ключу
      * @param {String} key
      * @return {Native}
      */
@@ -19,12 +21,14 @@ export default class Config implements ISerializableState {
         return this.data[key];
     }
     /**
-     * @return HashMap<Native>
+     * Получить состояние
+     * @return {HashMap<Native>}
      */
     getState(): HashMap<Native> {
         return this.data;
     }
     /**
+     * Задать состояние
      * @param {HashMap<Native>} data
      */
     setState(data: HashMap<Native>) {
@@ -34,6 +38,7 @@ export default class Config implements ISerializableState {
         this.data = data;
     }
     /**
+     * Получить UID
      * @return {String}
      */
     getUID() {
