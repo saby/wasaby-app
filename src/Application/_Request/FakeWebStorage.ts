@@ -3,7 +3,6 @@
 /**
  * Эмуляция любого Storage браузера
  * @class Application/_Request/FakeWebStorage
- * @public
  * @author Санников К.А.
  */
 export class FakeWebStorage implements Storage {
