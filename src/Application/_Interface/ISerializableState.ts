@@ -4,7 +4,7 @@ import { HashMap, Native } from "Application/_Type";
 /**
  * Интерфейс, который нужно поддержать компонентам, что бы их можно было сериализовать
  * и восстановливать их состояние в любой момент
- * @interface Application/Interface/ISerializableState
+ * @interface Application/_Interface/ISerializableState
  * @example
  * <pre>
  * const DEFAULT_STATE = {

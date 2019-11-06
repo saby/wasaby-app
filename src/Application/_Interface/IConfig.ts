@@ -2,7 +2,8 @@
 import { Native } from 'Application/_Type';
 
 /**
- * @interface Application/Interface/IConfig
+ * Интерфейс IConfig
+ * @interface Application/_Interface/IConfig
  * @public
  * @author Санников К.А.
  */
