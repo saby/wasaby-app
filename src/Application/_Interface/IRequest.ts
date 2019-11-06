@@ -8,28 +8,29 @@ import { IStore } from "Application/_Interface/IStore";
 
 /**
  * Компонент, которые предоставляет в платформе доступ к синглтонам в раках запроса пользователя.
- * @interface Application/Interface/IRequest
+ * @interface Application/_Interface/IRequest
  * @public
  * @author Санников К.А.
  */
 export interface IRequest {
     /**
-     * @name Application/Interface/IRequest#cookie
+     * @name Application/_Interface/IRequest#cookie
      * @cfg {ICookie} cookie
      */
     cookie: ICookie;
     /**
-     * @name Application/Interface/IRequest#location
+     * @name Application/_Interface/IRequest#location
      * @cfg {ILocation} location
      */
     location: ILocation;
     /**
-     * @name Application/Interface/IRequest#console
+     * @name Application/_Interface/IRequest#console
      * @cfg {IConsole} console
      */
     console: IConsole;
     /**
-     * @return {Config}
+     * Получить Config
+     * @return {Application/_Config/Config}
      */
     getConfig(): Config;
 
@@ -37,21 +38,21 @@ export interface IRequest {
      * Доступ к объекту сохранения состояния на сервиспе представлений,
      * для его получения на клиенте. Не привязан к VDOM механизмам,
      * поэтому можно будет его использовать в не визуальных компонентах.
-     * @return {Config}
+     * @return {Application/_Config/Config}
      */
     getStateReceiver(): IStateReceiver;
 
     /**
      * Получение хранилища для сохранений данных в рамках запроса.
      * @param {String} key Тип хранилища.
-     * @return {Config} IStore
+     * @return {Application/Interface/IStore/IStore} IStore
      */
     getStore(key: string): IStore;
 
     /**
      * Установка хранилища
-     * @param key {string} Тип хранилища.
-     * @param storage {IStore}
+     * @param {String} key Тип хранилища.
+     * @param {Application/Interface/IStore/IStore} storage Хранилище.
      */
     setStore(key: string, storage: IStore);
 }

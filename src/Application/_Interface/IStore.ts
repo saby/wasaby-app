@@ -1,6 +1,13 @@
 /// <amd-module name="Application/_Interface/IStore" />
 
 /**
+ * Модуль с интерфейсами IStore и IStoreMap
+ * @module
+ * @name Application/_Interface/IStore
+ * @author Санников К.А.
+ */
+
+/**
  * Описание интерфейса компонента, для работы неким Storage.
  * Необходим для того что бы создавать хранилище на клиенте и на сервисе представления.
  * @interface
@@ -14,6 +21,7 @@ export interface IStore < T = string >  {
     toObject(): {[key: string]: string};
 }
 /**
+ * Интерфейс IStoreMap
  * @interface
  * @name Application/Interface/IStore/IStoreMap
  */

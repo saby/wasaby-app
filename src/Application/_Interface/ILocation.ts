@@ -2,7 +2,7 @@
 /**
  * Описание обобщенного window.location.
  * Выписаны те поля, которые есть на сервисе представления и в браузере
- * @interface Application/Interface/ILocation
+ * @interface Application/_Interface/ILocation
  */
 export interface ILocation {
     protocol: string;
@@ -15,34 +15,34 @@ export interface ILocation {
     hash: string;
 }
 /**
- * @name Application/Interface/ILocation#protocol
+ * @name Application/_Interface/ILocation#protocol
  * @cfg {String} protocol Используемый протокол (http/https)
  */
 /**
- * @name Application/Interface/ILocation#host
+ * @name Application/_Interface/ILocation#host
  * @cfg {String} host Хост
  */
 /**
- * @name Application/Interface/ILocation#hostname
+ * @name Application/_Interface/ILocation#hostname
  * @cfg {String} hostname Доменное имя хоста
  */
 /**
- * @name Application/Interface/ILocation#port
+ * @name Application/_Interface/ILocation#port
  * @cfg {String} port Порт URL
  */
 /**
- * @name Application/Interface/ILocation#href
+ * @name Application/_Interface/ILocation#href
  * @cfg {String} href Ссылка данной страницы (весь URL)
  */
 /**
- * @name Application/Interface/ILocation#pathname
+ * @name Application/_Interface/ILocation#pathname
  * @cfg {String} pathname Путь (файл) данной страницы
  */
 /**
- * @name Application/Interface/ILocation#search
+ * @name Application/_Interface/ILocation#search
  * @cfg {String} search Возвращает строка запроса с URL (querystring)
  */
 /**
- * @name Application/Interface/ILocation#hash
+ * @name Application/_Interface/ILocation#hash
  * @cfg {String} hash Возвращает #-часть URL
  */
