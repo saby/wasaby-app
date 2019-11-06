@@ -11,18 +11,25 @@ import { IStore } from 'Application/_Interface/IStore';
 import Request from 'Application/Request';
 
 /**
+ * Модуль-библиотека, с классами, реализующими некоторые интерфейсы из {@link Application/Interface}
+ * Также содержит ряд полезных функций
+ * @remark
+ * <h2>Доступные классы</h2>
+ * <ul>
+ *      <li>{@link cookie} - Реализация {@link Application/_Interface/ICookie} - интерфейса по работе с cookie</li>
+ *      <li>{@link location} - Реализация {@link Application/_Interface/ILocation} - обобщенного window.location.</li>
+ *      <li>{@link logger} - Реализация {@link Application/_Interface/IConsole} - логгера</li>
+ * </ul>
  * @library Application/Env
  * @includes EnvBrowser Application/_Env/Browser/Env
  * @includes StateReceiver Application/_Env/Browser/StateReceiver
  * @includes LogLevel Application/_Env/Console
+ * @author Санников К.А.
  */
 
 /**
- * Модуль-библиотека, с классами, реализующими некоторые интерфейсы из {@link Application/Interface}
- * Также содержит ряд полезных функций
  * @module
  * @name Application/Env
- * @author Санников К.А.
  */
 
 function isAppInit() {
@@ -37,17 +44,16 @@ function isAppInit() {
 
 /**
  * Возвращает все GET и HASH параметры
- * @typedef {Object} query
- * @property {Object} hash Извлеченные HASH параметры
- * @property {Object} get Извлеченные GET параметры
- * @author Ибрагимов А.А
- * @example
  * <pre>
  *  require(['Application/Env'], function (Env) {
  *      var getParams = Env.query.get    // { name: 'ferret', color: 'purple' }
  *      var hashParams = Env.query.hash  // { name: 'leha', age: '2' }
  *  });
  * </pre>
+ * @typedef {Object} query
+ * @property {Object} hash Извлеченные HASH параметры
+ * @property {Object} get Извлеченные GET параметры
+ * @author Ибрагимов А.А
  */
 export const query: PARAMS = {
     get hash() {
@@ -59,10 +65,11 @@ export const query: PARAMS = {
 };
 
 /**
- * Реализация {@link Application/Interface/ILocation} - обобщенного window.location.
+ * Реализация {@link Application/_Interface/ILocation} - обобщенного window.location.
  * @class
  * @name Application/Env/location
- * @see Application/Interface/ILocation
+ * @implements Application/_Interface/ILocation
+ * @see Application/_Interface/ILocation
  */
 export const location: ILocation = {
     get protocol() {
@@ -99,10 +106,11 @@ export const location: ILocation = {
 }
 
 /**
- * Реализация {@link Application/Interface/ICookie} - интерфейса по работе с cookie 
+ * Реализация {@link Application/_Interface/ICookie} - интерфейса по работе с cookie
  * @class
  * @name Application/Env/cookie
- * @see Application/Interface/ICookie
+ * @implements Application/_Interface/ICookie
+ * @see Application/_Interface/ICookie
  */
 export const cookie: ICookie = {
     get(key) {
@@ -127,10 +135,11 @@ export const cookie: ICookie = {
 }
 
 /**
- * Реализация {@link Application/Interface/IConsole} - логгера
+ * Реализация {@link Application/_Interface/IConsole} - логгера
  * @class
  * @name Application/Env/logger
- * @see Application/Interface/IConsole
+ * @implements Application/_Interface/IConsole
+ * @see Application/_Interface/IConsole
  */
 export const logger: IConsole = {
     setLogLevel(level: number) {
@@ -166,7 +175,7 @@ export const logger: IConsole = {
  * Метод, возвращающий компонент для восстановления состояний компонентов
  * @function
  * @name Application/Env#getStateReceiver
- * @see Application/Interface/IStateReceiver
+ * @return Application/_Interface/IStateReceiver
  */
 export function getStateReceiver(): IStateReceiver {
     isAppInit();
@@ -177,6 +186,8 @@ export function getStateReceiver(): IStateReceiver {
  * Метод, возвращающий текущее хранилище
  * @function
  * @name Application/Env#getStore
+ * @param {String} type type
+ * @return Application/Interface/IStore/IStore
  * @see Application/Interface/IStore/IStore
  */
 export function getStore(type: string): IStore {
@@ -188,7 +199,8 @@ export function getStore(type: string): IStore {
  * Метод, задающий текущее хранилище
  * @function
  * @name Application/Env#setStore
- * @see Application/Interface/IStore/IStore
+ * @param {String} type type
+ * @param {Application/Interface/IStore/IStore} store store
  */
 export function setStore(type: string, store: IStore) {
     isAppInit();

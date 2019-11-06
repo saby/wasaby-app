@@ -10,10 +10,32 @@ import { IStore, IStoreMap } from 'Application/_Interface/IStore';
 import { Config } from "Application/Config";
 import { Store } from 'Application/Request';
 
+/**
+ * Класс EnvBrowser
+ * @class Application/_Env/Browser/Env
+ * @author Ибрагимов А.А.
+ * @public
+ */
 export default class EnvBrowser implements IEnv {
+    /**
+     * @cfg {Application/_Interface/IConsole} console
+     * @name Application/_Env/Browser/Env#console
+     */
     console: IConsole
+    /**
+     * @cfg {Application/_Interface/ICookie} cookie
+     * @name Application/_Env/Browser/Env#cookie
+     */
     cookie: ICookie
+    /**
+     * @cfg {Application/_Interface/ILocation} location
+     * @name Application/_Env/Browser/Env#location
+     */
     location: ILocation;
+    /**
+     * @cfg {Application/Interface/IStore/IStoreMap} storages
+     * @name Application/_Env/Browser/Env#storages
+     */
     storages: IStoreMap;
     global = { appRequest: undefined };
 
@@ -46,11 +68,15 @@ export default class EnvBrowser implements IEnv {
             "sessionStorage": sessionStorage
         }
     }
-
+    /**
+     * Получить глобальную сущность
+     */
     getGlobal() {
         return this.global;
     }
-
+    /**
+     * Создать новую сущность
+     */
     static create(cfg: Config) {
         return new EnvBrowser(cfg);
     }

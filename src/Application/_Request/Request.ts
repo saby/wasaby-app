@@ -17,15 +17,16 @@ let getGlobal: () => { appRequest: IRequest|undefined } = () => {
 }
 
 /**
+ * Класс Request
  * @class Application/_Request/Request
- * @implements Application/Interface/IRequest
+ * @implements Application/_Interface/IRequest
  * @public
  * @author Санников К.А.
- * @see Application/Interface/IStorage
- * @see Application/Interface/ILocation
- * @see Application/Interface/IConsole
- * @see Application/Interface/ISerializableState
- * @see Application/Interface/IStateReceiver
+ * @see Application/_Interface/IStorage
+ * @see Application/_Interface/ILocation
+ * @see Application/_Interface/IConsole
+ * @see Application/_Interface/ISerializableState
+ * @see Application/_Interface/IStateReceiver
  * @todo добавить пример
  */
 export default class AppRequest implements IRequest {
@@ -96,19 +97,19 @@ export default class AppRequest implements IRequest {
         this.__storages[key] = storage;
     }
     /**
-     * Получить хранилище
+     * Задать stateReceiver
      */
     setStateReceiver(stateReceiver: IStateReceiver) {
         this.__stateReceiver = stateReceiver;
     }
     /**
-     * Получить хранилище
+     * Получить stateReceiver
      */
     getStateReceiver() {
         return this.__stateReceiver;
     }
     /**
-     * Получить хранилище
+     * Получить Config
      */
     getConfig(): Config {
         return this.__config;

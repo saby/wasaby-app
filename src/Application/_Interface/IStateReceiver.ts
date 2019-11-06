@@ -4,7 +4,7 @@ import { ISerializableState } from "Application/_Interface/ISerializableState";
 /**
  * Интерфейс компонента для восстановления состояний компонентов.
  * Необходим для получения данных состояний компонентов созданных на сервер.
- * @interface Application/Interface/IStateReceiver
+ * @interface Application/_Interface/IStateReceiver
  */
 export interface IStateReceiver {
     /**
@@ -30,5 +30,10 @@ export interface IStateReceiver {
      * @param {Application/Interface:ISerializableState} component сериализируемый компонент
      */
     register(uid: string, component: ISerializableState): void;
+    
+    /**
+     * Отменить регистрацию по идентификатору инстанса
+     * @param {String} uid идентификатор инстанса
+     */
     unregister(uid: string): void;
 }
