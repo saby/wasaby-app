@@ -6,11 +6,11 @@ const NAME_REPLACE_REGEXP = /=.*/;
 /** Разделитель между куками в documents.cookie */
 const SEPARATOR = '; ';
 /**
- * Класс, реализующий интерфейс {@link Core/Request/IStorage},
- * предназначенный для работы с cookie в браузере
+ * Класс предназначенный для работы с cookie в браузере,
  * @class
  * @name _Request/_Storage/Cookie
- * @implements Core/Request/IStorage
+ * @implements Application/Interface:ICookie
+ * @implements Application/Interface:IStore
  * @author Заляев А.В
  */
 export default class Cookie implements ICookie, IStore<string> {
