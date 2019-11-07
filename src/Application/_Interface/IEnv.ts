@@ -6,17 +6,11 @@ import { ILocation } from 'Application/_Interface/ILocation';
 import { IRequest } from 'Application/_Interface/IRequest';
 import { IStoreMap } from 'Application/_Interface/IStore';
 
-/***
- * Модуль с интерфейсами {@link IEnv} и {@link IEnvFactory}
- * @module
- * @name Application/_Interface/IEnv
- * @author Санников К.А.
- */
-
 /**
  * Интерфейс IEnv
- * @interface Application/Interface/IEnv/IEnv
+ * @interface Application/_Interface/IEnv
  * @author Санников К.А.
+ * @see Application/Interface/IEnv/IEnvFactory
  */
 export interface IEnv {
     console: IConsole
@@ -26,24 +20,25 @@ export interface IEnv {
     getGlobal: () => { appRequest: IRequest | undefined }
 }
 /**
- * @name Application/Interface/IEnv/IEnv#console
+ * @name Application/_Interface/IEnv#console
  * @cfg {Application/Interface:IConsole} console
  */
 /**
- * @name Application/Interface/IEnv/IEnv#cookie
- * @cfg {Application/Interface:IConsole} cookie
+ * @name Application/_Interface/IEnv#cookie
+ * @cfg {Application/Interface:ICookie} cookie
  */
 /**
- * @name Application/Interface/IEnv/IEnv#location
- * @cfg {Application/Interface:IConsole} location
+ * @name Application/_Interface/IEnv#location
+ * @cfg {Application/Interface:ILocation} location
  */
 /**
- * @name Application/Interface/IEnv/IEnv#storages
- * @cfg {Application/Interface:IConsole} storages
+ * @name Application/_Interface/IEnv#storages
+ * @cfg {Application/Interface:IStoreMap} storages
  */
 /**
+ * getGlobal
  * @function
- * @name Application/Interface/IEnv/IEnv#getGlobal
+ * @name Application/_Interface/IEnv#getGlobal
  * @return {IRequest|undefined}
  */
 
@@ -56,8 +51,9 @@ export interface IEnvFactory {
     create(config: Config): IEnv
 }
 /**
+ * Создать IEnv
  * @function
- * @name Application/Interface/IEnv/IEnvFactory#create
- * @param {Config} config
+ * @name Application/_Interface/IEnvFactory#create
+ * @param {Application/_Config/Config} config
  * @return {IEnv}
  */

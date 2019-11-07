@@ -9,6 +9,7 @@ import { Native } from 'Application/_Type';
  */
 export interface IConfig {
     /**
+     * get
      * @function
      * @name Application/Interface/IConfig#get
      * @param {String} key
