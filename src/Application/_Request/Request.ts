@@ -19,33 +19,34 @@ let getGlobal: () => { appRequest: IRequest|undefined } = () => {
 /**
  * Класс Request
  * @class Application/_Request/Request
- * @implements Application/_Interface/IRequest
+ * @implements Application/Interface:IRequest
  * @public
  * @author Санников К.А.
- * @see Application/_Interface/IStorage
- * @see Application/_Interface/ILocation
- * @see Application/_Interface/IConsole
- * @see Application/_Interface/ISerializableState
- * @see Application/_Interface/IStateReceiver
+ * @see Application/Interface:IRequest
+ * @see Application/Interface:IStore
+ * @see Application/Interface:ILocation
+ * @see Application/Interface:IConsole
+ * @see Application/Interface:ISerializableState
+ * @see Application/Interface:IStateReceiver
  * @todo добавить пример
  */
 export default class AppRequest implements IRequest {
     private readonly __config: Config;
 
     /**
-     * @cfg {Application/Interface:IConsole}
+     * @cfg {Application/Interface:IConsole} console
      * @name Application/_Request/Request#console
      */
     /**
-     * @cfg {Application/Interface:ICookie}
+     * @cfg {Application/Interface:ICookie} cookie
      * @name Application/_Request/Request#cookie
      */
     /**
-     * @cfg {Application/Interface:ILocation}
+     * @cfg {Application/Interface:ILocation} location
      * @name Application/_Request/Request#location
      */
     /**
-     * @cfg {Application/Interface:IStateReceiver}
+     * @cfg {Application/Interface:IStateReceiver} __stateReceiver
      * @name Application/_Request/Request#__stateReceiver
      * @private
      */
@@ -116,15 +117,18 @@ export default class AppRequest implements IRequest {
     }
 
     /**
+     * Задать текущий запрос
+     * @function
+     * @name Application/_Request/Request#setCurrent
      * @param {Application/Interface:IRequest} request
      * @static
-     * @name Env/Request#setCurrent
      */
     static setCurrent(request: IRequest) {
         getGlobal().appRequest = request;
     }
 
     /**
+     * Получить текущий запрос
      * @function
      * @name Application/_Request/Request#getCurrent
      * @return {Application/Interface:IRequest}
