@@ -7,7 +7,7 @@ import { IStateReceiver } from "Application/_Interface/IStateReceiver";
 import { IStore } from "Application/_Interface/IStore";
 
 /**
- * Компонент, которые предоставляет в платформе доступ к синглтонам в раках запроса пользователя.
+ * Компонент, которые предоставляет в платформе доступ к синглтонам в рамках запроса пользователя.
  * @interface Application/_Interface/IRequest
  * @public
  * @author Санников К.А.
@@ -38,21 +38,21 @@ export interface IRequest {
      * Доступ к объекту сохранения состояния на сервиспе представлений,
      * для его получения на клиенте. Не привязан к VDOM механизмам,
      * поэтому можно будет его использовать в не визуальных компонентах.
-     * @return {Application/_Config/Config}
+     * @return {Application/Interface:IStateReceiver}
      */
     getStateReceiver(): IStateReceiver;
 
     /**
      * Получение хранилища для сохранений данных в рамках запроса.
      * @param {String} key Тип хранилища.
-     * @return {Application/Interface/IStore/IStore} IStore
+     * @return {Application/Interface:IStore} Хранилище
      */
     getStore(key: string): IStore;
 
     /**
      * Установка хранилища
      * @param {String} key Тип хранилища.
-     * @param {Application/Interface/IStore/IStore} storage Хранилище.
+     * @param {Application/Interface:IStore} storage Хранилище.
      */
     setStore(key: string, storage: IStore);
 }

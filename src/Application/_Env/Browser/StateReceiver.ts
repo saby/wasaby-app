@@ -19,7 +19,7 @@ export type StateReceiverConfig = {
  * позволяющий сохранять состояние компонентов
  *
  * @class Application/_Env/Browser/StateReceiver
- * @implements Application/_Interface/IStateReceiver
+ * @implements Application/Interface:IStateReceiver
  * @author Заляев А.В
  * @public
  */
@@ -36,7 +36,7 @@ export default class StateReceiver implements IStateReceiver {
         this.__console = console;
     }
     /**
-     * Получеие сериализованного состояния всех зарегестрированных компонент
+     * Получение сериализованного состояния всех зарегестрированных компонент
      * @function
      * @name Application/_Env/Browser/StateReceiver#serialize
      * @return {String}
@@ -65,7 +65,7 @@ export default class StateReceiver implements IStateReceiver {
     };
 
     /**
-     * Регистрация компонентов, состояние которыех необходимо сохранить.
+     * Регистрация компонентов, состояние которых необходимо сохранить.
      * @function
      * @name Application/_Env/Browser/StateReceiver#register
      * @param {String} uid идентификатор инстанса, для идентификации сохраненного для него состояния

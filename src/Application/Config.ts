@@ -2,6 +2,7 @@
 import Request from "Application/Request";
 
 /**
+ * Библиотека Config
  * @library Application/Config
  * @includes Config Application/_Config/Config
  * @public

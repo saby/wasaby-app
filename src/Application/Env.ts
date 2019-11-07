@@ -11,19 +11,15 @@ import { IStore } from 'Application/_Interface/IStore';
 import Request from 'Application/Request';
 
 /**
- * Модуль-библиотека, с классами, реализующими некоторые интерфейсы из {@link Application/Interface}
- * Также содержит ряд полезных функций
- * @remark
- * <h2>Доступные классы</h2>
- * <ul>
- *      <li>{@link cookie} - Реализация {@link Application/_Interface/ICookie} - интерфейса по работе с cookie</li>
- *      <li>{@link location} - Реализация {@link Application/_Interface/ILocation} - обобщенного window.location.</li>
- *      <li>{@link logger} - Реализация {@link Application/_Interface/IConsole} - логгера</li>
- * </ul>
+ * Модуль-библиотека, с классами-реализациями интерфейсов из {@link Application/Interface}
+ * Также содержит ряд полезных методов
  * @library Application/Env
  * @includes EnvBrowser Application/_Env/Browser/Env
  * @includes StateReceiver Application/_Env/Browser/StateReceiver
  * @includes LogLevel Application/_Env/Console
+ * @includes cookie Application/Env/cookie
+ * @includes location Application/Env/location
+ * @includes logger Application/Env/logger
  * @author Санников К.А.
  */
 
@@ -65,7 +61,7 @@ export const query: PARAMS = {
 };
 
 /**
- * Реализация {@link Application/_Interface/ILocation} - обобщенного window.location.
+ * Реализация {@link Application/Interface:ILocation} - обобщенного window.location.
  * @class
  * @name Application/Env/location
  * @implements Application/_Interface/ILocation
@@ -106,7 +102,7 @@ export const location: ILocation = {
 }
 
 /**
- * Реализация {@link Application/_Interface/ICookie} - интерфейса по работе с cookie
+ * Реализация {@link Application/Interface:ICookie} - интерфейса по работе с cookie
  * @class
  * @name Application/Env/cookie
  * @implements Application/_Interface/ICookie
@@ -135,7 +131,7 @@ export const cookie: ICookie = {
 }
 
 /**
- * Реализация {@link Application/_Interface/IConsole} - логгера
+ * Реализация {@link Application/Interface:IConsole} - логгера
  * @class
  * @name Application/Env/logger
  * @implements Application/_Interface/IConsole
@@ -187,8 +183,8 @@ export function getStateReceiver(): IStateReceiver {
  * @function
  * @name Application/Env#getStore
  * @param {String} type type
- * @return Application/Interface/IStore/IStore
- * @see Application/Interface/IStore/IStore
+ * @return Application/Interface:IStore
+ * @see Application/Interface:IStore
  */
 export function getStore(type: string): IStore {
     isAppInit();
@@ -200,7 +196,7 @@ export function getStore(type: string): IStore {
  * @function
  * @name Application/Env#setStore
  * @param {String} type type
- * @param {Application/Interface/IStore/IStore} store store
+ * @param {Application/Interface:IStore} store store
  */
 export function setStore(type: string, store: IStore) {
     isAppInit();

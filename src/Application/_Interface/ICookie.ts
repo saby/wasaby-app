@@ -19,7 +19,7 @@ export interface ICookieOptions {
 /**
  * Интерфейс для работы с cookie
  * @interface Application/_Interface/ICookie
- * @extends Application/Interface/IStore/IStore
+ * @extends Application/Interface:IStore
  * @public
  * @author Санников К.А.
  */
