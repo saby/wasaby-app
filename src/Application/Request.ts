@@ -2,6 +2,7 @@
 import { default as Request } from "Application/_Request/Request";
 
 /**
+ * Библиотека c классами для работы с запросами и хранилищем
  * @library Application/Request
  * @includes Request Application/_Request/Request
  * @includes Store Application/_Request/Store

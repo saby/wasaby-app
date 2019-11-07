@@ -1,6 +1,7 @@
 /// <amd-module name="Application/Interface" />
 
 /**
+ * Библиотека интерфейсов
  * @library Application/Interface
  * @includes IConsole Application/_Interface/IConsole
  * @includes ICookie Application/_Interface/ICookie
