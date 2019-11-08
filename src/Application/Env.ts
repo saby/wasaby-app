@@ -21,6 +21,7 @@ import Request from 'Application/Request';
  * @includes location Application/Env/location
  * @includes logger Application/Env/logger
  * @author Санников К.А.
+ * @see {@link query}
  */
 
 /**
@@ -64,8 +65,8 @@ export const query: PARAMS = {
  * Реализация {@link Application/Interface:ILocation} - обобщенного window.location.
  * @class
  * @name Application/Env/location
- * @implements Application/_Interface/ILocation
- * @see Application/_Interface/ILocation
+ * @implements Application/Interface:ILocation
+ * @see Application/Interface:ILocation
  */
 export const location: ILocation = {
     get protocol() {
@@ -105,8 +106,8 @@ export const location: ILocation = {
  * Реализация {@link Application/Interface:ICookie} - интерфейса по работе с cookie
  * @class
  * @name Application/Env/cookie
- * @implements Application/_Interface/ICookie
- * @see Application/_Interface/ICookie
+ * @implements Application/Interface:ICookie
+ * @see Application/Interface:ICookie
  */
 export const cookie: ICookie = {
     get(key) {
@@ -134,8 +135,8 @@ export const cookie: ICookie = {
  * Реализация {@link Application/Interface:IConsole} - логгера
  * @class
  * @name Application/Env/logger
- * @implements Application/_Interface/IConsole
- * @see Application/_Interface/IConsole
+ * @implements Application/Interface:IConsole
+ * @see Application/Interface:IConsole
  */
 export const logger: IConsole = {
     setLogLevel(level: number) {
@@ -171,7 +172,7 @@ export const logger: IConsole = {
  * Метод, возвращающий компонент для восстановления состояний компонентов
  * @function
  * @name Application/Env#getStateReceiver
- * @return Application/_Interface/IStateReceiver
+ * @return {Application/Interface:IStateReceiver}
  */
 export function getStateReceiver(): IStateReceiver {
     isAppInit();
@@ -183,7 +184,7 @@ export function getStateReceiver(): IStateReceiver {
  * @function
  * @name Application/Env#getStore
  * @param {String} type type
- * @return Application/Interface:IStore
+ * @return {Application/Interface:IStore}
  * @see Application/Interface:IStore
  */
 export function getStore(type: string): IStore {
