@@ -21,9 +21,9 @@
    },
    "scripts": {
       "postinstall": "npm run declare || saby-units --install || echo Installed",
-      "build": "tsc -p ./tsconfig.json || npm run declare",
-      "declare": "tsc -p ./tsconfig.declare.json",
-      "pretest": "npm run test:clean > ../_.log && tsc -p ./test/tsconfig.json > ../_.log || node test/server/build.js",
+      "build": "saby-typescript --compiler -p ./tsconfig.json || npm run declare",
+      "declare": "saby-typescript --compiler -p ./tsconfig.declare.json",
+      "pretest": "npm run test:clean > ../_.log && saby-typescript --compiler -p ./test/tsconfig.json > ../_.log || node test/server/build.js",
       "server": "node test/server/build.js && node test/server/run.js",
       "test": "cd ./test/server && mocha mocha-require.js --test=all",
       "test:browser": "npm run pretest && saby-units --browser --report",
