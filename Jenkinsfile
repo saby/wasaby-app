@@ -19,13 +19,13 @@ def workspace = "/home/sbis/workspace/wasaby_app_${version}/${BRANCH_NAME}"
                     url: "${GIT}:sbis-ci/jenkins_pipeline.git"]]
                                     ])
         helper = load "./jenkins_pipeline/platforma/branch/helper"
-        start = load "./jenkins_pipeline/platforma/branch/JenkinsfileWasaby_app"
+        start = load "./jenkins_pipeline/platforma/branch/JenkinsfileWasabyApp"
         run_unit = load "./jenkins_pipeline/platforma/branch/run_unit"
         timeout(time: 60, unit: 'MINUTES') {
 			LocalDateTime start_time = LocalDateTime.now();
 			echo "Время начала сборки: ${start_time}"
 			try {
-				start.start(version, workspace, helper)
+				start.start(version, workspace)
 			} finally {
 				LocalDateTime end_time = LocalDateTime.now();
 				echo "Время конца сборки: ${end_time}"
