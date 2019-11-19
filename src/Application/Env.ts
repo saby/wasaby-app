@@ -62,11 +62,11 @@ export const query: PARAMS = {
 };
 
 /**
- * Реализация {@link Application/Interface:ILocation} - обобщенного window.location.
+ * Реализация {@link Application/_Interface/ILocation} - обобщенного window.location.
  * @class
  * @name Application/Env/location
- * @implements Application/Interface:ILocation
- * @see Application/Interface:ILocation
+ * @implements Application/_Interface/ILocation
+ * @see Application/_Interface/ILocation
  */
 export const location: ILocation = {
     get protocol() {
@@ -103,11 +103,11 @@ export const location: ILocation = {
 }
 
 /**
- * Реализация {@link Application/Interface:ICookie} - интерфейса по работе с cookie
+ * Реализация {@link Application/_Interface/ICookie} - интерфейса по работе с cookie
  * @class
  * @name Application/Env/cookie
- * @implements Application/Interface:ICookie
- * @see Application/Interface:ICookie
+ * @implements Application/_Interface/ICookie
+ * @see Application/_Interface/ICookie
  */
 export const cookie: ICookie = {
     get(key) {
@@ -132,11 +132,11 @@ export const cookie: ICookie = {
 }
 
 /**
- * Реализация {@link Application/Interface:IConsole} - логгера
+ * Реализация {@link Application/_Interface/IConsole} - логгера
  * @class
  * @name Application/Env/logger
- * @implements Application/Interface:IConsole
- * @see Application/Interface:IConsole
+ * @implements Application/_Interface/IConsole
+ * @see Application/_Interface/IConsole
  */
 export const logger: IConsole = {
     setLogLevel(level: number) {
@@ -172,7 +172,7 @@ export const logger: IConsole = {
  * Метод, возвращающий компонент для восстановления состояний компонентов
  * @function
  * @name Application/Env#getStateReceiver
- * @return {Application/Interface:IStateReceiver}
+ * @return {Application/_Interface/IStateReceiver}
  */
 export function getStateReceiver(): IStateReceiver {
     isAppInit();
@@ -184,8 +184,8 @@ export function getStateReceiver(): IStateReceiver {
  * @function
  * @name Application/Env#getStore
  * @param {String} type type
- * @return {Application/Interface:IStore}
- * @see Application/Interface:IStore
+ * @return {Application/_Interface/IStore}
+ * @see Application/_Interface/IStore
  */
 export function getStore(type: string): IStore {
     
@@ -198,7 +198,7 @@ export function getStore(type: string): IStore {
  * @function
  * @name Application/Env#setStore
  * @param {String} type type
- * @param {Application/Interface:IStore} store store
+ * @param {Application/_Interface/IStore} store store
  */
 export function setStore(type: string, store: IStore) {
     isAppInit();
