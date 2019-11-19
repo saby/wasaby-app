@@ -2,10 +2,10 @@
 import { IStore } from "Application/_Interface/IStore";
 
 /**
- * Класс, реализующий интерфейс {@link Application/Interface:IStore},
+ * Класс, реализующий интерфейс {@link Application/_Interface/IStore},
  * предназначенный для работы с localStorage и SessionStorage
  * @class Application/_Request/Store
- * @implements Application/Interface:IStore
+ * @implements Application/_Interface/IStore
  * @author Санников К.А.
  */
 export default class Store implements IStore {

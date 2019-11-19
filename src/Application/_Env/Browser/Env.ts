@@ -14,7 +14,7 @@ import { Store } from 'Application/Request';
  * Класс EnvBrowser
  * @class Application/_Env/Browser/Env
  * @author Ибрагимов А.А.
- * @implements Application/Interface:IEnv
+ * @implements Application/_Interface/IEnv
  * @public
  */
 export default class EnvBrowser implements IEnv {

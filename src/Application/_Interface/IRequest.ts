@@ -38,21 +38,21 @@ export interface IRequest {
      * Доступ к объекту сохранения состояния на сервиспе представлений,
      * для его получения на клиенте. Не привязан к VDOM механизмам,
      * поэтому можно будет его использовать в не визуальных компонентах.
-     * @return {Application/Interface:IStateReceiver}
+     * @return {Application/_Interface/IStateReceiver}
      */
     getStateReceiver(): IStateReceiver;
 
     /**
      * Получение хранилища для сохранений данных в рамках запроса.
      * @param {String} key Тип хранилища.
-     * @return {Application/Interface:IStore} Хранилище
+     * @return {Application/_Interface/IStore} Хранилище
      */
     getStore(key: string): IStore;
 
     /**
      * Установка хранилища
      * @param {String} key Тип хранилища.
-     * @param {Application/Interface:IStore} storage Хранилище.
+     * @param {Application/_Interface/IStore} storage Хранилище.
      */
     setStore(key: string, storage: IStore);
 }

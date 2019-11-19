@@ -9,8 +9,8 @@ const SEPARATOR = '; ';
  * Класс предназначенный для работы с cookie в браузере,
  * @class
  * @name _Request/_Storage/Cookie
- * @implements Application/Interface:ICookie
- * @implements Application/Interface:IStore
+ * @implements Application/_Interface/ICookie
+ * @implements Application/_Interface/IStore
  * @author Заляев А.В
  */
 export default class Cookie implements ICookie, IStore<string> {

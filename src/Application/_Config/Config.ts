@@ -6,7 +6,7 @@ import { HashMap, Native } from 'Application/_Type';
  * Класс Config
  * @class Application/_Config/Config
  * @public
- * @implements Application/Interface:ISerializableState
+ * @implements Application/_Interface/ISerializableState
  * @author Санников К.А.
  */
 export default class Config implements ISerializableState {

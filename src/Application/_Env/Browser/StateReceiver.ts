@@ -19,7 +19,7 @@ export type StateReceiverConfig = {
  * позволяющий сохранять состояние компонентов
  *
  * @class Application/_Env/Browser/StateReceiver
- * @implements Application/Interface:IStateReceiver
+ * @implements Application/_Interface/IStateReceiver
  * @author Заляев А.В
  * @public
  */

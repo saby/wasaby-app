@@ -27,7 +27,7 @@ export interface IStateReceiver {
     /**
      * Регистрация компонентов, состояние которыех необходимо сохранить.
      * @param {String} uid идентификатор инстанса, для идентификации сохраненного для него состояния
-     * @param {Application/Interface:ISerializableState} component сериализируемый компонент
+     * @param {Application/_Interface/ISerializableState} component сериализируемый компонент
      */
     register(uid: string, component: ISerializableState): void;
     
