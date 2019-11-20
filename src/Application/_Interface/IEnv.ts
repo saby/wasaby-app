@@ -21,19 +21,19 @@ export interface IEnv {
 }
 /**
  * @name Application/_Interface/IEnv#console
- * @cfg {Application/Interface:IConsole} console
+ * @cfg {Application/_Interface/IConsole} console
  */
 /**
  * @name Application/_Interface/IEnv#cookie
- * @cfg {Application/Interface:ICookie} cookie
+ * @cfg {Application/_Interface/ICookie} cookie
  */
 /**
  * @name Application/_Interface/IEnv#location
- * @cfg {Application/Interface:ILocation} location
+ * @cfg {Application/_Interface/ILocation} location
  */
 /**
  * @name Application/_Interface/IEnv#storages
- * @cfg {Application/Interface:IStoreMap} storages
+ * @cfg {Application/_Interface/IStoreMap} storages
  */
 /**
  * getGlobal
