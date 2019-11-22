@@ -11,8 +11,9 @@ import { IStore } from 'Application/_Interface/IStore';
 import Request from 'Application/Request';
 
 /**
- * Модуль-библиотека, с классами-реализациями интерфейсов из {@link Application/Interface}
- * Также содержит ряд полезных методов
+ * Модуль-библиотека для работы с окружением.
+ * @remark
+ * Содержит реализации интерфейсов из {@link Application/Interface}.
  * @library Application/Env
  * @includes EnvBrowser Application/_Env/Browser/Env
  * @includes StateReceiver Application/_Env/Browser/StateReceiver
