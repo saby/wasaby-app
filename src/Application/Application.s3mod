@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <ui_module for_cdn="0" id="323fd54f-1fab-42a6-8aea-6726d6392d53" name="Application" package="Платформа" required="1" responsible="Санников К.А." version="1.00">
 
-  <description>
-    Набор утилит, предоставляющих изоморфное API для унифицированного взаимодействия с окружением в браузере и на сервере.
-    Но Env устарел - на его смену приходит Application.
-  </description>
+  <description>Набор утилит, предоставляющих изоморфное API для унифицированного взаимодействия с окружением в браузере и на сервере.</description>
 
   <depends/>
 
