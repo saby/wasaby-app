@@ -35,12 +35,6 @@ export default class StateReceiver implements IStateReceiver {
         this.__states = states;
         this.__console = console;
     }
-    /**
-     * Получение сериализованного состояния всех зарегестрированных компонент
-     * @function
-     * @name Application/_Env/Browser/StateReceiver#serialize
-     * @return {String}
-     */
     serialize(): string {
         let states: StateMap = Object.create(null);
         for (let uid in this.__components) {
@@ -48,13 +42,6 @@ export default class StateReceiver implements IStateReceiver {
         }
         return JSON.stringify(states);
     };
-
-    /**
-     * Метод, устанавливающий состояние всем зарегестрированным компонентам.
-     * @function
-     * @name Application/_Env/Browser/StateReceiver#deserialize
-     * @param {String} data
-     */
     deserialize(data: string): void {
         try {
             this.__states = JSON.parse(data);
@@ -63,14 +50,6 @@ export default class StateReceiver implements IStateReceiver {
             this.__console && this.__console.error(error);
         }
     };
-
-    /**
-     * Регистрация компонентов, состояние которых необходимо сохранить.
-     * @function
-     * @name Application/_Env/Browser/StateReceiver#register
-     * @param {String} uid идентификатор инстанса, для идентификации сохраненного для него состояния
-     * @param {Core/Request/ISerializableState} component Сериализируемый компонент
-     */
     register(uid: string, component: ISerializableState): void {
         if (this.__components[uid]) {
             throw new Error('exist'); // TODO fix error message
@@ -80,10 +59,6 @@ export default class StateReceiver implements IStateReceiver {
             this.__setComponentState(uid);
         }
     };
-    /**
-     * @function
-     * @name Application/_Env/Browser/StateReceiver#unregister
-     */
     unregister(uid: string) {
         delete this.__components[uid];
     }
