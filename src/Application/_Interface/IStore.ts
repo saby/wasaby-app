@@ -4,6 +4,7 @@
  * Описание интерфейса компонента, для работы неким Storage.
  * Необходим для того что бы создавать хранилище на клиенте и на сервисе представления.
  * @interface Application/_Interface/IStore
+ * @public
  * @author Санников К.А.
  * @see Application/Interface/IStore/IStoreMap
  */

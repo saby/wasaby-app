@@ -9,6 +9,7 @@ import { IStoreMap } from 'Application/_Interface/IStore';
 /**
  * Интерфейс IEnv
  * @interface Application/_Interface/IEnv
+ * @public
  * @author Санников К.А.
  * @see Application/Interface/IEnv/IEnvFactory
  */

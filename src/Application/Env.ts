@@ -11,8 +11,9 @@ import { IStore } from 'Application/_Interface/IStore';
 import Request from 'Application/Request';
 
 /**
- * Модуль-библиотека, с классами-реализациями интерфейсов из {@link Application/Interface}
- * Также содержит ряд полезных методов
+ * Модуль-библиотека для работы с окружением.
+ * @remark
+ * Содержит реализации интерфейсов из {@link Application/Interface}.
  * @library Application/Env
  * @includes EnvBrowser Application/_Env/Browser/Env
  * @includes StateReceiver Application/_Env/Browser/StateReceiver
@@ -20,8 +21,8 @@ import Request from 'Application/Request';
  * @includes cookie Application/Env/cookie
  * @includes location Application/Env/location
  * @includes logger Application/Env/logger
+ * @includes query Application/Env/query
  * @author Санников К.А.
- * @see {@link query}
  */
 
 /**
@@ -47,15 +48,22 @@ function isAppInit() {
  *      var hashParams = Env.query.hash  // { name: 'leha', age: '2' }
  *  });
  * </pre>
- * @typedef {Object} query
- * @property {Object} hash Извлеченные HASH параметры
- * @property {Object} get Извлеченные GET параметры
+ * @class
+ * @name Application/Env/query
  * @author Ибрагимов А.А
  */
 export const query: PARAMS = {
+    /**
+     * @cfg {Object} Извлеченные HASH параметры
+     * @name Application/Env/query#hash
+     */
     get hash() {
         return parseQueryHash(location.href);
     },
+    /**
+     * @cfg {Object} Извлеченные GET параметры
+     * @name Application/Env/query#get
+     */
     get get() {
         return parseQueryGet(location.href);
     }
@@ -173,6 +181,7 @@ export const logger: IConsole = {
  * @function
  * @name Application/Env#getStateReceiver
  * @return {Application/_Interface/IStateReceiver}
+ * @see Application/_Interface/IStateReceiver
  */
 export function getStateReceiver(): IStateReceiver {
     isAppInit();
@@ -188,7 +197,6 @@ export function getStateReceiver(): IStateReceiver {
  * @see Application/_Interface/IStore
  */
 export function getStore(type: string): IStore {
-    
     isAppInit();
     return Request.getCurrent().getStore(type);
 }
