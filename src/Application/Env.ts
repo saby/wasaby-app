@@ -20,6 +20,7 @@ import Request from 'Application/Request';
  * @includes cookie Application/Env/cookie
  * @includes location Application/Env/location
  * @includes logger Application/Env/logger
+ * @includes query Application/Env/query
  * @author Санников К.А.
  * @see {@link query}
  */
@@ -47,15 +48,22 @@ function isAppInit() {
  *      var hashParams = Env.query.hash  // { name: 'leha', age: '2' }
  *  });
  * </pre>
- * @typedef {Object} query
- * @property {Object} hash Извлеченные HASH параметры
- * @property {Object} get Извлеченные GET параметры
+ * @class
+ * @name Application/Env/query
  * @author Ибрагимов А.А
  */
 export const query: PARAMS = {
+    /**
+     * @cfg {Object} Извлеченные HASH параметры
+     * @name Application/Env/query#hash
+     */
     get hash() {
         return parseQueryHash(location.href);
     },
+    /**
+     * @cfg {Object} Извлеченные GET параметры
+     * @name Application/Env/query#get
+     */
     get get() {
         return parseQueryGet(location.href);
     }
