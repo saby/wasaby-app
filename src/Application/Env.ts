@@ -23,7 +23,6 @@ import Request from 'Application/Request';
  * @includes logger Application/Env/logger
  * @includes query Application/Env/query
  * @author Санников К.А.
- * @see {@link query}
  */
 
 /**
