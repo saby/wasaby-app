@@ -182,6 +182,7 @@ export const logger: IConsole = {
  * @function
  * @name Application/Env#getStateReceiver
  * @return {Application/_Interface/IStateReceiver}
+ * @see Application/_Interface/IStateReceiver
  */
 export function getStateReceiver(): IStateReceiver {
     isAppInit();
@@ -197,7 +198,6 @@ export function getStateReceiver(): IStateReceiver {
  * @see Application/_Interface/IStore
  */
 export function getStore(type: string): IStore {
-    
     isAppInit();
     return Request.getCurrent().getStore(type);
 }

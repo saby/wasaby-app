@@ -3,6 +3,8 @@
  * Описание обобщенного window.location.
  * Выписаны те поля, которые есть на сервисе представления и в браузере
  * @interface Application/_Interface/ILocation
+ * @public
+ * @author Ибрагимов А.А.
  */
 export interface ILocation {
     protocol: string;
