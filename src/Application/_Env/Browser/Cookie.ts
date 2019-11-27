@@ -11,7 +11,7 @@ const SEPARATOR = '; ';
  * @name _Request/_Storage/Cookie
  * @implements Application/_Interface/ICookie
  * @implements Application/_Interface/IStore
- * @author Заляев А.В
+ * @author Санников К.А.
  */
 export default class Cookie implements ICookie, IStore<string> {
     cosntructor() {
