@@ -20,7 +20,7 @@ export type StateReceiverConfig = {
  *
  * @class Application/_Env/Browser/StateReceiver
  * @implements Application/_Interface/IStateReceiver
- * @author Заляев А.В
+ * @author Санников К.А.
  * @public
  */
 // tslint:disable-next-line
