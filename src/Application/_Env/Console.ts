@@ -3,9 +3,17 @@
 /* eslint-disable no-console */
 import { IConsole } from 'Application/_Interface/IConsole';
 
+/**
+ * Модуль, содержащий тайпдеф {@link LogLevel}
+ * @module
+ * @name Application/_Env/Console
+ * @author Санников К.А.
+ */
+
 const checkConsoleMethod = (console, method: string) => console && (typeof console[method] === 'function');
 
  /**
+  * Уровень логирования
   * @typedef {Object} LogLevel
   * @property {Number} [info=0] info
   * @property {Number} [warning=1] warning
@@ -22,7 +30,7 @@ export enum LogLevel {
  * @class Application/_Env/Console
  * @implements Application/_Interface/IConsole
  * @author Санников К.А.
- * @public
+ * @private
  * @see {@link LogLevel}
  */
 export default class Console implements IConsole {
