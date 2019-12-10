@@ -4,7 +4,7 @@
 import { IConsole } from 'Application/_Interface/IConsole';
 
 /**
- * Модуль, содержащий enum {@link LogLevel}
+ * Модуль, содержащий константы по уровням логирования - {@link LogLevel}
  * @module
  * @name Application/_Env/Console
  * @author Санников К.А.
