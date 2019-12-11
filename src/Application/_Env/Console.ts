@@ -6,6 +6,7 @@ import { IConsole } from 'Application/_Interface/IConsole';
 const checkConsoleMethod = (console, method: string) => console && (typeof console[method] === 'function');
 
  /**
+  * Уровень логирования
   * @typedef {Object} LogLevel
   * @property {Number} [info=0] info
   * @property {Number} [warning=1] warning
@@ -22,7 +23,7 @@ export enum LogLevel {
  * @class Application/_Env/Console
  * @implements Application/_Interface/IConsole
  * @author Санников К.А.
- * @public
+ * @private
  * @see {@link LogLevel}
  */
 export default class Console implements IConsole {
