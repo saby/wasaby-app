@@ -8,7 +8,7 @@
     npm test
 ```
 
-## Contrebution
+## Contribution
 Необходимо перед выкладкой скомпилировать файл типов для TypeScript
 ```bash
     npm run declare
