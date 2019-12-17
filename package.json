@@ -20,7 +20,7 @@
       }
    },
    "scripts": {
-      "postinstall": "npm run declare || saby-units --install || echo Installed",
+      "postinstall": "saby-units --install || echo Installed",
       "build": "saby-typescript --compiler -p ./tsconfig.json || npm run declare",
       "declare": "saby-typescript --compiler -p ./tsconfig.declare.json",
       "pretest": "npm run test:clean > ../_.log && saby-typescript --compiler -p ./test/tsconfig.json > ../_.log || node test/server/build.js",
