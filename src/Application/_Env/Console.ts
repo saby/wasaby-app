@@ -28,7 +28,7 @@ export enum LogLevel {
 
 /**
  * Класс Console
- * @class Application/_Env/Console
+ * @class Application/Env/Console/Console
  * @implements Application/_Interface/IConsole
  * @author Санников К.А.
  * @private
