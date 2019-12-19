@@ -17,7 +17,7 @@ import Request from 'Application/Request';
  * @library Application/Env
  * @includes EnvBrowser Application/_Env/Browser/Env
  * @includes StateReceiver Application/_Env/Browser/StateReceiver
- * @includes LogLevel Application/_Env/Console/LogLevel.typedef
+ * @includes LogLevel Application/Env/Console#LogLevel
  * @includes cookie Application/Env/cookie
  * @includes location Application/Env/location
  * @includes logger Application/Env/logger
