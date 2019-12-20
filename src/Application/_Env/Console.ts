@@ -7,12 +7,14 @@ const checkConsoleMethod = (console, method: string) => console && (typeof conso
 
 /**
  * @module
- * @name Application/_Env/Console
+ * @name Application/Env/Console
  * @author Санников К.А.
+ * @public
  */
 
  /**
   * Уровень логирования
+  * @name Application/Env/Console#LogLevel
   * @typedef {Object} LogLevel
   * @property {Number} [info=0] info
   * @property {Number} [warning=1] warning
@@ -26,7 +28,7 @@ export enum LogLevel {
 
 /**
  * Класс Console
- * @class Application/_Env/Console
+ * @class Application/Env/Console/Console
  * @implements Application/_Interface/IConsole
  * @author Санников К.А.
  * @private
