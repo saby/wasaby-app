@@ -6,6 +6,7 @@ import { IConsole } from 'Application/_Interface/IConsole';
 const checkConsoleMethod = (console, method: string) => console && (typeof console[method] === 'function');
 
 /**
+ * Содержит константы уровня логирования - {@link LogLevel}
  * @module
  * @name Application/_Env/Console
  * @author Санников К.А.
