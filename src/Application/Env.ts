@@ -14,13 +14,13 @@ import Request from 'Application/Request';
  * Модуль-библиотека для работы с окружением.
  * @remark
  * Содержит реализации интерфейсов из {@link Application/Interface}.
- * Также экспортирует typedef {@link LogLevel} из Application/_Env/Console
  * @library Application/Env
  * @includes EnvBrowser Application/_Env/Browser/Env
  * @includes StateReceiver Application/_Env/Browser/StateReceiver
  * @includes cookie Application/Env/cookie
  * @includes location Application/Env/location
  * @includes logger Application/Env/logger
+ * @includes LogLevel Application/Env/Console/LogLevel
  * @includes query Application/Env/query
  * @author Санников К.А.
  */
