@@ -8,26 +8,38 @@ const checkConsoleMethod = (console, method: string) => console && (typeof conso
 /**
  * Содержит константы уровня логирования - {@link LogLevel}
  * @module
- * @name Application/_Env/Console
+ * @name Application/Env/Console
  * @author Санников К.А.
  */
 
- /**
-  * Уровень логирования
-  * @typedef {Object} LogLevel
-  * @property {Number} [info=0] info
-  * @property {Number} [warning=1] warning
-  * @property {Number} [error=2] error
-  */
+/**
+ * [typedef] Уровень логирования
+ * @class
+ * @name Application/Env/Console/LogLevel
+ * @author Санников К.А.
+ * @todo Описать как typedef, когда это будет поддерживать автодока
+ */
 export enum LogLevel {
+    /**
+     * @cfg info
+     * @name Application/Env/Console/LogLevel#info
+     */
     info = 0,
+    /**
+     * @cfg warning
+     * @name Application/Env/Console/LogLevel#warning
+     */
     warning = 1,
+    /**
+     * @cfg error
+     * @name Application/Env/Console/LogLevel#error
+     */
     error = 2
 }
 
 /**
  * Класс Console
- * @class Application/_Env/Console/Console
+ * @class
  * @implements Application/_Interface/IConsole
  * @author Санников К.А.
  * @private
