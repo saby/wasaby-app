@@ -9,7 +9,8 @@
    "files": [
       "src/*",
       "tsconfig.base.json",
-      "tsconfig.declare.json"
+      "tsconfig.declare.json",
+      "types.d.ts"
    ],
    "types": "types.d.ts",
    "typesVersions": {
