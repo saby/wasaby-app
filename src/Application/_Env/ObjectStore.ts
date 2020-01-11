@@ -1,14 +1,14 @@
 /// <amd-module name="Application/_Env/ObjectStore" />
 import { IStore } from 'Application/_Interface/IStore';
 
-export default class ObjectStore implements IStore {
+export default class ObjectStore<T> implements IStore<T> {
     private __data = {};
 
-    get(key: string) {
+    get(key) {
         return this.__data[key];
     }
 
-    set(key: string, value: string) {
+    set(key: string, value: T) {
         this.__data[key] = value;
         return true;
     }

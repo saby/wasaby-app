@@ -1,5 +1,6 @@
 /// <amd-module name="Application/Env" />
 export { default as EnvBrowser } from 'Application/_Env/Browser/Env';
+export { default as ObjectStore } from 'Application/_Env/ObjectStore';
 import { parseQueryHash, parseQueryGet, PARAMS } from 'Application/_Env/QueryParams';
 export { default as StateReceiver } from 'Application/_Env/Browser/StateReceiver';
 export { LogLevel } from 'Application/_Env/Console';
@@ -196,9 +197,9 @@ export function getStateReceiver(): IStateReceiver {
  * @return {Application/_Interface/IStore}
  * @see Application/_Interface/IStore
  */
-export function getStore(type: string): IStore {
+export function getStore<T>(type: string): IStore<T> {
     isAppInit();
-    return Request.getCurrent().getStore(type);
+    return Request.getCurrent().getStore<T>(type);
 }
 
 /**
@@ -208,7 +209,7 @@ export function getStore(type: string): IStore {
  * @param {String} type type
  * @param {Application/_Interface/IStore} store store
  */
-export function setStore(type: string, store: IStore) {
+export function setStore<T>(type: string, store: IStore<T>) {
     isAppInit();
-    return Request.getCurrent().setStore(type, store);
+    return Request.getCurrent().setStore<T>(type, store);
 }

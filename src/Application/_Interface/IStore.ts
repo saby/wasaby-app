@@ -8,13 +8,13 @@
  * @author Санников К.А.
  * @see Application/Interface/IStore/IStoreMap
  */
-export interface IStore < T = string >  {
-    get(key: string): T | null;
-    set(key: string, value: T): boolean;
-    remove(key: string): void;
-    getKeys(): string[];
-    toObject(): {[key: string]: string};
-}
+export interface IStore<T = string, Data = Record<string, T>> {
+    get: <K extends keyof Data>(key: K) => Data[K] | never;
+    set: <K extends keyof Data>(key: K, value: Data[K]) => boolean;
+    remove(key: keyof Data): void;
+    getKeys(): (keyof Data)[];
+    toObject(): { [key in keyof Data]: T };
+};
 /**
  * Получить значение поля по ключу
  * @function
@@ -59,5 +59,5 @@ export interface IStore < T = string >  {
  * @name Application/Interface/IStore/IStoreMap
  */
 export interface IStoreMap {
-    [propName: string]: IStore;
+    [propName: string]: IStore<any>;
 }

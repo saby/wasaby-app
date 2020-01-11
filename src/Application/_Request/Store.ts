@@ -8,9 +8,9 @@ import { IStore } from "Application/_Interface/IStore";
  * @implements Application/_Interface/IStore
  * @author Санников К.А.
  */
-export default class Store implements IStore {
+export default class Store implements IStore<string> {
     private __storage: Storage;
-    constructor(storageType: Storage) {
+    constructor (storageType: Storage) {
         this.__storage = storageType;
     }
     get(key: string) {
@@ -40,16 +40,16 @@ export default class Store implements IStore {
         try {
             return Object.keys(this.__storage);
         } catch (err) {
-            return []
+            return [];
         }
     }
     toObject() {
         try {
             return {
                 ...this.__storage
-            }
+            };
         } catch (err) {
-            return {}
+            return {};
         }
     }
 }
