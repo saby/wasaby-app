@@ -12,14 +12,14 @@ const SEPARATOR = '; ';
  * @implements Application/_Interface/IStore
  * @author Санников К.А.
  */
-export default class Cookie<T extends Record<string, string> = Record<string, string>> implements ICookie {
+export default class Cookie implements ICookie {
     cosntructor() {
         if (!document || !document.cookie) {
             throw new Error('document.cookie not found');
         }
     }
 
-    get<K extends keyof T & string>(key: K) {
+    get(key: string) {
         const cookies = document.cookie.split(SEPARATOR);
         let value = null;
         let item;
@@ -33,7 +33,7 @@ export default class Cookie<T extends Record<string, string> = Record<string, st
         return value;
     }
 
-    set<K extends keyof T & string>(key: K, value: T[K], options?: Partial<ICookieOptions>): boolean {
+    set(key: string, value: string, options?: Partial<ICookieOptions>): boolean {
         let expires = '';
         options = options || {};
         if (value === null) {
@@ -64,12 +64,12 @@ export default class Cookie<T extends Record<string, string> = Record<string, st
         return true;
     }
 
-    remove<K extends keyof T & string>(key: K) {
+    remove(key: string) {
         this.set(key, null);
     }
 
     getKeys() {
-        return <(keyof T & string)[]>document.cookie.split(SEPARATOR).map(function (cookie) {
+        return document.cookie.split(SEPARATOR).map(function (cookie) {
             return cookie.replace(NAME_REPLACE_REGEXP, '');
         });
     }

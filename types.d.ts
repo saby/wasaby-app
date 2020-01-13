@@ -148,7 +148,7 @@ declare module "Application/_Interface/ICookie" {
          * @param {String} key
          * @throws {Error} ошибка очистки значения
          */
-        remove<K extends keyof T & string>(key: K): void;
+        remove(key: string): void;
     }
 }
 /// <amd-module name="Application/Type" />
@@ -574,12 +574,12 @@ declare module "Application/_Env/Browser/Cookie" {
      * @implements Application/_Interface/IStore
      * @author Санников К.А.
      */
-    export default class Cookie<T extends Record<string, string> = Record<string, string>> implements ICookie {
+    export default class Cookie implements ICookie {
         cosntructor(): void;
-        get<K extends keyof T & string>(key: K): any;
-        set<K extends keyof T & string>(key: K, value: T[K], options?: Partial<ICookieOptions>): boolean;
-        remove<K extends keyof T & string>(key: K): void;
-        getKeys(): (keyof T & string)[];
+        get(key: string): any;
+        set(key: string, value: string, options?: Partial<ICookieOptions>): boolean;
+        remove(key: string): void;
+        getKeys(): string[];
         toObject(): {};
     }
 }
