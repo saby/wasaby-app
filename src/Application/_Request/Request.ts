@@ -12,9 +12,9 @@ import Store from 'Application/_Request/Store';
 import { Config } from "Application/Config";
 
 let globalEnv = { appRequest: undefined };
-let getGlobal: () => { appRequest: IRequest|undefined } = () => {
+let getGlobal: () => { appRequest: IRequest | undefined; } = () => {
     return globalEnv;
-}
+};
 
 /**
  * Класс Request
@@ -56,7 +56,7 @@ export default class AppRequest implements IRequest {
     private __stateReceiver: IStateReceiver;
     private readonly __storages: IStoreMap;
 
-    constructor(env: IEnv, config: Config) {
+    constructor (env: IEnv, config: Config) {
         let {
             console,
             cookie,
@@ -82,7 +82,7 @@ export default class AppRequest implements IRequest {
     /**
      * Получить хранилище
      */
-    getStore(key: string): IStore {
+    getStore<T>(key: string): IStore<T> {
         if (!this.__storages[key]) {
             this.__storages[key] = new Store(new FakeWebStorage());
         }
@@ -91,7 +91,7 @@ export default class AppRequest implements IRequest {
     /**
      * Задать хранилище
      */
-    setStore(key: string, storage: IStore) {
+    setStore<T>(key: string, storage: IStore<T>) {
         // if (this.__storages[key]) {
         //     throw new Error(`attempt to overwrite used storage "${key}"`);
         // }

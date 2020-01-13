@@ -1,24 +1,24 @@
 /// <amd-module name="Application/_Env/ObjectStore" />
 import { IStore } from 'Application/_Interface/IStore';
 
-export default class ObjectStore implements IStore {
-    private __data = {};
+export default class ObjectStore<T = Record<string, string>> implements IStore<T> {
+    private __data: { [key in keyof T]: T[key] } = Object.create(null);
 
-    get(key: string) {
+    get<K extends keyof T & string>(key: K) {
         return this.__data[key];
     }
 
-    set(key: string, value: string) {
+    set<K extends keyof T & string>(key: K, value: T[K]) {
         this.__data[key] = value;
         return true;
     }
 
-    remove(key: string) {
+    remove<K extends keyof T & string>(key: K) {
         delete this.__data[key];
     }
 
     getKeys() {
-        return Object.keys(this.__data);
+        return <(keyof T & string)[]> Object.keys(this.__data);
     }
 
     toObject() {

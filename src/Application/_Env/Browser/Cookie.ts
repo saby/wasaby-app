@@ -1,6 +1,5 @@
 /// <amd-module name="Application/_Env/Browser/Cookie" />
 import { ICookie, ICookieOptions } from "Application/_Interface/ICookie";
-import { IStore } from 'Application/_Interface/IStore';
 const MS_IN_DAY = 24 * 60 * 60 * 1000;
 const NAME_REPLACE_REGEXP = /=.*/;
 /** Разделитель между куками в documents.cookie */
@@ -13,14 +12,14 @@ const SEPARATOR = '; ';
  * @implements Application/_Interface/IStore
  * @author Санников К.А.
  */
-export default class Cookie implements ICookie, IStore<string> {
+export default class Cookie<T extends Record<string, string> = Record<string, string>> implements ICookie {
     cosntructor() {
         if (!document || !document.cookie) {
             throw new Error('document.cookie not found');
         }
     }
 
-    get(key: string) {
+    get<K extends keyof T & string>(key: K) {
         const cookies = document.cookie.split(SEPARATOR);
         let value = null;
         let item;
@@ -34,11 +33,10 @@ export default class Cookie implements ICookie, IStore<string> {
         return value;
     }
 
-    set(key: string, value: string, options?: Partial<ICookieOptions>): boolean {
+    set<K extends keyof T & string>(key: K, value: T[K], options?: Partial<ICookieOptions>): boolean {
         let expires = '';
         options = options || {};
         if (value === null) {
-            value = '';
             options.expires = -1;
         }
         if (options.expires) {
@@ -59,19 +57,19 @@ export default class Cookie implements ICookie, IStore<string> {
         let domain = options.domain ? `${SEPARATOR}domain=${options.domain}` : '';
         let secure = options.secure ? `${SEPARATOR}secure` : '';
         try {
-            document.cookie = [key, '=', encodeURIComponent(value), expires, path, domain, secure].join('');
+            document.cookie = [key, '=', encodeURIComponent(Object.is(value, null) ? '' : value), expires, path, domain, secure].join('');
         } catch (e) {
             return false;
         }
         return true;
     }
 
-    remove(key: string) {
+    remove<K extends keyof T & string>(key: K) {
         this.set(key, null);
     }
 
     getKeys() {
-        return document.cookie.split(SEPARATOR).map(function (cookie) {
+        return <(keyof T & string)[]>document.cookie.split(SEPARATOR).map(function (cookie) {
             return cookie.replace(NAME_REPLACE_REGEXP, '');
         });
     }
@@ -80,7 +78,7 @@ export default class Cookie implements ICookie, IStore<string> {
         const result = {};
         document.cookie.split(SEPARATOR).forEach(function (item) {
             const _a = item.split('=');
-            const key = _a[0]
+            const key = _a[0];
             const value = _a[1];
             result[key] = decodeURIComponent(value);
         });
