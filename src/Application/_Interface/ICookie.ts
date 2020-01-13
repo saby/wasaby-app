@@ -42,5 +42,5 @@ export interface ICookie<T extends Record<string, string> = Record<string, strin
      * @param {String} key
      * @throws {Error} ошибка очистки значения
      */
-    remove<K extends keyof T & string>(key: K):void;
+    remove(key: string): void;
 }
