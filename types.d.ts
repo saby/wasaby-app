@@ -440,7 +440,7 @@ declare module "Application/_Request/Store" {
      * @implements Application/_Interface/IStore
      * @author Санников К.А.
      */
-    export default class Store implements IStore<Record<string, any>> {
+    export default class Store implements IStore {
         private __storage;
         constructor(storageType: Storage);
         get(key: string): string;
