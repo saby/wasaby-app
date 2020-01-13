@@ -440,14 +440,14 @@ declare module "Application/_Request/Store" {
      * @implements Application/_Interface/IStore
      * @author Санников К.А.
      */
-    export default class Store<T = Record<string, string>> implements IStore<T> {
+    export default class Store implements IStore<Record<string, any>> {
         private __storage;
         constructor(storageType: Storage);
-        get<K extends keyof T & string>(key: K): T[K];
-        set<K extends keyof T & string>(key: K, data: T[K]): boolean;
-        remove<K extends keyof T & string>(key: K): void;
-        getKeys(): (keyof T & string)[];
-        toObject(): { [key in keyof T]: T[key]; };
+        get(key: string): string;
+        set(key: string, data: string): boolean;
+        remove(key: string): void;
+        getKeys(): string[];
+        toObject(): {};
     }
 }
 /// <amd-module name="Application/_Request/Request" />
@@ -860,7 +860,6 @@ declare module "Application/_Env/Browser/StateReceiver" {
 /// <amd-module name="Application/Env" />
 declare module "Application/Env" {
     export { default as EnvBrowser } from "Application/_Env/Browser/Env";
-    export { default as ObjectStore } from "Application/_Env/ObjectStore";
     import { PARAMS } from "Application/_Env/QueryParams";
     export { default as StateReceiver } from "Application/_Env/Browser/StateReceiver";
     export { LogLevel } from "Application/_Env/Console";
