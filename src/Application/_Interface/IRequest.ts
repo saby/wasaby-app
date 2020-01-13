@@ -47,12 +47,12 @@ export interface IRequest {
      * @param {String} key Тип хранилища.
      * @return {Application/_Interface/IStore} Хранилище
      */
-    getStore<T>(key: string): IStore<T>;
+    getStore<T = Record<string, string>>(key: string): IStore<T>;
 
     /**
      * Установка хранилища
      * @param {String} key Тип хранилища.
      * @param {Application/_Interface/IStore} storage Хранилище.
      */
-    setStore<T>(key: string, storage: IStore<T>);
+    setStore<T = Record<string, string>>(key: string, storage: IStore<T>): void;
 }

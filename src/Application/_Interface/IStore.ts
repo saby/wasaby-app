@@ -8,12 +8,12 @@
  * @author Санников К.А.
  * @see Application/Interface/IStore/IStoreMap
  */
-export interface IStore<T = string, Data = Record<string, T>> {
-    get: <K extends keyof Data>(key: K) => Data[K] | never;
-    set: <K extends keyof Data>(key: K, value: Data[K]) => boolean;
-    remove(key: keyof Data): void;
-    getKeys(): (keyof Data)[];
-    toObject(): { [key in keyof Data]: T };
+export interface IStore<T = Record<string, string>> {
+    get: <K extends keyof T & string>(key: K) => T[K] | never;
+    set: <K extends keyof T & string>(key: K, value: T[K]) => boolean;
+    remove(key: keyof T): void;
+    getKeys(): (keyof T & string)[];
+    toObject(): { [key in keyof T]: T[key] };
 };
 /**
  * Получить значение поля по ключу

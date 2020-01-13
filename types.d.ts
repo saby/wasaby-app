@@ -50,13 +50,13 @@ declare module "Application/_Interface/IStore" {
      * @author Санников К.А.
      * @see Application/Interface/IStore/IStoreMap
      */
-    export interface IStore<T = string, Data = Record<string, T>> {
-        get: <K extends keyof Data>(key: K) => Data[K] | never;
-        set: <K extends keyof Data>(key: K, value: Data[K]) => boolean;
-        remove(key: keyof Data): void;
-        getKeys(): (keyof Data)[];
+    export interface IStore<T = Record<string, string>> {
+        get: <K extends keyof T & string>(key: K) => T[K] | never;
+        set: <K extends keyof T & string>(key: K, value: T[K]) => boolean;
+        remove(key: keyof T): void;
+        getKeys(): (keyof T & string)[];
         toObject(): {
-            [key in keyof Data]: T;
+            [key in keyof T]: T[key];
         };
     }
     /**
@@ -351,13 +351,13 @@ declare module "Application/_Interface/IRequest" {
          * @param {String} key Тип хранилища.
          * @return {Application/_Interface/IStore} Хранилище
          */
-        getStore<T>(key: string): IStore<T>;
+        getStore<T = Record<string, string>>(key: string): IStore<T>;
         /**
          * Установка хранилища
          * @param {String} key Тип хранилища.
          * @param {Application/_Interface/IStore} storage Хранилище.
          */
-        setStore<T>(key: string, storage: IStore<T>): any;
+        setStore<T = Record<string, string>>(key: string, storage: IStore<T>): void;
     }
 }
 /// <amd-module name="Application/_Interface/IEnv" />
@@ -440,14 +440,14 @@ declare module "Application/_Request/Store" {
      * @implements Application/_Interface/IStore
      * @author Санников К.А.
      */
-    export default class Store implements IStore<string> {
+    export default class Store<T = Record<string, string>> implements IStore<T> {
         private __storage;
         constructor(storageType: Storage);
-        get(key: string): string;
-        set(key: string, data: string): boolean;
-        remove(key: string): void;
-        getKeys(): string[];
-        toObject(): {};
+        get<K extends keyof T & string>(key: K): T[K];
+        set<K extends keyof T & string>(key: K, data: T[K]): boolean;
+        remove<K extends keyof T & string>(key: K): void;
+        getKeys(): (keyof T & string)[];
+        toObject(): { [key in keyof T]: T[key]; };
     }
 }
 /// <amd-module name="Application/_Request/Request" />
@@ -575,7 +575,7 @@ declare module "Application/_Env/Browser/Cookie" {
      * @implements Application/_Interface/IStore
      * @author Санников К.А.
      */
-    export default class Cookie implements ICookie, IStore<string> {
+    export default class Cookie implements ICookie, IStore {
         cosntructor(): void;
         get(key: string): any;
         set(key: string, value: string, options?: Partial<ICookieOptions>): boolean;
@@ -649,13 +649,13 @@ declare module "Application/_Env/Console" {
 /// <amd-module name="Application/_Env/ObjectStore" />
 declare module "Application/_Env/ObjectStore" {
     import { IStore } from "Application/_Interface/IStore";
-    export default class ObjectStore<T> implements IStore<T> {
+    export default class ObjectStore<T = Record<string, string>> implements IStore<T> {
         private __data;
-        get(key: any): any;
-        set(key: string, value: T): boolean;
-        remove(key: string): void;
-        getKeys(): string[];
-        toObject(): {};
+        get<K extends keyof T & string>(key: K): T[K];
+        set<K extends keyof T & string>(key: K, value: T[K]): boolean;
+        remove<K extends keyof T & string>(key: K): void;
+        getKeys(): (keyof T & string)[];
+        toObject(): T;
     }
 }
 /// <amd-module name="Application/_Env/Browser/Env" />
@@ -923,7 +923,7 @@ declare module "Application/Env" {
      * @return {Application/_Interface/IStore}
      * @see Application/_Interface/IStore
      */
-    export function getStore<T>(type: string): IStore<T>;
+    export function getStore<T = Record<string, string>>(type: string): IStore<T>;
     /**
      * Метод, задающий текущее хранилище
      * @function
@@ -931,7 +931,7 @@ declare module "Application/Env" {
      * @param {String} type type
      * @param {Application/_Interface/IStore} store store
      */
-    export function setStore<T>(type: string, store: IStore<T>): any;
+    export function setStore<T = Record<string, string>>(type: string, store: IStore<T>): void;
 }
 /// <amd-module name="Application/Initializer" />
 declare module "Application/Initializer" {

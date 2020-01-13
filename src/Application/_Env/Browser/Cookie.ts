@@ -13,7 +13,7 @@ const SEPARATOR = '; ';
  * @implements Application/_Interface/IStore
  * @author Санников К.А.
  */
-export default class Cookie implements ICookie, IStore<string> {
+export default class Cookie implements ICookie, IStore {
     cosntructor() {
         if (!document || !document.cookie) {
             throw new Error('document.cookie not found');
