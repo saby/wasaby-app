@@ -8,7 +8,7 @@ import { IStore } from "Application/_Interface/IStore";
  * @implements Application/_Interface/IStore
  * @author Санников К.А.
  */
-export default class Store implements IStore<Record<string, any>> {
+export default class Store implements IStore {
     private __storage: Storage;
     constructor (storageType: Storage) {
         this.__storage = storageType;
@@ -22,7 +22,7 @@ export default class Store implements IStore<Record<string, any>> {
     }
     set(key: string, data: string) {
         try {
-            this.__storage.setItem(key, data.toString());
+            this.__storage.setItem(key, data);
             return true;
         } catch (err) {
             // ignore
