@@ -197,7 +197,7 @@ export function getStateReceiver(): IStateReceiver {
  * @return {Application/_Interface/IStore}
  * @see Application/_Interface/IStore
  */
-export function getStore<T>(type: string): IStore<T> {
+export function getStore<T = string>(type: string): IStore<T> {
     isAppInit();
     return Request.getCurrent().getStore<T>(type);
 }
@@ -209,7 +209,7 @@ export function getStore<T>(type: string): IStore<T> {
  * @param {String} type type
  * @param {Application/_Interface/IStore} store store
  */
-export function setStore<T>(type: string, store: IStore<T>) {
+export function setStore<T = string>(type: string, store: IStore<T>) {
     isAppInit();
     return Request.getCurrent().setStore<T>(type, store);
 }
