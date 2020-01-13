@@ -2,7 +2,7 @@
 import { IStore } from 'Application/_Interface/IStore';
 
 export default class ObjectStore<T = Record<string, string>> implements IStore<T> {
-    private __data: T;
+    private __data: { [key in keyof T]: T[key] } = Object.create(null);
 
     get<K extends keyof T & string>(key: K) {
         return this.__data[key];
