@@ -8,19 +8,19 @@ import { IStore } from "Application/_Interface/IStore";
  * @implements Application/_Interface/IStore
  * @author Санников К.А.
  */
-export default class Store<T = Record<string, string>> implements IStore<T> {
+export default class Store implements IStore<Record<string, any>> {
     private __storage: Storage;
     constructor (storageType: Storage) {
         this.__storage = storageType;
     }
-    get<K extends keyof T & string>(key: K): T[K] {
+    get(key: string) {
         try {
-            return (<T[K]> <unknown> this.__storage.getItem(key));
+            return this.__storage.getItem(key);
         } catch (err) {
             // ignore
         }
     }
-    set<K extends keyof T & string>(key: K, data: T[K]) {
+    set(key: string, data: string) {
         try {
             this.__storage.setItem(key, data.toString());
             return true;
@@ -29,7 +29,7 @@ export default class Store<T = Record<string, string>> implements IStore<T> {
             return false;
         }
     }
-    remove<K extends keyof T & string>(key: K) {
+    remove(key: string) {
         try {
             this.__storage.removeItem(key);
         } catch (err) {
@@ -38,16 +38,16 @@ export default class Store<T = Record<string, string>> implements IStore<T> {
     }
     getKeys() {
         try {
-            return <(keyof T & string)[]> Object.keys(this.__storage);
+            return Object.keys(this.__storage);
         } catch (err) {
             return [];
         }
     }
     toObject() {
         try {
-            return <{ [key in keyof T]: T[key] }> <unknown> { ...this.__storage };
+            return { ...this.__storage };
         } catch (err) {
-            return <{ [key in keyof T]: T[key] }> {};
+            return {};
         }
     }
 }
