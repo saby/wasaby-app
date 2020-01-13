@@ -10,10 +10,10 @@ import { IStore } from 'Application/_Interface/IStore';
  * @property {String} secure secure
  */
 export interface ICookieOptions {
-    domain: string
-    expires: number | Date
-    path: string
-    secure: string
+    domain: string;
+    expires: number | Date;
+    path: string;
+    secure: string;
 }
 
 /**
@@ -23,12 +23,12 @@ export interface ICookieOptions {
  * @public
  * @author Санников К.А.
  */
-export interface ICookie extends IStore {
+export interface ICookie<T extends Record<string, string> = Record<string, string>> extends IStore {
     /**
      * Получение значение из cookie
      * @param {String}
      */
-    get(key: string): string
+    get<K extends keyof T & string>(key: K): T[K];
     /**
      * Устанавливаем cookie
      * @param {String} key
@@ -36,11 +36,11 @@ export interface ICookie extends IStore {
      * @param {Partial<ICookieOptions>} options
      * @throws {Error} ошибка установки значения
      */
-    set(key: string, value: string, options ?: Partial<ICookieOptions>): boolean
+    set<K extends keyof T & string>(key: K, value: T[K], options?: Partial<ICookieOptions>): boolean;
     /**
      * Удаляем cookie
      * @param {String} key
      * @throws {Error} ошибка очистки значения
      */
-    remove(key: string): void;
+    remove<K extends keyof T & string>(key: K):void;
 }
