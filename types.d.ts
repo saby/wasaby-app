@@ -3,15 +3,40 @@ declare module "Application/_Interface/IConsole" {
     /**
      * Интерфейс для логгера. Для того что бы избавиться от IoC('ILogger').
      * IoC вызывает у нас много непонятных проблем с цикличной зависимостью.
-     * @interface
-     * @name Application/_Interface/IConsole
+     * @interface Application/_Interface/IConsole
+     * @public
+     * @author Санников К.А.
      */
     export interface IConsole {
+        /**
+         * Задать уровень логирования
+         * @param {Number} loglevel
+         */
         setLogLevel(logLevel: number): void;
+        /**
+         * Получить уровень логирования
+         * @return {Number} loglevel
+         */
         getLogLevel(): number;
+        /**
+         * Вывести в консоль информацию
+         * @param {*} args
+         */
         info(...args: any): void;
+        /**
+         * Вывести в консоль данные
+         * @param {*} args
+         */
         log(...args: any): void;
+        /**
+         * Вывести в консоль предупреждение
+         * @param {*} args
+         */
         warn(...args: any): void;
+        /**
+         * Вывести в консоль ошибку
+         * @param {*} args
+         */
         error(...args: any): void;
     }
 }
@@ -20,48 +45,107 @@ declare module "Application/_Interface/IStore" {
     /**
      * Описание интерфейса компонента, для работы неким Storage.
      * Необходим для того что бы создавать хранилище на клиенте и на сервисе представления.
-     * @interface
-     * @name Application/_Interface/IStorage
+     * @interface Application/_Interface/IStore
+     * @public
+     * @author Санников К.А.
+     * @see Application/Interface/IStore/IStoreMap
      */
-    export interface IStore<T = string> {
-        get(key: string): T | null;
-        set(key: string, value: T): boolean;
-        remove(key: string): void;
-        getKeys(): string[];
+    export interface IStore<T = Record<string, string>> {
+        get: <K extends keyof T & string>(key: K) => T[K] | never;
+        set: <K extends keyof T & string>(key: K, value: T[K]) => boolean;
+        remove(key: keyof T): void;
+        getKeys(): (keyof T & string)[];
         toObject(): {
-            [key: string]: string;
+            [key in keyof T]: T[key];
         };
     }
+    /**
+     * Получить значение поля по ключу
+     * @function
+     * @name  Application/_Interface/IStore#get
+     * @param {String} key Ключ
+     * @return {<[T=string]>|null}
+     */
+    /**
+     * Задать значение полю по ключу
+     * @function
+     * @name  Application/_Interface/IStore#set
+     * @param {String} key Ключ
+     * @return {Boolean} Успех операции
+     */
+    /**
+     * Удалить поле по ключу
+     * @function
+     * @name  Application/_Interface/IStore#remove
+     * @param {String} key Ключ
+     */
+    /**
+     * Получить все ключи
+     * @function
+     * @name  Application/_Interface/IStore#getKeys
+     * @return {String[]}
+     */
+    /**
+     * Преобразовать в объект
+     * @function
+     * @name  Application/_Interface/IStore#toObject
+     * @return {[key: string]: string}
+     */
+    /**
+     * Функциональный интерфейс IStoreMap
+     * @remark
+     * Описывает функцию, возвращающую хранилище по имени:
+     * <pre>
+     * [propName: string]: IStore;
+     * </pre>
+     * @interface
+     * @name Application/Interface/IStore/IStoreMap
+     */
     export interface IStoreMap {
-        [propName: string]: IStore;
+        [propName: string]: IStore<any>;
     }
 }
 /// <amd-module name="Application/_Interface/ICookie" />
 declare module "Application/_Interface/ICookie" {
     import { IStore } from "Application/_Interface/IStore";
+    /**
+     * Набор опций для cookie
+     * @typedef {Object} ICookieOptions
+     * @property {String} domain domain
+     * @property {Number|Date} expires expires
+     * @property {String} path path
+     * @property {String} secure secure
+     */
     export interface ICookieOptions {
         domain: string;
         expires: number | Date;
         path: string;
         secure: string;
     }
+    /**
+     * Интерфейс для работы с cookie
+     * @interface Application/_Interface/ICookie
+     * @extends Application/_Interface/IStore
+     * @public
+     * @author Санников К.А.
+     */
     export interface ICookie extends IStore {
         /**
          * Получение значение из cookie
-         * @param key {string}
+         * @param {String}
          */
         get(key: string): string;
         /**
          * Устанавливаем cookie
-         * @param key {string}
-         * @param value {string}
-         * @param options {Partial<ICookieOptions>}
+         * @param {String} key
+         * @param {String} value
+         * @param {Partial<ICookieOptions>} options
          * @throws {Error} ошибка установки значения
          */
         set(key: string, value: string, options?: Partial<ICookieOptions>): boolean;
         /**
          * Удаляем cookie
-         * @param key {string}
+         * @param {String} key
          * @throws {Error} ошибка очистки значения
          */
         remove(key: string): void;
@@ -80,8 +164,9 @@ declare module "Application/_Interface/ISerializableState" {
     /**
      * Интерфейс, который нужно поддержать компонентам, что бы их можно было сериализовать
      * и восстановливать их состояние в любой момент
-     * @name Core/Request/ISerializableState
-     * @interface
+     * @interface Application/_Interface/ISerializableState
+     * @public
+     * @author Санников К.А.
      * @example
      * <pre>
      * const DEFAULT_STATE = {
@@ -114,16 +199,10 @@ declare module "Application/_Interface/ISerializableState" {
     export interface ISerializableState {
         /**
          * Получаем состояние для сериализации
-         * @return {HashMap<string>}
-         * @name Core/Request/ISerializableState#getState
-         * @method
          */
         getState(): HashMap<Native>;
         /**
-         * Устанавливаем состоиня после десериализации
-         * @param {HashMap<string>} data
-         * @name Core/Request/ISerializableState#setState
-         * @method
+         * Устанавливаем состояния после десериализации
          */
         setState(data: HashMap<Native>): void;
     }
@@ -132,13 +211,37 @@ declare module "Application/_Interface/ISerializableState" {
 declare module "Application/_Config/Config" {
     import { ISerializableState } from "Application/_Interface/ISerializableState";
     import { HashMap, Native } from "Application/Type";
+    /**
+     * Класс Config
+     * @class Application/_Config/Config
+     * @public
+     * @implements Application/_Interface/ISerializableState
+     * @author Санников К.А.
+     */
     export default class Config implements ISerializableState {
         private data;
         private __uid;
         constructor(data?: HashMap<Native>, __uid?: string);
+        /**
+         * Получить данные по ключу
+         * @param {String} key
+         * @return {Native}
+         */
         get(key: string): Native;
+        /**
+         * Получить состояние
+         * @return {HashMap<Native>}
+         */
         getState(): HashMap<Native>;
+        /**
+         * Задать состояние
+         * @param {HashMap<Native>} data
+         */
         setState(data: HashMap<Native>): void;
+        /**
+         * Получить UID
+         * @return {String}
+         */
         getUID(): string;
     }
 }
@@ -147,8 +250,9 @@ declare module "Application/_Interface/ILocation" {
     /**
      * Описание обобщенного window.location.
      * Выписаны те поля, которые есть на сервисе представления и в браузере
-     * @interface
-     * @name Core/Request/ILocation
+     * @interface Application/_Interface/ILocation
+     * @public
+     * @author Ибрагимов А.А.
      */
     export interface ILocation {
         protocol: string;
@@ -165,32 +269,38 @@ declare module "Application/_Interface/ILocation" {
 declare module "Application/_Interface/IStateReceiver" {
     import { ISerializableState } from "Application/_Interface/ISerializableState";
     /**
-     * Инетрфейс компонента для восстановления состояний компонентов.
+     * Интерфейс компонента для восстановления состояний компонентов.
      * Необходим для получения данных состояний компонентов созданных на сервер.
-     * @interface
-     * @name Application/_Interface/IStateReceiver
+     * @interface Application/_Interface/IStateReceiver
+     * @public
+     * @author Санников К.А.
      */
     export interface IStateReceiver {
         /**
-         * Получеие сериализованного состояния всех зарегестрированных компонент
-         * Используется для сохранения состояния страницы при построении на сервере
-         * @return {any}
+         * Получить сериализованное состояние всех зарегестрированных компонентов.
+         * Используется для сохранения состояния страницы при построении на сервере.
+         * @remark
          * TODO сделал возвращаемый тип any, потому что UI/_base/StateReceiver возвращает ISerializedType.
-         *  Нужно будет переделывать.
+         * Нужно будет переделывать.
+         * @return {any}
          */
         serialize(): any;
         /**
-         * Метод, устанавливающий состояние всем зарегестрированным компонентам.
-         * Используется при оживлении страницы после серверной вёрстки
-         * @param {String} data
+         * Установить состояние всем зарегестрированным компонентам.
+         * Используется при оживлении страницы после серверной вёрстки.
+         * @param {String} data Данные
          */
         deserialize(data: string): void;
         /**
-         * Регистрация компонентов, состояние которыех необходимо сохранить.
-         * @param {String} uid идентификатор инстанса, для идентификации сохраненного для него состояния
-         * @param {Application/_Interface/ISerializableState} component сериализируемый компонент
+         * Зарегистрировать компоненты, состояние которых необходимо сохранить.
+         * @param {String} uid Идентификатор инстанса, для идентификации сохраненного для него состояния.
+         * @param {Application/_Interface/ISerializableState} component Сериализируемый компонент.
          */
         register(uid: string, component: ISerializableState): void;
+        /**
+         * Отменить регистрацию по идентификатору инстанса.
+         * @param {String} uid Идентификатор инстанса.
+         */
         unregister(uid: string): void;
     }
 }
@@ -203,30 +313,51 @@ declare module "Application/_Interface/IRequest" {
     import { IStateReceiver } from "Application/_Interface/IStateReceiver";
     import { IStore } from "Application/_Interface/IStore";
     /**
-     * Компонент, которые предоставляет в платформе доступ к синглтонам в раках запроса пользователя.
+     * Компонент, которые предоставляет в платформе доступ к синглтонам в рамках запроса пользователя.
+     * @interface Application/_Interface/IRequest
+     * @public
+     * @author Санников К.А.
      */
     export interface IRequest {
+        /**
+         * @name Application/_Interface/IRequest#cookie
+         * @cfg {ICookie} cookie
+         */
         cookie: ICookie;
+        /**
+         * @name Application/_Interface/IRequest#location
+         * @cfg {ILocation} location
+         */
         location: ILocation;
+        /**
+         * @name Application/_Interface/IRequest#console
+         * @cfg {IConsole} console
+         */
         console: IConsole;
+        /**
+         * Получить Config
+         * @return {Application/_Config/Config}
+         */
         getConfig(): Config;
         /**
          * Доступ к объекту сохранения состояния на сервиспе представлений,
-         *  для его получения на клиенте. Не привязан к VDOM механизмам,
-         *  поэтому можно будет его использовать в не визуальных компонентах.
+         * для его получения на клиенте. Не привязан к VDOM механизмам,
+         * поэтому можно будет его использовать в не визуальных компонентах.
+         * @return {Application/_Interface/IStateReceiver}
          */
         getStateReceiver(): IStateReceiver;
         /**
          * Получение хранилища для сохранений данных в рамках запроса.
-         * @param key Тип хранилища.
+         * @param {String} key Тип хранилища.
+         * @return {Application/_Interface/IStore} Хранилище
          */
-        getStore(key: string): IStore;
+        getStore<T = Record<string, string>>(key: string): IStore<T>;
         /**
          * Установка хранилища
-         * @param key {string} Тип хранилища.
-         * @param storage {IStore}
+         * @param {String} key Тип хранилища.
+         * @param {Application/_Interface/IStore} storage Хранилище.
          */
-        setStore(key: string, storage: IStore): any;
+        setStore<T = Record<string, string>>(key: string, storage: IStore<T>): void;
     }
 }
 /// <amd-module name="Application/_Interface/IEnv" />
@@ -237,6 +368,13 @@ declare module "Application/_Interface/IEnv" {
     import { ILocation } from "Application/_Interface/ILocation";
     import { IRequest } from "Application/_Interface/IRequest";
     import { IStoreMap } from "Application/_Interface/IStore";
+    /**
+     * Интерфейс IEnv
+     * @interface Application/_Interface/IEnv
+     * @public
+     * @author Санников К.А.
+     * @see Application/Interface/IEnv/IEnvFactory
+     */
     export interface IEnv {
         console: IConsole;
         cookie: ICookie;
@@ -246,6 +384,33 @@ declare module "Application/_Interface/IEnv" {
             appRequest: IRequest | undefined;
         };
     }
+    /**
+     * @name Application/_Interface/IEnv#console
+     * @cfg {Application/_Interface/IConsole} console
+     */
+    /**
+     * @name Application/_Interface/IEnv#cookie
+     * @cfg {Application/_Interface/ICookie} cookie
+     */
+    /**
+     * @name Application/_Interface/IEnv#location
+     * @cfg {Application/_Interface/ILocation} location
+     */
+    /**
+     * @name Application/_Interface/IEnv#storages
+     * @cfg {Application/_Interface/IStoreMap} storages
+     */
+    /**
+     * getGlobal
+     * @function
+     * @name Application/_Interface/IEnv#getGlobal
+     * @return {IRequest|undefined}
+     */
+    /**
+     * Интерфейс IEnvFactory
+     * @interface Application/Interface/IEnv/IEnvFactory
+     * @author Санников К.А.
+     */
     export interface IEnvFactory {
         create(config: Config): IEnv;
     }
@@ -257,7 +422,7 @@ declare module "Application/_Request/FakeWebStorage" {
      */
     export class FakeWebStorage implements Storage {
         private __data;
-        readonly length: number;
+        get length(): number;
         getItem(key: string): any;
         setItem(key: string, value: string): boolean;
         removeItem(key: string): void;
@@ -269,10 +434,9 @@ declare module "Application/_Request/FakeWebStorage" {
 declare module "Application/_Request/Store" {
     import { IStore } from "Application/_Interface/IStore";
     /**
-     * Класс, реализующий интерфейс {@link Core/Request/IStore},
+     * Класс, реализующий интерфейс {@link Application/_Interface/IStore},
      * предназначенный для работы с localStorage и SessionStorage
-     * @class
-     * @name Application/_Env/Browser/Store
+     * @class Application/_Request/Store
      * @implements Application/_Interface/IStore
      * @author Санников К.А.
      */
@@ -297,12 +461,13 @@ declare module "Application/_Request/Request" {
     import { IStore } from "Application/_Interface/IStore";
     import { Config } from "Application/Config";
     /**
-     * @class
-     * @name Env/_Request/Request
+     * Класс Request
+     * @class Application/_Request/Request
      * @implements Application/_Interface/IRequest
      * @public
      * @author Санников К.А.
-     * @see Application/_Interface/IStorage
+     * @see Application/_Interface/IRequest
+     * @see Application/_Interface/IStore
      * @see Application/_Interface/ILocation
      * @see Application/_Interface/IConsole
      * @see Application/_Interface/ISerializableState
@@ -312,42 +477,62 @@ declare module "Application/_Request/Request" {
     export default class AppRequest implements IRequest {
         private readonly __config;
         /**
-         * @property
-         * @type {Application/_Interface.IConsole}
+         * @cfg {Application/_Interface/IConsole} console
+         * @name Application/_Request/Request#console
+         */
+        /**
+         * @cfg {Application/_Interface/ICookie} cookie
+         * @name Application/_Request/Request#cookie
+         */
+        /**
+         * @cfg {Application/_Interface/ILocation} location
+         * @name Application/_Request/Request#location
+         */
+        /**
+         * @cfg {Application/_Interface/IStateReceiver} __stateReceiver
+         * @name Application/_Request/Request#__stateReceiver
+         * @private
          */
         console: IConsole;
-        /**
-         * @property
-         * @type {Application/_Interface.ICookie}
-         */
         cookie: ICookie;
-        /**
-         * @property
-         * @type {Application/_Interface.ILocation}
-         */
         location: ILocation;
-        /**
-         * @property
-         * @type {Application/_Interface.IStateReceiver}
-         */
         private __stateReceiver;
         private readonly __storages;
         constructor(env: IEnv, config: Config);
-        getStore(key: string): IStore;
-        setStore(key: string, storage: IStore): void;
+        /**
+         * Получить хранилище
+         */
+        getStore<T>(key: string): IStore<T>;
+        /**
+         * Задать хранилище
+         */
+        setStore<T>(key: string, storage: IStore<T>): void;
+        /**
+         * Задать stateReceiver
+         */
         setStateReceiver(stateReceiver: IStateReceiver): void;
+        /**
+         * Получить stateReceiver
+         */
         getStateReceiver(): IStateReceiver;
+        /**
+         * Получить Config
+         */
         getConfig(): Config;
         /**
-         * @param {Env/IRequest} request
+         * Задать текущий запрос
+         * @function
+         * @name Application/_Request/Request#setCurrent
+         * @param {Application/_Interface/IRequest} request
          * @static
-         * @name Env/Request#setCurrent
          */
         static setCurrent(request: IRequest): void;
         /**
-         * @return {Env/IRequest}
+         * Получить текущий запрос
+         * @function
+         * @name Application/_Request/Request#getCurrent
+         * @return {Application/_Interface/IRequest}
          * @static
-         * @name Env/Request#getCurrent
          */
         static getCurrent(): IRequest | undefined;
     }
@@ -355,27 +540,41 @@ declare module "Application/_Request/Request" {
 /// <amd-module name="Application/Request" />
 declare module "Application/Request" {
     import { default as Request } from "Application/_Request/Request";
+    /**
+     * Библиотека c классами для работы с запросами и хранилищем
+     * @library Application/Request
+     * @includes Request Application/_Request/Request
+     * @includes Store Application/_Request/Store
+     * @public
+     * @author Санников К.А.
+     */
     export default Request;
     export { default as Store } from "Application/_Request/Store";
 }
 /// <amd-module name="Application/Config" />
 declare module "Application/Config" {
+    /**
+     * Библиотека Config
+     * @library Application/Config
+     * @includes Config Application/_Config/Config
+     * @public
+     * @author Санников К.А.
+     */
     export { default as Config } from "Application/_Config/Config";
     export function get(key: string): import("Application/Type").Native;
 }
 /// <amd-module name="Application/_Env/Browser/Cookie" />
 declare module "Application/_Env/Browser/Cookie" {
     import { ICookie, ICookieOptions } from "Application/_Interface/ICookie";
-    import { IStore } from "Application/_Interface/IStore";
     /**
-     * Класс, реализующий интерфейс {@link Core/Request/IStorage},
-     * предназначенный для работы с cookie в браузере
+     * Класс предназначенный для работы с cookie в браузере,
      * @class
      * @name _Request/_Storage/Cookie
-     * @implements Core/Request/IStorage
-     * @author Заляев А.В
+     * @implements Application/_Interface/ICookie
+     * @implements Application/_Interface/IStore
+     * @author Санников К.А.
      */
-    export default class Cookie implements ICookie, IStore<string> {
+    export default class Cookie implements ICookie {
         cosntructor(): void;
         get(key: string): any;
         set(key: string, value: string, options?: Partial<ICookieOptions>): boolean;
@@ -387,17 +586,58 @@ declare module "Application/_Env/Browser/Cookie" {
 /// <amd-module name="Application/_Env/Console" />
 declare module "Application/_Env/Console" {
     import { IConsole } from "Application/_Interface/IConsole";
+    /**
+     * Содержит константы уровня логирования - {@link LogLevel}
+     * @module
+     * @name Application/Env/Console
+     * @author Санников К.А.
+     */
+    /**
+     * [typedef] Уровень логирования
+     * @class
+     * @name Application/Env/Console/LogLevel
+     * @author Санников К.А.
+     * @todo Описать как typedef, когда это будет поддерживать автодока
+     */
     export enum LogLevel {
+        /**
+         * @cfg info
+         * @name Application/Env/Console/LogLevel#info
+         */
         info = 0,
+        /**
+         * @cfg warning
+         * @name Application/Env/Console/LogLevel#warning
+         */
         warning = 1,
+        /**
+         * @cfg error
+         * @name Application/Env/Console/LogLevel#error
+         */
         error = 2
     }
+    /**
+     * Класс Console
+     * @class
+     * @implements Application/_Interface/IConsole
+     * @author Санников К.А.
+     * @private
+     * @see {@link LogLevel}
+     */
     export default class Console implements IConsole {
         private __logLevel;
         private __console;
         constructor(console: any);
         private isShow;
+        /**
+         * Задать уровень логирования
+         * @param {LogLevel} mode
+         */
         setLogLevel(mode: LogLevel): void;
+        /**
+         * Получить уровень логирования
+         * @return {LogLevel} loglevel
+         */
         getLogLevel(): LogLevel;
         info(): void;
         log(): void;
@@ -414,7 +654,7 @@ declare module "Application/_Env/ObjectStore" {
         set(key: string, value: string): boolean;
         remove(key: string): void;
         getKeys(): string[];
-        toObject(): {};
+        toObject(): object;
     }
 }
 /// <amd-module name="Application/_Env/Browser/Env" />
@@ -425,18 +665,47 @@ declare module "Application/_Env/Browser/Env" {
     import { ILocation } from "Application/_Interface/ILocation";
     import { IStoreMap } from "Application/_Interface/IStore";
     import { Config } from "Application/Config";
+    /**
+     * Класс EnvBrowser
+     * @class Application/_Env/Browser/Env
+     * @author Ибрагимов А.А.
+     * @implements Application/_Interface/IEnv
+     * @public
+     */
     export default class EnvBrowser implements IEnv {
+        /**
+         * @cfg {Application/_Interface/IConsole} console
+         * @name Application/_Env/Browser/Env#console
+         */
         console: IConsole;
+        /**
+         * @cfg {Application/_Interface/ICookie} cookie
+         * @name Application/_Env/Browser/Env#cookie
+         */
         cookie: ICookie;
+        /**
+         * @cfg {Application/_Interface/ILocation} location
+         * @name Application/_Env/Browser/Env#location
+         */
         location: ILocation;
+        /**
+         * @cfg {Application/Interface/IStore/IStoreMap} storages
+         * @name Application/_Env/Browser/Env#storages
+         */
         storages: IStoreMap;
         global: {
             appRequest: any;
         };
         constructor(cfg: Config);
+        /**
+         * Получить глобальную сущность
+         */
         getGlobal(): {
             appRequest: any;
         };
+        /**
+         * Создать новую сущность
+         */
         static create(cfg: Config): EnvBrowser;
     }
 }
@@ -508,12 +777,40 @@ declare module "Application/_Env/QueryParams" {
 /// <amd-module name="Application/_Interface/IConfig" />
 declare module "Application/_Interface/IConfig" {
     import { Native } from "Application/Type";
+    /**
+     * Интерфейс IConfig
+     * @interface Application/_Interface/IConfig
+     * @public
+     * @author Санников К.А.
+     */
     export interface IConfig {
+        /**
+         * get
+         * @function
+         * @name Application/Interface/IConfig#get
+         * @param {String} key
+         * @return {Native}
+         */
         get(key: string): Native;
     }
 }
 /// <amd-module name="Application/Interface" />
 declare module "Application/Interface" {
+    /**
+     * Библиотека интерфейсов
+     * @library Application/Interface
+     * @includes IConsole Application/_Interface/IConsole
+     * @includes ICookie Application/_Interface/ICookie
+     * @includes IConfig Application/_Interface/IConfig
+     * @includes IEnv Application/_Interface/IEnv
+     * @includes ILocation Application/_Interface/ILocation
+     * @includes ISerializableState Application/_Interface/ISerializableState
+     * @includes IStore Application/_Interface/IStore
+     * @includes IStateReceiver Application/_Interface/IStateReceiver
+     * @includes IRequest Application/_Interface/IRequest
+     * @public
+     * @author Санников К.А.
+     */
     export * from "Application/_Interface/IConsole";
     export * from "Application/_Interface/ICookie";
     export * from "Application/_Interface/IConfig";
@@ -529,46 +826,31 @@ declare module "Application/_Env/Browser/StateReceiver" {
     import { HashMap, Native } from "Application/Type";
     import { IConsole, ISerializableState, IStateReceiver } from "Application/Interface";
     type StateMap = HashMap<HashMap<Native>>;
+    /**
+     * @typedef {Object} StateReceiverConfig
+     * @property {StateMap} [states] states
+     * @property {Application/_Interface/IConsole} [console] console
+     */
     export type StateReceiverConfig = {
         states?: StateMap;
         console?: IConsole;
     };
     /**
-     * Класс, реализующий интерфейс {@link Core/Request/IStateReceiver},
+     * Класс, реализующий интерфейс {@link Application/_Interface/IStateReceiver},
      * позволяющий сохранять состояние компонентов
      *
-     * @class
-     * @name _Request/StateReceiver
-     * @implements Core/Request/IStateReceiver
-     * @author Заляев А.В
-     * @private
+     * @class Application/_Env/Browser/StateReceiver
+     * @implements Application/_Interface/IStateReceiver
+     * @author Санников К.А.
+     * @public
      */
     export default class StateReceiver implements IStateReceiver {
         private __states;
         private __components;
         private readonly __console;
         constructor(states?: any, console?: IConsole);
-        /**
-         * Получеие сериализованного состояния всех зарегестрированных компонент
-         * @return {String}
-         * @method
-         * @name _Request/StateReceiver#serialize
-         */
         serialize(): string;
-        /**
-         * Метод, устанавливающий состояние всем зарегестрированным компонентам.
-         * @param {String} data
-         * @method
-         * @name _Request/StateReceiver#deserialize
-         */
         deserialize(data: string): void;
-        /**
-         * Регистрация компонентов, состояние которыех необходимо сохранить.
-         * @param {String} uid идентификатор инстанса, для идентификации сохраненного для него состояния
-         * @param {Core/Request/ISerializableState} component Сериализируемый компонент
-         * @method
-         * @name _Request/StateReceiver#register
-         */
         register(uid: string, component: ISerializableState): void;
         unregister(uid: string): void;
         private __updateState;
@@ -588,25 +870,66 @@ declare module "Application/Env" {
     import { IStore } from "Application/_Interface/IStore";
     /**
      * Возвращает все GET и HASH параметры
-     * @name Application/Env#query
-     * @return {Application/_Env/QueryParams/PARAMS.typedef} Извлеченные параметры
-     * @public
-     * @author Ибрагимов А.А
-     * @example
      * <pre>
      *  require(['Application/Env'], function (Env) {
      *      var getParams = Env.query.get    // { name: 'ferret', color: 'purple' }
      *      var hashParams = Env.query.hash  // { name: 'leha', age: '2' }
      *  });
      * </pre>
+     * @class
+     * @name Application/Env/query
+     * @author Ибрагимов А.А
      */
     export const query: PARAMS;
+    /**
+     * Реализация {@link Application/_Interface/ILocation} - обобщенного window.location.
+     * @class
+     * @name Application/Env/location
+     * @implements Application/_Interface/ILocation
+     * @see Application/_Interface/ILocation
+     */
     export const location: ILocation;
+    /**
+     * Реализация {@link Application/_Interface/ICookie} - интерфейса по работе с cookie
+     * @class
+     * @name Application/Env/cookie
+     * @implements Application/_Interface/ICookie
+     * @see Application/_Interface/ICookie
+     */
     export const cookie: ICookie;
+    /**
+     * Реализация {@link Application/_Interface/IConsole} - логгера
+     * @class
+     * @name Application/Env/logger
+     * @implements Application/_Interface/IConsole
+     * @see Application/_Interface/IConsole
+     */
     export const logger: IConsole;
+    /**
+     * Метод, возвращающий компонент для восстановления состояний компонентов
+     * @function
+     * @name Application/Env#getStateReceiver
+     * @return {Application/_Interface/IStateReceiver}
+     * @see Application/_Interface/IStateReceiver
+     */
     export function getStateReceiver(): IStateReceiver;
-    export function getStore(type: string): IStore;
-    export function setStore(type: string, store: IStore): any;
+    /**
+     * Метод, возвращающий текущее хранилище
+     * @function
+     * @name Application/Env#getStore
+     * @param {String} type type
+     * @return {Application/_Interface/IStore}
+     * @see Application/_Interface/IStore
+     */
+    export function getStore<T = Record<string, string>>(type: string): IStore<T>;
+    /**
+     * Метод, задающий текущее хранилище
+     * @function
+     * @name Application/Env#setStore
+     * @param {String} type type
+     * @param {Application/_Interface/IStore} store store
+     */
+    export function setStore<T = Record<string, string>>(type: string, store: IStore<T>): void;
 }
 /// <amd-module name="Application/Initializer" />
 declare module "Application/Initializer" {
