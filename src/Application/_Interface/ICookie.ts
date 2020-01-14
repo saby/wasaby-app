@@ -23,12 +23,12 @@ export interface ICookieOptions {
  * @public
  * @author Санников К.А.
  */
-export interface ICookie<T extends Record<string, string> = Record<string, string>> extends IStore {
+export interface ICookie extends IStore {
     /**
      * Получение значение из cookie
      * @param {String}
      */
-    get<K extends keyof T & string>(key: K): T[K];
+    get(key: string): string;
     /**
      * Устанавливаем cookie
      * @param {String} key
@@ -36,7 +36,7 @@ export interface ICookie<T extends Record<string, string> = Record<string, strin
      * @param {Partial<ICookieOptions>} options
      * @throws {Error} ошибка установки значения
      */
-    set<K extends keyof T & string>(key: K, value: T[K], options?: Partial<ICookieOptions>): boolean;
+    set(key: string, value: string, options?: Partial<ICookieOptions>): boolean;
     /**
      * Удаляем cookie
      * @param {String} key

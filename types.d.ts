@@ -129,12 +129,12 @@ declare module "Application/_Interface/ICookie" {
      * @public
      * @author Санников К.А.
      */
-    export interface ICookie<T extends Record<string, string> = Record<string, string>> extends IStore {
+    export interface ICookie extends IStore {
         /**
          * Получение значение из cookie
          * @param {String}
          */
-        get<K extends keyof T & string>(key: K): T[K];
+        get(key: string): string;
         /**
          * Устанавливаем cookie
          * @param {String} key
@@ -142,7 +142,7 @@ declare module "Application/_Interface/ICookie" {
          * @param {Partial<ICookieOptions>} options
          * @throws {Error} ошибка установки значения
          */
-        set<K extends keyof T & string>(key: K, value: T[K], options?: Partial<ICookieOptions>): boolean;
+        set(key: string, value: string, options?: Partial<ICookieOptions>): boolean;
         /**
          * Удаляем cookie
          * @param {String} key
@@ -648,13 +648,13 @@ declare module "Application/_Env/Console" {
 /// <amd-module name="Application/_Env/ObjectStore" />
 declare module "Application/_Env/ObjectStore" {
     import { IStore } from "Application/_Interface/IStore";
-    export default class ObjectStore<T = Record<string, string>> implements IStore<T> {
+    export default class ObjectStore implements IStore {
         private __data;
-        get<K extends keyof T & string>(key: K): { [key in keyof T]: T[key]; }[K];
-        set<K extends keyof T & string>(key: K, value: T[K]): boolean;
-        remove<K extends keyof T & string>(key: K): void;
-        getKeys(): (keyof T & string)[];
-        toObject(): { [key in keyof T]: T[key]; };
+        get(key: string): any;
+        set(key: string, value: string): boolean;
+        remove(key: string): void;
+        getKeys(): string[];
+        toObject(): object;
     }
 }
 /// <amd-module name="Application/_Env/Browser/Env" />
