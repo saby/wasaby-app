@@ -33,9 +33,9 @@ import Request from 'Application/Request';
 function isAppInit() {
     if (!Request.getCurrent()) {
         try {
-            throw new Error("Application isn't initialized!")
+            throw new Error("Application isn't initialized!");
         } catch (e) {
-            throw new Error(e.stack)
+            throw new Error(e.stack);
         }
     }
 }
@@ -108,7 +108,7 @@ export const location: ILocation = {
     get hash() {
         return Request.getCurrent().location.hash;
     }
-}
+};
 
 /**
  * Реализация {@link Application/_Interface/ICookie} - интерфейса по работе с cookie
@@ -137,7 +137,7 @@ export const cookie: ICookie = {
     toObject() {
         return Request.getCurrent().cookie.toObject();
     }
-}
+};
 
 /**
  * Реализация {@link Application/_Interface/IConsole} - логгера
@@ -196,9 +196,9 @@ export function getStateReceiver(): IStateReceiver {
  * @return {Application/_Interface/IStore}
  * @see Application/_Interface/IStore
  */
-export function getStore(type: string): IStore {
+export function getStore<T = Record<string, string>>(type: string): IStore<T> {
     isAppInit();
-    return Request.getCurrent().getStore(type);
+    return Request.getCurrent().getStore<T>(type);
 }
 
 /**
@@ -208,7 +208,7 @@ export function getStore(type: string): IStore {
  * @param {String} type type
  * @param {Application/_Interface/IStore} store store
  */
-export function setStore(type: string, store: IStore) {
+export function setStore<T = Record<string, string>>(type: string, store: IStore<T>) {
     isAppInit();
-    return Request.getCurrent().setStore(type, store);
+    return Request.getCurrent().setStore<T>(type, store);
 }
