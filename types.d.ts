@@ -351,7 +351,7 @@ declare module "Application/_Interface/IRequest" {
          * @param {String} key Тип хранилища.
          * @return {Application/_Interface/IStore} Хранилище
          */
-        getStore<T = Record<string, string>>(key: string): IStore<T>;
+        getStore<T = Record<string, string>>(key: string, createDefaultStore?: () => IStore<T>): IStore<T>;
         /**
          * Установка хранилища
          * @param {String} key Тип хранилища.
@@ -501,8 +501,10 @@ declare module "Application/_Request/Request" {
         constructor(env: IEnv, config: Config);
         /**
          * Получить хранилище
+         * @param {string} key
+         * @param {()=> IStore} createDefaultStore функция, возвращающая Store. Вызывается для создания нового Store, если нет хранилища для переданного ключа
          */
-        getStore<T>(key: string): IStore<T>;
+        getStore<T>(key: string, createDefaultStore?: any): IStore<T>;
         /**
          * Задать хранилище
          */
@@ -654,7 +656,7 @@ declare module "Application/_Env/ObjectStore" {
         set(key: string, value: string): boolean;
         remove(key: string): void;
         getKeys(): string[];
-        toObject(): object;
+        toObject(): {};
     }
 }
 /// <amd-module name="Application/_Env/Browser/Env" />
@@ -921,7 +923,7 @@ declare module "Application/Env" {
      * @return {Application/_Interface/IStore}
      * @see Application/_Interface/IStore
      */
-    export function getStore<T = Record<string, string>>(type: string): IStore<T>;
+    export function getStore<T = Record<string, string>>(type: string, createDefaultStore?: () => IStore<T>): IStore<T>;
     /**
      * Метод, задающий текущее хранилище
      * @function
