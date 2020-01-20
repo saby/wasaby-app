@@ -196,9 +196,9 @@ export function getStateReceiver(): IStateReceiver {
  * @return {Application/_Interface/IStore}
  * @see Application/_Interface/IStore
  */
-export function getStore<T = Record<string, string>>(type: string): IStore<T> {
+export function getStore<T = Record<string, string>>(type: string, createDefaultStore?: () => IStore<T>): IStore<T> {
     isAppInit();
-    return Request.getCurrent().getStore<T>(type);
+    return Request.getCurrent().getStore<T>(type, createDefaultStore);
 }
 
 /**
