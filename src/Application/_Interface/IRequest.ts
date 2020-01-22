@@ -47,7 +47,7 @@ export interface IRequest {
      * @param {String} key Тип хранилища.
      * @return {Application/_Interface/IStore} Хранилище
      */
-    getStore<T = Record<string, string>>(key: string): IStore<T>;
+    getStore<T = Record<string, string>>(key: string, createDefaultStore?: () => IStore<T>): IStore<T>;
 
     /**
      * Установка хранилища

@@ -81,10 +81,12 @@ export default class AppRequest implements IRequest {
     }
     /**
      * Получить хранилище
+     * @param {string} key Ключ хранилища
+     * @param {()=> IStore} createDefaultStore функция, возвращающая Store. Вызывается для создания нового Store, если нет хранилища для переданного ключа
      */
-    getStore<T>(key: string): IStore<T> {
+    getStore<T>(key: string, createDefaultStore?: () => IStore<T>): IStore<T> {
         if (!this.__storages[key]) {
-            this.__storages[key] = new Store(new FakeWebStorage());
+            this.__storages[key] = createDefaultStore?.() || new Store(new FakeWebStorage());
         }
         return this.__storages[key];
     }
