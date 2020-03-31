@@ -4,7 +4,7 @@
  * Выписаны те поля, которые есть на сервисе представления и в браузере
  * @interface Application/_Interface/ILocation
  * @public
- * @author Ибрагимов А.А.
+ * @author Санников К.А..
  */
 export interface ILocation {
     protocol: string;
