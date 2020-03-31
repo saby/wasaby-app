@@ -13,7 +13,7 @@ import { Store } from 'Application/Request';
 /**
  * Класс EnvBrowser
  * @class Application/_Env/Browser/Env
- * @author Ибрагимов А.А.
+ * @author Санников К.А..
  * @implements Application/_Interface/IEnv
  * @public
  */

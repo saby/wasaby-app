@@ -20,7 +20,7 @@ import Request from 'Application/Request';
  * @includes cookie Application/Env/cookie
  * @includes location Application/Env/location
  * @includes logger Application/Env/logger
- * @includes LogLevel Application/Env/Console/LogLevel
+ * @includes LogLevel Application/Env/Console
  * @includes query Application/Env/query
  * @author Санников К.А.
  */
@@ -41,16 +41,17 @@ function isAppInit() {
 }
 
 /**
- * Возвращает все GET и HASH параметры
- * <pre>
+ * Возвращает все GET и HASH параметры.
+ * @example
+ * <pre class="brush: js">
  *  require(['Application/Env'], function (Env) {
  *      var getParams = Env.query.get    // { name: 'ferret', color: 'purple' }
  *      var hashParams = Env.query.hash  // { name: 'leha', age: '2' }
  *  });
  * </pre>
- * @class
- * @name Application/Env/query
- * @author Ибрагимов А.А
+ * @class Application/Env/query
+ * @author Санников К.А.
+ * @public
  */
 export const query: PARAMS = {
     /**
@@ -70,11 +71,12 @@ export const query: PARAMS = {
 };
 
 /**
- * Реализация {@link Application/_Interface/ILocation} - обобщенного window.location.
- * @class
- * @name Application/Env/location
+ * Реализация {@link Application/_Interface/ILocation} — обобщенного window.location.
+ * @class Application/Env/location
  * @implements Application/_Interface/ILocation
  * @see Application/_Interface/ILocation
+ * @author Санников К.А.
+ * @public
  */
 export const location: ILocation = {
     get protocol() {
@@ -111,11 +113,12 @@ export const location: ILocation = {
 };
 
 /**
- * Реализация {@link Application/_Interface/ICookie} - интерфейса по работе с cookie
- * @class
- * @name Application/Env/cookie
+ * Реализация {@link Application/_Interface/ICookie} — интерфейса по работе с cookie.
+ * @class Application/Env/cookie
  * @implements Application/_Interface/ICookie
  * @see Application/_Interface/ICookie
+ * @author Санников К.А.
+ * @public
  */
 export const cookie: ICookie = {
     get(key) {
@@ -140,11 +143,12 @@ export const cookie: ICookie = {
 };
 
 /**
- * Реализация {@link Application/_Interface/IConsole} - логгера
- * @class
- * @name Application/Env/logger
+ * Реализация {@link Application/_Interface/IConsole} — логгера.
+ * @class Application/Env/logger
  * @implements Application/_Interface/IConsole
  * @see Application/_Interface/IConsole
+ * @author Санников К.А.
+ * @public
  */
 export const logger: IConsole = {
     setLogLevel(level: number) {
@@ -177,7 +181,7 @@ export const logger: IConsole = {
 };
 
 /**
- * Метод, возвращающий компонент для восстановления состояний компонентов
+ * Метод, возвращающий компонент для восстановления состояний компонентов.
  * @function
  * @name Application/Env#getStateReceiver
  * @return {Application/_Interface/IStateReceiver}
@@ -189,7 +193,7 @@ export function getStateReceiver(): IStateReceiver {
 }
 
 /**
- * Метод, возвращающий текущее хранилище
+ * Метод, возвращающий текущее хранилище.
  * @function
  * @name Application/Env#getStore
  * @param {String} type type
@@ -202,7 +206,7 @@ export function getStore<T = Record<string, string>>(type: string, createDefault
 }
 
 /**
- * Метод, задающий текущее хранилище
+ * Метод, задающий текущее хранилище.
  * @function
  * @name Application/Env#setStore
  * @param {String} type type
