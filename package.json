@@ -67,14 +67,14 @@
       "@types/requirejs": "^2.1.31",
       "chai": "^4.2.0",
       "sbis3-ws": "git+https://git.sbis.ru/sbis/ws.git#rc-20.3000",
-      "saby-units": "git+https://github.com/saby/Units.git#rc-20.3000",
+      "saby-units": "git+https://platform-git.sbis.ru/saby/Units.git#rc-20.3000",
       "express": "^4.16.4",
       "mocha": "^5.2.0",
       "requirejs": "^2.3.6",
-      "saby-ui": "git+https://git@github.com/saby/UI.git#rc-20.3000"
+      "saby-ui": "git+https://git@platform-git.sbis.ru/saby/UI.git#rc-20.3000"
    },
    "dependencies": {
-      "saby-typescript": "git+https://github.com/saby/TypeScript.git#rc-20.3000",
+      "saby-typescript": "git+https://platform-git.sbis.ru/saby/TypeScript.git#rc-20.3000",
       "tslib": "^1.9.3",
       "tslint": "^5.12.1"
    }
