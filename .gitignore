@@ -8,3 +8,6 @@ test/server/src
 _*
 *.lock
 *.log
+/tsconfig.json
+/tslib.js
+/tslint.json
