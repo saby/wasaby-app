@@ -1,10 +1,7 @@
 {
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "moduleResolution": "classic",
-    "target": "es5",
-    "pretty": false,
     "declaration": true,
-    "skipLibCheck": true,
     "emitDeclarationOnly": true,
     "outFile": "./types",
     "baseUrl": "src",
