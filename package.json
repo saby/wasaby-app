@@ -21,54 +21,21 @@
       }
    },
    "scripts": {
-      "postinstall": "saby-units --install --mode=development || echo Installed",
-      "build": "saby-typescript --compiler || npm run declare",
+      "prepare": "npm run update-cli-store && npm run build:typescript",
+      "build": "wasaby-cli --tasks=build",
+      "build:typescript": "wasaby-cli --tasks=prepare",
       "declare": "saby-typescript --compiler -p ./tsconfig.declare.json",
-      "pretest": "npm run test:clean > ../_.log && saby-typescript --compiler -p ./test/tsconfig.json > ../_.log || node test/server/build.js",
-      "server": "node test/server/build.js && node test/server/run.js",
-      "test": "cd ./test/server && mocha mocha-require.js --test=all",
-      "test:browser": "npm run pretest && saby-units --browser --report",
-      "test:browser-coverage": "npm run pretest && saby-units --browser --report --coverage",
-      "test:local_browser": "npm run pretest && start http://localhost:8000/unit-testing.html && npm run server",
-      "test:clean": "git clean -xfd ./test/server"
+      "server": "wasaby-cli --tasks=startTest --server",
+      "test": "wasaby-cli --tasks=startTest --node --report=console",
+      "update-cli-store": "wasaby-cli --tasks=initStore"
    },
    "demo": {
       "port": 8000
    },
-   "saby-units": {
-      "moduleType": "amd",
-      "root": "test/server/src",
-      "tests": "tests",
-      "initializer": "test/server/_settings.js",
-      "report": "./test/artifacts/xunit-report.xml",
-      "htmlCoverageReport": "./test/artifacts/coverage",
-      "jsonCoverageReport": "./test/artifacts/coverage.json",
-      "url": {
-         "port": 8082
-      },
-      "modules": {
-         "WS.Core": "node_modules/sbis3-ws/WS.Core"
-      }
-   },
-   "nyc": {
-      "include": [
-         "test/server/src/**/*.js"
-      ],
-      "reporter": [
-         "text",
-         "html"
-      ],
-      "report-dir": "test/artifacts/coverage"
-   },
    "devDependencies": {
       "@types/node": "^12.0.4",
-      "sbis3-ws": "git+https://git.sbis.ru/sbis/ws.git#rc-20.4000",
-      "saby-units": "git+https://platform-git.sbis.ru/saby/Units.git#rc-20.4000",
       "express": "^4.16.4",
       "requirejs": "^2.3.6",
-      "saby-ui": "git+https://git@platform-git.sbis.ru/saby/UI.git#rc-20.4000"
-   },
-   "dependencies": {
-      "saby-typescript": "git+https://platform-git.sbis.ru/saby/TypeScript.git#rc-20.4000"
+      "wasaby-cli": "git+https://platform-git.sbis.ru/saby/wasaby-cli.git#rc-20.4000"
    }
 }
