@@ -7,6 +7,7 @@ import { IStateReceiver } from "Application/_Interface/IStateReceiver";
 export const startRequest = App.startRequest;
 export const isInit = App.isInit;
 const init = (cfg?: Record<string, any>, env?: IEnv, sr?: IStateReceiver) => {
+    if (isInit()) { return; }
     new App(cfg, env, sr);
 };
 export default init;
