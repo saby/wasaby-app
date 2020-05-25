@@ -15,7 +15,6 @@ export default class App {
         stateReceiver: IStateReceiver = new StateReceiver(),
     ) {
         App.instance = this;
-        if (!env.initRequest) { return; }
         App.startRequest(cfg, stateReceiver);
     }
 

@@ -19,7 +19,6 @@ export interface IEnv {
     cookie: ICookie;
     location: ILocation;
     storages: IStoreMap;
-    readonly initRequest: boolean;
     getRequest(): IRequest;
     createRequest: (cfg: IConfig) => IRequestInternal;
 }
