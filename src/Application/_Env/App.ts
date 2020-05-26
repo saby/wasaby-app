@@ -14,15 +14,6 @@ export default class App {
         private env: IEnv = new EnvBrowser(new Config(cfg)),
         stateReceiver: IStateReceiver = new StateReceiver(),
     ) {
-        //#region
-        // ! маленький компромисс, чтобы прошли тесты
-        // ! удалить после вливания 
-        // ! https://online.sbis.ru/opendoc.html?guid=216bcddc-39f2-464a-9480-3a641b454a96
-        if (env instanceof Function){
-            // @ts-ignore 
-            this.env = new env();
-        }
-        //#endregion
         App.instance = this;
         App.startRequest(cfg, stateReceiver);
     }
