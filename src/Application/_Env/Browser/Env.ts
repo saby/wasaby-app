@@ -19,6 +19,7 @@ import { IRequestInternal, IRequest } from 'Application/_Interface/IRequest';
  * @public
  */
 export default class EnvBrowser implements IEnv {
+    initRequest: boolean = true;
     private _request: IRequest;
     /**
      * @cfg {Application/_Interface/IConsole} console

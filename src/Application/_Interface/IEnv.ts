@@ -15,6 +15,8 @@ import { IConfig } from 'Application/_Interface/IConfig';
  * @see Application/Interface/IEnv/IEnvFactory
  */
 export interface IEnv {
+    /** Инициализировать request при старте приложения */
+    readonly initRequest:boolean;
     console: IConsole;
     cookie: ICookie;
     location: ILocation;
