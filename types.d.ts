@@ -529,7 +529,7 @@ declare module "Application/_Env/NodeJS/Location" {
 }
 /// <amd-module name="Application/_Interface/IConfig" />
 declare module "Application/_Interface/IConfig" {
-    import { Native } from 'Application/_Type';
+    type IData = Record<string, any>;
     /**
      * Интерфейс IConfig
      * @interface Application/_Interface/IConfig
@@ -542,9 +542,8 @@ declare module "Application/_Interface/IConfig" {
          * @function
          * @name Application/Interface/IConfig#get
          * @param {String} key
-         * @return {Native}
          */
-        get(key: string): Native;
+        get(key: keyof IData): IData[keyof IData];
     }
 }
 /// <amd-module name="Application/_Interface/IConsole" />
