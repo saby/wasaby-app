@@ -7,7 +7,14 @@ import { IStateReceiver } from "Application/_Interface/IStateReceiver";
 export const startRequest = App.startRequest;
 export const isInit = App.isInit;
 const init = (cfg?: Record<string, any>, env?: IEnv, sr?: IStateReceiver) => {
-    if (isInit()) { return; }
+    if (isInit()) {
+        App.getRequest().console.warn(
+            "Повторная инициализация Application!" +
+            "Необходимо выписать задачу Ибрагимову А.А., приложить стек вызовов" +
+            new Error("Повторный вызов Application").stack
+        );
+        return;
+    }
     //#region
     // ! маленький компромисс, чтобы прошли тесты
     // ! удалить после вливания 

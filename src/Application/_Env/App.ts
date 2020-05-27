@@ -6,7 +6,6 @@ import StateReceiver from "Application/_Env/Browser/StateReceiver";
 import { IEnv } from "Application/_Interface/IEnv";
 import { IRequest } from 'Application/_Interface/IRequest';
 import { IStateReceiver } from "Application/_Interface/IStateReceiver";
-import { HashMap } from "Application/_Type";
 
 const Env = (typeof window === 'undefined') ? EnvNodeJS : EnvBrowser;
 
@@ -27,7 +26,7 @@ export default class App {
         return App.getInstance().env.getRequest();
     }
 
-    static startRequest(cfg?: HashMap<string>, stateReceiver: IStateReceiver = new StateReceiver()) {
+    static startRequest(cfg?: Record<string, any>, stateReceiver: IStateReceiver = new StateReceiver()) {
         const config = new Config(cfg);
         stateReceiver.register(config.getUID(), config);
         App.getInstance().env

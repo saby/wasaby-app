@@ -1,7 +1,6 @@
 /// <amd-module name="Application/_Config/Config" />
 import { ISerializableState } from "Application/_Interface/ISerializableState";
-import { HashMap, Native } from 'Application/_Type';
-
+type IData = Record<string, any>;
 /**
  * Класс Config
  * @class Application/_Config/Config
@@ -10,28 +9,28 @@ import { HashMap, Native } from 'Application/_Type';
  * @author Санников К.А.
  */
 export default class Config implements ISerializableState {
-    constructor(private data: HashMap<Native> = {}, private __uid: string = 'appConfig') {
+    constructor (private data: IData = {}, private __uid: string = 'appConfig') {
     }
     /**
      * Получить данные по ключу
      * @param {String} key
      * @return {Native}
      */
-    get(key: string): Native {
+    get(key: keyof IData): IData[keyof IData] {
         return this.data[key];
     }
     /**
      * Получить состояние
-     * @return {HashMap<Native>}
+     * @return {IData}
      */
-    getState(): HashMap<Native> {
+    getState(): IData {
         return this.data;
     }
     /**
      * Задать состояние
-     * @param {HashMap<Native>} data
+     * @param {IData} data
      */
-    setState(data: HashMap<Native>) {
+    setState(data: IData) {
         if (!data) {
             return;
         }

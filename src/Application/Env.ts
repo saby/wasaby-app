@@ -1,5 +1,6 @@
 /// <amd-module name="Application/Env" />
 export { default as EnvBrowser } from 'Application/_Env/Browser/Env';
+export { default as EnvNodeJS } from 'Application/_Env/NodeJS/Env';
 import { parseQueryHash, parseQueryGet, PARAMS } from 'Application/_Env/QueryParams';
 export { default as StateReceiver } from 'Application/_Env/Browser/StateReceiver';
 export { LogLevel } from 'Application/_Env/Console';

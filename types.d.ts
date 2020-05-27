@@ -12,6 +12,7 @@ declare module "Application/Config" {
 /// <amd-module name="Application/Env" />
 declare module "Application/Env" {
     export { default as EnvBrowser } from 'Application/_Env/Browser/Env';
+    export { default as EnvNodeJS } from 'Application/_Env/NodeJS/Env';
     import { PARAMS } from 'Application/_Env/QueryParams';
     export { default as StateReceiver } from 'Application/_Env/Browser/StateReceiver';
     export { LogLevel } from 'Application/_Env/Console';
@@ -156,17 +157,10 @@ declare module "Application/Request" {
     export default Request;
     export { default as Store } from "Application/_Request/Store";
 }
-/// <amd-module name="Application/Type" />
-declare module "Application/Type" {
-    export type Native = string | number | boolean;
-    export type HashMap<T> = {
-        [key: string]: T;
-    };
-}
 /// <amd-module name="Application/_Config/Config" />
 declare module "Application/_Config/Config" {
     import { ISerializableState } from "Application/_Interface/ISerializableState";
-    import { HashMap, Native } from 'Application/_Type';
+    type IData = Record<string, any>;
     /**
      * Класс Config
      * @class Application/_Config/Config
@@ -177,23 +171,23 @@ declare module "Application/_Config/Config" {
     export default class Config implements ISerializableState {
         private data;
         private __uid;
-        constructor(data?: HashMap<Native>, __uid?: string);
+        constructor(data?: IData, __uid?: string);
         /**
          * Получить данные по ключу
          * @param {String} key
          * @return {Native}
          */
-        get(key: string): Native;
+        get(key: keyof IData): IData[keyof IData];
         /**
          * Получить состояние
-         * @return {HashMap<Native>}
+         * @return {IData}
          */
-        getState(): HashMap<Native>;
+        getState(): IData;
         /**
          * Задать состояние
-         * @param {HashMap<Native>} data
+         * @param {IData} data
          */
-        setState(data: HashMap<Native>): void;
+        setState(data: IData): void;
         /**
          * Получить UID
          * @return {String}
@@ -206,12 +200,11 @@ declare module "Application/_Env/App" {
     import { IEnv } from "Application/_Interface/IEnv";
     import { IRequest } from 'Application/_Interface/IRequest';
     import { IStateReceiver } from "Application/_Interface/IStateReceiver";
-    import { HashMap } from "Application/_Type";
     export default class App {
         private env;
         constructor(cfg?: Record<string, any>, env?: IEnv, stateReceiver?: IStateReceiver);
         static getRequest(): IRequest;
-        static startRequest(cfg?: HashMap<string>, stateReceiver?: IStateReceiver): void;
+        static startRequest(cfg?: Record<string, any>, stateReceiver?: IStateReceiver): void;
         private static instance;
         static isInit(): boolean;
         static getInstance(): App | never;
@@ -429,9 +422,8 @@ declare module "Application/_Env/Browser/Env" {
 }
 /// <amd-module name="Application/_Env/Browser/StateReceiver" />
 declare module "Application/_Env/Browser/StateReceiver" {
-    import { HashMap, Native } from "Application/_Type";
     import { IConsole, ISerializableState, IStateReceiver } from "Application/Interface";
-    type StateMap = HashMap<HashMap<Native>>;
+    type StateMap = Record<string, Record<string, any>>;
     /**
      * @typedef {Object} StateReceiverConfig
      * @property {StateMap} [states] states
@@ -783,7 +775,6 @@ declare module "Application/_Interface/IRequest" {
 }
 /// <amd-module name="Application/_Interface/ISerializableState" />
 declare module "Application/_Interface/ISerializableState" {
-    import { HashMap, Native } from "Application/_Type";
     /**
      * Интерфейс, который нужно поддержать компонентам, что бы их можно было сериализовать
      * и восстановливать их состояние в любой момент
@@ -797,15 +788,15 @@ declare module "Application/_Interface/ISerializableState" {
      * }
      * class Control implements ISerializableState {
      *    private __uid: string;
-     *    protected _state: HashMap<Native>;
+     *    protected _state: Record<string, any>;
      *    constructor(...args) {
      *        stateReceiver.register(this.__uid, this);
      *        // ...
      *    }
-     *    getState(): HashMap<Native> {
+     *    getState(): Record<string, any> {
      *        return this._state || {}
      *    }
-     *    setState(data: HashMap<Native>): void {
+     *    setState(data: Record<string, any>): void {
      *        this._state = {
      *            ...DEFAULT_STATE,
      *            ...data
@@ -823,11 +814,11 @@ declare module "Application/_Interface/ISerializableState" {
         /**
          * Получаем состояние для сериализации
          */
-        getState(): HashMap<Native>;
+        getState(): Record<string, any>;
         /**
          * Устанавливаем состояния после десериализации
          */
-        setState(data: HashMap<Native>): void;
+        setState(data: Record<string, any>): void;
     }
 }
 /// <amd-module name="Application/_Interface/IStateReceiver" />
