@@ -1,7 +1,7 @@
 import { getStore, setStore } from 'Application/Env';
 import { default as AppInit } from 'Application/Initializer';
 import { default as Store } from 'Application/_Request/Store';
-// import { assert } from 'chai';
+import { assert } from 'chai';
 
 describe('Хранилища — Store', function () {
 
