@@ -1,5 +1,5 @@
 import { Config } from 'Application/Config'
-// import { assert } from 'chai';
+import { assert } from 'chai';
 
 const stringValue = 'StringValue';
 const numValue = 42;
