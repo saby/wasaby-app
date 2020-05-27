@@ -70,7 +70,7 @@ describe('Application/Env', function () {
             const cookies = {};
             for (let i = 0; i < 10; i++) {
                 const key = getRandomString();
-                AppCookie.set(key, i);
+                AppCookie.set(key, i.toString());
                 cookies[key] = `${i}`;
             }
             assert.deepEqual(AppCookie.toObject(), cookies);
