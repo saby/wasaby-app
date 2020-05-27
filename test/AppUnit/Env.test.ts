@@ -1,6 +1,6 @@
 import { cookie as AppCookie, location, logger, query} from 'Application/Env';
 import { default as AppInit } from 'Application/Initializer';
-// import { assert } from 'chai';
+import { assert } from 'chai';
 
 describe('Application/Env', function () {
     if (typeof window === 'undefined') { return; }
