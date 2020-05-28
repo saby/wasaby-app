@@ -1,5 +1,4 @@
 /// <amd-module name="Application/Config" />
-import Request from "Application/Request";
 
 /**
  * Библиотека Config
@@ -9,8 +8,4 @@ import Request from "Application/Request";
  * @author Санников К.А.
  */
 
-export { default as Config } from 'Application/_Config/Config'
-
-export function get(key: string) {
-    return Request.getCurrent().getConfig().get(key);
-}
+export { default as Config } from 'Application/_Config/Config';
