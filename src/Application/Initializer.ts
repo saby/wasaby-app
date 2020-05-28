@@ -6,7 +6,7 @@ import { IStateReceiver } from "Application/_Interface/IStateReceiver";
 
 export const startRequest = App.startRequest;
 export const isInit = App.isInit;
-const init = (cfg?: Record<string, any>, env?: IEnv, sr?: IStateReceiver) => {
+export default function (cfg?: Record<string, any>, env?: IEnv, sr?: IStateReceiver) {
     if (isInit()) {
         App.getRequest().console.warn(
             "Повторная инициализация Application!" +
@@ -26,13 +26,13 @@ const init = (cfg?: Record<string, any>, env?: IEnv, sr?: IStateReceiver) => {
     }
     //#endregion
     new App(cfg, env, sr);
+    if (typeof window === 'undefined') { return; }
     App.getRequest().console.warn(
-        "Эта функция браузера предназначена для разработчиков." +
-        "Если кто-то сказал вам скопировать и вставить что-то здесь, это мошенники." +
-        "Выполнив эти действия, вы предоставите им доступ к своему аккаунту."
+        "Эта функция браузера предназначена для разработчиков.\n" +
+        "Если кто-то сказал вам скопировать и вставить что-то здесь, это мошенники.\n" +
+        "Выполнив эти действия, вы предоставите им доступ к своему аккаунту.\n"
     );
 };
-export default init;
 
 export const registerComponent = (uid: string, component: ISerializableState) => {
     App.getRequest().getStateReceiver().register(uid, component);
