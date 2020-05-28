@@ -9,8 +9,8 @@ export const isInit = App.isInit;
 export default function (cfg?: Record<string, any>, env?: IEnv, sr?: IStateReceiver) {
     if (isInit()) {
         App.getRequest().console.warn(
-            "Повторная инициализация Application!" +
-            "Необходимо выписать задачу Ибрагимову А.А., приложить стек вызовов" +
+            "Повторная инициализация Application!\n" +
+            "Необходимо выписать задачу Ибрагимову А., приложить стек вызовов в debug режиме:\n" +
             new Error("Повторный вызов Application").stack
         );
         return;
