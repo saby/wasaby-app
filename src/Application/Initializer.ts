@@ -26,6 +26,11 @@ const init = (cfg?: Record<string, any>, env?: IEnv, sr?: IStateReceiver) => {
     }
     //#endregion
     new App(cfg, env, sr);
+    App.getRequest().console.warn(
+        "Эта функция браузера предназначена для разработчиков." +
+        "Если кто-то сказал вам скопировать и вставить что-то здесь, это мошенники." +
+        "Выполнив эти действия, вы предоставите им доступ к своему аккаунту."
+    );
 };
 export default init;
 
