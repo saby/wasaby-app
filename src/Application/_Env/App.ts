@@ -36,10 +36,7 @@ export default class App {
 
     private static instance: App;
     static isInit(): boolean {
-        // return !!App.instance;
-        // ! удалить после вливания 
-        // ! https://online.sbis.ru/opendoc.html?guid=216bcddc-39f2-464a-9480-3a641b454a96
-        return !!App.instance?.env.getRequest();
+        return !!App.instance;
     }
     static getInstance(): App | never {
         if (App.instance) {

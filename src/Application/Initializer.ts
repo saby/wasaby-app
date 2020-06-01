@@ -15,16 +15,6 @@ export default function (cfg?: Record<string, any>, env?: IEnv, sr?: IStateRecei
         );
         return;
     }
-    //#region
-    // ! маленький компромисс, чтобы прошли тесты
-    // ! удалить после вливания 
-    // ! https://online.sbis.ru/opendoc.html?guid=216bcddc-39f2-464a-9480-3a641b454a96
-    if (env instanceof Function) {
-        // @ts-ignore 
-        new App(cfg, new env(), sr);
-        return;
-    }
-    //#endregion
     new App(cfg, env, sr);
     if (typeof window === 'undefined') { return; }
     App.getRequest().console.warn(
