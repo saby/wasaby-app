@@ -1,8 +1,6 @@
 .genie
 .vscode
 node_modules
-application
-build-ui
 src/**/*.js
 test/unit/*.js
 !src/tslib.js

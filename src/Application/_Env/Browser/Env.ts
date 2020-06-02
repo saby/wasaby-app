@@ -8,8 +8,7 @@ import { IEnv } from 'Application/_Interface/IEnv';
 import { ILocation } from 'Application/_Interface/ILocation';
 import { IStore, IStoreMap } from 'Application/_Interface/IStore';
 import { Config } from "Application/Config";
-import Request, { Store } from 'Application/Request';
-import { IRequestInternal, IRequest } from 'Application/_Interface/IRequest';
+import { Store } from 'Application/Request';
 
 /**
  * Класс EnvBrowser
@@ -19,18 +18,16 @@ import { IRequestInternal, IRequest } from 'Application/_Interface/IRequest';
  * @public
  */
 export default class EnvBrowser implements IEnv {
-    initRequest: boolean = true;
-    private _request: IRequest;
     /**
      * @cfg {Application/_Interface/IConsole} console
      * @name Application/_Env/Browser/Env#console
      */
-    console: IConsole;
+    console: IConsole
     /**
      * @cfg {Application/_Interface/ICookie} cookie
      * @name Application/_Env/Browser/Env#cookie
      */
-    cookie: ICookie;
+    cookie: ICookie
     /**
      * @cfg {Application/_Interface/ILocation} location
      * @name Application/_Env/Browser/Env#location
@@ -41,13 +38,13 @@ export default class EnvBrowser implements IEnv {
      * @name Application/_Env/Browser/Env#storages
      */
     storages: IStoreMap;
-    global = {};
+    global = { appRequest: undefined };
 
-    constructor (private cfg: Config = new Config()) {
+    constructor(cfg: Config) {
         this.location = window.location;
         this.console = new Console(window.console);
         if (cfg.get("Application/Env.LogLevel") !== undefined) {
-            this.console.setLogLevel(<LogLevel> cfg.get("Application/Env.LogLevel"));
+            this.console.setLogLevel(<LogLevel>cfg.get("Application/Env.LogLevel"));
         }
 
         this.cookie = new Cookie();
@@ -70,7 +67,7 @@ export default class EnvBrowser implements IEnv {
         this.storages = {
             "localStorage": localStorage,
             "sessionStorage": sessionStorage
-        };
+        }
     }
     /**
      * Получить глобальную сущность
@@ -78,12 +75,10 @@ export default class EnvBrowser implements IEnv {
     getGlobal() {
         return this.global;
     }
-
-    getRequest(): IRequest {
-        return this._request;
-    }
-
-    createRequest(): IRequestInternal {
-        return this._request = new Request(this, this.cfg);
+    /**
+     * Создать новую сущность
+     */
+    static create(cfg: Config) {
+        return new EnvBrowser(cfg);
     }
 }

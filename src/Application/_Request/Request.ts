@@ -1,14 +1,20 @@
 /// <amd-module name="Application/_Request/Request" />
-import { Config } from "Application/Config";
 import { IConsole } from 'Application/_Interface/IConsole';
 import { ICookie } from 'Application/_Interface/ICookie';
 import { IEnv } from 'Application/_Interface/IEnv';
 import { ILocation } from 'Application/_Interface/ILocation';
-import { IRequestInternal } from 'Application/_Interface/IRequest';
+import { IRequest } from 'Application/_Interface/IRequest';
 import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
-import { IStore, IStoreMap } from 'Application/_Interface/IStore';
+import { IStoreMap } from 'Application/_Interface/IStore';
+import { IStore } from 'Application/_Interface/IStore';
 import { FakeWebStorage } from "Application/_Request/FakeWebStorage";
 import Store from 'Application/_Request/Store';
+import { Config } from "Application/Config";
+
+let globalEnv = { appRequest: undefined };
+let getGlobal: () => { appRequest: IRequest | undefined; } = () => {
+    return globalEnv;
+};
 
 /**
  * Класс Request
@@ -24,7 +30,7 @@ import Store from 'Application/_Request/Store';
  * @see Application/_Interface/IStateReceiver
  * @todo добавить пример
  */
-export default class AppRequest implements IRequestInternal {
+export default class AppRequest implements IRequest {
     private readonly __config: Config;
 
     /**
@@ -57,6 +63,15 @@ export default class AppRequest implements IRequestInternal {
             storages,
             location
         } = env;
+
+        /**
+         * !NB Получаем функцию хранения окружения из фабрики.
+         * В браузере это просто глобальная замкнутая переменная.
+         * На сервисе представления это process.domain.request
+         * Так сделано потому что StateReciever написа не корректно.
+         *  и хранит данные в глобальной переменной, а не в Store.
+         */
+        getGlobal = env.getGlobal.bind(env);
 
         this.console = console;
         this.cookie = cookie;
@@ -102,5 +117,27 @@ export default class AppRequest implements IRequestInternal {
      */
     getConfig(): Config {
         return this.__config;
+    }
+
+    /**
+     * Задать текущий запрос
+     * @function
+     * @name Application/_Request/Request#setCurrent
+     * @param {Application/_Interface/IRequest} request
+     * @static
+     */
+    static setCurrent(request: IRequest) {
+        getGlobal().appRequest = request;
+    }
+
+    /**
+     * Получить текущий запрос
+     * @function
+     * @name Application/_Request/Request#getCurrent
+     * @return {Application/_Interface/IRequest}
+     * @static
+     */
+    static getCurrent(): IRequest | undefined {
+        return getGlobal().appRequest;
     }
 }

@@ -56,7 +56,3 @@ export interface IRequest {
      */
     setStore<T = Record<string, string>>(key: string, storage: IStore<T>): void;
 }
-
-export interface IRequestInternal extends IRequest {
-    setStateReceiver(stateReceiver: IStateReceiver): void;
-}

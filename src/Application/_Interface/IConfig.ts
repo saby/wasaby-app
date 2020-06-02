@@ -1,5 +1,6 @@
 /// <amd-module name="Application/_Interface/IConfig" />
-type IData = Record<string, any>;
+import { Native } from 'Application/_Type';
+
 /**
  * Интерфейс IConfig
  * @interface Application/_Interface/IConfig
@@ -12,6 +13,7 @@ export interface IConfig {
      * @function
      * @name Application/Interface/IConfig#get
      * @param {String} key
+     * @return {Native}
      */
-    get(key: keyof IData): IData[keyof IData];
+    get(key: string): Native
 }
