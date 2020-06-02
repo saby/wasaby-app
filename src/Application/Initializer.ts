@@ -1,39 +1,30 @@
 /// <amd-module name="Application/Initializer" />
-import { App } from 'Application/Env';
-import { IEnv } from "Application/_Interface/IEnv";
+import { IEnvFactory } from "Application/_Interface/IEnv";
 import { ISerializableState } from 'Application/_Interface/ISerializableState';
 import { IStateReceiver } from "Application/_Interface/IStateReceiver";
+import { HashMap } from "Application/_Type";
+import { Config } from "Application/Config";
+import { EnvBrowser, StateReceiver } from 'Application/Env';
+import Request from 'Application/Request';
 
-export const startRequest = App.startRequest;
-export const isInit = App.isInit;
-export default function (cfg?: Record<string, any>, env?: IEnv, sr?: IStateReceiver) {
-    if (isInit()) {
-        App.getRequest().console.warn(
-            "Повторная инициализация Application!\n" +
-            "Необходимо выписать задачу Ибрагимову А., приложить стек вызовов в debug режиме:\n" +
-            new Error("Повторный вызов Application").stack
-        );
-        return;
-    }
-    //#region
-    // ! маленький компромисс, чтобы прошли тесты
-    // ! удалить после вливания 
-    // ! https://online.sbis.ru/opendoc.html?guid=216bcddc-39f2-464a-9480-3a641b454a96
-    if (env instanceof Function) {
-        // @ts-ignore 
-        new App(cfg, new env(), sr);
-        return;
-    }
-    //#endregion
-    new App(cfg, env, sr);
-    if (typeof window === 'undefined') { return; }
-    App.getRequest().console.warn(
-        "Эта функция браузера предназначена для разработчиков.\n" +
-        "Если кто-то сказал вам скопировать и вставить что-то здесь, это мошенники.\n" +
-        "Выполнив эти действия, вы предоставите им доступ к своему аккаунту.\n"
-    );
-};
+export default function init(
+    defaultConfigData?: HashMap<string>,
+    envFactory: IEnvFactory = EnvBrowser,
+    stateReceiver: IStateReceiver = new StateReceiver(),
+): Request {
+    const config = new Config(defaultConfigData);
+    stateReceiver.register(config.getUID(), config);
+    const request = new Request(envFactory.create(config), config);
+    request.setStateReceiver(stateReceiver);
+    Request.setCurrent(request);
 
-export const registerComponent = (uid: string, component: ISerializableState) => {
-    App.getRequest().getStateReceiver().register(uid, component);
-};
+    return request;
+}
+
+export function registerComponent(uid: string, component: ISerializableState) {
+    Request.getCurrent().getStateReceiver().register(uid, component);
+}
+
+export function isInit(): boolean {
+    return !! Request.getCurrent();
+}
