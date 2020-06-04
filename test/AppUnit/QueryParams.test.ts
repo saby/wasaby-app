@@ -1,5 +1,5 @@
 import { parseQueryGet, parseQueryHash, extractParams, extractQuery } from 'Application/_Env/QueryParams';
-// import { assert } from 'chai';
+import { assert } from 'chai';
 
 describe('Application/_Env/QueryParams', function () {
 

@@ -1,6 +1,6 @@
 import { cookie as AppCookie, location, logger, query} from 'Application/Env';
 import { default as AppInit } from 'Application/Initializer';
-// import { assert } from 'chai';
+import { assert } from 'chai';
 
 describe('Application/Env', function () {
     if (typeof window === 'undefined') { return; }
@@ -70,7 +70,7 @@ describe('Application/Env', function () {
             const cookies = {};
             for (let i = 0; i < 10; i++) {
                 const key = getRandomString();
-                AppCookie.set(key, i);
+                AppCookie.set(key, i.toString());
                 cookies[key] = `${i}`;
             }
             assert.deepEqual(AppCookie.toObject(), cookies);
