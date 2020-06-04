@@ -41,7 +41,6 @@ export default class EnvBrowser implements IEnv {
      * @name Application/_Env/Browser/Env#storages
      */
     storages: IStoreMap;
-    global = {};
 
     constructor (private cfg: Config = new Config()) {
         this.location = window.location;
@@ -72,13 +71,16 @@ export default class EnvBrowser implements IEnv {
             "sessionStorage": sessionStorage
         };
     }
+    //#region 
+    // !REMOVE
     /**
      * Получить глобальную сущность
      */
     getGlobal() {
-        return this.global;
+        let appRequest = this.getRequest();
+        return { appRequest };
     }
-
+    //#endregion
     getRequest(): IRequest {
         return this._request;
     }

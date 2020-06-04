@@ -9,7 +9,13 @@ import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
 import { IStore, IStoreMap } from 'Application/_Interface/IStore';
 import { FakeWebStorage } from "Application/_Request/FakeWebStorage";
 import Store from 'Application/_Request/Store';
-
+//#region 
+// !REMOVE
+let globalEnv = { appRequest: undefined };
+let getGlobal: () => { appRequest:any } = () => {
+    return globalEnv;
+};
+//#endregion
 /**
  * Класс Request
  * @class Application/_Request/Request
@@ -63,7 +69,19 @@ export default class AppRequest implements IRequestInternal {
         this.location = location;
         this.__config = config;
         this.__storages = storages;
-    }
+        //#region 
+        // !REMOVE
+        /**
+         * !NB Получаем функцию хранения окружения из фабрики.
+         * В браузере это просто глобальная замкнутая переменная.
+         * На сервисе представления это process.domain.request
+         * Так сделано потому что StateReciever написа не корректно.
+         *  и хранит данные в глобальной переменной, а не в Store.
+         */
+        getGlobal = env.getGlobal.bind(env);
+        //#endregion
+        }
+    
     /**
      * Получить хранилище
      * @param {string} key Ключ хранилища
@@ -103,4 +121,27 @@ export default class AppRequest implements IRequestInternal {
     getConfig(): Config {
         return this.__config;
     }
+    //#region  
+    // !REMOVE
+    /**
+     * Задать текущий запрос
+     * @function
+     * @name Application/_Request/Request#setCurrent
+     * @param {Application/_Interface/IRequest} request
+     * @static
+     */
+    static setCurrent(request: any) {
+        getGlobal().appRequest = request;
+    }
+    /**
+     * Получить текущий запрос
+     * @function
+     * @name Application/_Request/Request#getCurrent
+     * @return {Application/_Interface/IRequest}
+     * @static
+     */
+    static getCurrent(): any {
+        return getGlobal().appRequest;
+    }
+    //#endregion
 }

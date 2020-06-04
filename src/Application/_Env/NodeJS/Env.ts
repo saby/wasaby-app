@@ -34,6 +34,17 @@ export default class implements IEnv {
         this.storages = {};
     }
 
+    //#region 
+    // !REMOVE
+    /**
+     * Получить глобальную сущность
+     */
+    getGlobal() {
+        let appRequest = this.getRequest();
+        return { appRequest };
+    }
+    //#endregion
+    
     getRequest(): IRequest {
         return appRequest;
     }
