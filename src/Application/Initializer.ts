@@ -8,12 +8,15 @@ export const startRequest = App.startRequest;
 export const isInit = App.isInit;
 export default function (cfg?: Record<string, any>, env?: IEnv, sr?: IStateReceiver) {
     if (isInit()) {
-        App.getRequest().console.warn(
-            "Повторная инициализация Application!\n" +
-            "Необходимо выписать задачу Ибрагимову А., приложить стек вызовов в debug режиме:\n" +
-            new Error("Повторный вызов Application").stack
-        );
+        // !FIXME
+        App.startRequest(cfg, sr);
         return;
+        // App.getRequest().console.warn(
+        //     "Повторная инициализация Application!\n" +
+        //     "Необходимо выписать задачу Ибрагимову А., приложить стек вызовов в debug режиме:\n" +
+        //     new Error("Повторный вызов Application").stack
+        // );
+        // return;
     }
     //#region
     // !REMOVE
