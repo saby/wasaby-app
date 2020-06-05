@@ -21,10 +21,6 @@ export interface IEnv {
     cookie: ICookie;
     location: ILocation;
     storages: IStoreMap;
-    //#region 
-    // !REMOVE
-    getGlobal: () => { appRequest: any }
-    //#endregion
     getRequest(): IRequest;
     createRequest: (cfg: IConfig) => IRequestInternal;
 }
