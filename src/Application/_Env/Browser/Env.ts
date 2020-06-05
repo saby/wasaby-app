@@ -71,16 +71,6 @@ export default class EnvBrowser implements IEnv {
             "sessionStorage": sessionStorage
         };
     }
-    //#region 
-    // !REMOVE
-    /**
-     * Получить глобальную сущность
-     */
-    getGlobal() {
-        let appRequest = this.getRequest();
-        return { appRequest };
-    }
-    //#endregion
     getRequest(): IRequest {
         return this._request;
     }
