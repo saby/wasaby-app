@@ -62,8 +62,8 @@ export default class AppRequest implements IRequestInternal {
         this.location = location;
         this.__config = config;
         this.__storages = storages;
-        }
-    
+    }
+
     /**
      * Получить хранилище
      * @param {string} key Ключ хранилища
