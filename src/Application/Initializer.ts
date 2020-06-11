@@ -3,6 +3,7 @@ import { App } from 'Application/Env';
 import { IEnv } from "Application/_Interface/IEnv";
 import { ISerializableState } from 'Application/_Interface/ISerializableState';
 import { IStateReceiver } from "Application/_Interface/IStateReceiver";
+import { Config } from 'Application/Config';
 
 export const startRequest = App.startRequest;
 export const isInit = App.isInit;
@@ -22,7 +23,7 @@ export default function (cfg?: Record<string, any>, env?: IEnv, sr?: IStateRecei
     // !REMOVE
     if (env instanceof Function) {
         // @ts-ignore 
-        new App(cfg, new env(), sr);
+        new App(cfg, new env(new Config(cfg)), sr);
         return;
     }
     //#endregion

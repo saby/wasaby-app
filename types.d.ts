@@ -110,10 +110,11 @@ declare module "Application/Env" {
 }
 /// <amd-module name="Application/Initializer" />
 declare module "Application/Initializer" {
+    import { IEnv } from "Application/_Interface/IEnv";
+    import { IStateReceiver } from "Application/_Interface/IStateReceiver";
     export const startRequest: any;
     export const isInit: any;
-    const init: (cfg?: Record<string, any>, env?: any, sr?: any) => void;
-    export default init;
+    export default function (cfg?: Record<string, any>, env?: IEnv, sr?: IStateReceiver): void;
     export const registerComponent: (uid: string, component: any) => void;
 }
 /// <amd-module name="Application/Interface" />
@@ -410,12 +411,7 @@ declare module "Application/_Env/Browser/Env" {
          * @name Application/_Env/Browser/Env#storages
          */
         storages: IStoreMap;
-        global: {};
         constructor(cfg?: Config);
-        /**
-         * Получить глобальную сущность
-         */
-        getGlobal(): {};
         getRequest(): IRequest;
         createRequest(): IRequestInternal;
     }
