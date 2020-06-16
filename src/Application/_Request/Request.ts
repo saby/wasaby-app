@@ -3,7 +3,7 @@ import { IConsole } from 'Application/_Interface/IConsole';
 import { ICookie } from 'Application/_Interface/ICookie';
 import { IEnv } from 'Application/_Interface/IEnv';
 import { ILocation } from 'Application/_Interface/ILocation';
-import { IRequest } from 'Application/_Interface/IRequest';
+import { IRequest, IRequestInternal } from 'Application/_Interface/IRequest';
 import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
 import { IStoreMap } from 'Application/_Interface/IStore';
 import { IStore } from 'Application/_Interface/IStore';
@@ -30,7 +30,7 @@ let getGlobal: () => { appRequest: IRequest | undefined; } = () => {
  * @see Application/_Interface/IStateReceiver
  * @todo добавить пример
  */
-export default class AppRequest implements IRequest {
+export default class AppRequest implements IRequestInternal {
     private readonly __config: Config;
 
     /**

@@ -3,8 +3,9 @@ import Config from 'Application/_Config/Config';
 import { IConsole } from 'Application/_Interface/IConsole';
 import { ICookie } from 'Application/_Interface/ICookie';
 import { ILocation } from 'Application/_Interface/ILocation';
-import { IRequest } from 'Application/_Interface/IRequest';
+import { IRequest, IRequestInternal } from 'Application/_Interface/IRequest';
 import { IStoreMap } from 'Application/_Interface/IStore';
+import { IConfig } from 'Application/_Interface/IConfig';
 
 /**
  * Интерфейс IEnv
@@ -14,11 +15,15 @@ import { IStoreMap } from 'Application/_Interface/IStore';
  * @see Application/Interface/IEnv/IEnvFactory
  */
 export interface IEnv {
-    console: IConsole
-    cookie: ICookie
-    location: ILocation
-    storages: IStoreMap
-    getGlobal: () => { appRequest: IRequest | undefined }
+    /** Инициализировать request при старте приложения */
+    readonly initRequest: boolean;
+    console: IConsole;
+    cookie: ICookie;
+    location: ILocation;
+    storages: IStoreMap;
+    getGlobal: () => { appRequest: IRequest | undefined; }; // удалить
+    getRequest(): IRequest;
+    createRequest: (cfg: IConfig) => IRequestInternal;
 }
 /**
  * @name Application/_Interface/IEnv#console
@@ -49,7 +54,9 @@ export interface IEnv {
  * @author Санников К.А.
  */
 export interface IEnvFactory {
-    create(config: Config): IEnv
+    create(config: Config): IEnv;
+     /** Создавать ли Request при инициализации приложения */
+     initRequest: boolean;
 }
 /**
  * Создать IEnv

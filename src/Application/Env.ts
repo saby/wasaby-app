@@ -1,5 +1,6 @@
 /// <amd-module name="Application/Env" />
-export { default as EnvBrowser } from 'Application/_Env/Browser/Env';
+import { default as EnvBrowser } from 'Application/_Env/Browser/Env';
+import { default as EnvNodeJS } from 'Application/_Env/NodeJS/Env';
 import { parseQueryHash, parseQueryGet, PARAMS } from 'Application/_Env/QueryParams';
 export { default as StateReceiver } from 'Application/_Env/Browser/StateReceiver';
 export { LogLevel } from 'Application/_Env/Console';
@@ -8,7 +9,11 @@ import { ICookie } from 'Application/_Interface/ICookie';
 import { ILocation } from 'Application/_Interface/ILocation';
 import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
 import { IStore } from 'Application/_Interface/IStore';
+import { IEnvFactory } from './_Interface/IEnv';
 import Request from 'Application/Request';
+import App from 'Application/_Env/App';
+export { App };
+export const EnvFactory: IEnvFactory = (typeof window === 'undefined') ? EnvNodeJS : EnvBrowser;
 
 /**
  * Модуль-библиотека для работы с окружением.
@@ -29,16 +34,6 @@ import Request from 'Application/Request';
  * @module
  * @name Application/Env
  */
-
-function isAppInit() {
-    if (!Request.getCurrent()) {
-        try {
-            throw new Error("Application isn't initialized!");
-        } catch (e) {
-            throw new Error(e.stack);
-        }
-    }
-}
 
 /**
  * Возвращает все GET и HASH параметры.

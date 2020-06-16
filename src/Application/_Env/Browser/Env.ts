@@ -8,7 +8,8 @@ import { IEnv } from 'Application/_Interface/IEnv';
 import { ILocation } from 'Application/_Interface/ILocation';
 import { IStore, IStoreMap } from 'Application/_Interface/IStore';
 import { Config } from "Application/Config";
-import { Store } from 'Application/Request';
+import Request, { Store } from 'Application/Request';
+import { IRequest, IRequestInternal } from 'Application/_Interface/IRequest';
 
 /**
  * Класс EnvBrowser
@@ -18,6 +19,7 @@ import { Store } from 'Application/Request';
  * @public
  */
 export default class EnvBrowser implements IEnv {
+    initRequest: boolean = true;
     /**
      * @cfg {Application/_Interface/IConsole} console
      * @name Application/_Env/Browser/Env#console
@@ -40,7 +42,9 @@ export default class EnvBrowser implements IEnv {
     storages: IStoreMap;
     global = { appRequest: undefined };
 
-    constructor(cfg: Config) {
+    private _request: IRequest;
+
+    constructor(private cfg: Config = new Config()) {
         this.location = window.location;
         this.console = new Console(window.console);
         if (cfg.get("Application/Env.LogLevel") !== undefined) {
@@ -69,6 +73,7 @@ export default class EnvBrowser implements IEnv {
             "sessionStorage": sessionStorage
         }
     }
+    //#region удалить
     /**
      * Получить глобальную сущность
      */
@@ -80,5 +85,13 @@ export default class EnvBrowser implements IEnv {
      */
     static create(cfg: Config) {
         return new EnvBrowser(cfg);
+    }
+    //#endregion
+    getRequest(): IRequest {
+        return this._request;
+    }
+
+    createRequest(): IRequestInternal {
+        return this._request = new Request(this, this.cfg);
     }
 }
