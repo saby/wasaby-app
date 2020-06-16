@@ -13,22 +13,22 @@ export default function init(
     Env: IEnvFactory = EnvFactory,
     stateReceiver: IStateReceiver = new StateReceiver(),
 ): Request {
-    if (isInit()) {
-        App.startRequest(data, stateReceiver);
-        App.getRequest().console.warn(
-            "Повторная инициализация Application!\n" +
-            "Необходимо выписать задачу ответсвенному за Окружение (Application), приложить стек вызовов в debug режиме:\n" +
-            new Error("Повторный старт Application").stack
-        );
-        return;
-    }
-    new App(data, Env.create(new Config(data)), stateReceiver);
-    if (typeof window === 'undefined') { return; }
-    App.getRequest().console.warn(
-        "Эта функция браузера предназначена для разработчиков.\n" +
-        "Если кто-то сказал вам скопировать и вставить что-то здесь, это мошенники.\n" +
-        "Выполнив эти действия, вы предоставите им доступ к своему аккаунту.\n"
-    );
+    // if (isInit()) {
+    //     App.startRequest(data, stateReceiver);
+    //     App.getRequest().console.warn(
+    //         "Повторная инициализация Application!\n" +
+    //         "Необходимо выписать задачу ответсвенному за Окружение (Application), приложить стек вызовов в debug режиме:\n" +
+    //         new Error("Повторный старт Application").stack
+    //     );
+    //     return;
+    // }
+    // new App(data, Env.create(new Config(data)), stateReceiver);
+    // if (typeof window === 'undefined') { return; }
+    // App.getRequest().console.warn(
+    //     "Эта функция браузера предназначена для разработчиков.\n" +
+    //     "Если кто-то сказал вам скопировать и вставить что-то здесь, это мошенники.\n" +
+    //     "Выполнив эти действия, вы предоставите им доступ к своему аккаунту.\n"
+    // );
     //#region удалить после https://online.sbis.ru/opendoc.html?guid=59f87611-f87f-404e-bb27-06350248d6b2
     const config = new Config(data);
     stateReceiver.register(config.getUID(), config);
@@ -44,5 +44,8 @@ export function registerComponent(uid: string, component: ISerializableState) {
     Request.getCurrent().getStateReceiver().register(uid, component);
 }
 
-export const isInit = App.isInit;
+export function isInit(): boolean {
+    return !! Request.getCurrent();
+}
+// export const isInit = App.isInit;
 export const startRequest = App.startRequest;

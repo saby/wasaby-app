@@ -30,6 +30,15 @@ export const EnvFactory: IEnvFactory = (typeof window === 'undefined') ? EnvNode
  * @author Санников К.А.
  */
 
+function isAppInit() {
+    if (!Request.getCurrent()) {
+        try {
+            throw new Error("Application isn't initialized!");
+        } catch (e) {
+            throw new Error(e.stack);
+        }
+    }
+}
 /**
  * @module
  * @name Application/Env
