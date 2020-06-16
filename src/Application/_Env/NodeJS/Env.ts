@@ -48,7 +48,7 @@ export default class EnvNodeJS implements IEnv {
     /**
      * Создать новую сущность
      */
-    static create(cfg: Config) {
+    static create(cfg: Config): IEnv {
         return new EnvNodeJS(cfg);
     }
     //#endregion

@@ -55,8 +55,6 @@ export interface IEnv {
  */
 export interface IEnvFactory {
     create(config: Config): IEnv;
-     /** Создавать ли Request при инициализации приложения */
-     initRequest: boolean;
 }
 /**
  * Создать IEnv

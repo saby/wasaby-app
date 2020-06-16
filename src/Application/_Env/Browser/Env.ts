@@ -83,7 +83,7 @@ export default class EnvBrowser implements IEnv {
     /**
      * Создать новую сущность
      */
-    static create(cfg: Config) {
+    static create(cfg: Config): IEnv {
         return new EnvBrowser(cfg);
     }
     //#endregion
