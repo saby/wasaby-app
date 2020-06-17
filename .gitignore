@@ -5,6 +5,8 @@ src/**/*.js
 test/unit/*.js
 !src/tslib.js
 test/server/src
+build-ui
+application
 _*
 *.lock
 *.log
