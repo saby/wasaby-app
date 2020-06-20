@@ -49,7 +49,7 @@ export default class AppRequest implements IRequestInternal {
     private __stateReceiver: IStateReceiver;
     private readonly __storages: IStoreMap;
 
-    constructor (env: IEnv, config: Config) {
+    constructor(env: IEnv, config: Config) {
         let {
             console,
             cookie,

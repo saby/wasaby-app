@@ -37,7 +37,6 @@ export default class implements IEnv {
     getRequest(): IRequest {
         return appRequest;
     }
-
     createRequest(cfg: Config): IRequestInternal {
         if (cfg) {
             cfg.setState({ ...this.cfg.getState(), ...cfg.getState() });

@@ -7,5 +7,4 @@
  * @public
  * @author Санников К.А.
  */
-
 export { default as Config } from 'Application/_Config/Config';
