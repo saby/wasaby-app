@@ -1,5 +1,4 @@
 /// <amd-module name="Application/_Interface/IEnv" />
-import Config from 'Application/_Config/Config';
 import { IConfig } from 'Application/_Interface/IConfig';
 import { IConsole } from 'Application/_Interface/IConsole';
 import { ICookie } from 'Application/_Interface/ICookie';
