@@ -1,13 +1,13 @@
 /// <amd-module name="Application/_Env/NodeJS/Env" />
-import Cookie from 'Application/_Env/NodeJS/Cookie';
-import Console from 'Application/_Env/NodeJS/Console';
-import Location from 'Application/_Env/NodeJS/Location';
-import {
-    IConsole, ICookie, IEnv, ILocation, IStoreMap,
-    IRequest, IRequestInternal
-} from 'Application/Interface';
 import { Config } from 'Application/Config';
+import {
+    IConsole, ICookie, IEnv, ILocation, IRequest,
+    IRequestInternal, IStoreMap
+} from 'Application/Interface';
 import Request from 'Application/Request';
+import Console from 'Application/_Env/NodeJS/Console';
+import Cookie from 'Application/_Env/NodeJS/Cookie';
+import Location from 'Application/_Env/NodeJS/Location';
 
 let appRequest: IRequestInternal;
 /**

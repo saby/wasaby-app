@@ -1,14 +1,13 @@
 .genie
 .vscode
 node_modules
-application
 build-ui
 src/**/*.js
 test/unit/*.js
 !src/tslib.js
 test/server/src
 build-ui
-application
+/application
 _*
 *.lock
 *.log

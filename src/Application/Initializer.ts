@@ -1,9 +1,9 @@
 /// <amd-module name="Application/Initializer" />
+import { Config } from 'Application/Config';
 import { App } from 'Application/Env';
 import { IEnv } from "Application/_Interface/IEnv";
 import { ISerializableState } from 'Application/_Interface/ISerializableState';
 import { IStateReceiver } from "Application/_Interface/IStateReceiver";
-import { Config } from 'Application/Config';
 
 export const startRequest = App.startRequest;
 export const isInit = App.isInit;
@@ -29,7 +29,7 @@ export default function (cfg?: Record<string, any>, env?: IEnv, sr?: IStateRecei
     //#region
     // !REMOVE
     if (env instanceof Function) {
-        // @ts-ignore 
+        // @ts-ignore
         env = new env(new Config(cfg));
     }
     //#endregion

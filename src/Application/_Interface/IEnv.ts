@@ -1,11 +1,11 @@
 /// <amd-module name="Application/_Interface/IEnv" />
 import Config from 'Application/_Config/Config';
+import { IConfig } from 'Application/_Interface/IConfig';
 import { IConsole } from 'Application/_Interface/IConsole';
 import { ICookie } from 'Application/_Interface/ICookie';
 import { ILocation } from 'Application/_Interface/ILocation';
 import { IRequest, IRequestInternal } from 'Application/_Interface/IRequest';
 import { IStoreMap } from 'Application/_Interface/IStore';
-import { IConfig } from 'Application/_Interface/IConfig';
 
 /**
  * Интерфейс IEnv

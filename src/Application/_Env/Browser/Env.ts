@@ -1,4 +1,6 @@
 /// <amd-module name='Application/_Env/Browser/Env' />
+import { Config } from "Application/Config";
+import Request, { Store } from 'Application/Request';
 import Cookie from 'Application/_Env/Browser/Cookie';
 import Console, { LogLevel } from 'Application/_Env/Console';
 import ObjectStore from 'Application/_Env/ObjectStore';
@@ -6,10 +8,8 @@ import { IConsole } from 'Application/_Interface/IConsole';
 import { ICookie } from 'Application/_Interface/ICookie';
 import { IEnv } from 'Application/_Interface/IEnv';
 import { ILocation } from 'Application/_Interface/ILocation';
+import { IRequest, IRequestInternal } from 'Application/_Interface/IRequest';
 import { IStore, IStoreMap } from 'Application/_Interface/IStore';
-import { Config } from "Application/Config";
-import Request, { Store } from 'Application/Request';
-import { IRequestInternal, IRequest } from 'Application/_Interface/IRequest';
 
 /**
  * Браузерное окружение
