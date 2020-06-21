@@ -1,5 +1,4 @@
 /// <amd-module name="Application/Initializer" />
-import { Config } from 'Application/Config';
 import { App } from 'Application/Env';
 import { IEnv } from "Application/_Interface/IEnv";
 import { ISerializableState } from 'Application/_Interface/ISerializableState';
