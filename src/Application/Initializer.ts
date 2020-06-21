@@ -30,7 +30,7 @@ export default function (cfg?: Record<string, any>, env?: IEnv, sr?: IStateRecei
     // !REMOVE
     if (env instanceof Function) {
         // @ts-ignore
-        env = new env(new Config(cfg));
+        env = new env(cfg);
     }
     //#endregion
     new App(cfg, env, sr);
