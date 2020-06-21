@@ -12,7 +12,10 @@ import Request from 'Application/Request';
 let appRequest: IRequestInternal;
 /**
  * Неполноценное окружение для запуска Application под NodeJS
- * Используется в тестах, билдере, везде где нет request'a
+ * Используется в тестах, билдере, везде, где нет request'a
+ * @class Application/_Env/NodeJS/Env
+ * @public
+ * @implements {Application/_Interface/IEnv}
  */
 export default class implements IEnv {
     initRequest: boolean = true;
@@ -20,11 +23,13 @@ export default class implements IEnv {
     cookie: ICookie;
     location: ILocation;
     storages: IStoreMap;
+    private cfg: Config;
 
-    constructor (private cfg: Config = new Config()) {
+    constructor(data: Record<string, any>) {
+        this.cfg = new Config(data);
         this.location = new Location();
         this.console = new Console();
-        let logLevel = cfg.get('Application/Env.LogLevel');
+        let logLevel = this.cfg.get('Application/Env.LogLevel');
         if (logLevel !== undefined) {
             logLevel = typeof logLevel === 'number' ? logLevel : parseInt(logLevel.toString(), 10);
             this.console.setLogLevel(logLevel);

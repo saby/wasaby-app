@@ -13,7 +13,7 @@ export default class App {
 
     constructor (
         cfg?: Record<string, any>,
-        private env: IEnv = new Env(new Config(cfg)),
+        private env: IEnv = new Env(cfg),
         stateReceiver: IStateReceiver = new StateReceiver(),
     ) {
         App.instance = this;

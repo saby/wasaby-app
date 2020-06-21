@@ -378,7 +378,6 @@ declare module "Application/_Env/Browser/Env" {
     import { IEnv } from 'Application/_Interface/IEnv';
     import { ILocation } from 'Application/_Interface/ILocation';
     import { IStoreMap } from 'Application/_Interface/IStore';
-    import { Config } from "Application/Config";
     import { IRequestInternal, IRequest } from 'Application/_Interface/IRequest';
     /**
      * Класс EnvBrowser
@@ -388,7 +387,6 @@ declare module "Application/_Env/Browser/Env" {
      * @public
      */
     export default class EnvBrowser implements IEnv {
-        private cfg;
         initRequest: boolean;
         private _request;
         /**
@@ -411,7 +409,8 @@ declare module "Application/_Env/Browser/Env" {
          * @name Application/_Env/Browser/Env#storages
          */
         storages: IStoreMap;
-        constructor(cfg?: Config);
+        private cfg;
+        constructor(data: Record<string, any>);
         getRequest(): IRequest;
         createRequest(): IRequestInternal;
     }
@@ -493,13 +492,13 @@ declare module "Application/_Env/NodeJS/Env" {
      * Используется в тестах, билдере, везде где нет request'a
      */
     export default class implements IEnv {
-        private cfg;
         initRequest: boolean;
         console: IConsole;
         cookie: ICookie;
         location: ILocation;
         storages: IStoreMap;
-        constructor(cfg?: Config);
+        private cfg;
+        constructor(data: Record<string, any>);
         getRequest(): IRequest;
         createRequest(cfg: Config): IRequestInternal;
     }

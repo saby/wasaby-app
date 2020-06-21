@@ -12,10 +12,11 @@ import Request, { Store } from 'Application/Request';
 import { IRequestInternal, IRequest } from 'Application/_Interface/IRequest';
 
 /**
+ * Браузерное окружение
  * Класс EnvBrowser
  * @class Application/_Env/Browser/Env
- * @author Санников К.А..
- * @implements Application/_Interface/IEnv
+ * @author Санников К.А.
+ * @implements {Application/_Interface/IEnv}
  * @public
  */
 export default class EnvBrowser implements IEnv {
@@ -42,11 +43,14 @@ export default class EnvBrowser implements IEnv {
      */
     storages: IStoreMap;
 
-    constructor (private cfg: Config = new Config()) {
+    private cfg: Config;
+
+    constructor(data: Record<string, any>) {
+        this.cfg = new Config(data);
         this.location = window.location;
         this.console = new Console(window.console);
-        if (cfg.get("Application/Env.LogLevel") !== undefined) {
-            this.console.setLogLevel(<LogLevel> cfg.get("Application/Env.LogLevel"));
+        if (this.cfg.get("Application/Env.LogLevel") !== undefined) {
+            this.console.setLogLevel(<LogLevel> this.cfg.get("Application/Env.LogLevel"));
         }
 
         this.cookie = new Cookie();

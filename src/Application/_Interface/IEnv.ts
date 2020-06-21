@@ -12,7 +12,6 @@ import { IConfig } from 'Application/_Interface/IConfig';
  * @interface Application/_Interface/IEnv
  * @public
  * @author Санников К.А.
- * @see Application/Interface/IEnv/IEnvFactory
  */
 export interface IEnv {
     /** Инициализировать request при старте приложения */
@@ -39,28 +38,4 @@ export interface IEnv {
 /**
  * @name Application/_Interface/IEnv#storages
  * @cfg {Application/_Interface/IStoreMap} storages
- */
-/**
- * getGlobal
- * @function
- * @name Application/_Interface/IEnv#getGlobal
- * @return {IRequest|undefined}
- */
-
-/**
- * Интерфейс IEnvFactory
- * @interface Application/Interface/IEnv/IEnvFactory
- * @author Санников К.А.
- */
-export interface IEnvFactory {
-    create(config: Config): IEnv;
-    /** Создавать ли Request при инициализации приложения */
-    initRequest: boolean;
-}
-/**
- * Создать IEnv
- * @function
- * @name Application/_Interface/IEnvFactory#create
- * @param {Application/_Config/Config} config
- * @return {IEnv}
  */
