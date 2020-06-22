@@ -39,7 +39,7 @@ export const parseQueryGet = (query: string): PARAMS_SET => extractQuery(query, 
 /**
  * Извлекает параметры всех типов
  * @param {String} query Строка с get и hash параметрами
- * @returns {Object}
+ * @returns {Object} 
  */
 export function extractQuery(query: string, param: string): PARAMS_SET {
     if (query.indexOf(param) === -1) {

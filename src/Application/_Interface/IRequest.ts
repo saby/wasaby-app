@@ -59,4 +59,4 @@ export interface IRequest {
 
 export interface IRequestInternal extends IRequest {
     setStateReceiver(stateReceiver: IStateReceiver): void;
-}
+} 

@@ -32,7 +32,7 @@ export interface IStateReceiver {
      * @param {Application/_Interface/ISerializableState} component Сериализируемый компонент.
      */
     register(uid: string, component: ISerializableState): void;
-
+    
     /**
      * Отменить регистрацию по идентификатору инстанса.
      * @param {String} uid Идентификатор инстанса.
