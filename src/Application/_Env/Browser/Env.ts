@@ -1,6 +1,4 @@
 /// <amd-module name='Application/_Env/Browser/Env' />
-import { Config } from "Application/Config";
-import Request, { Store } from 'Application/Request';
 import Cookie from 'Application/_Env/Browser/Cookie';
 import Console, { LogLevel } from 'Application/_Env/Console';
 import ObjectStore from 'Application/_Env/ObjectStore';
@@ -8,30 +6,30 @@ import { IConsole } from 'Application/_Interface/IConsole';
 import { ICookie } from 'Application/_Interface/ICookie';
 import { IEnv } from 'Application/_Interface/IEnv';
 import { ILocation } from 'Application/_Interface/ILocation';
-import { IRequest, IRequestInternal } from 'Application/_Interface/IRequest';
 import { IStore, IStoreMap } from 'Application/_Interface/IStore';
+import { Config } from "Application/Config";
+import Request, { Store } from 'Application/Request';
+import { IRequest, IRequestInternal } from 'Application/_Interface/IRequest';
 
 /**
- * Браузерное окружение
  * Класс EnvBrowser
  * @class Application/_Env/Browser/Env
- * @author Санников К.А.
- * @implements {Application/_Interface/IEnv}
+ * @author Санников К.А..
+ * @implements Application/_Interface/IEnv
  * @public
  */
 export default class EnvBrowser implements IEnv {
     initRequest: boolean = true;
-    private _request: IRequest;
     /**
      * @cfg {Application/_Interface/IConsole} console
      * @name Application/_Env/Browser/Env#console
      */
-    console: IConsole;
+    console: IConsole
     /**
      * @cfg {Application/_Interface/ICookie} cookie
      * @name Application/_Env/Browser/Env#cookie
      */
-    cookie: ICookie;
+    cookie: ICookie
     /**
      * @cfg {Application/_Interface/ILocation} location
      * @name Application/_Env/Browser/Env#location
@@ -42,15 +40,15 @@ export default class EnvBrowser implements IEnv {
      * @name Application/_Env/Browser/Env#storages
      */
     storages: IStoreMap;
+    global = { appRequest: undefined };
 
-    private cfg: Config;
+    private _request: IRequest;
 
-    constructor(data: Record<string, any>) {
-        this.cfg = new Config(data);
+    constructor(private cfg: Config = new Config()) {
         this.location = window.location;
         this.console = new Console(window.console);
-        if (this.cfg.get("Application/Env.LogLevel") !== undefined) {
-            this.console.setLogLevel(<LogLevel> this.cfg.get("Application/Env.LogLevel"));
+        if (cfg.get("Application/Env.LogLevel") !== undefined) {
+            this.console.setLogLevel(<LogLevel>cfg.get("Application/Env.LogLevel"));
         }
 
         this.cookie = new Cookie();
@@ -73,8 +71,22 @@ export default class EnvBrowser implements IEnv {
         this.storages = {
             "localStorage": localStorage,
             "sessionStorage": sessionStorage
-        };
+        }
     }
+    //#region удалить
+    /**
+     * Получить глобальную сущность
+     */
+    getGlobal() {
+        return this.global;
+    }
+    /**
+     * Создать новую сущность
+     */
+    static create(cfg: Config): IEnv {
+        return new EnvBrowser(cfg);
+    }
+    //#endregion
     getRequest(): IRequest {
         return this._request;
     }

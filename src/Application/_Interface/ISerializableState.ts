@@ -1,4 +1,6 @@
 /// <amd-module name="Application/_Interface/ISerializableState" />
+import { HashMap, Native } from "Application/_Type";
+
 /**
  * Интерфейс, который нужно поддержать компонентам, что бы их можно было сериализовать
  * и восстановливать их состояние в любой момент
@@ -12,15 +14,15 @@
  * }
  * class Control implements ISerializableState {
  *    private __uid: string;
- *    protected _state: Record<string, any>;
+ *    protected _state: HashMap<Native>;
  *    constructor(...args) {
  *        stateReceiver.register(this.__uid, this);
  *        // ...
  *    }
- *    getState(): Record<string, any> {
+ *    getState(): HashMap<Native> {
  *        return this._state || {}
  *    }
- *    setState(data: Record<string, any>): void {
+ *    setState(data: HashMap<Native>): void {
  *        this._state = {
  *            ...DEFAULT_STATE,
  *            ...data
@@ -38,10 +40,10 @@ export interface ISerializableState {
     /**
      * Получаем состояние для сериализации
      */
-    getState(): Record<string, any>;
+    getState(): HashMap<Native>;
 
     /**
      * Устанавливаем состояния после десериализации
      */
-    setState(data: Record<string, any>): void;
+    setState(data: HashMap<Native>): void;
 }

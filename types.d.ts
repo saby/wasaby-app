@@ -9,10 +9,68 @@ declare module "Application/Config" {
      */
     export { default as Config } from 'Application/_Config/Config';
 }
+/// <amd-module name="Application/_Interface/IEnv" />
+declare module "Application/_Interface/IEnv" {
+    import Config from 'Application/_Config/Config';
+    import { IConsole } from 'Application/_Interface/IConsole';
+    import { ICookie } from 'Application/_Interface/ICookie';
+    import { ILocation } from 'Application/_Interface/ILocation';
+    import { IRequest, IRequestInternal } from 'Application/_Interface/IRequest';
+    import { IStoreMap } from 'Application/_Interface/IStore';
+    import { IConfig } from 'Application/_Interface/IConfig';
+    /**
+     * Интерфейс IEnv
+     * @interface Application/_Interface/IEnv
+     * @public
+     * @author Санников К.А.
+     * @see Application/Interface/IEnv/IEnvFactory
+     */
+    export interface IEnv {
+        /** Инициализировать request при старте приложения */
+        readonly initRequest: boolean;
+        console: IConsole;
+        cookie: ICookie;
+        location: ILocation;
+        storages: IStoreMap;
+        getGlobal: () => {
+            appRequest: IRequest | undefined;
+        };
+        getRequest(): IRequest;
+        createRequest: (cfg: IConfig) => IRequestInternal;
+    }
+    /**
+     * @name Application/_Interface/IEnv#console
+     * @cfg {Application/_Interface/IConsole} console
+     */
+    /**
+     * @name Application/_Interface/IEnv#cookie
+     * @cfg {Application/_Interface/ICookie} cookie
+     */
+    /**
+     * @name Application/_Interface/IEnv#location
+     * @cfg {Application/_Interface/ILocation} location
+     */
+    /**
+     * @name Application/_Interface/IEnv#storages
+     * @cfg {Application/_Interface/IStoreMap} storages
+     */
+    /**
+     * getGlobal
+     * @function
+     * @name Application/_Interface/IEnv#getGlobal
+     * @return {IRequest|undefined}
+     */
+    /**
+     * Интерфейс IEnvFactory
+     * @interface Application/Interface/IEnv/IEnvFactory
+     * @author Санников К.А.
+     */
+    export interface IEnvFactory {
+        create(config: Config): IEnv;
+    }
+}
 /// <amd-module name="Application/Env" />
 declare module "Application/Env" {
-    export { default as EnvBrowser } from 'Application/_Env/Browser/Env';
-    export { default as EnvNodeJS } from 'Application/_Env/NodeJS/Env';
     import { PARAMS } from 'Application/_Env/QueryParams';
     export { default as StateReceiver } from 'Application/_Env/Browser/StateReceiver';
     export { LogLevel } from 'Application/_Env/Console';
@@ -21,22 +79,10 @@ declare module "Application/Env" {
     import { ILocation } from 'Application/_Interface/ILocation';
     import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
     import { IStore } from 'Application/_Interface/IStore';
+    import { IEnvFactory } from "Application/_Interface/IEnv";
     import App from 'Application/_Env/App';
     export { App };
-    /**
-     * Модуль-библиотека для работы с окружением.
-     * @remark
-     * Содержит реализации интерфейсов из {@link Application/Interface}.
-     * @library Application/Env
-     * @includes EnvBrowser Application/_Env/Browser/Env
-     * @includes StateReceiver Application/_Env/Browser/StateReceiver
-     * @includes cookie Application/Env/cookie
-     * @includes location Application/Env/location
-     * @includes logger Application/Env/logger
-     * @includes LogLevel Application/Env/Console
-     * @includes query Application/Env/query
-     * @author Санников К.А.
-     */
+    export const EnvFactory: IEnvFactory;
     /**
      * @module
      * @name Application/Env
@@ -110,12 +156,15 @@ declare module "Application/Env" {
 }
 /// <amd-module name="Application/Initializer" />
 declare module "Application/Initializer" {
-    import { IEnv } from "Application/_Interface/IEnv";
+    import { IEnvFactory } from "Application/_Interface/IEnv";
+    import { ISerializableState } from 'Application/_Interface/ISerializableState';
     import { IStateReceiver } from "Application/_Interface/IStateReceiver";
+    import { HashMap } from "Application/_Type";
+    import Request from 'Application/Request';
+    export default function init(data?: HashMap<string>, Env?: IEnvFactory, stateReceiver?: IStateReceiver): Request;
+    export function registerComponent(uid: string, component: ISerializableState): void;
+    export function isInit(): boolean;
     export const startRequest: any;
-    export const isInit: any;
-    export default function (cfg?: Record<string, any>, env?: IEnv, sr?: IStateReceiver): void;
-    export const registerComponent: (uid: string, component: any) => void;
 }
 /// <amd-module name="Application/Interface" />
 declare module "Application/Interface" {
@@ -158,10 +207,17 @@ declare module "Application/Request" {
     export default Request;
     export { default as Store } from "Application/_Request/Store";
 }
+/// <amd-module name="Application/Type" />
+declare module "Application/Type" {
+    export type Native = string | number | boolean;
+    export type HashMap<T> = {
+        [key: string]: T;
+    };
+}
 /// <amd-module name="Application/_Config/Config" />
 declare module "Application/_Config/Config" {
     import { ISerializableState } from "Application/_Interface/ISerializableState";
-    type IData = Record<string, any>;
+    import { HashMap, Native } from 'Application/_Type';
     /**
      * Класс Config
      * @class Application/_Config/Config
@@ -172,23 +228,23 @@ declare module "Application/_Config/Config" {
     export default class Config implements ISerializableState {
         private data;
         private __uid;
-        constructor(data?: IData, __uid?: string);
+        constructor(data?: HashMap<Native>, __uid?: string);
         /**
          * Получить данные по ключу
          * @param {String} key
          * @return {Native}
          */
-        get(key: keyof IData): IData[keyof IData];
+        get(key: string): Native;
         /**
          * Получить состояние
-         * @return {IData}
+         * @return {HashMap<Native>}
          */
-        getState(): IData;
+        getState(): HashMap<Native>;
         /**
          * Задать состояние
-         * @param {IData} data
+         * @param {HashMap<Native>} data
          */
-        setState(data: IData): void;
+        setState(data: HashMap<Native>): void;
         /**
          * Получить UID
          * @return {String}
@@ -378,7 +434,8 @@ declare module "Application/_Env/Browser/Env" {
     import { IEnv } from 'Application/_Interface/IEnv';
     import { ILocation } from 'Application/_Interface/ILocation';
     import { IStoreMap } from 'Application/_Interface/IStore';
-    import { IRequestInternal, IRequest } from 'Application/_Interface/IRequest';
+    import { Config } from "Application/Config";
+    import { IRequest, IRequestInternal } from 'Application/_Interface/IRequest';
     /**
      * Класс EnvBrowser
      * @class Application/_Env/Browser/Env
@@ -387,8 +444,8 @@ declare module "Application/_Env/Browser/Env" {
      * @public
      */
     export default class EnvBrowser implements IEnv {
+        private cfg;
         initRequest: boolean;
-        private _request;
         /**
          * @cfg {Application/_Interface/IConsole} console
          * @name Application/_Env/Browser/Env#console
@@ -409,16 +466,30 @@ declare module "Application/_Env/Browser/Env" {
          * @name Application/_Env/Browser/Env#storages
          */
         storages: IStoreMap;
-        private cfg;
-        constructor(data: Record<string, any>);
+        global: {
+            appRequest: any;
+        };
+        private _request;
+        constructor(cfg?: Config);
+        /**
+         * Получить глобальную сущность
+         */
+        getGlobal(): {
+            appRequest: any;
+        };
+        /**
+         * Создать новую сущность
+         */
+        static create(cfg: Config): IEnv;
         getRequest(): IRequest;
         createRequest(): IRequestInternal;
     }
 }
 /// <amd-module name="Application/_Env/Browser/StateReceiver" />
 declare module "Application/_Env/Browser/StateReceiver" {
+    import { HashMap, Native } from "Application/_Type";
     import { IConsole, ISerializableState, IStateReceiver } from "Application/Interface";
-    type StateMap = Record<string, Record<string, any>>;
+    type StateMap = HashMap<HashMap<Native>>;
     /**
      * @typedef {Object} StateReceiverConfig
      * @property {StateMap} [states] states
@@ -491,15 +562,28 @@ declare module "Application/_Env/NodeJS/Env" {
      * Неполноценное окружение для запуска Application под NodeJS
      * Используется в тестах, билдере, везде где нет request'a
      */
-    export default class implements IEnv {
+    export default class EnvNodeJS implements IEnv {
+        private cfg;
         initRequest: boolean;
         console: IConsole;
         cookie: ICookie;
         location: ILocation;
         storages: IStoreMap;
-        private cfg;
-        constructor(data: Record<string, any>);
+        global: {
+            appRequest: any;
+        };
+        constructor(cfg?: Config);
         getRequest(): IRequest;
+        /**
+         * Получить глобальную сущность
+         */
+        getGlobal(): {
+            appRequest: any;
+        };
+        /**
+         * Создать новую сущность
+         */
+        static create(cfg: Config): IEnv;
         createRequest(cfg: Config): IRequestInternal;
     }
 }
@@ -524,7 +608,7 @@ declare module "Application/_Env/NodeJS/Location" {
 }
 /// <amd-module name="Application/_Interface/IConfig" />
 declare module "Application/_Interface/IConfig" {
-    type IData = Record<string, any>;
+    import { Native } from 'Application/_Type';
     /**
      * Интерфейс IConfig
      * @interface Application/_Interface/IConfig
@@ -537,8 +621,9 @@ declare module "Application/_Interface/IConfig" {
          * @function
          * @name Application/Interface/IConfig#get
          * @param {String} key
+         * @return {Native}
          */
-        get(key: keyof IData): IData[keyof IData];
+        get(key: string): Native;
     }
 }
 /// <amd-module name="Application/_Interface/IConsole" />
@@ -629,65 +714,6 @@ declare module "Application/_Interface/ICookie" {
         remove(key: string): void;
     }
 }
-/// <amd-module name="Application/_Interface/IEnv" />
-declare module "Application/_Interface/IEnv" {
-    import Config from 'Application/_Config/Config';
-    import { IConsole } from 'Application/_Interface/IConsole';
-    import { ICookie } from 'Application/_Interface/ICookie';
-    import { ILocation } from 'Application/_Interface/ILocation';
-    import { IRequest, IRequestInternal } from 'Application/_Interface/IRequest';
-    import { IStoreMap } from 'Application/_Interface/IStore';
-    import { IConfig } from 'Application/_Interface/IConfig';
-    /**
-     * Интерфейс IEnv
-     * @interface Application/_Interface/IEnv
-     * @public
-     * @author Санников К.А.
-     * @see Application/Interface/IEnv/IEnvFactory
-     */
-    export interface IEnv {
-        /** Инициализировать request при старте приложения */
-        readonly initRequest: boolean;
-        console: IConsole;
-        cookie: ICookie;
-        location: ILocation;
-        storages: IStoreMap;
-        getRequest(): IRequest;
-        createRequest: (cfg: IConfig) => IRequestInternal;
-    }
-    /**
-     * @name Application/_Interface/IEnv#console
-     * @cfg {Application/_Interface/IConsole} console
-     */
-    /**
-     * @name Application/_Interface/IEnv#cookie
-     * @cfg {Application/_Interface/ICookie} cookie
-     */
-    /**
-     * @name Application/_Interface/IEnv#location
-     * @cfg {Application/_Interface/ILocation} location
-     */
-    /**
-     * @name Application/_Interface/IEnv#storages
-     * @cfg {Application/_Interface/IStoreMap} storages
-     */
-    /**
-     * getGlobal
-     * @function
-     * @name Application/_Interface/IEnv#getGlobal
-     * @return {IRequest|undefined}
-     */
-    /**
-     * Интерфейс IEnvFactory
-     * @interface Application/Interface/IEnv/IEnvFactory
-     * @author Санников К.А.
-     */
-    export interface IEnvFactory {
-        create(config: Config): IEnv;
-        /** Создавать ли Request при инициализации приложения */
-        initRequest: boolean;
-    }
-}
 /// <amd-module name="Application/_Interface/ILocation" />
 declare module "Application/_Interface/ILocation" {
     /**
@@ -769,6 +795,7 @@ declare module "Application/_Interface/IRequest" {
 }
 /// <amd-module name="Application/_Interface/ISerializableState" />
 declare module "Application/_Interface/ISerializableState" {
+    import { HashMap, Native } from "Application/_Type";
     /**
      * Интерфейс, который нужно поддержать компонентам, что бы их можно было сериализовать
      * и восстановливать их состояние в любой момент
@@ -782,15 +809,15 @@ declare module "Application/_Interface/ISerializableState" {
      * }
      * class Control implements ISerializableState {
      *    private __uid: string;
-     *    protected _state: Record<string, any>;
+     *    protected _state: HashMap<Native>;
      *    constructor(...args) {
      *        stateReceiver.register(this.__uid, this);
      *        // ...
      *    }
-     *    getState(): Record<string, any> {
+     *    getState(): HashMap<Native> {
      *        return this._state || {}
      *    }
-     *    setState(data: Record<string, any>): void {
+     *    setState(data: HashMap<Native>): void {
      *        this._state = {
      *            ...DEFAULT_STATE,
      *            ...data
@@ -808,11 +835,11 @@ declare module "Application/_Interface/ISerializableState" {
         /**
          * Получаем состояние для сериализации
          */
-        getState(): Record<string, any>;
+        getState(): HashMap<Native>;
         /**
          * Устанавливаем состояния после десериализации
          */
-        setState(data: Record<string, any>): void;
+        setState(data: HashMap<Native>): void;
     }
 }
 /// <amd-module name="Application/_Interface/IStateReceiver" />
@@ -936,14 +963,14 @@ declare module "Application/_Request/FakeWebStorage" {
 }
 /// <amd-module name="Application/_Request/Request" />
 declare module "Application/_Request/Request" {
-    import { Config } from "Application/Config";
     import { IConsole } from 'Application/_Interface/IConsole';
     import { ICookie } from 'Application/_Interface/ICookie';
     import { IEnv } from 'Application/_Interface/IEnv';
     import { ILocation } from 'Application/_Interface/ILocation';
-    import { IRequestInternal } from 'Application/_Interface/IRequest';
+    import { IRequest, IRequestInternal } from 'Application/_Interface/IRequest';
     import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
     import { IStore } from 'Application/_Interface/IStore';
+    import { Config } from "Application/Config";
     /**
      * Класс Request
      * @class Application/_Request/Request
@@ -1006,6 +1033,22 @@ declare module "Application/_Request/Request" {
          * Получить Config
          */
         getConfig(): Config;
+        /**
+         * Задать текущий запрос
+         * @function
+         * @name Application/_Request/Request#setCurrent
+         * @param {Application/_Interface/IRequest} request
+         * @static
+         */
+        static setCurrent(request: IRequest): void;
+        /**
+         * Получить текущий запрос
+         * @function
+         * @name Application/_Request/Request#getCurrent
+         * @return {Application/_Interface/IRequest}
+         * @static
+         */
+        static getCurrent(): IRequest | undefined;
     }
 }
 /// <amd-module name="Application/_Request/Store" />

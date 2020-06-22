@@ -1,16 +1,20 @@
 /// <amd-module name="Application/Env" />
-export { default as EnvBrowser } from 'Application/_Env/Browser/Env';
-export { default as EnvNodeJS } from 'Application/_Env/NodeJS/Env';
-import { PARAMS, parseQueryGet, parseQueryHash } from 'Application/_Env/QueryParams';
+import EnvBrowser from 'Application/_Env/Browser/Env';
+import EnvNodeJS from 'Application/_Env/NodeJS/Env';
+import { parseQueryHash, parseQueryGet, PARAMS } from 'Application/_Env/QueryParams';
 export { default as StateReceiver } from 'Application/_Env/Browser/StateReceiver';
 export { LogLevel } from 'Application/_Env/Console';
-import App from 'Application/_Env/App';
 import { IConsole } from 'Application/_Interface/IConsole';
 import { ICookie } from 'Application/_Interface/ICookie';
 import { ILocation } from 'Application/_Interface/ILocation';
 import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
 import { IStore } from 'Application/_Interface/IStore';
+import { IEnvFactory } from './_Interface/IEnv';
+import Request from 'Application/Request';
+import App from 'Application/_Env/App';
 export { App };
+export const EnvFactory: IEnvFactory = (typeof window === 'undefined') ? EnvNodeJS : EnvBrowser;
+
 /**
  * Модуль-библиотека для работы с окружением.
  * @remark
@@ -26,6 +30,15 @@ export { App };
  * @author Санников К.А.
  */
 
+function isAppInit() {
+    if (!Request.getCurrent()) {
+        try {
+            throw new Error("Application isn't initialized!");
+        } catch (e) {
+            throw new Error(e.stack);
+        }
+    }
+}
 /**
  * @module
  * @name Application/Env
@@ -71,35 +84,35 @@ export const query: PARAMS = {
  */
 export const location: ILocation = {
     get protocol() {
-        return App.getRequest().location.protocol;
+        return Request.getCurrent().location.protocol;
     },
 
     get host() {
-        return App.getRequest().location.host;
+        return Request.getCurrent().location.host;
     },
 
     get hostname() {
-        return App.getRequest().location.hostname;
+        return Request.getCurrent().location.hostname;
     },
 
     get port() {
-        return App.getRequest().location.port;
+        return Request.getCurrent().location.port;
     },
 
     get href() {
-        return App.getRequest().location.href;
+        return Request.getCurrent().location.href;
     },
 
     get pathname() {
-        return App.getRequest().location.pathname;
+        return Request.getCurrent().location.pathname;
     },
 
     get search() {
-        return App.getRequest().location.search;
+        return Request.getCurrent().location.search;
     },
 
     get hash() {
-        return App.getRequest().location.hash;
+        return Request.getCurrent().location.hash;
     }
 };
 
@@ -113,23 +126,23 @@ export const location: ILocation = {
  */
 export const cookie: ICookie = {
     get(key) {
-        return App.getRequest().cookie.get(key);
+        return Request.getCurrent().cookie.get(key);
     },
 
     set(key, value, options?) {
-        return App.getRequest().cookie.set(key, value, options);
+        return Request.getCurrent().cookie.set(key, value, options);
     },
 
     remove(key) {
-        return App.getRequest().cookie.remove(key);
+        return Request.getCurrent().cookie.remove(key);
     },
 
     getKeys() {
-        return App.getRequest().cookie.getKeys();
+        return Request.getCurrent().cookie.getKeys();
     },
 
     toObject() {
-        return App.getRequest().cookie.toObject();
+        return Request.getCurrent().cookie.toObject();
     }
 };
 
@@ -143,30 +156,30 @@ export const cookie: ICookie = {
  */
 export const logger: IConsole = {
     setLogLevel(level: number) {
-        return App.getRequest().console.setLogLevel(level);
+        return Request.getCurrent().console.setLogLevel(level);
     },
 
     getLogLevel() {
-        return App.getRequest().console.getLogLevel();
+        return Request.getCurrent().console.getLogLevel();
     },
 
     log(...args) {
-        const console = App.getRequest().console;
+        const console = Request.getCurrent().console;
         return console.log.apply(console, args);
     },
 
     info(...args) {
-        const console = App.getRequest().console;
+        const console = Request.getCurrent().console;
         return console.info.apply(console, args);
     },
 
     warn(...args) {
-        const console = App.getRequest().console;
+        const console = Request.getCurrent().console;
         return console.warn.apply(console, args);
     },
 
     error(...args) {
-        const console = App.getRequest().console;
+        const console = Request.getCurrent().console;
         return console.error.apply(console, args);
     }
 };
@@ -179,7 +192,8 @@ export const logger: IConsole = {
  * @see Application/_Interface/IStateReceiver
  */
 export function getStateReceiver(): IStateReceiver {
-    return App.getRequest().getStateReceiver();
+    isAppInit();
+    return Request.getCurrent().getStateReceiver();
 }
 
 /**
@@ -191,7 +205,8 @@ export function getStateReceiver(): IStateReceiver {
  * @see Application/_Interface/IStore
  */
 export function getStore<T = Record<string, string>>(type: string, createDefaultStore?: () => IStore<T>): IStore<T> {
-    return App.getRequest().getStore<T>(type, createDefaultStore);
+    isAppInit();
+    return Request.getCurrent().getStore<T>(type, createDefaultStore);
 }
 
 /**
@@ -202,5 +217,6 @@ export function getStore<T = Record<string, string>>(type: string, createDefault
  * @param {Application/_Interface/IStore} store store
  */
 export function setStore<T = Record<string, string>>(type: string, store: IStore<T>) {
-    return App.getRequest().setStore<T>(type, store);
+    isAppInit();
+    return Request.getCurrent().setStore<T>(type, store);
 }
