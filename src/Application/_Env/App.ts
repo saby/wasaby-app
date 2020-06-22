@@ -36,9 +36,7 @@ export default class App {
 
     private static instance: App;
     static isInit(): boolean {
-        // ! FIXME
-        // return !!App.instance;
-        return !!App.instance?.env.getRequest();
+        return !!App.instance;
     }
     static getInstance(): App | never {
         if (App.instance) {
