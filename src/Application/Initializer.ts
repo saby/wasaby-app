@@ -12,17 +12,19 @@ export default function (cfg?: Record<string, any>, env?: IEnv, sr?: IStateRecei
         // !REMOVE
         if (env instanceof Function) {
             App.getRequest().console.warn(
-                new Error("Вместо экземпляра окружения передана EnvFactory!").stack
+                new Error(
+                    "Вместо экземпляра окружения передана EnvFactory!\n" +
+                    "Необходимо выписать задачу ответсвенному за Окружение (Application), приложить стек вызовов в debug режиме:\n"
+                ).stack
             );
         }
         //#endregion
         App.getRequest().console.warn(
-            "Повторная инициализация Application!\n" +
-            "Необходимо выписать задачу ответсвенному за Окружение (Application), приложить стек вызовов в debug режиме:\n" +
-            new Error("Повторный вызов Application").stack
+            new Error(
+                "Повторная инициализация Application!\n" +
+                "Необходимо выписать задачу ответсвенному за Окружение (Application), приложить стек вызовов в debug режиме:\n"
+            ).stack
         );
-        // !FIXME
-        App.startRequest(cfg, sr);
         return;
     }
     //#region
