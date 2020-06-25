@@ -8,52 +8,35 @@ enum LogLevel {
     llEXTENDED,
     llDEBUG
 }
-// declare function warningMsg(...args: string[]);
-// declare function errorMsg(...args: string[]);
 
-/**
- * Функция для отображения значения в консоле chrome-devtool при отладке
- */
-function globalConsole(level: string, args: any[]) {
-    if (typeof console !== 'object') {
-        return;
-    }
-    if (typeof console[level] !== 'function') {
-        return;
-    }
-
-    console[level].apply(undefined, args);
-}
-
-export default class Console implements IConsole {
-    private __logLevel: LogLevel;
+export default class NodeConsole implements IConsole {
+    private _logLevel: LogLevel;
 
     constructor() {
-        this.__logLevel = 2;  // пока не реализовано в СП: LogLevel.llSTANDARD;
-
+        this._logLevel = LogLevel.llSTANDARD;
     }
 
-    setLogLevel(mode: number) {
-        this.__logLevel = <LogLevel> mode;
+    setLogLevel(level: LogLevel): void {
+        this._logLevel = level;
     };
 
     getLogLevel(): number {
-        return this.__logLevel;
+        return this._logLevel;
     };
 
-    info(...args: string[]) {
-        globalConsole('info', args);
+    info(...args: string[]): void {
+        console.info(...args);
     };
 
-    log(...args: string[]) {
-        globalConsole('log', args);
+    log(...args: string[]): void {
+        console.log(...args);
     };
 
-    warn(...args: string[]) {
-        globalConsole('warn', args);
+    warn(...args: string[]): void {
+        console.warn(...args);
     };
 
-    error(...args: string[]) {
-        globalConsole('error', args);
+    error(...args: string[]): void {
+        console.error(...args);
     };
 }
