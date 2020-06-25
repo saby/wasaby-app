@@ -1,31 +1,35 @@
 /// <amd-module name="Application/_Env/NodeJS/Env" />
-import Cookie from 'Application/_Env/NodeJS/Cookie';
-import Console from 'Application/_Env/NodeJS/Console';
-import Location from 'Application/_Env/NodeJS/Location';
-import {
-    IConsole, ICookie, IEnv, ILocation, IStoreMap,
-    IRequest, IRequestInternal
-} from 'Application/Interface';
 import { Config } from 'Application/Config';
+import {
+    IConsole, ICookie, IEnv, ILocation, IRequest,
+    IRequestInternal, IStoreMap
+} from 'Application/Interface';
 import Request from 'Application/Request';
+import Console from 'Application/_Env/NodeJS/Console';
+import Cookie from 'Application/_Env/NodeJS/Cookie';
+import Location from 'Application/_Env/NodeJS/Location';
 
 let appRequest: IRequestInternal;
 /**
  * Неполноценное окружение для запуска Application под NodeJS
- * Используется в тестах, билдере, везде где нет request'a
+ * Используется в тестах, билдере, везде, где нет request'a
+ * @class Application/_Env/NodeJS/Env
+ * @public
+ * @implements {Application/_Interface/IEnv}
  */
-export default class EnvNodeJS implements IEnv {
+export default class implements IEnv {
     initRequest: boolean = true;
     console: IConsole;
     cookie: ICookie;
     location: ILocation;
     storages: IStoreMap;
-    global = { appRequest: undefined };
+    private cfg: Config;
 
-    constructor (private cfg: Config = new Config()) {
+    constructor(data: Record<string, any>) {
+        this.cfg = new Config(data);
         this.location = new Location();
         this.console = new Console();
-        let logLevel = cfg.get('Application/Env.LogLevel');
+        let logLevel = this.cfg.get('Application/Env.LogLevel');
         if (logLevel !== undefined) {
             logLevel = typeof logLevel === 'number' ? logLevel : parseInt(logLevel.toString(), 10);
             this.console.setLogLevel(logLevel);
@@ -38,20 +42,6 @@ export default class EnvNodeJS implements IEnv {
     getRequest(): IRequest {
         return appRequest;
     }
-    //#region удалить https://online.sbis.ru/opendoc.html?guid=59f87611-f87f-404e-bb27-06350248d6b2
-    /**
-     * Получить глобальную сущность
-     */
-    getGlobal() {
-        return this.global;
-    }
-    /**
-     * Создать новую сущность
-     */
-    static create(cfg: Config): IEnv {
-        return new EnvNodeJS(cfg);
-    }
-    //#endregion
     createRequest(cfg: Config): IRequestInternal {
         if (cfg) {
             cfg.setState({ ...this.cfg.getState(), ...cfg.getState() });

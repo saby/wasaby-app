@@ -1,8 +1,7 @@
 /// <amd-module name="Application/_Env/Browser/StateReceiver" />
-import { HashMap, Native } from "Application/_Type";
 import { IConsole, ISerializableState, IStateReceiver } from "Application/Interface";
 
-type StateMap = HashMap<HashMap<Native>>;
+type StateMap = Record<string, Record<string, any>>;
 
 /**
  * @typedef {Object} StateReceiverConfig
@@ -26,7 +25,7 @@ export type StateReceiverConfig = {
 // tslint:disable-next-line
 export default class StateReceiver implements IStateReceiver {
     private __states: StateMap;
-    private __components: HashMap<ISerializableState> = Object.create(null);
+    private __components: Record<string, ISerializableState> = Object.create(null);
     private readonly __console: IConsole;
     constructor(
         states = Object.create(null),
