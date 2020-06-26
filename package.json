@@ -27,7 +27,8 @@
       "declare": "saby-typescript --compiler -p ./tsconfig.declare.json",
       "server": "wasaby-cli --tasks=startTest --server",
       "test": "wasaby-cli --tasks=startTest --node --report=console",
-      "update-cli-store": "wasaby-cli --tasks=initStore"
+      "update-cli-store": "wasaby-cli --tasks=initStore",
+      "lint:fix": "tslint ./src/**/*.ts --fix"
    },
    "demo": {
       "port": 8000
@@ -37,5 +38,8 @@
       "express": "^4.16.4",
       "requirejs": "^2.3.6",
       "wasaby-cli": "git+https://platform-git.sbis.ru/saby/wasaby-cli.git#rc-20.5000"
+   },
+   "dependencies": {
+      "tslint": "^6.1.2"
    }
 }
