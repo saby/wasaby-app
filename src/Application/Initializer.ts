@@ -12,6 +12,7 @@ export default function init(
     data?: HashMap<string>,
     Env: IEnvFactory = EnvFactory,
     stateReceiver: IStateReceiver = new StateReceiver(),
+    _force: boolean = false
 ): Request {
     // if (isInit()) {
     //     App.startRequest(data, stateReceiver);
