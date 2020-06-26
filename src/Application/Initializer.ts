@@ -26,7 +26,7 @@ export default function (cfg?: Record<string, any>, env?: IEnv, sr?: IStateRecei
             ).stack
         );
         //#region
-        // !REMOVE
+        // !REMOVE поправить в ws, permission
         force && App.startRequest(cfg, sr);
         //#endregion
         return;
