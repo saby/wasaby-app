@@ -6,7 +6,7 @@ import { IStateReceiver } from "Application/_Interface/IStateReceiver";
 
 export const startRequest = App.startRequest;
 export const isInit = App.isInit;
-export default function (cfg?: Record<string, any>, env?: IEnv, sr?: IStateReceiver) {
+export default function (cfg?: Record<string, any>, env?: IEnv, sr?: IStateReceiver, force: boolean = false) {
     if (isInit()) {
         //#region
         // !REMOVE
@@ -25,6 +25,10 @@ export default function (cfg?: Record<string, any>, env?: IEnv, sr?: IStateRecei
                 "Необходимо выписать задачу ответсвенному за Окружение (Application), приложить стек вызовов в debug режиме:\n"
             ).stack
         );
+        //#region
+        // !REMOVE
+        force && App.startRequest(cfg, sr);
+        //#endregion
         return;
     }
     //#region
