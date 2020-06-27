@@ -18,7 +18,7 @@ const checkConsoleMethod = (console, method: string) => console && (typeof conso
  * @name Application/Env/Console/LogLevel
  * @author Санников К.А.
  * @todo Описать как typedef, когда это будет поддерживать автодока
- * 
+ *
  */
 export enum LogLevel {
     /**

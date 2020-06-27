@@ -1,5 +1,5 @@
 /// <amd-module name="Application/Request" />
-import { default as Request } from "Application/_Request/Request";
+import { default as Request } from 'Application/_Request/Request';
 
 /**
  * Библиотека c классами для работы с запросами и хранилищем
@@ -11,4 +11,4 @@ import { default as Request } from "Application/_Request/Request";
  */
 
 export default Request;
-export { default as Store } from "Application/_Request/Store";
+export { default as Store } from 'Application/_Request/Store';
