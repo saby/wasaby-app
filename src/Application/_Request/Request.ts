@@ -53,7 +53,6 @@ export default class AppRequest implements IRequestInternal {
         let {
             console,
             cookie,
-            storages,
             location
         } = env;
 
