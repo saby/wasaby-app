@@ -4,6 +4,17 @@ import { IEnv } from "Application/_Interface/IEnv";
 import { ISerializableState } from 'Application/_Interface/ISerializableState';
 import { IStateReceiver } from "Application/_Interface/IStateReceiver";
 
+if (typeof process !== 'undefined') {
+    const global = (1, eval)('this');
+    Object.defineProperty(global, 'window', {
+        get: () => this.window,
+        set: (v) => {
+            this.window = v;
+            console.trace();
+            debugger;
+        }
+    });
+}
 export const startRequest = App.startRequest;
 export const isInit = App.isInit;
 export default function (cfg?: Record<string, any>, env?: IEnv, sr?: IStateReceiver, force: boolean = false) {
