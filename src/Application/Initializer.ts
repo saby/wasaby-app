@@ -9,8 +9,9 @@ if (typeof process !== 'undefined') {
     Object.defineProperty(global, 'window', {
         get: () => this.window,
         set: (v) => {
+            const e = new Error('!Define window on PS!');
+            console.error(e.stack);
             this.window = v;
-            console.trace();
             debugger;
         }
     });
