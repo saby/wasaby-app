@@ -47,13 +47,12 @@ export default class AppRequest implements IRequestInternal {
     cookie: ICookie;
     location: ILocation;
     private __stateReceiver: IStateReceiver;
-    private readonly __storages: IStoreMap;
+    private readonly __storages: IStoreMap = {};
 
     constructor(env: IEnv, config: Config) {
         let {
             console,
             cookie,
-            storages,
             location
         } = env;
 
@@ -61,7 +60,6 @@ export default class AppRequest implements IRequestInternal {
         this.cookie = cookie;
         this.location = location;
         this.__config = config;
-        this.__storages = storages;
     }
 
     /**
