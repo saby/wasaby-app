@@ -36,7 +36,7 @@ export default class App {
 
     private static instance: App;
     static isInit(): boolean {
-        // ! FIXME
+        // ! FIXME после https://online.sbis.ru/opendoc.html?guid=cb7c66e6-0673-483d-9658-592ef20aa44a
         // return !!App.instance;
         return !!App.instance?.env.getRequest();
     }
