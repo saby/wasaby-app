@@ -6,38 +6,16 @@ import { IStateReceiver } from "Application/_Interface/IStateReceiver";
 
 export const startRequest = App.startRequest;
 export const isInit = App.isInit;
-export default function (cfg?: Record<string, any>, env?: IEnv, sr?: IStateReceiver, force: boolean = false) {
+export default function (cfg?: Record<string, any>, env?: IEnv, sr?: IStateReceiver) {
     if (isInit()) {
-        //#region
-        // !REMOVE
-        if (env instanceof Function) {
-            App.getRequest().console.warn(
-                new Error(
-                    "Вместо экземпляра окружения передана EnvFactory!\n" +
-                    "Необходимо выписать задачу ответсвенному за Окружение (Application), приложить стек вызовов в debug режиме:\n"
-                ).stack
-            );
-        }
-        //#endregion
         App.getRequest().console.warn(
             new Error(
                 "Повторная инициализация Application!\n" +
                 "Необходимо выписать задачу ответсвенному за Окружение (Application), приложить стек вызовов в debug режиме:\n"
             ).stack
         );
-        //#region
-        // !REMOVE поправить в ws, permission
-        force && App.startRequest(cfg, sr);
-        //#endregion
         return;
     }
-    //#region
-    // !REMOVE
-    if (env instanceof Function) {
-        // @ts-ignore
-        env = new env(cfg);
-    }
-    //#endregion
     new App(cfg, env, sr);
     if (typeof window === 'undefined') { return; }
     App.getRequest().console.warn(
