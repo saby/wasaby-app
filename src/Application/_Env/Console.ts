@@ -75,13 +75,13 @@ export default class Console implements IConsole {
 
     info() {
         if (this.isShow(LogLevel.info) && checkConsoleMethod(this.__console, 'info')) {
-            console.info.apply(undefined, arguments);
+            console.info.apply(console, arguments);
         }
     };
 
     log() {
         if (this.isShow(LogLevel.info) && checkConsoleMethod(this.__console, 'log')) {
-            console.log.apply(undefined, arguments);
+            console.log.apply(console, arguments);
         }
     };
 
@@ -90,10 +90,10 @@ export default class Console implements IConsole {
             return;
         }
         if (checkConsoleMethod(this.__console, 'error')) {
-            return console.warn.apply(undefined, arguments);
+            return console.warn.apply(console, arguments);
         }
         if (checkConsoleMethod(this.__console, 'log')) {
-            return console.log.apply(undefined, arguments);
+            return console.log.apply(console, arguments);
         }
     };
 
@@ -101,6 +101,6 @@ export default class Console implements IConsole {
         if (!this.isShow(LogLevel.error) || !checkConsoleMethod(this.__console, 'error')) {
             return;
         }
-        console.error.apply(undefined, arguments);
+        console.error.apply(console, arguments);
     };
 }
