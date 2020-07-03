@@ -5,5 +5,5 @@
     "Application/Request",
     "Application/Config"
   ],
-  "extendsTo": "vdom-superbundle.package.js"
+  "extendsTo": "online-superbundle.package.js"
 }
