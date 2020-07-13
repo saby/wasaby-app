@@ -52,8 +52,12 @@ export default class EnvBrowser implements IEnv {
         if (this.cfg.get("Application/Env.LogLevel") !== undefined) {
             this.console.setLogLevel(<LogLevel> this.cfg.get("Application/Env.LogLevel"));
         }
-
-        this.cookie = new Cookie();
+        try {
+            this.cookie = new Cookie();
+        } catch (e) {
+            this.cookie = new ObjectStore();
+            this.console.warn("Can't use Cookie", e);
+        }
 
         let localStorage: IStore;
         try {

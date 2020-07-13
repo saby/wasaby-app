@@ -13,9 +13,10 @@ const SEPARATOR = '; ';
  * @author Санников К.А.
  */
 export default class Cookie implements ICookie {
+    private readonly isCoookieAvailable = checkCookie();
     cosntructor() {
-        if (!document || !document.cookie) {
-            throw new Error('document.cookie not found');
+        if (!this.isCoookieAvailable) {
+            throw new Error('document.cookie is not available');
         }
     }
 
@@ -83,5 +84,13 @@ export default class Cookie implements ICookie {
             result[key] = decodeURIComponent(value);
         });
         return result;
+    }
+}
+
+function checkCookie() {
+    try {
+        return typeof document !== 'undefined' && typeof document.cookie !== 'undefined';
+    } catch (_) {
+        return false;
     }
 }
