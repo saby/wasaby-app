@@ -86,10 +86,13 @@ export default class Cookie implements ICookie {
         return result;
     }
 }
-
+/**
+ * Проверка доступности кук
+ * В случае, если куки заблокированы или код выполняется в VSCode.WebView выбрасывается исключение
+ */
 function checkCookie() {
     try {
-        return typeof document !== 'undefined' && typeof document.cookie !== 'undefined';
+        return !!document.cookie || document.cookie === "";
     } catch (_) {
         return false;
     }
