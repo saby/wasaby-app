@@ -92,7 +92,7 @@ export default class Cookie implements ICookie {
  */
 function checkCookie() {
     try {
-        return !!document.cookie || document.cookie === "";
+        return typeof document.cookie === 'string';
     } catch (_) {
         return false;
     }
