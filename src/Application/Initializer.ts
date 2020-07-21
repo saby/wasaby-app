@@ -18,10 +18,11 @@ export default function (cfg?: Record<string, any>, env?: IEnv, sr?: IStateRecei
     }
     new App(cfg, env, sr);
     if (typeof window === 'undefined') { return; }
-    App.getRequest().console.warn(
-        "Эта функция браузера предназначена для разработчиков.\n" +
-        "Если кто-то сказал вам скопировать и вставить что-то здесь, это мошенники.\n" +
-        "Выполнив эти действия, вы предоставите им доступ к своему аккаунту.\n"
+    App.getRequest().console.log(
+        "%c\tЭта функция браузера предназначена для разработчиков.\t\n" +
+        "\tЕсли кто-то сказал вам скопировать и вставить что-то здесь, это мошенники.\t\n" +
+        "\tВыполнив эти действия, вы предоставите им доступ к своему аккаунту.\t\n",
+        "background: red; color: white; font-size: 22px; font-weight: bolder; text-shadow: 1px 1px 2px black;"
     );
 };
 
