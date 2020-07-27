@@ -1,6 +1,6 @@
 {
    "name": "wasaby-app",
-   "version": "20.5000.0",
+   "version": "20.5100.0",
    "license": "GPL-3.0",
    "repository": {
       "type": "git",
@@ -37,7 +37,7 @@
       "@types/node": "^12.0.4",
       "express": "^4.16.4",
       "requirejs": "^2.3.6",
-      "wasaby-cli": "git+https://platform-git.sbis.ru/saby/wasaby-cli.git#rc-20.5000"
+      "wasaby-cli": "git+https://platform-git.sbis.ru/saby/wasaby-cli.git#rc-20.5100"
    },
    "dependencies": {
       "tslint": "^6.1.2"
