@@ -36,15 +36,13 @@ export default class App {
 
     private static instance: App;
     static isInit(): boolean {
-        // ! FIXME после https://online.sbis.ru/opendoc.html?guid=cb7c66e6-0673-483d-9658-592ef20aa44a
-        // return !!App.instance;
-        return !!App.instance?.env.getRequest();
+        return !!App.instance;
     }
     static getInstance(): App | never {
         if (App.instance) {
             return App.instance;
         }
-        const e = new Error("Application isn't initialized!");
+        const e = new Error("Application не инициализирован! Выпишите ошибку ответственному за окружение");
         throw new Error(e.stack);
     }
 }
