@@ -8,7 +8,6 @@ test/unit/*.js
 test/server/src
 build-ui
 /application
-_*
 *.lock
 *.log
 /tsconfig.json
