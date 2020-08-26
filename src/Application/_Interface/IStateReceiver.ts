@@ -5,7 +5,7 @@ import { ISerializableState } from "Application/_Interface/ISerializableState";
  * Интерфейс компонента для восстановления состояний компонентов.
  * Необходим для получения данных состояний компонентов созданных на сервер.
  * @interface Application/_Interface/IStateReceiver
- * @public
+ * @private
  * @author Санников К.А.
  */
 export interface IStateReceiver {
