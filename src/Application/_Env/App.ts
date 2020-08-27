@@ -1,20 +1,21 @@
 /// <amd-module name="Application/_Env/App" />
-import { Config } from "Application/Config";
-import EnvBrowser from "Application/_Env/Browser/Env";
-import StateReceiver from "Application/_Env/Browser/StateReceiver";
-import EnvNodeJS from "Application/_Env/NodeJS/Env";
-import { IEnv } from "Application/_Interface/IEnv";
+import { Config } from 'Application/Config';
+import EnvBrowser from 'Application/_Env/Browser/Env';
+import StateReceiver from 'Application/_Env/Browser/StateReceiver';
+import EnvNodeJS from 'Application/_Env/NodeJS/Env';
+import { IEnv } from 'Application/_Interface/IEnv';
 import { IRequest } from 'Application/_Interface/IRequest';
-import { IStateReceiver } from "Application/_Interface/IStateReceiver";
+import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
+import { ISerializableState } from 'Application/_Interface/ISerializableState';
 
 const Env = (typeof window === 'undefined') ? EnvNodeJS : EnvBrowser;
+type TConfig = Record<string, unknown>;
 
 export default class App {
-
-    constructor (
-        cfg?: Record<string, any>,
+    constructor(
+        cfg?: TConfig,
         private env: IEnv = new Env(cfg),
-        stateReceiver: IStateReceiver = new StateReceiver(),
+        stateReceiver: IStateReceiver = new StateReceiver()
     ) {
         App.instance = this;
         if (env.initRequest) {
@@ -22,27 +23,51 @@ export default class App {
         }
     }
 
+    private static instance: App;
+    private static singletonCrossEnv: Map<string, ISerializableState> = new Map();
+
     static getRequest(): IRequest {
         return App.getInstance().env.getRequest();
     }
 
-    static startRequest(cfg?: Record<string, any>, stateReceiver: IStateReceiver = new StateReceiver()) {
+    static startRequest(cfg?: TConfig, stateReceiver: IStateReceiver = new StateReceiver()): void {
         const config = new Config(cfg);
         stateReceiver.register(config.getUID(), config);
+        const iterator = App.singletonCrossEnv.entries();
+        let entry = iterator.next();
+        while (!entry.done) {
+            stateReceiver.register(entry.value[0], entry.value[1]);
+            entry = iterator.next();
+        }
+
         App.getInstance().env
             .createRequest(config)
             .setStateReceiver(stateReceiver);
     }
 
-    private static instance: App;
+    /**
+     * Метод, для регистрации одиночки, который должен восстанавливать своё состояние на клиенте.
+     * @param uid {String} Уникальный идентификатор одиночки.
+     * @param component {Application/Interface.ISerializableState} Экземпляр одиночки.
+     */
+    static registerSingleton(uid: string, component: ISerializableState): void {
+        App.singletonCrossEnv.set(uid, component);
+        const request = App.getRequest();
+        if (request) {
+            request.getStateReceiver().register(uid, component);
+        }
+    }
+
+
     static isInit(): boolean {
         return !!App.instance;
     }
+
     static getInstance(): App | never {
         if (App.instance) {
             return App.instance;
         }
-        const e = new Error("Application не инициализирован! Выпишите ошибку ответственному за окружение");
+        const e = new Error('Application не инициализирован! Выпишите ошибку ответственному за окружение');
         throw new Error(e.stack);
     }
 }

@@ -25,14 +25,14 @@ export default class implements IEnv {
     storages: IStoreMap;
     private cfg: Config;
 
-    constructor(data: Record<string, any>) {
+    constructor(data: Record<string, unknown>) {
         this.cfg = new Config(data);
         this.location = new Location();
         this.console = new Console();
-        let logLevel = this.cfg.get('Application/Env.LogLevel');
+        const logLevel = this.cfg.get('Application/Env.LogLevel');
         if (logLevel !== undefined) {
-            logLevel = typeof logLevel === 'number' ? logLevel : parseInt(logLevel.toString(), 10);
-            this.console.setLogLevel(logLevel);
+            const logLevelNum: number = typeof logLevel === 'number' ? logLevel : parseInt(logLevel.toString(), 10);
+            this.console.setLogLevel(logLevelNum);
         }
 
         this.cookie = new Cookie();

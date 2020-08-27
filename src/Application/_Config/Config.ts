@@ -1,6 +1,6 @@
 /// <amd-module name="Application/_Config/Config" />
-import { ISerializableState } from "Application/_Interface/ISerializableState";
-type IData = Record<string, any>;
+import { ISerializableState } from 'Application/_Interface/ISerializableState';
+type IData = Record<string, unknown>;
 /**
  * Класс Config
  * @class Application/_Config/Config
@@ -9,6 +9,7 @@ type IData = Record<string, any>;
  * @author Санников К.А.
  */
 export default class Config implements ISerializableState {
+    // tslint:disable-next-line: variable-name
     constructor (private data: IData = {}, private __uid: string = 'appConfig') {
     }
     /**
@@ -30,7 +31,7 @@ export default class Config implements ISerializableState {
      * Задать состояние
      * @param {IData} data
      */
-    setState(data: IData) {
+    setState(data: IData): void {
         if (!data) {
             return;
         }
@@ -40,7 +41,7 @@ export default class Config implements ISerializableState {
      * Получить UID
      * @return {String}
      */
-    getUID() {
+    getUID(): string {
         return this.__uid;
     }
 }
