@@ -68,7 +68,7 @@ export default class StateReceiver implements IStateReceiver {
     }
     private __setComponentState(uid: string) {
         let serializableState = this.__components[uid];
-        if (serializableState || serializableState.setState) {
+        if (serializableState && serializableState.setState) {
             serializableState.setState(this.__states[uid]);
             // После того как отдали состояние компоненту, чистим дубли в себе
             delete this.__states[uid];
