@@ -9,7 +9,8 @@ import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
 import { ISerializableState } from 'Application/_Interface/ISerializableState';
 
 const Env = (typeof window === 'undefined') ? EnvNodeJS : EnvBrowser;
-type TConfig = Record<string, unknown>;
+// tslint:disable-next-line: no-any
+type TConfig = Record<string, any>;
 
 export default class App {
     constructor(
