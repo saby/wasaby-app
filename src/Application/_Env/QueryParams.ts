@@ -60,7 +60,7 @@ export function extractParams(str: string): PARAMS_SET {
         .split(SEPARATOR)
         .reduce((params, couple) => {
             if (!couple) { return params; }
-            const [key, value] = couple.split(KEY_VALUE_SEPARATOR);
+            const [key, value]: string[] = couple.split(KEY_VALUE_SEPARATOR);
             params[key] = value;
             return params;
         }, Object.create(null));
@@ -83,6 +83,5 @@ type PARAM_TYPE = 'hash' | 'get';
 /**
  * Словарь параметров, ключом является имя параметра, значением - значение параметра
  * @typedef {Object} PARAMS_SET
- * @property {String} param_name значение параметра
  */
-type PARAMS_SET = { [param_name: string]: string }
+type PARAMS_SET = Record<string, string>
