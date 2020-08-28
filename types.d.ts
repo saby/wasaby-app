@@ -16,12 +16,12 @@ declare module "Application/Env" {
     import { PARAMS } from 'Application/_Env/QueryParams';
     export { default as StateReceiver } from 'Application/_Env/Browser/StateReceiver';
     export { LogLevel } from 'Application/_Env/Console';
+    import App from 'Application/_Env/App';
     import { IConsole } from 'Application/_Interface/IConsole';
     import { ICookie } from 'Application/_Interface/ICookie';
     import { ILocation } from 'Application/_Interface/ILocation';
     import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
     import { IStore } from 'Application/_Interface/IStore';
-    import App from 'Application/_Env/App';
     export { App };
     /**
      * Модуль-библиотека для работы с окружением.
@@ -110,11 +110,11 @@ declare module "Application/Env" {
 }
 /// <amd-module name="Application/Initializer" />
 declare module "Application/Initializer" {
-    import { IEnv } from "Application/_Interface/IEnv";
-    import { IStateReceiver } from "Application/_Interface/IStateReceiver";
+    import { IEnv } from 'Application/_Interface/IEnv';
+    import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
     export const startRequest: any;
     export const isInit: any;
-    export default function (cfg?: Record<string, any>, env?: IEnv, sr?: IStateReceiver): void;
+    export default function (cfg?: Record<string, unknown>, env?: IEnv, sr?: IStateReceiver): void;
     export const registerComponent: (uid: string, component: any) => void;
 }
 /// <amd-module name="Application/Interface" />
@@ -146,7 +146,7 @@ declare module "Application/Interface" {
 }
 /// <amd-module name="Application/Request" />
 declare module "Application/Request" {
-    import { default as Request } from "Application/_Request/Request";
+    import { default as Request } from 'Application/_Request/Request';
     /**
      * Библиотека c классами для работы с запросами и хранилищем
      * @library Application/Request
@@ -156,12 +156,12 @@ declare module "Application/Request" {
      * @author Санников К.А.
      */
     export default Request;
-    export { default as Store } from "Application/_Request/Store";
+    export { default as Store } from 'Application/_Request/Store';
 }
 /// <amd-module name="Application/_Config/Config" />
 declare module "Application/_Config/Config" {
-    import { ISerializableState } from "Application/_Interface/ISerializableState";
-    type IData = Record<string, any>;
+    import { ISerializableState } from 'Application/_Interface/ISerializableState';
+    type IData = Record<string, unknown>;
     /**
      * Класс Config
      * @class Application/_Config/Config
@@ -198,15 +198,24 @@ declare module "Application/_Config/Config" {
 }
 /// <amd-module name="Application/_Env/App" />
 declare module "Application/_Env/App" {
-    import { IEnv } from "Application/_Interface/IEnv";
+    import { IEnv } from 'Application/_Interface/IEnv';
     import { IRequest } from 'Application/_Interface/IRequest';
-    import { IStateReceiver } from "Application/_Interface/IStateReceiver";
+    import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
+    import { ISerializableState } from 'Application/_Interface/ISerializableState';
+    type TConfig = Record<string, unknown>;
     export default class App {
         private env;
-        constructor(cfg?: Record<string, any>, env?: IEnv, stateReceiver?: IStateReceiver);
-        static getRequest(): IRequest;
-        static startRequest(cfg?: Record<string, any>, stateReceiver?: IStateReceiver): void;
+        constructor(cfg?: TConfig, env?: IEnv, stateReceiver?: IStateReceiver);
         private static instance;
+        private static singletonCrossEnv;
+        static getRequest(): IRequest;
+        static startRequest(cfg?: TConfig, stateReceiver?: IStateReceiver): void;
+        /**
+         * Метод, для регистрации одиночки, который должен восстанавливать своё состояние на клиенте.
+         * @param uid {String} Уникальный идентификатор одиночки.
+         * @param component {Application/Interface.ISerializableState} Экземпляр одиночки.
+         */
+        static registerSingleton(uid: string, component: ISerializableState): void;
         static isInit(): boolean;
         static getInstance(): App | never;
     }
@@ -303,7 +312,7 @@ declare module "Application/_Env/QueryParams" {
      *  });
      * </pre>
      */
-    export const parseQueryHash: (query: string) => PARAMS_SET;
+    export const parseQueryHash: (query: string) => Record<string, string>;
     /**
      * Функция parseQueryHash получает URL-Like строку и возвращает все ивзлеченные GET-параметры
      * @param {String} query URL-Like строка, содержащая GET-параметры
@@ -315,7 +324,7 @@ declare module "Application/_Env/QueryParams" {
      *  });
      * </pre>
      */
-    export const parseQueryGet: (query: string) => PARAMS_SET;
+    export const parseQueryGet: (query: string) => Record<string, string>;
     /**
      * Извлекает параметры всех типов
      * @param {String} query Строка с get и hash параметрами
@@ -345,11 +354,8 @@ declare module "Application/_Env/QueryParams" {
     /**
      * Словарь параметров, ключом является имя параметра, значением - значение параметра
      * @typedef {Object} PARAMS_SET
-     * @property {String} param_name значение параметра
      */
-    type PARAMS_SET = {
-        [param_name: string]: string;
-    };
+    type PARAMS_SET = Record<string, string>;
 }
 /// <amd-module name="Application/_Env/Browser/Cookie" />
 declare module "Application/_Env/Browser/Cookie" {
@@ -363,6 +369,7 @@ declare module "Application/_Env/Browser/Cookie" {
      * @author Санников К.А.
      */
     export default class Cookie implements ICookie {
+        private readonly isCoookieAvailable;
         cosntructor(): void;
         get(key: string): any;
         set(key: string, value: string, options?: Partial<ICookieOptions>): boolean;
@@ -377,13 +384,14 @@ declare module "Application/_Env/Browser/Env" {
     import { ICookie } from 'Application/_Interface/ICookie';
     import { IEnv } from 'Application/_Interface/IEnv';
     import { ILocation } from 'Application/_Interface/ILocation';
+    import { IRequest, IRequestInternal } from 'Application/_Interface/IRequest';
     import { IStoreMap } from 'Application/_Interface/IStore';
-    import { IRequestInternal, IRequest } from 'Application/_Interface/IRequest';
     /**
+     * Браузерное окружение
      * Класс EnvBrowser
      * @class Application/_Env/Browser/Env
-     * @author Санников К.А..
-     * @implements Application/_Interface/IEnv
+     * @author Санников К.А.
+     * @implements {Application/_Interface/IEnv}
      * @public
      */
     export default class EnvBrowser implements IEnv {
@@ -485,11 +493,14 @@ declare module "Application/_Env/NodeJS/Cookie" {
 }
 /// <amd-module name="Application/_Env/NodeJS/Env" />
 declare module "Application/_Env/NodeJS/Env" {
-    import { IConsole, ICookie, IEnv, ILocation, IStoreMap, IRequest, IRequestInternal } from 'Application/Interface';
     import { Config } from 'Application/Config';
+    import { IConsole, ICookie, IEnv, ILocation, IRequest, IRequestInternal, IStoreMap } from 'Application/Interface';
     /**
      * Неполноценное окружение для запуска Application под NodeJS
-     * Используется в тестах, билдере, везде где нет request'a
+     * Используется в тестах, билдере, везде, где нет request'a
+     * @class Application/_Env/NodeJS/Env
+     * @public
+     * @implements {Application/_Interface/IEnv}
      */
     export default class implements IEnv {
         initRequest: boolean;
@@ -498,7 +509,7 @@ declare module "Application/_Env/NodeJS/Env" {
         location: ILocation;
         storages: IStoreMap;
         private cfg;
-        constructor(data: Record<string, any>);
+        constructor(data: Record<string, unknown>);
         getRequest(): IRequest;
         createRequest(cfg: Config): IRequestInternal;
     }
@@ -631,19 +642,17 @@ declare module "Application/_Interface/ICookie" {
 }
 /// <amd-module name="Application/_Interface/IEnv" />
 declare module "Application/_Interface/IEnv" {
-    import Config from 'Application/_Config/Config';
+    import { IConfig } from 'Application/_Interface/IConfig';
     import { IConsole } from 'Application/_Interface/IConsole';
     import { ICookie } from 'Application/_Interface/ICookie';
     import { ILocation } from 'Application/_Interface/ILocation';
     import { IRequest, IRequestInternal } from 'Application/_Interface/IRequest';
     import { IStoreMap } from 'Application/_Interface/IStore';
-    import { IConfig } from 'Application/_Interface/IConfig';
     /**
      * Интерфейс IEnv
      * @interface Application/_Interface/IEnv
      * @public
      * @author Санников К.А.
-     * @see Application/Interface/IEnv/IEnvFactory
      */
     export interface IEnv {
         /** Инициализировать request при старте приложения */
@@ -654,38 +663,6 @@ declare module "Application/_Interface/IEnv" {
         storages: IStoreMap;
         getRequest(): IRequest;
         createRequest: (cfg: IConfig) => IRequestInternal;
-    }
-    /**
-     * @name Application/_Interface/IEnv#console
-     * @cfg {Application/_Interface/IConsole} console
-     */
-    /**
-     * @name Application/_Interface/IEnv#cookie
-     * @cfg {Application/_Interface/ICookie} cookie
-     */
-    /**
-     * @name Application/_Interface/IEnv#location
-     * @cfg {Application/_Interface/ILocation} location
-     */
-    /**
-     * @name Application/_Interface/IEnv#storages
-     * @cfg {Application/_Interface/IStoreMap} storages
-     */
-    /**
-     * getGlobal
-     * @function
-     * @name Application/_Interface/IEnv#getGlobal
-     * @return {IRequest|undefined}
-     */
-    /**
-     * Интерфейс IEnvFactory
-     * @interface Application/Interface/IEnv/IEnvFactory
-     * @author Санников К.А.
-     */
-    export interface IEnvFactory {
-        create(config: Config): IEnv;
-        /** Создавать ли Request при инициализации приложения */
-        initRequest: boolean;
     }
 }
 /// <amd-module name="Application/_Interface/ILocation" />

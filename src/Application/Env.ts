@@ -6,7 +6,7 @@ export { default as StateReceiver } from 'Application/_Env/Browser/StateReceiver
 export { LogLevel } from 'Application/_Env/Console';
 import App from 'Application/_Env/App';
 import { IConsole } from 'Application/_Interface/IConsole';
-import { ICookie } from 'Application/_Interface/ICookie';
+import { ICookie, ICookieOptions } from 'Application/_Interface/ICookie';
 import { ILocation } from 'Application/_Interface/ILocation';
 import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
 import { IStore } from 'Application/_Interface/IStore';
@@ -49,14 +49,14 @@ export const query: PARAMS = {
      * @cfg {Object} Извлеченные HASH параметры
      * @name Application/Env/query#hash
      */
-    get hash() {
+    get hash(): Record<string, string> {
         return parseQueryHash(location.href);
     },
     /**
      * @cfg {Object} Извлеченные GET параметры
      * @name Application/Env/query#get
      */
-    get get() {
+    get get(): Record<string, string> {
         return parseQueryGet(location.href);
     }
 };
@@ -70,35 +70,35 @@ export const query: PARAMS = {
  * @public
  */
 export const location: ILocation = {
-    get protocol() {
+    get protocol(): string {
         return App.getRequest().location.protocol;
     },
 
-    get host() {
+    get host(): string {
         return App.getRequest().location.host;
     },
 
-    get hostname() {
+    get hostname(): string {
         return App.getRequest().location.hostname;
     },
 
-    get port() {
+    get port(): string {
         return App.getRequest().location.port;
     },
 
-    get href() {
+    get href(): string {
         return App.getRequest().location.href;
     },
 
-    get pathname() {
+    get pathname(): string {
         return App.getRequest().location.pathname;
     },
 
-    get search() {
+    get search(): string {
         return App.getRequest().location.search;
     },
 
-    get hash() {
+    get hash(): string {
         return App.getRequest().location.hash;
     }
 };
@@ -112,23 +112,23 @@ export const location: ILocation = {
  * @public
  */
 export const cookie: ICookie = {
-    get(key) {
+    get(key: string): string {
         return App.getRequest().cookie.get(key);
     },
 
-    set(key, value, options?) {
+    set(key: string, value: string, options?: ICookieOptions): boolean {
         return App.getRequest().cookie.set(key, value, options);
     },
 
-    remove(key) {
+    remove(key: string): void {
         return App.getRequest().cookie.remove(key);
     },
 
-    getKeys() {
+    getKeys(): string[] {
         return App.getRequest().cookie.getKeys();
     },
 
-    toObject() {
+    toObject(): Record<string, string> {
         return App.getRequest().cookie.toObject();
     }
 };
