@@ -6,6 +6,12 @@ import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
 
 export const startRequest = App.startRequest;
 export const isInit = App.isInit;
+
+let onInitResolve: Function;
+const onInintPomise: Promise<void> = new Promise((res) => {
+    onInitResolve = res;
+});
+
 export default function (cfg?: Record<string, unknown>, env?: IEnv, sr?: IStateReceiver): void {
     if (isInit()) {
         App.getRequest().console.warn(
@@ -18,6 +24,8 @@ export default function (cfg?: Record<string, unknown>, env?: IEnv, sr?: IStateR
     }
     // tslint:disable-next-line: no-unused-expression
     new App(cfg, env, sr);
+    onInitResolve();
+
     if (typeof window === 'undefined') { return; }
     App.getRequest().console.log(
         '%c\tЭта функция браузера предназначена для разработчиков.\t\n' +
@@ -27,6 +35,15 @@ export default function (cfg?: Record<string, unknown>, env?: IEnv, sr?: IStateR
     );
 };
 
-export const registerComponent = (uid: string, component: ISerializableState) => {
+export function registerComponent(uid: string, component: ISerializableState): void {
     App.registerSingleton(uid, component);
 };
+
+/**
+ * Обещание сообщить об инициализации приложения
+ * @param callback Function
+ * @private
+ */
+export function then<T = unknown>(callback: () => T): Promise<T> {
+    return onInintPomise.then<T>(callback);
+}
