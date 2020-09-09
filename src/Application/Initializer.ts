@@ -27,12 +27,6 @@ export default function (cfg?: Record<string, unknown>, env?: IEnv, sr?: IStateR
     onInitResolve();
 
     if (typeof window === 'undefined') { return; }
-    App.getRequest().console.log(
-        '%c\tЭта функция браузера предназначена для разработчиков.\t\n' +
-        '\tЕсли кто-то сказал вам скопировать и вставить что-то здесь, это мошенники.\t\n' +
-        '\tВыполнив эти действия, вы предоставите им доступ к своему аккаунту.\t\n',
-        'background: red; color: white; font-size: 22px; font-weight: bolder; text-shadow: 1px 1px 2px black;'
-    );
 };
 
 export function registerComponent(uid: string, component: ISerializableState): void {
