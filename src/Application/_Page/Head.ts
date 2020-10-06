@@ -1,6 +1,6 @@
 ///// <amd-module name="Application/_Page/Head" />
 
-import {IHeadTagAttrs, IHead, IHeadTag, IHeadTagId, IHeadTagEventHandlers, JML} from 'Application/_interface/IHead'
+import {IHeadTagAttrs, IHead, IHeadTag, IHeadTagId, IHeadTagEventHandlers, JML} from 'Application/_Interface/IHead'
 
 /** Стандартное время до обновления страницы. Используется внутри <noscript> */
 const TIME_TO_REFRESH = 2;
