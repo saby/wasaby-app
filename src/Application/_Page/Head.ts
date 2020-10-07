@@ -1,6 +1,7 @@
 ///// <amd-module name="Application/_Page/Head" />
 
 import {IHeadTagAttrs, IHead, IHeadTag, IHeadTagId, IHeadTagEventHandlers, JML} from 'Application/_Interface/IHead'
+import * as AppEnv from 'Application/Env';
 
 /** Стандартное время до обновления страницы. Используется внутри <noscript> */
 const TIME_TO_REFRESH = 2;
@@ -11,7 +12,7 @@ const TIME_TO_REFRESH = 2;
  * Получить инстанст синглтона можно через статичный метод getInstance()
  * @author Печеркин С.В.
  */
-export class Head implements IHead {
+class Head implements IHead {
     //TODO: Привязать один Head к одному App
 
     //TODO: дождаться реализации Element и ElementPS
@@ -24,7 +25,7 @@ export class Head implements IHead {
     private _id = 1;
 
     constructor() {
-        Head._instance = this;
+        this.createComment = this.createComment.bind(this)
     }
 
 
@@ -139,9 +140,21 @@ export class Head implements IHead {
     private static _instance: Head;
 
     static getInstance(): Head | never {
-        if (Head._instance) {
-            return Head._instance;
+        if (!AppEnv.getStore('HeadApi')) {
+            // @ts-ignore
+            AppEnv.setStore('HeadApi', new Head());
         }
-        throw new Error('Application/_Page/Head не инициализирован!');
+        // @ts-ignore
+        return AppEnv.getStore('HeadApi');
     }
 }
+
+/*class HeadStore {
+    constructor(private readonly storageKey: string) { }
+
+    createComment<K extends keyof Head>(key: K): Head[K] {
+        return AppEnv.getStore<Head>(this.storageKey, () => new Head()).createComment(key);
+    }
+}
+
+export const headStore = new HeadStore('Head');*/
