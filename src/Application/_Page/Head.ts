@@ -14,7 +14,7 @@ const TIME_TO_REFRESH = 2;
  * @author Печеркин С.В.
  */
 // tslint:disable-next-line:no-any
-class Head implements IStore<Record<keyof IHead, any>> {
+export class Head implements IStore<Record<keyof IHead, any>> {
     //TODO: Привязать один Head к одному App
 
     //TODO: дождаться реализации Element и ElementPS
