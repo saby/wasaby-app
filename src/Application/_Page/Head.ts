@@ -2,6 +2,7 @@
 
 import {IHeadTagAttrs, IHead, IHeadTag, IHeadTagId, IHeadTagEventHandlers, JML} from 'Application/_Interface/IHead'
 import * as AppEnv from 'Application/Env';
+import { IStore } from 'Application/_Interface/IStore';
 
 /** Стандартное время до обновления страницы. Используется внутри <noscript> */
 const TIME_TO_REFRESH = 2;
@@ -12,7 +13,8 @@ const TIME_TO_REFRESH = 2;
  * Получить инстанст синглтона можно через статичный метод getInstance()
  * @author Печеркин С.В.
  */
-class Head implements IHead {
+// tslint:disable-next-line:no-any
+class Head implements IStore<Record<keyof IHead, any>> {
     //TODO: Привязать один Head к одному App
 
     //TODO: дождаться реализации Element и ElementPS
@@ -23,11 +25,6 @@ class Head implements IHead {
     private _rawElements: {[propName: string]: IHeadTag} = {};
     private _prefix = typeof window === 'undefined' ? 'ps-' : '';
     private _id = 1;
-
-    constructor() {
-        this.createComment = this.createComment.bind(this)
-    }
-
 
     createComment(text: string): void {
         if (this._comments.includes(text)) {
@@ -96,6 +93,29 @@ class Head implements IHead {
         }) : this._comments.concat([]);
     }
 
+    // #region IStore
+    get<K extends keyof Head>(key: K): Head[K] {
+        return this[key];
+    }
+    set<K extends keyof Head>(key: K, value: this[K]): boolean {
+        try {
+            this[key] = value;
+            return true;
+        } catch (_e) {
+            return false;
+        }
+    }
+    // tslint:disable-next-line:no-empty
+    remove(): void { }
+    getKeys(): Array<keyof Head> {
+        return Object.keys(this) as Array<keyof Head>;
+    }
+    // tslint:disable-next-line:no-any
+    toObject(): Record<keyof Head, any> {
+        return Object.assign({}, this);
+    }
+    // #endregion
+
     /**
      * Генератор noscript тега с содержимым, если был задан _noScriptUrl
      * @private
@@ -137,24 +157,12 @@ class Head implements IHead {
         return result;
     };
 
-    private static _instance: Head;
+    private static creator(): Head {
+        return new Head();
+    }
 
-    static getInstance(): Head | never {
-        if (!AppEnv.getStore('HeadApi')) {
-            // @ts-ignore
-            AppEnv.setStore('HeadApi', new Head());
-        }
-        // @ts-ignore
-        return AppEnv.getStore('HeadApi');
+    // tslint:disable-next-line:no-any
+    static getInstance(): IStore<Record<keyof IHead, any>> | never {
+        return AppEnv.getStore('HeadApi', Head.creator);
     }
 }
-
-/*class HeadStore {
-    constructor(private readonly storageKey: string) { }
-
-    createComment<K extends keyof Head>(key: K): Head[K] {
-        return AppEnv.getStore<Head>(this.storageKey, () => new Head()).createComment(key);
-    }
-}
-
-export const headStore = new HeadStore('Head');*/

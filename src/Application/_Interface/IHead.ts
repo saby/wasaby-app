@@ -1,5 +1,7 @@
 /// <amd-module name="Application/_Interface/IHead" />
 
+import { IStore } from 'Application/_Interface/IStore';
+
 /**
  * Интерфейс объекта, описывающего аттрибуты тега для API Head
  * @interface Application/_Interface/IHeadTagAttrs
@@ -73,7 +75,7 @@ export type JML = [string, (object | JsonML | string)?, (JsonML | string)?];
  * @public
  * @author Печеркин С.В.
  */
-export interface IHead {
+export interface IHead extends IStore{
     createComment(text: string): void;
     createNoScript(URL): void;
     createTag(name: string, attrs: IHeadTagAttrs, content?: string, eventHandlers?: IHeadTagEventHandlers): IHeadTagId;
