@@ -1,3 +1,5 @@
+///// <amd-module name="Application/_Page/_head/Element" />
+
 import ElementPS from 'Application/_Page/_head/ElementPS';
 
 /**

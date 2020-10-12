@@ -1,11 +1,15 @@
 ///// <amd-module name="Application/_Page/Head" />
 
-import {IHeadTagAttrs, IHead, IHeadTag, IHeadTagId, IHeadTagEventHandlers, JML} from 'Application/_Interface/IHead'
 import * as AppEnv from 'Application/Env';
+import { IHead, IHeadTag, IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId, JML } from 'Application/_Interface/IHead'
 import { IStore } from 'Application/_Interface/IStore';
+import { default as Element } from 'Application/_Page/_head/Element';
+import { default as ElementPS } from 'Application/_Page/_head/ElementPS';
+import { constants } from 'Env/Env';
 
 /** Стандартное время до обновления страницы. Используется внутри <noscript> */
-const TIME_TO_REFRESH = 2;
+const TIME_TO_REFRESH: Number = 2;
+const PREFIX: string = typeof window === 'undefined' ? 'ps-' : '';
 
 /**
  * API для работы с <head> страницы
@@ -15,15 +19,9 @@ const TIME_TO_REFRESH = 2;
  */
 // tslint:disable-next-line:no-any
 export class Head implements IStore<Record<keyof IHead, any>> {
-    //TODO: Привязать один Head к одному App
-
-    //TODO: дождаться реализации Element и ElementPS
-    //private _elements: Array<null> = [];
+    private _elements: {[propName: string]: Element | ElementPS} = {};
     private _comments: Array<string> = [];
     private _noScriptUrl: string = null;
-    //TODO: Временное решение для срочной задачи https://online.sbis.ru/doc/d4a880ac-2e2b-46d4-9843-cce486044787
-    private _rawElements: {[propName: string]: IHeadTag} = {};
-    private _prefix = typeof window === 'undefined' ? 'ps-' : '';
     private _id = 1;
 
     createComment(text: string): void {
@@ -41,7 +39,7 @@ export class Head implements IStore<Record<keyof IHead, any>> {
         this._noScriptUrl = url;
     }
 
-    //TODO: Сейчас этим есть смысл пользоваться только на Presentation Service
+    // TODO: Сейчас этим есть смысл пользоваться только на Presentation Service
     createTag(
         name: 'title',
         attrs: {},
@@ -66,21 +64,23 @@ export class Head implements IStore<Record<keyof IHead, any>> {
         content?: string,
         eventHandlers?: IHeadTagEventHandlers): IHeadTagId {
 
+        const elementClass = constants.isServerSide ? ElementPS : Element;
         const uuid = this._generateGuid();
-        this._rawElements[uuid] = {name, attrs, content, eventHandlers};
+        this._elements[uuid] = new elementClass(name, attrs, content, eventHandlers);
 
         return uuid;
     }
 
     deleteTag(id: IHeadTagId): void {
-        delete this._rawElements[id];
+        // TODO: Позвать метод clear()
+        delete this._elements[id];
     }
 
     getData(): Array<JML> {
         const noscript = this._generateNoScript();
         const result: Array<JML> = [].concat(noscript ? [noscript] : []);
-        for (const rawElementsKey in this._rawElements) {
-            result.push(Head._generateTag(this._rawElements[rawElementsKey]))
+        for (const elementsKey in this._elements) {
+            result.push(this._elements[elementsKey].getData())
         }
 
         return result;
@@ -126,7 +126,7 @@ export class Head implements IStore<Record<keyof IHead, any>> {
         }
         return [
             'noscript',
-            Head._generateTag({
+            ElementPS.generateTag({
                 name: 'meta',
                 attrs: {'http-equiv': 'refresh', 'content': `${TIME_TO_REFRESH}; URL=${this._noScriptUrl}`}
             })
@@ -135,7 +135,7 @@ export class Head implements IStore<Record<keyof IHead, any>> {
 
     /** Генератор уникального идентификатора для каждого тега */
     private _generateGuid(): IHeadTagId {
-        return `head-${this._prefix}${this._id++}`;
+        return `head-${PREFIX}${this._id++}`;
     };
 
     /**
@@ -144,7 +144,7 @@ export class Head implements IStore<Record<keyof IHead, any>> {
      * @private
      */
     private static _generateTag(data: IHeadTag): JML {
-        //TODO: Убрать этот патчинг в конце проекта. Ради избавления от data-vdomignore все и затевалось.
+        // TODO: Убрать этот патчинг в конце проекта. Ради избавления от data-vdomignore все и затевалось.
         data.attrs['data-vdomignore'] = true;
         const result: JML = [data.name];
         if (Object.keys(data.attrs).length) {
