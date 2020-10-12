@@ -5,7 +5,7 @@
  *
  * @library Application/Page
  * @public
- * @includes _head Application/_Page/_head
+ * @includes Head Application/_Page/Head
  * @author Печеркин С.В.
  */
 export { Head } from "Application/_Page/Head";

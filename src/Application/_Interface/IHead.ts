@@ -3,7 +3,7 @@
 import { IStore } from 'Application/_Interface/IStore';
 
 /**
- * Интерфейс объекта, описывающего аттрибуты тега для API _head
+ * Интерфейс объекта, описывающего аттрибуты тега для API Head
  * @interface Application/_Interface/IHeadTagAttrs
  * @public
  * @author Печеркин С.В.
@@ -28,7 +28,7 @@ export interface IHeadTagAttrs {
 }
 
 /**
- * Интерфейс объекта, описывающего обработчики событий тега для API _head
+ * Интерфейс объекта, описывающего обработчики событий тега для API Head
  * @interface Application/_Interface/IHeadTagEventHandlers
  * @public
  * @author Печеркин С.В.
@@ -39,7 +39,7 @@ export interface IHeadTagEventHandlers {
 }
 
 /**
- * Интерфейс одного тега для API _head
+ * Интерфейс одного тега для API Head
  * @interface Application/_Interface/IHeadTag
  * @property {string} name - имя тега (title, meta, script)
  * @property {IHeadTagAttrs} attrs - дополнительные аттрибуты для тега

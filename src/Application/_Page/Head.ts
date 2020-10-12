@@ -1,4 +1,4 @@
-///// <amd-module name="Application/_Page/_head" />
+///// <amd-module name="Application/_Page/Head" />
 
 import {IHeadTagAttrs, IHead, IHeadTag, IHeadTagId, IHeadTagEventHandlers, JML} from 'Application/_Interface/IHead'
 import * as AppEnv from 'Application/Env';
@@ -15,7 +15,7 @@ const TIME_TO_REFRESH = 2;
  */
 // tslint:disable-next-line:no-any
 export class Head implements IStore<Record<keyof IHead, any>> {
-    //TODO: Привязать один _head к одному App
+    //TODO: Привязать один Head к одному App
 
     //TODO: дождаться реализации Element и ElementPS
     //private _elements: Array<null> = [];
@@ -28,7 +28,7 @@ export class Head implements IStore<Record<keyof IHead, any>> {
 
     createComment(text: string): void {
         if (this._comments.includes(text)) {
-            const error = new Error('Application/_Page/_head duplicate comment:' +
+            const error = new Error('Application/_Page/Head duplicate comment:' +
                 '\n\t' + text
             );
             throw new Error(error.stack);
