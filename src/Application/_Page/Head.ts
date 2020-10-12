@@ -72,7 +72,7 @@ export class Head implements IStore<Record<keyof IHead, any>> {
     }
 
     deleteTag(id: IHeadTagId): void {
-        // TODO: Позвать метод clear()
+        this._elements[id].clear();
         delete this._elements[id];
     }
 
