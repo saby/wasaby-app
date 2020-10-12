@@ -26,13 +26,12 @@ export default class ElementPS {
 
     /** Возвращаем элемент в формате JML, предварительно сгенерировав его */
     getData(): JML {
-        const result: JML = ElementPS.generateTag({
+        return ElementPS.generateTag({
             name: this._name,
             attrs: this._attrs,
             content: this._content,
             eventHandlers: this._eventHandlers
         });
-        return result;
     }
 
     /** Определяем одинаковый ли элемент или нет. Сравниваем по свойствам класса */
@@ -40,12 +39,24 @@ export default class ElementPS {
             attrs: IHeadTagAttrs,
             content?: string,
             eventHandlers?: IHeadTagEventHandlers): boolean{
-        return false;
+        // /** Каждый аттрибут, пришедший из вне
+        //  * сравнивается с аттрибутами, которые записаны в классе.
+        //  * Если аттрибут совпадает по ключу и значению,
+        //  * в таком случае этот аттрибут считается идентичным
+        //  */
+        // FIXME: not done yet, in progress
+        // const isEqualAttrs = Object.keys(attrs).every((key) => {
+        //     return isContainsInOrigin(key, attrs[key], this._attrs);
+        // });
+        if (content !== this._content || name !== this._name) {
+            return false;
+        }
+        return true;
     }
 
     /** Отрисовка элемента в head. Не будет иметь реализации на СП */
     // tslint:disable-next-line:no-empty
-    private _render(): void {
+    protected _render(): void {
 
     }
 
@@ -61,3 +72,6 @@ export default class ElementPS {
         return result;
     }
 }
+// function isContainsInOrigin(key, value, originObj){
+//     return Object.keys(originObj).some(keyOrigin => keyOrigin === key && originObj[keyOrigin] === value)
+// };
