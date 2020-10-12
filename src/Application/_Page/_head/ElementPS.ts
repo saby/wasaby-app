@@ -37,7 +37,7 @@ export default class ElementPS {
     clear(): void{
     }
     // tslint:disable-next-line:no-empty
-    removeElement(): void{
+    _removeElement(): void{
     }
     /** Определяем одинаковый ли элемент или нет. Сравниваем по свойствам класса */
     isEqual(name: string,
