@@ -33,7 +33,12 @@ export default class ElementPS {
             eventHandlers: this._eventHandlers
         });
     }
-
+    // tslint:disable-next-line:no-empty
+    clear(): void{
+    }
+    // tslint:disable-next-line:no-empty
+    removeElement(): void{
+    }
     /** Определяем одинаковый ли элемент или нет. Сравниваем по свойствам класса */
     isEqual(name: string,
             attrs: IHeadTagAttrs,
