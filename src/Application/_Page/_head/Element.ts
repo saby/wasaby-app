@@ -15,7 +15,7 @@ export default class Element extends ElementPS {
         }
         element.innerHTML = `${this._content}`;
         document.head.appendChild(element);
-        (element as HTMLLinkElement).addEventListener('load', this._eventHandlers.load);
-        (element as HTMLLinkElement).addEventListener('error', this._eventHandlers.error);
+        element.addEventListener('load', this._eventHandlers.load.bind(this));
+        element.addEventListener('error', this._eventHandlers.error.bind(this));
     }
 }
