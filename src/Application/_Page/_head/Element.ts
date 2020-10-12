@@ -9,13 +9,16 @@ import ElementPS from 'Application/_Page/_head/ElementPS';
 export default class Element extends ElementPS {
 
     _render(): void {
-        const element = document.createElement(this._name);
+        const element =  document.createElement(this._name);
         for (const [key, value] of Object.entries(this._attrs)) {
             element.setAttribute(key, value);
         }
-        element.innerHTML = `${this._content}`;
+        if (this._content) {
+            element.innerHTML = `${this._content}`;
+        }
         document.head.appendChild(element);
-        element.addEventListener('load', this._eventHandlers.load.bind(this));
-        element.addEventListener('error', this._eventHandlers.error.bind(this));
+        element.addEventListener('load', this._eventHandlers.load);
+        element.addEventListener('error', this._eventHandlers.error);
+        this._element = element;
     }
 }

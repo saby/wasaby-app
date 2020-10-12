@@ -12,7 +12,7 @@ export default class ElementPS {
     protected _attrs: IHeadTagAttrs;
     protected _content: string;
     protected _eventHandlers: IHeadTagEventHandlers;
-
+    protected _element: HTMLElement;
     constructor(name: string,
                 attrs: IHeadTagAttrs,
                 content?: string,
@@ -44,15 +44,6 @@ export default class ElementPS {
             attrs: IHeadTagAttrs,
             content?: string,
             eventHandlers?: IHeadTagEventHandlers): boolean{
-        // /** Каждый аттрибут, пришедший из вне
-        //  * сравнивается с аттрибутами, которые записаны в классе.
-        //  * Если аттрибут совпадает по ключу и значению,
-        //  * в таком случае этот аттрибут считается идентичным
-        //  */
-        // FIXME: not done yet, in progress
-        // const isEqualAttrs = Object.keys(attrs).every((key) => {
-        //     return isContainsInOrigin(key, attrs[key], this._attrs);
-        // });
         if (content !== this._content || name !== this._name) {
             return false;
         }
@@ -77,6 +68,4 @@ export default class ElementPS {
         return result;
     }
 }
-// function isContainsInOrigin(key, value, originObj){
-//     return Object.keys(originObj).some(keyOrigin => keyOrigin === key && originObj[keyOrigin] === value)
-// };
+
