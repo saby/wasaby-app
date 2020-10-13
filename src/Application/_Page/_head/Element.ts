@@ -12,18 +12,18 @@ export default class Element extends ElementPS {
      * Переопределенный метод от родительского класса.
      */
     protected _render(): void {
-        const title = document.head.querySelector('title');
+        const title = this._name === 'title' ? document.head.querySelector('title') : null;
         /** если в DOM дереве существует title и текущий элемент - title,
          *  в таком случае меняем только content у title в DOM дереве
          */
-        if (this._name === 'title' && title !== null){
-            title.innerHTML = this._content ? `${this._content}` : ``;
+        if (title){
+            title.innerHTML = this._content ? this._content : '';
         }
         else {
             /** проверяем создавался ли ранее элемент или нет */
             const element = this._element ? this._element : document.createElement(this._name);
 
-            element.innerHTML = this._content ? `${this._content}` : ``;
+            element.innerHTML = this._content ? this._content : '';
             for (const [key, value] of Object.entries(this._attrs)) {
                 element.setAttribute(key, value);
             }
@@ -37,8 +37,8 @@ export default class Element extends ElementPS {
      *  Переопределенный метод от родительского класса.
      */
     protected _removeElement(): void {
-        const title = document.head.querySelector('title');
-        if (this._name === 'title' && title) {
+        const title = this._name === 'title' ? document.head.querySelector('title') : null;
+        if (title) {
             title.innerHTML = ``;
         }
         else{
