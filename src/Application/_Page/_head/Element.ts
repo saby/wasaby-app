@@ -1,5 +1,4 @@
 import ElementPS from 'Application/_Page/_head/ElementPS';
-import { TAGS_PRIOR } from 'Application/_Page/_head/ElementPS';
 
 /**
  * Класс HTML элемента для вставки в head

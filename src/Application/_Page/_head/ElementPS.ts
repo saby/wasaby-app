@@ -11,7 +11,7 @@ import { IHeadTag, IHeadTagAttrs, IHeadTagEventHandlers, JML } from 'Application
  * по последним будем проходить при сравнении (использование метода isEqual),
  * для того, чтобы не сравнивать все аттрибуты.
  */
-export const TAGS_PRIOR = [
+const TAGS_PRIOR = [
     {name: 'link', attrsPrior: ['href']},
     {name: 'title', attrsPrior: [] },
     {name: 'script', attrsPrior: ['src', 'data-require-module']},
@@ -44,7 +44,7 @@ export default class ElementPS {
             eventHandlers: this._eventHandlers
         });
     }
-    // tslint:disable-next-line:no-empty
+    /** удаляет информацию из свойств класса */
     clear(): void{
         delete this._attrs;
         delete this._content;
@@ -54,6 +54,7 @@ export default class ElementPS {
             this._removeElement();
         }
     }
+    /** удаляет элемент из DOM дерева. Нет реализации в ElementPS */
     // tslint:disable-next-line:no-empty
     protected _removeElement(): void{
     }
@@ -87,7 +88,7 @@ export default class ElementPS {
         return result;
     }
 }
-
+/** сравнивает на идентичность аттрибутов*/
 function isEqualAttributes(attrs, attrsOrigin, tagName){
     /** сравним каждый элемент из списка шаблона приоритетных аттрибутов (TAGS_PRIOR)
      * с аттрибутами, которые пришли из вне.
