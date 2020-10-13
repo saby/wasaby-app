@@ -43,7 +43,7 @@ export default class Element extends ElementPS {
         }
         else{
             document.head.removeChild(this._element);
-            delete this._element;
         }
+        delete this._element;
     }
 }
