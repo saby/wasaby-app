@@ -1,4 +1,5 @@
 import ElementPS from 'Application/_Page/_head/ElementPS';
+import { TAGS_PRIOR } from 'Application/_Page/_head/ElementPS';
 
 /**
  * Класс HTML элемента для вставки в head
@@ -9,7 +10,10 @@ import ElementPS from 'Application/_Page/_head/ElementPS';
 export default class Element extends ElementPS {
 
     _render(): void {
-        const element =  document.createElement(this._name);
+        let element;
+        if (!this._element) {
+            element = document.createElement(this._name);
+        }
         for (const [key, value] of Object.entries(this._attrs)) {
             element.setAttribute(key, value);
         }
@@ -20,5 +24,10 @@ export default class Element extends ElementPS {
         element.addEventListener('load', this._eventHandlers.load);
         element.addEventListener('error', this._eventHandlers.error);
         this._element = element;
+    }
+
+    protected _removeElement() {
+        document.head.removeChild(this._element);
+        delete this._element;
     }
 }
