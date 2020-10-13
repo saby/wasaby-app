@@ -7,6 +7,17 @@ import { IHeadTag, IHeadTagAttrs, IHeadTagEventHandlers, JML } from 'Application
  * @author Хамбелов М.И.
  */
 
+/**  шаблон, в котором содержится список тегов и приоритетные аттрибуты,
+ * по последним будем проходить при сравнении (использование метода isEqual),
+ * для того, чтобы не сравнивать все аттрибуты.
+ */
+const TAGS_PRIOR = [
+    {name: 'link', attrsPrior: ['href']},
+    {name: 'title', attrsPrior: [] },
+    {name: 'script', attrsPrior: ['src', 'data-require-module']},
+    {name: 'meta', attrsPrior: ['name', 'content']},
+];
+
 export default class ElementPS {
     protected _name: string;
     protected _attrs: IHeadTagAttrs;
@@ -44,7 +55,7 @@ export default class ElementPS {
             attrs: IHeadTagAttrs,
             content?: string,
             eventHandlers?: IHeadTagEventHandlers): boolean{
-        if (content !== this._content || name !== this._name) {
+        if (!isEqualAttributes(attrs, this._attrs, name) || content !== this._content || name !== this._name) {
             return false;
         }
         return true;
@@ -69,3 +80,33 @@ export default class ElementPS {
     }
 }
 
+function isEqualAttributes(attrsOut, attrsOrigin, tagName){
+
+    /** сравним каждый элемент из списка шаблона приоритетных аттрибутов (TAGS_PRIOR)
+     * с аттрибутами, которые пришли из вне.
+     * если ключ и значение аттрибутов совпадают, в таком случае
+     * возвращаем из функции true и не делаем обход по всем аттрибутам
+     */
+    const foundTagPrior = TAGS_PRIOR.find(item => item.name === tagName);
+    if (foundTagPrior !== -1) {
+        const areEqualPriorTags = foundTagPrior.attrsPrior.every(attrsPriorKey => {
+            return Object.keys(attrsOut).some(keyOut => {
+                /** проверим ключ аттрибутов внешних и ключ из шаблона приоритетных аттрибутов
+                 *  значение аттр внешних и значение из записанных аттр класса
+                 */
+                if (keyOut === attrsPriorKey && attrsOut[keyOut] === attrsOrigin[keyOut]) {
+                    return true;
+                }
+            })
+        });
+        if (areEqualPriorTags) {
+            return true
+        }
+    }
+    /** если приоритетные ключи и значения не найдены или различны,
+     * в таком случае сравниваем все аттрибуты
+     */
+    return Object.keys(attrsOut).every((key) => {
+        return Object.keys(attrsOrigin).some(keyOrigin => keyOrigin === key && attrsOrigin[keyOrigin] === attrsOut[key])
+    });
+}
