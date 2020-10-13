@@ -46,11 +46,15 @@ export default class ElementPS {
     }
     /** удаляет информацию из свойств класса */
     clear(): void{
-        delete this._attrs;
-        delete this._content;
-        delete this._eventHandlers;
         if (this._name !== 'title') {
+            delete this._attrs;
+            delete this._content;
+            delete this._eventHandlers;
             delete this._name;
+            this._removeElement();
+        }
+        else{
+            delete this._content;
             this._removeElement();
         }
     }
@@ -73,7 +77,6 @@ export default class ElementPS {
     /** Отрисовка элемента в head. Не будет иметь реализации на СП */
     // tslint:disable-next-line:no-empty
     protected _render(): void {
-
     }
 
     /** Определяем одинаковый ли элемент или нет. Сравниваем по свойствам класса */
@@ -88,7 +91,8 @@ export default class ElementPS {
         return result;
     }
 }
-/** сравнивает на идентичность аттрибутов*/
+
+/** сравнивает на идентичность аттрибутов */
 function isEqualAttributes(attrs, attrsOrigin, tagName){
     /** сравним каждый элемент из списка шаблона приоритетных аттрибутов (TAGS_PRIOR)
      * с аттрибутами, которые пришли из вне.

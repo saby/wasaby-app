@@ -8,25 +8,42 @@ import ElementPS from 'Application/_Page/_head/ElementPS';
  */
 export default class Element extends ElementPS {
 
-    _render(): void {
-        let element;
-        if (!this._element) {
-            element = document.createElement(this._name);
+    /** Метод отрисовки элемента в head в DOM-дереве.
+     * Переопределенный метод от родительского класса.
+     */
+    protected _render(): void {
+        const title = document.head.querySelector('title');
+        /** если в DOM дереве существует title и текущий элемент - title,
+         *  в таком случае меняем только content у title в DOM дереве
+         */
+        if (this._name === 'title' && title !== null){
+            title.innerHTML = this._content ? `${this._content}` : ``;
         }
-        for (const [key, value] of Object.entries(this._attrs)) {
-            element.setAttribute(key, value);
-        }
-        if (this._content) {
-            element.innerHTML = `${this._content}`;
-        }
-        document.head.appendChild(element);
-        element.addEventListener('load', this._eventHandlers.load);
-        element.addEventListener('error', this._eventHandlers.error);
-        this._element = element;
-    }
+        else {
+            /** проверяем создавался ли ранее элемент или нет */
+            const element = this._element ? this._element : document.createElement(this._name);
 
-    protected _removeElement() {
-        document.head.removeChild(this._element);
-        delete this._element;
+            element.innerHTML = this._content ? `${this._content}` : ``;
+            for (const [key, value] of Object.entries(this._attrs)) {
+                element.setAttribute(key, value);
+            }
+            document.head.appendChild(element);
+            element.addEventListener('load', this._eventHandlers.load);
+            element.addEventListener('error', this._eventHandlers.error);
+            this._element = element;
+        }
+    }
+    /** Метод удаления элемента из head в DOM-дереве.
+     *  Переопределенный метод от родительского класса.
+     */
+    protected _removeElement(): void {
+        const title = document.head.querySelector('title');
+        if (this._name === 'title' && title) {
+            title.innerHTML = ``;
+        }
+        else{
+            document.head.removeChild(this._element);
+            delete this._element;
+        }
     }
 }
