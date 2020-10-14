@@ -1,5 +1,3 @@
-///// <amd-module name="Application/_Page/_head/Element" />
-
 import { IHeadTag, IHeadTagAttrs, IHeadTagEventHandlers, JML } from 'Application/_Interface/IHead';
 
 /**
@@ -69,19 +67,26 @@ export default class ElementPS {
             attrs: IHeadTagAttrs,
             content?: string,
             eventHandlers?: IHeadTagEventHandlers): boolean{
-        if (content !== this._content || name !== this._name ||
-            !isEqualAttributes(attrs, this._attrs, name)) {
+        if (content !== this._content || name !== this._name) {
+            return false;
+        }
+        /** найдем в списке тэгов с приоритетным аттрибутами нужный нам тэг.
+         * сравнивается только имя в TAGS_PRIOR с именем полученным из вне.
+         * имя которое записано в классе сравнивалось с именем из вне ранее.
+         */
+        const foundTagPrior = TAGS_PRIOR.find(item => item.name === name);
+        if (!isEqualAttributes(attrs, this._attrs, foundTagPrior)){
             return false;
         }
         return true;
     }
 
-    /** Отрисовка элемента в head. Не будет иметь реализации на СП */
+    /** Отрисовка элемента в head. Нет реализации в ElementPS */
     // tslint:disable-next-line:no-empty
     protected _render(): void {
     }
 
-    /** Определяем одинаковый ли элемент или нет. Сравниваем по свойствам класса */
+    /** генерируется тэг в формате JML */
     public static generateTag(data: IHeadTag): JML {
         const result: JML = [data.name];
         if (Object.keys(data.attrs).length) {
@@ -95,15 +100,17 @@ export default class ElementPS {
 }
 
 /** сравнивает на идентичность аттрибутов */
-function isEqualAttributes(attrs, attrsOrigin, tagName){
-    /** сравним каждый элемент из списка шаблона приоритетных аттрибутов (TAGS_PRIOR)
-     * с аттрибутами, которые пришли из вне.
-     * если ключ и значение аттрибутов совпадают, в таком случае
-     * возвращаем из функции true и не делаем обход по всем аттрибутам
+function isEqualAttributes(attrs, attrsOrigin, tagPrior){
+    /** проверка пришёл ли объект tagPrior и пустоту массива с приоритетными аттрибутами.
+     *  При вызове в пустом массиве метода every, результат всегда будет true.
      */
-    const foundTagPrior = TAGS_PRIOR.find(item => item.name === tagName);
-    if (foundTagPrior) {
-        const areEqualPriorTags = foundTagPrior.attrsPrior.every(attrsPriorKey => {
+    if (tagPrior && tagPrior.attrsPrior.length) {
+        /** сравним каждый элемент из списка приоритетных аттрибутов (tagPrior)
+         * с аттрибутами, которые пришли из вне.
+         * если ключ и значение аттрибутов совпадают, в таком случае
+         * возвращаем из функции true и не делаем обход по всем аттрибутам
+         */
+        const areEqualPriorTags = tagPrior.attrsPrior.every(attrsPriorKey => {
             /** проверим ключ аттрибутов внешних и ключ из шаблона приоритетных аттрибутов,
              *  значение аттрибутов внешних и значение из записанных аттрибутов класса
              */
