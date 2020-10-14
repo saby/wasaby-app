@@ -22,14 +22,20 @@ export default class Element extends ElementPS {
         else {
             /** проверяем создавался ли ранее элемент или нет */
             const element = this._element ? this._element : document.createElement(this._name);
-
             element.innerHTML = this._content ? this._content : '';
             for (const [key, value] of Object.entries(this._attrs)) {
                 element.setAttribute(key, value);
             }
             document.head.appendChild(element);
-            element.addEventListener('load', this._eventHandlers.load);
-            element.addEventListener('error', this._eventHandlers.error);
+            if (this._eventHandlers) {
+                if (this._eventHandlers.load) {
+                    (element as HTMLLinkElement)
+                        .addEventListener('load', (this._eventHandlers.load as EventListener));
+                }
+                if (this._eventHandlers.error) {
+                    element.addEventListener('error', (this._eventHandlers.error as EventListener));
+                }
+            }
             this._element = element;
         }
     }
