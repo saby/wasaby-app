@@ -102,7 +102,7 @@ function isEqualAttributes(attrs, attrsOrigin, tagName){
      * возвращаем из функции true и не делаем обход по всем аттрибутам
      */
     const foundTagPrior = TAGS_PRIOR.find(item => item.name === tagName);
-    if (foundTagPrior !== -1) {
+    if (foundTagPrior) {
         const areEqualPriorTags = foundTagPrior.attrsPrior.every(attrsPriorKey => {
             /** проверим ключ аттрибутов внешних и ключ из шаблона приоритетных аттрибутов,
              *  значение аттрибутов внешних и значение из записанных аттрибутов класса
