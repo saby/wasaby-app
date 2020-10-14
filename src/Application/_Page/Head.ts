@@ -138,25 +138,6 @@ export class Head implements IStore<Record<keyof IHead, any>> {
         return `head-${PREFIX}${this._id++}`;
     };
 
-    /**
-     * Генератор JML информации для тега.
-     * @param data
-     * @private
-     */
-    private static _generateTag(data: IHeadTag): JML {
-        // TODO: Убрать этот патчинг в конце проекта. Ради избавления от data-vdomignore все и затевалось.
-        data.attrs['data-vdomignore'] = true;
-        const result: JML = [data.name];
-        if (Object.keys(data.attrs).length) {
-            result.push(data.attrs);
-        }
-        if (data.content) {
-            result.push(data.content);
-        }
-
-        return result;
-    };
-
     private static creator(): Head {
         return new Head();
     }
