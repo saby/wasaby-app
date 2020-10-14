@@ -64,6 +64,11 @@ export class Head implements IStore<Record<keyof IHead, any>> {
         content?: string,
         eventHandlers?: IHeadTagEventHandlers): IHeadTagId {
 
+        for (const elementsKey in this._elements) {
+            if (this._elements[elementsKey].isEqual(name, attrs, content, eventHandlers)) {
+                return elementsKey;
+            }
+        }
         const elementClass = constants.isServerSide ? ElementPS : Element;
         const uuid = this._generateGuid();
         this._elements[uuid] = new elementClass(name, attrs, content, eventHandlers);
