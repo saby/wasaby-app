@@ -18,26 +18,26 @@ export default class Element extends ElementPS {
          */
         if (title){
             title.innerHTML = this._content ? this._content : '';
+            return;
         }
-        else {
-            /** проверяем создавался ли ранее элемент или нет */
-            const element = this._element ? this._element : document.createElement(this._name);
-            element.innerHTML = this._content ? this._content : '';
-            for (const [key, value] of Object.entries(this._attrs)) {
-                element.setAttribute(key, value);
-            }
-            document.head.appendChild(element);
-            if (this._eventHandlers) {
-                if (this._eventHandlers.load) {
-                    (element as HTMLLinkElement)
-                        .addEventListener('load', (this._eventHandlers.load as EventListener));
-                }
-                if (this._eventHandlers.error) {
-                    element.addEventListener('error', (this._eventHandlers.error as EventListener));
-                }
-            }
-            this._element = element;
+
+        /** проверяем создавался ли ранее элемент или нет */
+        const element = this._element ? this._element : document.createElement(this._name);
+        element.innerHTML = this._content ? this._content : '';
+        for (const [key, value] of Object.entries(this._attrs)) {
+            element.setAttribute(key, value);
         }
+        document.head.appendChild(element);
+        if (this._eventHandlers) {
+            if (this._eventHandlers.load) {
+                (element as HTMLLinkElement)
+                    .addEventListener('load', (this._eventHandlers.load as EventListener));
+            }
+            if (this._eventHandlers.error) {
+                element.addEventListener('error', (this._eventHandlers.error as EventListener));
+            }
+        }
+        this._element = element;
     }
     /** Метод удаления элемента из head в DOM-дереве.
      *  Переопределенный метод от родительского класса.
