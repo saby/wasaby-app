@@ -1,3 +1,5 @@
+///// <amd-module name="Application/_Page/_head/ElementPS" />
+
 import { IHeadTag, IHeadTagAttrs, IHeadTagEventHandlers, JML } from 'Application/_Interface/IHead';
 
 /**
