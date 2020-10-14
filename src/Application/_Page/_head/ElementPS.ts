@@ -88,6 +88,8 @@ export default class ElementPS {
 
     /** генерируется тэг в формате JML */
     public static generateTag(data: IHeadTag): JML {
+        // TODO: Убрать этот патчинг в конце проекта. Ради избавления от data-vdomignore все и затевалось.
+        data.attrs['data-vdomignore'] = true;
         const result: JML = [data.name];
         if (Object.keys(data.attrs).length) {
             result.push(data.attrs);
