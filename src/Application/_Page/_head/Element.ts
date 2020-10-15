@@ -30,14 +30,12 @@ export default class Element extends ElementPS {
             element.setAttribute(key, value);
         }
         document.head.appendChild(element);
-        if (this._eventHandlers) {
-            if (this._eventHandlers.load) {
-                (element as HTMLLinkElement)
-                    .addEventListener('load', (this._eventHandlers.load as EventListener));
-            }
-            if (this._eventHandlers.error) {
-                element.addEventListener('error', (this._eventHandlers.error as EventListener));
-            }
+        if (this._eventHandlers?.load) {
+            (element as HTMLLinkElement)
+                .addEventListener('load', (this._eventHandlers.load as EventListener));
+        }
+        if (this._eventHandlers?.error) {
+            element.addEventListener('error', (this._eventHandlers.error as EventListener));
         }
         this._element = element;
     }
