@@ -20,7 +20,6 @@ export default class Element extends ElementPS {
             title.innerHTML = this._content ? this._content : '';
             return;
         }
-
         /** проверяем создавался ли ранее элемент или нет */
         const element = this._element ? this._element : document.createElement(this._name);
         element.innerHTML = this._content ? this._content : '';
