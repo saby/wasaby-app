@@ -5,7 +5,6 @@ import { IHead, IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId, JML } from 'Ap
 import { IStore } from 'Application/_Interface/IStore';
 import { default as Element } from 'Application/_Page/_head/Element';
 import { default as ElementPS } from 'Application/_Page/_head/ElementPS';
-import { constants } from 'Env/Env';
 
 /** Стандартное время до обновления страницы. Используется внутри <noscript> */
 const TIME_TO_REFRESH: Number = 2;
@@ -69,7 +68,7 @@ export class Head implements IStore<Record<keyof IHead, any>> {
                 return elementsKey;
             }
         }
-        const elementClass = constants.isServerSide ? ElementPS : Element;
+        const elementClass = typeof window === 'undefined' ? ElementPS : Element;
         const uuid = this._generateGuid();
         this._elements[uuid] = new elementClass(name, attrs, content, eventHandlers);
 
