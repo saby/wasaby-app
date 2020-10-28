@@ -3,7 +3,8 @@
     "Application/Initializer",
     "Application/Env",
     "Application/Request",
-    "Application/Config"
+    "Application/Config",
+    "Application/Page"
   ],
   "extendsTo": "online-superbundle.package.js"
 }
