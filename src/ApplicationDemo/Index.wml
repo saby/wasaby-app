@@ -14,26 +14,14 @@
       </script>
 </head>
 <body tabindex="0">
-<script type="text/javascript" src="/cdn/RequireJS/2.3.5-p5/require-min.js"></script>
-<script type="text/javascript" src="/RequireJsLoader/config.js"></script>
+ <script type="text/javascript" src="/cdn/RequireJS/2.3.5-p5/require-min.js"></script>
+ <script type="text/javascript" src="/RequireJsLoader/config.js"></script>
 <div id="root"></div>
 <script>
+
     require(['ApplicationDemo/Main'], function (Main) {
         Main.default.createControl(Main.default, {}, document.getElementById("root"));
     });
-var serverValue = '{ \
-   "uuid": { "someKey": "someValue" } \
-}';
-
-define('Core', ['Application/Initializer', 'Application/Env'], ({ default: init }, { StateReceiver }) => {
-    console.log('isServerSide: ');
-    console.log(typeof window === 'undefined');
-   const serverState = new StateReceiver();
-   console.log(serverState);
-   serverState.deserialize(serverValue);
-   init({}, undefined, serverState);
-});
-
 </script>
 
 </body>

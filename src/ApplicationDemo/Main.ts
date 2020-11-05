@@ -9,7 +9,7 @@ import * as Control from 'Core/Control';
 import * as template from 'wml!ApplicationDemo/Main';
 // @ts-ignore
 import * as AppInit from 'Application/Initializer';
-
+import { StateReceiver } from 'Application/Env';
 // import 'css!ApplicationDemo/Main';
 
 /**
@@ -31,7 +31,13 @@ export default class Main extends Control {
       }
    }
    _beforeMount(options, context, receivedState){
-      console.log(receivedState);
+      // console.log('receivedState: ' + receivedState);
+      const serverState = new StateReceiver();
+      console.log(serverState);
+      const serverValue = '{ \
+         "uuid": { "someKey": "someValue" } \
+      }';
+      serverState.deserialize(serverValue);
       if (!receivedState) {
          this._items = receivedState;
       } else {
