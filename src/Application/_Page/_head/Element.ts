@@ -14,12 +14,12 @@ export default class Element extends ElementPS {
      * Переопределенный метод от родительского класса.
      */
     protected _render(): void {
-        const title = this._name === 'title' ? document.head.querySelector('title') : null;
+        const title = this._isTitle() ? document.head.querySelector('title') : null;
         /** если в DOM дереве существует title и текущий элемент - title,
          *  в таком случае меняем только content у title в DOM дереве
          */
-        if (title){
-            title.innerHTML = this._content ? this._content : '';
+        if (title) {
+            document.title = this._content ? this._content : '';
             return;
         }
 
@@ -41,13 +41,10 @@ export default class Element extends ElementPS {
     }
     /** Метод удаления элемента из head в DOM-дереве.
      *  Переопределенный метод от родительского класса.
+     *  Нельзя оставлять страницу с пустым title - это приводит к морганию заголовка
      */
     protected _removeElement(): void {
-        const title = this._name === 'title' ? document.head.querySelector('title') : null;
-        if (title) {
-            title.innerHTML = ``;
-        }
-        else{
+        if (!this._isTitle()) {
             document.head.removeChild(this._element);
         }
         delete this._element;

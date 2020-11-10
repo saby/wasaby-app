@@ -38,10 +38,13 @@ export class Head implements IStore<Record<keyof IHead, any>> {
         this._noScriptUrl = url;
     }
 
-    // TODO: Сейчас этим есть смысл пользоваться только на Presentation Service
     createTag(
         name: 'title',
         attrs: {},
+        content: string): IHeadTagId;
+    createTag(
+        name: 'title',
+        attrs: {class: string},
         content: string): IHeadTagId;
     createTag(
         name: 'script',
@@ -53,6 +56,9 @@ export class Head implements IStore<Record<keyof IHead, any>> {
     createTag(
         name: 'meta',
         attrs: {content: string, 'http-equiv': string, name: string, URL: string}): IHeadTagId;
+    createTag(
+        name: 'meta',
+        attrs: {property: string, content: string, class: string}): IHeadTagId;
     createTag(
         name: 'link',
         attrs: {src: ''}
@@ -73,6 +79,23 @@ export class Head implements IStore<Record<keyof IHead, any>> {
         this._elements[uuid] = new elementClass(name, attrs, content, eventHandlers);
 
         return uuid;
+    }
+    getTag(name?: string, attrs?: IHeadTagAttrs): IHeadTagId | IHeadTagId[] | null {
+        const result: IHeadTagId[] = [];
+
+        for (const elementsKey in this._elements) {
+            if (this._elements[elementsKey].isFit(name, attrs)) {
+                result.push(elementsKey);
+            }
+        }
+
+        if (!result.length) {
+            return null;
+        }
+        if (result.length === 1) {
+            return result.shift();
+        }
+        return result;
     }
 
     deleteTag(id: IHeadTagId): void {
