@@ -72,6 +72,7 @@ export type JML = [string, (object | JsonML | string)?, (JsonML | string)?];
  * @property {Function} deleteTag - удалит тег из <head>, если он есть
  * @property {Function} getData - вернет текущее состояние тегов с учетом их добавления/удаления в формате JsonML
  * @property {Function} getComments - вернет все зарегистрированные комментарии в виде строк без <!-- --> (wrap)
+ * @property {Function} clear - очистит внутреннее состояние. Имеет смысл вызывать только на ПП
  * @see https://wi.sbis.ru/doc/platform/developmentapl/service-development/service-contract/logic/json-markup-language/
  * @public
  * @author Печеркин С.В.
@@ -84,4 +85,5 @@ export interface IHead extends IStore{
     getTag(name?: string, attrs?: IHeadTagAttrs): IHeadTagId | IHeadTagId[] | null;
     getData(): Array<JML>;
     getComments(wrap: boolean): string[];
+    clear();
 }

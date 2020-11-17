@@ -103,6 +103,12 @@ export class Head implements IStore<Record<keyof IHead, any>> {
         delete this._elements[id];
     }
 
+    clear(): void {
+        for (const elementsKey in this._elements) {
+            this.deleteTag(elementsKey);
+        }
+    }
+
     getData(): Array<JML> {
         const noscript = this._generateNoScript();
         const result: Array<JML> = [].concat(noscript ? [noscript] : []);

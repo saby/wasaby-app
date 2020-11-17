@@ -32,7 +32,7 @@ export default class ElementPS {
                 eventHandlers?: IHeadTagEventHandlers) {
         this._name = name;
         this._attrs = attrs;
-        this._content = content;
+        this._content = content ? String(content) : null;
         this._eventHandlers = eventHandlers;
         this._render();
     }
