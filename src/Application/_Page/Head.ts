@@ -99,6 +99,9 @@ export class Head implements IStore<Record<keyof IHead, any>> {
     }
 
     deleteTag(id: IHeadTagId): void {
+        if (!this._elements[id]) {
+            return
+        }
         this._elements[id].clear();
         delete this._elements[id];
     }
