@@ -71,6 +71,7 @@ export class Head implements IStore<Record<keyof IHead, any>> {
 
         for (const elementsKey in this._elements) {
             if (this._elements[elementsKey].isEqual(name, attrs, content, eventHandlers)) {
+                eventHandlers?.load();
                 return elementsKey;
             }
         }
