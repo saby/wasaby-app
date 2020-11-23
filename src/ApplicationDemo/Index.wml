@@ -19,10 +19,12 @@
         <div id="root"></div>
         <script>
             define('ApplicationDemo/Core', ['Application/Initializer', 'Application/Env'], ({ default: init }, AppEnv) => {
-                var serverValue = '{ \
+                const serverValue = '{ \
                     "uuid": { "someKey": "someValue" } \
                 }';
+                console.log(AppEnv);
                 var serverState = new AppEnv.getStateReceiver();
+                console.log(serverState);
                 serverState.deserialize(serverValue);
             });
             require(['ApplicationDemo/Main'], function (Main) {

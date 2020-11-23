@@ -15,8 +15,6 @@
                 }
                 const component = new MyComponent();
                 getStateReceiver().register("uuid", component);
-                console.log(component);
-                console.log(getStateReceiver());
                 console.log('data from server: ', component.getState().someKey);
             });
     </script>
