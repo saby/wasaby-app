@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import { default as AppInit } from 'Application/Initializer';
 import { Head as HeadAPI } from 'Application/Page';
-import { JML } from "Application/Interface";
+import { JML, IHead } from "Application/Interface";
 
 const additionalAttrs = {
     'data-vdomignore': true
@@ -10,7 +10,7 @@ const processingData: JML[] = [];
 
 describe('Application/_Page/Head', () => {
     AppInit();
-    const API = HeadAPI.getInstance();
+    const API: IHead = HeadAPI.getInstance();
     API.clear();
 
     it('Создание пустого тега', () => {
