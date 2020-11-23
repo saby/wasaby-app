@@ -3,9 +3,7 @@
 
   <description>Изоморфное Wasaby API для унифицированного взаимодействия с окружением в браузере и на сервере.</description>
 
-  <depends>
-    <module id="a857d050-c754-4d39-90ec-fca5e2ddf022" name="Router"/>
-  </depends>
+  <depends/>
 
   <load_after/>
 
