@@ -69,7 +69,7 @@ export default class ElementPS {
             attrs: IHeadTagAttrs,
             content?: string,
             eventHandlers?: IHeadTagEventHandlers): boolean{
-        if (content !== this._content || name !== this._name) {
+        if (content != this._content || name !== this._name) {
             return false;
         }
         /** найдем в списке тэгов с приоритетным аттрибутами нужный нам тэг.

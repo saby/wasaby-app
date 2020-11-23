@@ -111,6 +111,8 @@ export class Head implements IStore<Record<keyof IHead, any>> {
         for (const elementsKey in this._elements) {
             this.deleteTag(elementsKey);
         }
+        delete this._noScriptUrl;
+        this._comments = [];
     }
 
     getData(): Array<JML> {

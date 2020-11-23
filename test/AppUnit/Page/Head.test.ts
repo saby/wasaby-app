@@ -1,0 +1,122 @@
+import { assert } from 'chai';
+import { default as AppInit } from 'Application/Initializer';
+import { Head as HeadAPI } from 'Application/Page';
+import { JML } from "Application/Interface";
+
+const additionalAttrs = {
+    'data-vdomignore': true
+};
+const processingData: JML[] = [];
+
+describe('Application/_Page/Head', () => {
+    AppInit();
+    const API = HeadAPI.getInstance();
+    API.clear();
+
+    it('Создание пустого тега', () => {
+        const tag = 'title';
+        const attrs = {};
+
+        API.createTag(tag, attrs);
+        processingData.push([tag, {...attrs, ...additionalAttrs}]);
+        assert.deepEqual(API.getData(), processingData);
+    });
+
+    it('Добавление тега в набор уже существующих тегов', () => {
+        const tag = 'link';
+        const attrs = {
+            rel: 'preload',
+            as: 'font',
+            href: '//cdn.sbis.ru/cdn/TensorFont/1.0.3/TensorFont/TensorFont.woff2" type="font/woff2',
+            crossorigin: 'crossorigin'
+        };
+
+        API.createTag(tag, attrs);
+        processingData.push([tag, {...attrs, ...additionalAttrs}]);
+        assert.deepEqual(API.getData(), processingData);
+    });
+
+    it('Добавление noScript', () => {
+        const url = 'noScript.html';
+
+        API.createNoScript(url);
+        processingData.unshift(['noscript', ['meta', {...additionalAttrs, ...{
+                'http-equiv': 'refresh',
+                content: `2; URL=${url}`
+            }}]]);
+        assert.deepEqual(API.getData(), processingData);
+    });
+
+    it('Добавление дубля ни к чему не приводит', () => {
+        const tag = 'meta';
+        const attrs = {
+            name: 'viewport',
+            content: 'width=1024'
+        };
+
+        API.createTag(tag, attrs);
+        processingData.push([tag, {...attrs, ...additionalAttrs}]);
+        assert.deepEqual(API.getData(), processingData);
+
+        API.createTag(tag, attrs);
+        assert.deepEqual(API.getData(), processingData, 'После добавления дубля он появился в данных');
+    });
+
+    it('Получение id тега из хранилища по параметрам', () => {
+        /** Добавим еще один тег meta для массы */
+        const tag = 'meta';
+        const attrs = {
+            'http-equiv': 'X-UA-Compatible',
+            content: 'IE=edge',
+            foo: 'bar'
+        };
+
+        API.createTag(tag, attrs);
+        processingData.push([tag, {...attrs, ...additionalAttrs}]);
+
+        /** title мы добавляли ранее */
+        assert.isString(API.getTag('title'), 'Не нашелся пустой тег title в данных');
+        assert.isNull(API.getTag('title', {foo: 'bar'}), 'Нашелся несуществующий тег title в данных');
+        assert.isString(API.getTag('meta', {foo: 'bar'}), 'Нашлось более 2-х тегов meta в данных');
+        assert.equal(API.getTag('meta').length, 2, 'Не нашлось 2 тега meta в данных');
+    });
+
+    it('Удаление тега', () => {
+        /** Добавим тег script, чтобы сразу же его удалить */
+        const tag = 'script';
+        const attrs = {};
+
+        API.createTag(tag, attrs);
+        processingData.push([tag, {...attrs, ...additionalAttrs}]);
+        assert.deepEqual(API.getData(), processingData);
+
+        API.deleteTag(API.getTag(tag));
+        processingData.pop();
+        assert.deepEqual(API.getData(), processingData, 'Тег script не удалился из набора данных');
+    });
+
+    it('Создание комментария', () => {
+        const firstComment = 'Lorem ipsum dolor sit amet.';
+        const secondComment = 'Ut enim ad minim veniam.';
+        const wrapper = (str) => `<!--${str}-->`;
+        const processingResult = [];
+
+        API.createComment(firstComment);
+        processingResult.push(firstComment);
+        assert.deepEqual(API.getComments(), processingResult);
+
+        API.createComment(secondComment);
+        processingResult.push(secondComment);
+        assert.deepEqual(
+            API.getComments(true),
+            processingResult.map(wrapper),
+            'Комментарии вернулись без обертки HTML комментария <!-- -->'
+        );
+    });
+
+    it('Очистка хранилища', () => {
+        API.clear();
+        assert.isEmpty(API.getData());
+        assert.isEmpty(API.getComments());
+    });
+});
