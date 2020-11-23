@@ -77,7 +77,7 @@ export type JML = [string, (object | JsonML | string)?, (JsonML | string)?];
  * @public
  * @author Печеркин С.В.
  */
-export interface IHead extends IStore{
+export interface IInternalHead {
     createComment(text: string): void;
     createNoScript(URL): void;
     createTag(name: string, attrs: IHeadTagAttrs, content?: string, eventHandlers?: IHeadTagEventHandlers): IHeadTagId;
@@ -87,3 +87,5 @@ export interface IHead extends IStore{
     getComments(wrap?: boolean): string[];
     clear();
 }
+
+export interface IHead extends IStore<IInternalHead>, IInternalHead {}
