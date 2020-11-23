@@ -1,18 +1,18 @@
 <div>
-<div>
    <h1>Демонстрация работы Application</h1>
-</div>
+   <script>
+      require(['Application/Env'], function (AppEnv) {
+          var serverState = AppEnv.getStateReceiver();
+          console.log(serverState);
+          var serverValue = '{ \
+           "uuid": { "someKey": "someValue" } \
+          }';
+          serverState.deserialize(serverValue);
+      });
+      require(['ApplicationDemo/StateConsumer'], function (StateConsumer) {
+          StateConsumer.default.createControl(StateConsumer.default, {}, document.getElementById("main-id"));
+      });
 
-<script>
-console.log('hello');
-var serverValue = '{ \
-   "uuid": { "someKey": "someValue" } \
-}';
-
-define('Core', ['Application/Initializer', 'Application/Env'], ({ default: init }, { StateReceiver }) => {
-   const serverState = new StateReceiver();
-   serverState.deserialize(serverValue);
-   init({}, undefined, serverState);
-});
-</script>
+   </script>
+    <div id="main-id"></div>
 </div>

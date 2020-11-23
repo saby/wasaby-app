@@ -1,16 +1,11 @@
 /// <amd-module name="ApplicationDemo/Main" />
-/**
- * @author Санников К.А.
- */
 
+// @ts-ignore
+import * as AppInit from 'Application/Initializer';
 // @ts-ignore
 import * as Control from 'Core/Control';
 // @ts-ignore
 import * as template from 'wml!ApplicationDemo/Main';
-// @ts-ignore
-import * as AppInit from 'Application/Initializer';
-import { StateReceiver } from 'Application/Env';
-// import 'css!ApplicationDemo/Main';
 
 /**
  * Точка входа для демонстрации роутинга
@@ -18,7 +13,6 @@ import { StateReceiver } from 'Application/Env';
 
 export default class Main extends Control {
    _template: Function = template;
-   protected _items;
 
    // tslint:disable-next-line: no-any
    constructor(cfg: any) {
@@ -30,18 +24,18 @@ export default class Main extends Control {
          AppInit.default(cfg);
       }
    }
-   _beforeMount(options, context, receivedState){
-      // console.log('receivedState: ' + receivedState);
-      const serverState = new StateReceiver();
-      console.log(serverState);
-      const serverValue = '{ \
-         "uuid": { "someKey": "someValue" } \
-      }';
-      serverState.deserialize(serverValue);
-      if (!receivedState) {
-         this._items = receivedState;
-      } else {
-         return Promise.resolve({data: 'crashed data'});
-      }
-   }
+
 }
+
+// <script>
+//     console.log('hello');
+// var serverValue = '{ \
+//    "uuid": { "someKey": "someValue" } \
+// }';
+//
+// define('Core', ['Application/Initializer', 'Application/Env'], ({ default: init }, { StateReceiver }) => {
+//    const serverState = new StateReceiver();
+//    serverState.deserialize(serverValue);
+//    init({}, undefined, serverState);
+// });
+// </script>
