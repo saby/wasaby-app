@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import { default as AppInit } from 'Application/Initializer';
 import { Head as HeadAPI } from 'Application/Page';
-import { JML, IHead } from "Application/Interface";
+import { JML, IHead, IHeadTagAttrs } from "Application/Interface";
 
 const additionalAttrs = {
     'data-vdomignore': true
@@ -76,8 +76,10 @@ describe('Application/_Page/Head', () => {
 
         /** title мы добавляли ранее */
         assert.isString(API.getTag('title'), 'Не нашелся пустой тег title в данных');
-        assert.isNull(API.getTag('title', {foo: 'bar'}), 'Нашелся несуществующий тег title в данных');
-        assert.isString(API.getTag('meta', {foo: 'bar'}), 'Нашлось более 2-х тегов meta в данных');
+        assert.isNull(API.getTag('title', ({foo: 'bar'} as IHeadTagAttrs)),
+            'Нашелся несуществующий тег title в данных');
+        assert.isString(API.getTag('meta', ({foo: 'bar'} as IHeadTagAttrs)),
+            'Нашлось более 2-х тегов meta в данных');
         assert.equal(API.getTag('meta').length, 2, 'Не нашлось 2 тега meta в данных');
     });
 
@@ -89,8 +91,9 @@ describe('Application/_Page/Head', () => {
         API.createTag(tag, attrs);
         processingData.push([tag, {...attrs, ...additionalAttrs}]);
         assert.deepEqual(API.getData(), processingData);
+        const tagId: string = API.getTag(tag);
 
-        API.deleteTag(API.getTag(tag));
+        API.deleteTag(tagId);
         processingData.pop();
         assert.deepEqual(API.getData(), processingData, 'Тег script не удалился из набора данных');
     });
