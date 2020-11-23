@@ -91,9 +91,8 @@ describe('Application/_Page/Head', () => {
         API.createTag(tag, attrs);
         processingData.push([tag, {...attrs, ...additionalAttrs}]);
         assert.deepEqual(API.getData(), processingData);
-        const tagId: string = API.getTag(tag);
 
-        API.deleteTag(tagId);
+        API.deleteTag((API.getTag(tag) as string));
         processingData.pop();
         assert.deepEqual(API.getData(), processingData, 'Тег script не удалился из набора данных');
     });

@@ -125,7 +125,7 @@ export class Head implements IStore<Record<keyof IHead, any>> {
         return result;
     }
 
-    getComments(wrap: boolean): string[] {
+    getComments(wrap?: boolean): string[] {
         /** Важно не позволить случайно повредить исходный массив */
         return wrap ? this._comments.map((comment) => {
             return `<!--${comment}-->`;

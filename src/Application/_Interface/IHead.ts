@@ -84,6 +84,6 @@ export interface IHead extends IStore{
     deleteTag(id: IHeadTagId): void;
     getTag(name?: string, attrs?: IHeadTagAttrs): IHeadTagId | IHeadTagId[] | null;
     getData(): Array<JML>;
-    getComments(wrap: boolean): string[];
+    getComments(wrap?: boolean): string[];
     clear();
 }
