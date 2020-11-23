@@ -1,30 +1,33 @@
 <!doctype html>
 <html lang="ru" xml="ru" xmlns="http://www.w3.org/1999/xhtml">
-<head tabindex="0">
-      <meta name="viewport" content="width=480"/>
-      <meta charset="utf-8"/>
-      <title>saby-application</title>
-      <script key="ws-config">
-            window.wsConfig = {
-                  wsRoot: '/WS.Core/',
-                  resourceRoot: '/',
-                  appRoot: '/',
-                  compatible: false
-            };
-      </script>
-</head>
-<body tabindex="0">
- <script type="text/javascript" src="/cdn/RequireJS/2.3.5-p5/require-min.js"></script>
- <script type="text/javascript" src="/RequireJsLoader/config.js"></script>
-<div id="root"></div>
-<script>
-
-
-    require(['ApplicationDemo/Main'], function (Main) {
-        Main.default.createControl(Main.default, {}, document.getElementById("root"));
-    });
-
-</script>
-
-</body>
+    <head>
+          <meta name="viewport" content="width=480"/>
+          <meta charset="utf-8"/>
+          <title>saby-application</title>
+    </head>
+    <script key="ws-config">
+        window.wsConfig = {
+            wsRoot: '/WS.Core/',
+            resourceRoot: '/',
+            appRoot: '/',
+            compatible: false
+        };
+    </script>
+    <body tabindex="0">
+        <script type="text/javascript" src="/cdn/RequireJS/2.3.5-p5/require-min.js"></script>
+        <script type="text/javascript" src="/RequireJsLoader/config.js"></script>
+        <div id="root"></div>
+        <script>
+            define('ApplicationDemo/Core', ['Application/Initializer', 'Application/Env'], ({ default: init }, AppEnv) => {
+                var serverValue = '{ \
+                    "uuid": { "someKey": "someValue" } \
+                }';
+                var serverState = new AppEnv.getStateReceiver();
+                serverState.deserialize(serverValue);
+            });
+            require(['ApplicationDemo/Main'], function (Main) {
+                Main.default.createControl(Main.default, {}, document.getElementById("root"));
+            });
+        </script>
+    </body>
 </html>

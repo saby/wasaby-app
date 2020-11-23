@@ -1,8 +1,6 @@
 /// <amd-module name="ApplicationDemo/Main" />
 
 // @ts-ignore
-import * as AppInit from 'Application/Initializer';
-// @ts-ignore
 import * as Control from 'Core/Control';
 // @ts-ignore
 import * as template from 'wml!ApplicationDemo/Main';
@@ -13,29 +11,28 @@ import * as template from 'wml!ApplicationDemo/Main';
 
 export default class Main extends Control {
    _template: Function = template;
-
-   // tslint:disable-next-line: no-any
-   constructor(cfg: any) {
-      super();
-      // Initialize the Request storage that is used by Router/Data.
-      // This is usually done by Application/Core, which is not used
-      // in these demos
-      if (!AppInit.isInit()) {
-         AppInit.default(cfg);
-      }
-   }
-
 }
 
-// <script>
-//     console.log('hello');
-// var serverValue = '{ \
-//    "uuid": { "someKey": "someValue" } \
-// }';
-//
-// define('Core', ['Application/Initializer', 'Application/Env'], ({ default: init }, { StateReceiver }) => {
-//    const serverState = new StateReceiver();
-//    serverState.deserialize(serverValue);
-//    init({}, undefined, serverState);
+// constructor(cfg: any) {
+//    super();
+//    if (!AppInit.isInit()) {
+//       AppInit.default(cfg);
+//    }
+// }
+// require(['ApplicationDemo/Main'], function (Main) {
+//    Main.default.createControl(Main.default, {}, document.getElementById("root"));
 // });
+
+
+// <script>
+//
+//     require(['Application/Env'], function (AppEnv) {
+//        var serverState = AppEnv.getStateReceiver();
+//        var serializedState = serverState.serialize();
+//        console.log(serializedState);
+//     });
+// require(['ApplicationDemo/StateConsumer'], function (StateConsumer) {
+//    StateConsumer.default.createControl(StateConsumer.default, {}, document.getElementById("main-id"));
+// });
+//
 // </script>

@@ -1,18 +1,23 @@
 <div>
-   <h1>Демонстрация работы Application</h1>
-   <script>
-      require(['Application/Env'], function (AppEnv) {
-          var serverState = AppEnv.getStateReceiver();
-          console.log(serverState);
-          var serverValue = '{ \
-           "uuid": { "someKey": "someValue" } \
-          }';
-          serverState.deserialize(serverValue);
-      });
-      require(['ApplicationDemo/StateConsumer'], function (StateConsumer) {
-          StateConsumer.default.createControl(StateConsumer.default, {}, document.getElementById("main-id"));
-      });
-
-   </script>
+    <h1>Демонстрация работы Application Demo</h1>
     <div id="main-id"></div>
+
+    <script>
+            require(['Application/Env', 'ApplicationDemo/Core'], ({ getStateReceiver }) => {
+                class MyComponent {
+                    data = {};
+                    getState() {
+                        return this.data;
+                    }
+                    setState(data) {
+                        this.data = data;
+                    }
+                }
+                const component = new MyComponent();
+                getStateReceiver().register("uuid", component);
+                console.log(component);
+                console.log(getStateReceiver());
+                console.log('data from server: ', component.getState().someKey);
+            });
+    </script>
 </div>
