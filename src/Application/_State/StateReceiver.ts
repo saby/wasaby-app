@@ -1,7 +1,7 @@
 /// <amd-module name="Application/_Env/Browser/StateReceiver" />
+import { logger as Logger } from 'Application/Env';
 import { IStateReceiver } from 'Application/Interface';
-import Serializer = require('UI/_state/Serializer');
-import { Logger } from 'UI/Utils';
+import Serializer = require('UI/_state/Serializer'); // TODO: from Application/_state/Serializer
 
 /**
  * @author Санников К.
@@ -15,7 +15,7 @@ interface ISerializedType {
 function getDepsFromSerializer(slr: any): any {
     let moduleInfo;
     const deps = {};
-    const modules = slr._linksStorage;
+    const modules = slr._linksStorage; // attention
     let parts;
     for (const key in modules) {
         if (modules.hasOwnProperty(key)) {
@@ -27,7 +27,7 @@ function getDepsFromSerializer(slr: any): any {
         }
     }
 
-    const addDeps = slr._depsStorage || {};
+    const addDeps = slr._depsStorage || {}; // attention
     for (const j in addDeps) {
         if (addDeps.hasOwnProperty(j)) {
             deps[j] = true;
@@ -40,14 +40,25 @@ function getDepsFromSerializer(slr: any): any {
 class StateReceiver implements IStateReceiver {
     private receivedStateObjectsArray: any = {};
     private deserialized: any = {};
+    private __serializer;
+
+    constructor(private _constructorSerializer = Serializer) {
+    }
+    private __getSerializer(){
+        if (this.__serializer) {
+            return this.__serializer;
+        }
+        this.__serializer = new this._constructorSerializer();
+        return this.__serializer;
+    }
 
     serialize(): ISerializedType {
-        const slr = new Serializer();
+        const slr = this.__getSerializer(); // __getSerializer и в других поменять тоже поменять
         /**
          * Сериалайзер в своей памяти учитывает предыдущие результаты и может выдать ссылку на объект,
          * если его 2 раза прогнать через один инстанс. Поэтому для проверки один сериалайзер, а для итога другой.
          */
-        const slrForCheck = new Serializer();
+        const slrForCheck = this.__getSerializer();
         const serializedMap = {};
         const allAdditionalDeps = {};
         const allRecStates = this.receivedStateObjectsArray;
@@ -97,8 +108,9 @@ class StateReceiver implements IStateReceiver {
 
     deserialize(str: string | undefined): void {
         if (!str) { return; }
-        const slr = new Serializer();
+        const slr = this.__getSerializer();
         try {
+            // undefined
             this.deserialized = JSON.parse(str, slr.deserialize);
         } catch (error) {
             Logger.error(`Ошибка десериализации ${str}`, null, error);
@@ -127,80 +139,3 @@ class StateReceiver implements IStateReceiver {
 }
 
 export default StateReceiver;
-
-// import { IConsole, ISerializableState, IStateReceiver } from "Application/Interface";
-//
-// type StateMap = Record<string, Record<string, any>>;
-//
-// /**
-//  * @typedef {Object} StateReceiverConfig
-//  * @property {StateMap} [states] states
-//  * @property {Application/_Interface/IConsole} [console] console
-//  */
-// export type StateReceiverConfig = {
-//     states?: StateMap,
-//     console?: IConsole
-// }
-//
-// /**
-//  * Класс, реализующий интерфейс {@link Application/_Interface/IStateReceiver},
-//  * позволяющий сохранять состояние компонентов
-//  *
-//  * @class Application/_Env/Browser/StateReceiver
-//  * @implements Application/_Interface/IStateReceiver
-//  * @author Санников К.А.
-//  * @public
-//  */
-// // tslint:disable-next-line
-// export default class StateReceiver implements IStateReceiver {
-//     private __states: StateMap;
-//     private __components: Record<string, ISerializableState> = Object.create(null);
-//     private readonly __console: IConsole;
-//     constructor(
-//         states = Object.create(null),
-//         console?: IConsole
-//     ) {
-//         this.__states = states;
-//         this.__console = console;
-//     }
-//     serialize(): string {
-//         let states: StateMap = Object.create(null);
-//         for (let uid in this.__components) {
-//             states[uid] = this.__components[uid].getState();
-//         }
-//         return JSON.stringify(states);
-//     };
-//     deserialize(data: string): void {
-//         try {
-//             this.__states = JSON.parse(data);
-//             this.__updateState();
-//         } catch (error) {
-//             this.__console && this.__console.error(error);
-//         }
-//     };
-//     register(uid: string, component: ISerializableState): void {
-//         if (this.__components[uid]) {
-//             throw new Error('exist'); // TODO fix error message
-//         }
-//         this.__components[uid] = component;
-//         if (this.__states[uid]) {
-//             this.__setComponentState(uid);
-//         }
-//     };
-//     unregister(uid: string) {
-//         delete this.__components[uid];
-//     }
-//     private __updateState() {
-//         for (let uid in this.__states) {
-//             this.__setComponentState(uid);
-//         }
-//     }
-//     private __setComponentState(uid: string) {
-//         let serializableState = this.__components[uid];
-//         if (serializableState && serializableState.setState) {
-//             serializableState.setState(this.__states[uid]);
-//             // После того как отдали состояние компоненту, чистим дубли в себе
-//             delete this.__states[uid];
-//         }
-//     }
-// }

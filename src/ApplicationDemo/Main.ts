@@ -11,28 +11,15 @@ import * as template from 'wml!ApplicationDemo/Main';
 
 export default class Main extends Control {
    _template: Function = template;
+   protected value;
+   protected status: String = 'waiting';
+   _beforeMount(cfg, options, receivedState): any {
+      if (typeof(window) !== 'undefined' &&  receivedState) {
+         this.status = 'success';
+      }
+      if (!receivedState){
+         return Promise.resolve(Math.random());
+      }
+      this.value = receivedState;
+   }
 }
-
-// constructor(cfg: any) {
-//    super();
-//    if (!AppInit.isInit()) {
-//       AppInit.default(cfg);
-//    }
-// }
-// require(['ApplicationDemo/Main'], function (Main) {
-//    Main.default.createControl(Main.default, {}, document.getElementById("root"));
-// });
-
-
-// <script>
-//
-//     require(['Application/Env'], function (AppEnv) {
-//        var serverState = AppEnv.getStateReceiver();
-//        var serializedState = serverState.serialize();
-//        console.log(serializedState);
-//     });
-// require(['ApplicationDemo/StateConsumer'], function (StateConsumer) {
-//    StateConsumer.default.createControl(StateConsumer.default, {}, document.getElementById("main-id"));
-// });
-//
-// </script>

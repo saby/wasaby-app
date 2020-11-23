@@ -9,4 +9,3 @@ import * as template from 'wml!ApplicationDemo/Index';
 export default class Index extends Control {
     protected _template: Function = template;
 }
-
