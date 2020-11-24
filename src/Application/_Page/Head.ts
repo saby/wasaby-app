@@ -50,6 +50,10 @@ export class Head implements IHead {
         attrs: {type: string},
         content: string): IHeadTagId;
     createTag(
+        name: 'script',
+        attrs: {type: string, src: string, key: string},
+        content: string): IHeadTagId;
+    createTag(
         name: 'meta',
         attrs: {'http-equiv': string, content: string}): IHeadTagId;
     createTag(
@@ -61,6 +65,10 @@ export class Head implements IHead {
     createTag(
         name: 'link',
         attrs: {src: ''}
+    ): IHeadTagId;
+    createTag(
+        name: 'link',
+        attrs: {href: string, as: string, rel: string}
     ): IHeadTagId;
     createTag(
         name: string,
