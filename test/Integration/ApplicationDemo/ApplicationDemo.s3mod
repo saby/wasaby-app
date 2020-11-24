@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<ui_module id="32ddddf-1ddd-4ddd-8ddd-67ddddddddd3" name="ApplicationDemo" package="Платформа" responsible="Санников К.А." required="1" version="1.00">
+<ui_module id="2da1f07a-4b6e-40db-b5af-a356f4c2620d" name="ApplicationDemo" package="Платформа" responsible="Санников К.А." required="1" version="1.00">
 
   <description>Application Wasaby</description>
     <depends>

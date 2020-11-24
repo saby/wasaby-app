@@ -1,7 +1,6 @@
 /// <amd-module name="Application/_Env/Browser/StateReceiver" />
 import { logger as Logger } from 'Application/Env';
 import { IStateReceiver } from 'Application/Interface';
-import Serializer = require('UI/_state/Serializer'); // TODO: from Application/_state/Serializer
 
 /**
  * @author Санников К.
@@ -33,8 +32,17 @@ function getDepsFromSerializer(slr: any): any {
             deps[j] = true;
         }
     }
-
     return deps;
+}
+
+/** класс заглушка в случае, если не был передан конструктор из UI/_state/Serializer */
+class Serializer {
+    _linksStorage = {};
+    _depsStorage = {};
+    deserialize = undefined;
+    serializeStrict = undefined;
+    parseDeclaration = null;
+    componentOptsReArray = [];
 }
 
 class StateReceiver implements IStateReceiver {
@@ -53,7 +61,7 @@ class StateReceiver implements IStateReceiver {
     }
 
     serialize(): ISerializedType {
-        const slr = this.__getSerializer(); // __getSerializer и в других поменять тоже поменять
+        const slr = this.__getSerializer();
         /**
          * Сериалайзер в своей памяти учитывает предыдущие результаты и может выдать ссылку на объект,
          * если его 2 раза прогнать через один инстанс. Поэтому для проверки один сериалайзер, а для итога другой.
@@ -110,7 +118,6 @@ class StateReceiver implements IStateReceiver {
         if (!str) { return; }
         const slr = this.__getSerializer();
         try {
-            // undefined
             this.deserialized = JSON.parse(str, slr.deserialize);
         } catch (error) {
             Logger.error(`Ошибка десериализации ${str}`, null, error);
