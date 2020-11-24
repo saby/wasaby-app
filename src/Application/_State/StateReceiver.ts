@@ -1,4 +1,4 @@
-/// <amd-module name="Application/_Env/Browser/StateReceiver" />
+/// <amd-module name="Application/_State/StateReceiver" />
 import { logger as Logger } from 'Application/Env';
 import { IStateReceiver } from 'Application/Interface';
 
@@ -14,7 +14,7 @@ interface ISerializedType {
 function getDepsFromSerializer(slr: any): any {
     let moduleInfo;
     const deps = {};
-    const modules = slr._linksStorage; // attention
+    const modules = slr._linksStorage;
     let parts;
     for (const key in modules) {
         if (modules.hasOwnProperty(key)) {
@@ -26,7 +26,7 @@ function getDepsFromSerializer(slr: any): any {
         }
     }
 
-    const addDeps = slr._depsStorage || {}; // attention
+    const addDeps = slr._depsStorage || {};
     for (const j in addDeps) {
         if (addDeps.hasOwnProperty(j)) {
             deps[j] = true;
@@ -41,8 +41,10 @@ class Serializer {
     _depsStorage = {};
     deserialize = undefined;
     serializeStrict = undefined;
-    parseDeclaration = null;
-    componentOptsReArray = [];
+    static componentOptsReArray: any[];
+
+    static parseDeclaration(module: any) {
+    }
 }
 
 class StateReceiver implements IStateReceiver {
