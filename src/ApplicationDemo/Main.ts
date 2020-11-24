@@ -3,7 +3,7 @@
 // @ts-ignore
 import * as Control from 'Core/Control';
 // @ts-ignore
-import * as template from 'wml!test/Integration/ApplicationDemo/Main';
+import * as template from 'wml!ApplicationDemo/Main';
 
 /**
  * Точка входа для демонстрации роутинга
