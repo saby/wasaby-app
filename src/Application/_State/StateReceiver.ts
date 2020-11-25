@@ -136,7 +136,7 @@ class StateReceiver implements IStateReceiver {
         // todo проверка на сервис представления
         if (typeof process !== 'undefined' && !process.versions) {
             if (typeof this.receivedStateObjectsArray[key] !== 'undefined') {
-                const message = '[Application/_state/StateReceiver:register] - Try to register instance more than once ' +
+                const message = '[Application/_State/StateReceiver:register] - Try to register instance more than once ' +
                     `or duplication of keys happened; current key is ${key}`;
                 Logger.warn(message, inst);
             }
