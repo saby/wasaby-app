@@ -1,4 +1,4 @@
-import * as StateReceiver from 'Application/_State/StateReceiver';
+import { StateReceiver } from 'Application/_State/StateReceiver';
 
 /**
  * Библиотека для работы с сериализованным состоянием.

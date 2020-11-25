@@ -49,7 +49,7 @@ class Serializer {
     }
 }
 
-class StateReceiver implements IStateReceiver {
+export class StateReceiver implements IStateReceiver {
     private receivedStateObjectsArray: any = {};
     private deserialized: any = {};
     private __serializer;
@@ -148,5 +148,3 @@ class StateReceiver implements IStateReceiver {
         delete this.receivedStateObjectsArray[key];
     }
 }
-
-export default StateReceiver;
