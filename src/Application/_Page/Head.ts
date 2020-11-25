@@ -54,6 +54,11 @@ export class Head implements IHead {
         attrs: {type: string, src: string, key: string},
         content: string): IHeadTagId;
     createTag(
+        name: 'script',
+        attrs: {type: string, src: string, key: string},
+        content: string,
+        eventHandlers: IHeadTagEventHandlers): IHeadTagId;
+    createTag(
         name: 'meta',
         attrs: {'http-equiv': string, content: string}): IHeadTagId;
     createTag(
