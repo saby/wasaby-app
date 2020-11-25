@@ -68,18 +68,24 @@ export type JML = [string, (object | JsonML | string)?, (JsonML | string)?];
  * @property {Function} createComment - добавит строку с комментарием внутрь тега <head>
  * @property {Function} createNoScript - добавит конструкцию noscript с указанным URL
  * @property {Function} createTag - добавит тег внутрь <head>. Если такой тег уже есть - перерисует его
+ * @property {Function} getTag - вернет описание тега(ов), если он есть по входным данным: имя тега и какие-то аттрибуты
  * @property {Function} deleteTag - удалит тег из <head>, если он есть
  * @property {Function} getData - вернет текущее состояние тегов с учетом их добавления/удаления в формате JsonML
  * @property {Function} getComments - вернет все зарегистрированные комментарии в виде строк без <!-- --> (wrap)
+ * @property {Function} clear - очистит внутреннее состояние. Имеет смысл вызывать только на ПП
  * @see https://wi.sbis.ru/doc/platform/developmentapl/service-development/service-contract/logic/json-markup-language/
  * @public
  * @author Печеркин С.В.
  */
-export interface IHead extends IStore{
+export interface IInternalHead {
     createComment(text: string): void;
     createNoScript(URL): void;
     createTag(name: string, attrs: IHeadTagAttrs, content?: string, eventHandlers?: IHeadTagEventHandlers): IHeadTagId;
     deleteTag(id: IHeadTagId): void;
+    getTag(name?: string, attrs?: IHeadTagAttrs): IHeadTagId | IHeadTagId[] | null;
     getData(): Array<JML>;
-    getComments(wrap: boolean): string[];
+    getComments(wrap?: boolean): string[];
+    clear();
 }
+
+export interface IHead extends IStore<IInternalHead>, IInternalHead {}

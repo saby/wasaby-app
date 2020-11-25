@@ -1,8 +1,7 @@
 ///// <amd-module name="Application/_Page/Head" />
 
 import * as AppEnv from 'Application/Env';
-import { IHead, IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId, JML } from 'Application/_Interface/IHead'
-import { IStore } from 'Application/_Interface/IStore';
+import { IInternalHead, IHead, IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId, JML } from 'Application/_Interface/IHead'
 import { default as Element } from 'Application/_Page/_head/Element';
 import { default as ElementPS } from 'Application/_Page/_head/ElementPS';
 
@@ -17,7 +16,7 @@ const PREFIX: string = typeof window === 'undefined' ? 'ps-' : '';
  * @author Печеркин С.В.
  */
 // tslint:disable-next-line:no-any
-export class Head implements IStore<Record<keyof IHead, any>> {
+export class Head implements IHead {
     private _elements: {[propName: string]: Element | ElementPS} = {};
     private _comments: Array<string> = [];
     private _noScriptUrl: string = null;
@@ -38,10 +37,13 @@ export class Head implements IStore<Record<keyof IHead, any>> {
         this._noScriptUrl = url;
     }
 
-    // TODO: Сейчас этим есть смысл пользоваться только на Presentation Service
     createTag(
         name: 'title',
         attrs: {},
+        content: string): IHeadTagId;
+    createTag(
+        name: 'title',
+        attrs: {class: string},
         content: string): IHeadTagId;
     createTag(
         name: 'script',
@@ -54,6 +56,9 @@ export class Head implements IStore<Record<keyof IHead, any>> {
         name: 'meta',
         attrs: {content: string, 'http-equiv': string, name: string, URL: string}): IHeadTagId;
     createTag(
+        name: 'meta',
+        attrs: {property: string, content: string, class: string}): IHeadTagId;
+    createTag(
         name: 'link',
         attrs: {src: ''}
     ): IHeadTagId;
@@ -65,6 +70,7 @@ export class Head implements IStore<Record<keyof IHead, any>> {
 
         for (const elementsKey in this._elements) {
             if (this._elements[elementsKey].isEqual(name, attrs, content, eventHandlers)) {
+                eventHandlers?.load();
                 return elementsKey;
             }
         }
@@ -74,10 +80,38 @@ export class Head implements IStore<Record<keyof IHead, any>> {
 
         return uuid;
     }
+    getTag(name?: string, attrs?: IHeadTagAttrs): IHeadTagId | IHeadTagId[] | null {
+        const result: IHeadTagId[] = [];
+
+        for (const elementsKey in this._elements) {
+            if (this._elements[elementsKey].isFit(name, attrs)) {
+                result.push(elementsKey);
+            }
+        }
+
+        if (!result.length) {
+            return null;
+        }
+        if (result.length === 1) {
+            return result.shift();
+        }
+        return result;
+    }
 
     deleteTag(id: IHeadTagId): void {
+        if (!this._elements[id]) {
+            return
+        }
         this._elements[id].clear();
         delete this._elements[id];
+    }
+
+    clear(): void {
+        for (const elementsKey in this._elements) {
+            this.deleteTag(elementsKey);
+        }
+        delete this._noScriptUrl;
+        this._comments = [];
     }
 
     getData(): Array<JML> {
@@ -90,7 +124,7 @@ export class Head implements IStore<Record<keyof IHead, any>> {
         return result;
     }
 
-    getComments(wrap: boolean): string[] {
+    getComments(wrap?: boolean): string[] {
         /** Важно не позволить случайно повредить исходный массив */
         return wrap ? this._comments.map((comment) => {
             return `<!--${comment}-->`;
@@ -98,10 +132,10 @@ export class Head implements IStore<Record<keyof IHead, any>> {
     }
 
     // #region IStore
-    get<K extends keyof Head>(key: K): Head[K] {
+    get<K extends keyof IInternalHead>(key: string): IInternalHead[K] {
         return this[key];
     }
-    set<K extends keyof Head>(key: K, value: this[K]): boolean {
+    set<K extends keyof IInternalHead>(key: string, value: IInternalHead[K]): boolean {
         try {
             this[key] = value;
             return true;
@@ -111,11 +145,11 @@ export class Head implements IStore<Record<keyof IHead, any>> {
     }
     // tslint:disable-next-line:no-empty
     remove(): void { }
-    getKeys(): Array<keyof Head> {
-        return Object.keys(this) as Array<keyof Head>;
+    getKeys(): Array<keyof IInternalHead> {
+        return Object.keys(this) as Array<keyof IInternalHead>;
     }
     // tslint:disable-next-line:no-any
-    toObject(): Record<keyof Head, any> {
+    toObject(): Record<keyof IInternalHead, any> {
         return Object.assign({}, this);
     }
     // #endregion
@@ -147,7 +181,7 @@ export class Head implements IStore<Record<keyof IHead, any>> {
     }
 
     // tslint:disable-next-line:no-any
-    static getInstance(): IStore<Record<keyof IHead, any>> | never {
-        return AppEnv.getStore('HeadApi', Head.creator);
+    static getInstance(): Head | never {
+        return <Head>AppEnv.getStore('HeadApi', Head.creator);
     }
 }

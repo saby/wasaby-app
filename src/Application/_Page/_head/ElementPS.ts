@@ -32,7 +32,7 @@ export default class ElementPS {
                 eventHandlers?: IHeadTagEventHandlers) {
         this._name = name;
         this._attrs = attrs;
-        this._content = content;
+        this._content = content ? String(content) : null;
         this._eventHandlers = eventHandlers;
         this._render();
     }
@@ -48,7 +48,7 @@ export default class ElementPS {
     }
     /** удаляет информацию из свойств класса */
     clear(): void{
-        if (this._name !== 'title') {
+        if (!this._isTitle()) {
             delete this._attrs;
             delete this._content;
             delete this._eventHandlers;
@@ -69,7 +69,7 @@ export default class ElementPS {
             attrs: IHeadTagAttrs,
             content?: string,
             eventHandlers?: IHeadTagEventHandlers): boolean{
-        if (content !== this._content || name !== this._name) {
+        if (content != this._content || name !== this._name) {
             return false;
         }
         /** найдем в списке тэгов с приоритетным аттрибутами нужный нам тэг.
@@ -81,6 +81,21 @@ export default class ElementPS {
             return false;
         }
         return true;
+    }
+    /** Определяет подходит ли элемент под описание: сходится ли тег и атрибуты */
+    isFit(name?: string, attrs?: IHeadTagAttrs): boolean {
+        if (name && name !== this._name) {
+            return false;
+        }
+        for (const key in attrs) {
+            if (attrs[key] !== this._attrs[key]) {
+                return false;
+            }
+        }
+        return true;
+    }
+    _isTitle(): boolean {
+        return this._name === 'title';
     }
 
     /** Отрисовка элемента в head. Нет реализации в ElementPS */
