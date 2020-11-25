@@ -1,7 +1,6 @@
 /// <amd-module name="Application/_State/StateReceiver" />
 import { logger as Logger } from 'Application/Env';
 import { IStateReceiver } from 'Application/Interface';
-// import Serializer = require('UI/_state/Serializer');
 
 /**
  * @author Санников К.
@@ -36,50 +35,15 @@ function getDepsFromSerializer(slr: any): any {
     return deps;
 }
 
-/** класс заглушка в случае, если не был передан конструктор из UI/_state/Serializer */
+/** класс заглушка в случае, если не был передан конструктор UI/_state/Serializer
+ *  в UI/_base/StartApplicationScript.wml при создании текущего класса StateReceiver.
+ */
 class Serializer {
     _linksStorage = {};
     _depsStorage = {};
     deserialize = undefined;
     serializeStrict = undefined;
-    static componentOptsReArray = [
-        {
-            toFind: /\\/g, // экранируем слеш первым
-            toReplace: '\\\\'
-        },
-        {
-            toFind: /<\/(script)/gi,
-            toReplace: '<\\/$1'
-        },
-        {
-            toFind: /<!--/g,
-            toReplace: '<\\!--'
-        },
-        {
-            toFind: /'/g,
-            toReplace: '\\u0027'
-        },
-        {
-            toFind: /\u2028/g,
-            toReplace: '\\u000a'
-        },
-        {
-            toFind: /\u2029/g,
-            toReplace: '\\u000a'
-        },
-        {
-            toFind: /\n/g,
-            toReplace: '\\u000a'
-        },
-        {
-            toFind: /\r/g,
-            toReplace: '\\u000d'
-        },
-        {
-            toFind: /[^\\]\\u000a/g,
-            toReplace: '\\\\u000a'
-        }
-    ];
+    static componentOptsReArray: any[];
 
     static parseDeclaration(module: any) {
     }
