@@ -2,7 +2,6 @@
 export { default as EnvBrowser } from 'Application/_Env/Browser/Env';
 export { default as EnvNodeJS } from 'Application/_Env/NodeJS/Env';
 import { PARAMS, parseQueryGet, parseQueryHash } from 'Application/_Env/QueryParams';
-export { default as StateReceiver } from 'Application/_State/StateReceiver';
 export { LogLevel } from 'Application/_Env/Console';
 import App from 'Application/_Env/App';
 import { IConsole } from 'Application/_Interface/IConsole';
@@ -17,7 +16,6 @@ export { App };
  * Содержит реализации интерфейсов из {@link Application/Interface}.
  * @library Application/Env
  * @includes EnvBrowser Application/_Env/Browser/Env
- * @includes StateReceiver Application/_Env/Browser/StateReceiver
  * @includes cookie Application/Env/cookie
  * @includes location Application/Env/location
  * @includes logger Application/Env/logger
