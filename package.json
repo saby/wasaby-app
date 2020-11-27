@@ -25,6 +25,7 @@
       "build": "wasaby-cli --tasks=build",
       "build:app": "npm run build:typescript && npm run build",
       "start": "wasaby-cli --tasks=app",
+      "start:units": "wasaby-cli --tasks=startTest --server",
       "build:typescript": "wasaby-cli --tasks=prepare",
       "declare": "saby-typescript --compiler -p ./tsconfig.declare.json",
       "server": "wasaby-cli --tasks=startTest --server",

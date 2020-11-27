@@ -8,29 +8,31 @@ const additionalAttrs = {
     'data-vdomignore': true
 };
 
+// найдена ошибка в Element
+//TODO: сделать каждый элемент уникальным для клиентской стороны
+
 
 describe('Application/_Page/_head/ElementPS', () => {
     if(typeof(window) !== 'undefined') {
         describe('client side', () => {
-            it('Проверка одинаковый ли элемент', () => {
-                const newTitle = new Element('title', {}, 'perfect_content');
-                const newEl = new Element('script', {src: 'to/the/great/lands', someKey: 'someValue'}, 'perfect_content');
-                assert.isTrue(newTitle.isEqual('title', {}, 'perfect_content'), 'элемент title не одинаковый'); //TODO: заменить описание.
-                // TODO: добавить проверку isFalse || isTrue для каждого свойства элемента
-                assert.isTrue(newEl.isEqual('script', {src: 'to/the/great/lands', someKey: 'someValue'}, 'perfect_content'));
+            it('Проверяется создан/отрисовался ли элемент в DOM дереве', () => {
+                new Element('title', {}, 'perfect_content1');
+                assert.isTrue(document.querySelector('title').textContent === 'perfect_content1',
+                    'title не создан в DOM дереве');
+                new Element('meta', {name: 'meta_name1'});
+                assert.isTrue(document.querySelector("meta[name='meta_name1']"),
+                    'элемент не создан в DOM дереве');
             });
-            it('Проверяется отрисовался ли элемент в DOM дереве', () => {
-                //TODO: добавить проверку на title
-                new Element('script', {src: 'to/the/great/lands', 'data-require-module': 'some-require-module'}, 'perfect_content');
-                // const isFoundEl = document.querySelector("script[src='to/the/great/lands']", "[data-require-module='some-require-module']").textContent === 'perfect_content';
-                // assert.isTrue(isFoundEl);
+            it('Проверка одинаковый ли title', () => {
+                const title = new Element('title', {}, 'perfect_content2');
+                assert.isTrue(title.isEqual('title', {}, 'perfect_content2'), 'элемент title не прошёл проверку на идентичность');
             });
             it('Проверяется удалился ли элемент в DOM дереве', () => {
-                new Element('script', {src: 'to/the/great/lands', 'data-require-module': 'some-require-module'})
-                    ._removeElement();
-                assert.isNull(document.querySelector("script[src='to/the/great/lands']", "[data-require-module='some-require-module']"),
+                const element = new Element('meta', {name: 'meta_name2'});
+                element._removeElement();
+                assert.isNull(document.querySelector("meta[name='meta_name2']"),
                     'тестируемый элемент "script" не удалился из DOM');
-                const title = new Element('title', {}, 'perfect_content');
+                const title = new Element('title', {}, 'perfect_content3');
                 title._removeElement();
                 assert.notExists(title._element, 'в тестируемом элементе "title" сохраняется свойство _element');
             });
@@ -90,6 +92,7 @@ describe('Application/_Page/_head/ElementPS', () => {
             it('Проверяет title ли этот элемент', () => {
                 assert.isTrue(new ElementPS('title', {}, 'perfect_content')._isTitle());
             });
+
             it('Генерирует данные в формате JML', () => {
                 assert.deepEqual(ElementPS.generateTag({name: 'title', attrs: {class: 'testing-class-elementPS'}, content: 'hello world!'}),
                     ['title', {class: 'testing-class-elementPS', ...additionalAttrs}, 'hello world!']);
