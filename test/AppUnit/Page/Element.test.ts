@@ -1,6 +1,4 @@
 import { assert } from 'chai';
-// import { JML, IHead, IHeadTagAttrs } from "Application/Interface";
-// import { JML } from "Application/Interface";
 import { default as ElementPS } from 'Application/_Page/_head/ElementPS';
 import { default as Element } from 'Application/_Page/_head/Element';
 
@@ -9,7 +7,6 @@ const additionalAttrs = {
 };
 
 // найдена ошибка в Element
-//TODO: сделать каждый элемент уникальным для клиентской стороны
 
 
 describe('Application/_Page/_head/ElementPS', () => {
@@ -20,16 +17,15 @@ describe('Application/_Page/_head/ElementPS', () => {
                 assert.isTrue(document.querySelector('title').textContent === 'perfect_content1',
                     'title не создан в DOM дереве');
                 new Element('meta', {name: 'meta_name1'});
-                assert.isTrue(document.querySelector("meta[name='meta_name1']"),
+                assert.isNotNull(document.querySelector("meta[name='meta_name1']"),
                     'элемент не создан в DOM дереве');
             });
             it('Проверка одинаковый ли title', () => {
-                const title = new Element('title', {}, 'perfect_content2');
-                assert.isTrue(title.isEqual('title', {}, 'perfect_content2'), 'элемент title не прошёл проверку на идентичность');
+                assert.isTrue(new Element('title', {}, 'perfect_content2').isEqual('title', {}, 'perfect_content2'),
+                    'элемент title не прошёл проверку на идентичность');
             });
             it('Проверяется удалился ли элемент в DOM дереве', () => {
-                const element = new Element('meta', {name: 'meta_name2'});
-                element._removeElement();
+                new Element('meta', {name: 'meta_name2'})._removeElement();
                 assert.isNull(document.querySelector("meta[name='meta_name2']"),
                     'тестируемый элемент "script" не удалился из DOM');
                 const title = new Element('title', {}, 'perfect_content3');
