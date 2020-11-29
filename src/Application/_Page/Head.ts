@@ -1,7 +1,7 @@
 ///// <amd-module name="Application/_Page/Head" />
 
 import * as AppEnv from 'Application/Env';
-import { IInternalHead, IHead, IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId, JML } from 'Application/_Interface/IHead'
+import { IHead, IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId, IInternalHead, JML } from 'Application/_Interface/IHead'
 import { default as Element } from 'Application/_Page/_head/Element';
 import { default as ElementPS } from 'Application/_Page/_head/ElementPS';
 
@@ -127,7 +127,11 @@ export class Head implements IHead {
         this._comments = [];
     }
 
-    getData(): Array<JML> {
+    getData(id?: IHeadTagId): Array<JML> | JML {
+        if (id && this._elements[id]) {
+            return this._elements[id].getData();
+        }
+
         const noscript = this._generateNoScript();
         const result: Array<JML> = [].concat(noscript ? [noscript] : []);
         for (const elementsKey in this._elements) {
@@ -195,6 +199,6 @@ export class Head implements IHead {
 
     // tslint:disable-next-line:no-any
     static getInstance(): Head | never {
-        return <Head>AppEnv.getStore('HeadApi', Head.creator);
+        return <Head> AppEnv.getStore('HeadApi', Head.creator);
     }
 }
