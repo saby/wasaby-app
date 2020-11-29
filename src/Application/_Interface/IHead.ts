@@ -25,7 +25,6 @@ export interface IHeadTagAttrs {
     'theme-type'?: string;
     type?: string;
     URL?: string;
-    'data-require-module'?: string;
 }
 
 /**
