@@ -30,8 +30,6 @@ const additionalAttrs = {
     'data-vdomignore': true
 };
 
-//TODO: найдена ошибка в Element. создать отдельный коммит
-
 /**
  * У классов Element, ElementPS есть особенность, что если у данных классов поле _name является 'title',
  * в таком случае методы могут работать по-особенному.
@@ -46,26 +44,29 @@ describe('Application/_Page/_head/ElementPS', () => {
     if(typeof(window) !== 'undefined') {
         describe('client side', () => {
             it('Проверяется создан/отрисовался ли title в DOM дереве', () => {
-                const title = new Element('title', TITLE_PROPS._attrs, 'title_content_unique10', EVENT_HANDLER);
-                assert.deepInclude(title, {...TITLE_PROPS, _content: 'title_content_unique10'},
+                const titleContentUnique = 'title_content_unique10';
+                const title = new Element('title', TITLE_PROPS._attrs, titleContentUnique, EVENT_HANDLER);
+                assert.deepInclude(title, {...TITLE_PROPS, _content: titleContentUnique},
                     'Все или некоторые свойства ElementPS (_name, _attrs, _content) не совпадают с образцом');
                 assert.isDefined(title._eventHandlers,
                     'Свойство _eventHandlers не определено');
-                assert.isTrue(document.querySelector('title').textContent === 'title_content_unique10',
+                assert.isTrue(document.querySelector('title').textContent === titleContentUnique,
                     'title в DOM дереве не был изменен');
             });
             it('Проверяется создан/отрисовался ли элемент в DOM дереве', () => {
-                const meta = new Element('meta', {name: 'meta_name_unique10'}, META_PROPS._content, EVENT_HANDLER);
-                assert.deepInclude(meta, {...META_PROPS, _attrs: {name: 'meta_name_unique10'}},
+                const metaNameUnique = 'meta_name_unique10';
+                const meta = new Element('meta', {name: metaNameUnique}, META_PROPS._content, EVENT_HANDLER);
+                assert.deepInclude(meta, {...META_PROPS, _attrs: {name: metaNameUnique}},
                     'Все или некоторые свойства ElementPS (_name, _attrs, _content) не совпадают с образцом');
                 assert.isDefined(meta._eventHandlers,
                     'Свойство _eventHandlers не определено');
-                assert.isNotNull(document.querySelector("meta[name='meta_name_unique10']"),
+                assert.isNotNull(document.querySelector(`meta[name=${metaNameUnique}]`),
                     'Элемент не создан в DOM дереве');
             });
             it('Проверка одинаковый ли title', () => {
-                assert.isTrue(new Element('title', {}, TITLE_PROPS._content).isEqual('title', {}, TITLE_PROPS._content),
-                    'Элемент title не прошёл проверку на идентичность');
+                const title = new Element('title', {}, '');
+                document.title = 'Foo';
+                assert.isTrue(title.isEqual('title', {}, 'Foo'),'Элемент title не прошёл проверку на идентичность');
             });
             it('Проверка одинаковый ли element', () => {
                 assert.isTrue(new Element('meta', META_PROPS._attrs, META_PROPS._content)
@@ -79,13 +80,15 @@ describe('Application/_Page/_head/ElementPS', () => {
                     'В элементе title не был удалён content');
                 assert.notExists(title._element,
                     'В элементе "title" сохраняется свойство _element');
+                assert.isTrue(document.title && document.title === TITLE_PROPS._content, 'title пустой или содержит несоответствующий контент');
             });
             it('Проверяется удалился ли элемент в DOM дереве', () => {
-                const meta = new Element('meta', {name: 'meta_name_unique20'}, META_PROPS._content, EVENT_HANDLER);
+                const metaNameUnique = 'meta_name_unique20';
+                const meta = new Element('meta', {name: metaNameUnique}, META_PROPS._content, EVENT_HANDLER);
                 meta.clear();
                 assert.doesNotHaveAnyKeys(meta, ALL_KEYS_ELEMENT,
                     'В тестируемом элементе не были удалены свойства');
-                assert.isNull(document.querySelector("meta[name='meta_name_unique20']"),
+                assert.isNull(document.querySelector(`meta[name=${metaNameUnique}]`),
                     'Тестируемый элемент не был удален из DOM дерева');
             });
         });
