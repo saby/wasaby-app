@@ -98,9 +98,9 @@ export default class ElementPS {
         return this._name === 'title';
     }
 
-    /** Отрисовка элемента в head. Нет реализации в ElementPS */
-    // tslint:disable-next-line:no-empty
+    /** Отрисовка элемента в head. */
     protected _render(): void {
+        this._eventHandlers?.load()
     }
 
     /** генерируется тэг в формате JML */
