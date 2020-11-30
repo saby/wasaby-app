@@ -20,7 +20,7 @@ export default class Element extends ElementPS {
             attrs: IHeadTagAttrs,
             content?: string,
             eventHandlers?: IHeadTagEventHandlers): boolean{
-        if (this._isTitle()) {
+        if (this._isTitle() && name === 'title') {
             return document.title === this._content;
         }
         return super.isEqual(name, attrs, content, eventHandlers);
