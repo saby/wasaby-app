@@ -48,6 +48,8 @@ describe('Application/_Page/_head/ElementPS', () => {
                 const title = new Element('title', TITLE_PROPS._attrs, titleContentUnique, EVENT_HANDLER);
                 assert.deepInclude(title, {...TITLE_PROPS, _content: titleContentUnique},
                     'Все или некоторые свойства ElementPS (_name, _attrs, _content) не совпадают с образцом');
+                // tslint:disable-next-line:ban-ts-ignore
+                // @ts-ignore
                 assert.isDefined(title._eventHandlers,
                     'Свойство _eventHandlers не определено');
                 assert.isTrue(document.querySelector('title').textContent === titleContentUnique,
@@ -58,6 +60,8 @@ describe('Application/_Page/_head/ElementPS', () => {
                 const meta = new Element('meta', {name: metaNameUnique}, META_PROPS._content, EVENT_HANDLER);
                 assert.deepInclude(meta, {...META_PROPS, _attrs: {name: metaNameUnique}},
                     'Все или некоторые свойства ElementPS (_name, _attrs, _content) не совпадают с образцом');
+                // tslint:disable-next-line:ban-ts-ignore
+                // @ts-ignore
                 assert.isDefined(meta._eventHandlers,
                     'Свойство _eventHandlers не определено');
                 assert.isNotNull(document.querySelector(`meta[name=${metaNameUnique}]`),
@@ -78,6 +82,8 @@ describe('Application/_Page/_head/ElementPS', () => {
                 title.clear();
                 assert.doesNotHaveAnyKeys(title, KEY_TITLE,
                     'В элементе title не был удалён content');
+                // tslint:disable-next-line:ban-ts-ignore
+                // @ts-ignore
                 assert.notExists(title._element,
                     'В элементе "title" сохраняется свойство _element');
                 assert.isTrue(document.title && document.title === TITLE_PROPS._content, 'title пустой или содержит несоответствующий контент');
@@ -101,6 +107,8 @@ describe('Application/_Page/_head/ElementPS', () => {
                     'ElementPS не создался: ElementPS is not defined');
                 assert.deepInclude(element, TITLE_PROPS,
                     'Все или некоторые свойства ElementPS (_name, _attrs, _content) не совпадают с образцом');
+                // tslint:disable-next-line:ban-ts-ignore
+                // @ts-ignore
                 assert.isDefined(element._eventHandlers,
                     'Свойство _eventHandlers не определено');
             });
