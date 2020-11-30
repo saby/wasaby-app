@@ -3,6 +3,7 @@ import { App } from 'Application/Env';
 import { IEnv } from 'Application/_Interface/IEnv';
 import { ISerializableState } from 'Application/_Interface/ISerializableState';
 import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
+import { StateReceiver } from 'Application/State';
 
 export const startRequest = App.startRequest;
 export const isInit = App.isInit;
@@ -12,7 +13,7 @@ const onInintPomise: Promise<void> = new Promise((res) => {
     onInitResolve = res;
 });
 
-export default function (cfg?: Record<string, unknown>, env?: IEnv, sr?: IStateReceiver): void {
+export default function (cfg: Record<string, unknown> = {}, env?: IEnv, sr: IStateReceiver = new StateReceiver()): void {
     if (isInit()) {
         App.getRequest().console.warn(
             new Error(

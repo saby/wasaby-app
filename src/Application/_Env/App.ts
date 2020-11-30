@@ -1,7 +1,6 @@
 /// <amd-module name="Application/_Env/App" />
 import { Config } from 'Application/Config';
 import EnvBrowser from 'Application/_Env/Browser/Env';
-import { StateReceiver } from 'Application/_State/StateReceiver';
 import EnvNodeJS from 'Application/_Env/NodeJS/Env';
 import { IEnv } from 'Application/_Interface/IEnv';
 import { IRequest } from 'Application/_Interface/IRequest';
@@ -14,9 +13,9 @@ type TConfig = Record<string, any>;
 
 export default class App {
     constructor(
-        cfg?: TConfig,
+        cfg: TConfig,
         private env: IEnv = new Env(cfg),
-        stateReceiver: IStateReceiver = new StateReceiver()
+        stateReceiver: IStateReceiver
     ) {
         App.instance = this;
         if (env.initRequest) {
@@ -31,7 +30,7 @@ export default class App {
         return App.getInstance().env.getRequest();
     }
 
-    static startRequest(cfg?: TConfig, stateReceiver: IStateReceiver = new StateReceiver()): void {
+    static startRequest(cfg: TConfig, stateReceiver: IStateReceiver): void {
         const config = new Config(cfg);
         stateReceiver.register(config.getUID(), config);
         const iterator = App.singletonCrossEnv.entries();

@@ -3,7 +3,6 @@ export { default as EnvBrowser } from 'Application/_Env/Browser/Env';
 export { default as EnvNodeJS } from 'Application/_Env/NodeJS/Env';
 import { PARAMS, parseQueryGet, parseQueryHash } from 'Application/_Env/QueryParams';
 export { LogLevel } from 'Application/_Env/Console';
-export { StateReceiver } from 'Application/_State/StateReceiver';
 import { default as App } from 'Application/_Env/App';
 import { IConsole } from 'Application/_Interface/IConsole';
 import { ICookie, ICookieOptions } from 'Application/_Interface/ICookie';

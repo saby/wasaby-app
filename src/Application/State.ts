@@ -5,4 +5,4 @@
  * @author Санников К.А.
  */
 
-export { StateReceiver } from 'Application/Env';
+export { StateReceiver } from 'Application/_State/StateReceiver';
