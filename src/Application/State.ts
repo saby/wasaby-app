@@ -1,5 +1,4 @@
 import { StateReceiver } from 'Application/Env';
-
 /**
  * Библиотека для работы с сериализованным состоянием.
  * @library Application/State

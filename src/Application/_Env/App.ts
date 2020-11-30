@@ -7,6 +7,7 @@ import { IEnv } from 'Application/_Interface/IEnv';
 import { IRequest } from 'Application/_Interface/IRequest';
 import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
 import { ISerializableState } from 'Application/_Interface/ISerializableState';
+export { StateReceiver };
 
 const Env = (typeof window === 'undefined') ? EnvNodeJS : EnvBrowser;
 // tslint:disable-next-line: no-any
