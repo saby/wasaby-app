@@ -43,7 +43,44 @@ class Serializer {
     _depsStorage = {};
     deserialize = undefined;
     serializeStrict = undefined;
-    static componentOptsReArray: any[];
+    static componentOptsReArray: any[] = [
+        {
+            toFind: /\\/g, // экранируем слеш первым
+            toReplace: '\\\\'
+        },
+        {
+            toFind: /<\/(script)/gi,
+            toReplace: '<\\/$1'
+        },
+        {
+            toFind: /<!--/g,
+            toReplace: '<\\!--'
+        },
+        {
+            toFind: /'/g,
+            toReplace: '\\u0027'
+        },
+        {
+            toFind: /\u2028/g,
+            toReplace: '\\u000a'
+        },
+        {
+            toFind: /\u2029/g,
+            toReplace: '\\u000a'
+        },
+        {
+            toFind: /\n/g,
+            toReplace: '\\u000a'
+        },
+        {
+            toFind: /\r/g,
+            toReplace: '\\u000d'
+        },
+        {
+            toFind: /[^\\]\\u000a/g,
+            toReplace: '\\\\u000a'
+        }
+    ];
 
     static parseDeclaration(module: any) {
     }

@@ -83,7 +83,7 @@ export interface IInternalHead {
     createTag(name: string, attrs: IHeadTagAttrs, content?: string, eventHandlers?: IHeadTagEventHandlers): IHeadTagId;
     deleteTag(id: IHeadTagId): void;
     getTag(name?: string, attrs?: IHeadTagAttrs): IHeadTagId | IHeadTagId[] | null;
-    getData(): Array<JML>;
+    getData(id?: IHeadTagId): Array<JML> | JML;
     getComments(wrap?: boolean): string[];
     clear();
 }
