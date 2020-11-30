@@ -23,7 +23,7 @@ import Store from 'Application/_Request/Store';
  * @see Application/_Interface/IStateReceiver
  * @todo добавить пример
  */
-export default class AppRequest implements IRequestInternal {
+export default class Request implements IRequestInternal {
     private readonly __config: Config;
 
     /**
