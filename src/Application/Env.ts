@@ -4,13 +4,13 @@ export { default as EnvNodeJS } from 'Application/_Env/NodeJS/Env';
 import { PARAMS, parseQueryGet, parseQueryHash } from 'Application/_Env/QueryParams';
 export { LogLevel } from 'Application/_Env/Console';
 export { StateReceiver } from 'Application/_State/StateReceiver';
-import App from 'Application/_Env/App';
+import { default as App } from 'Application/_Env/App';
 import { IConsole } from 'Application/_Interface/IConsole';
 import { ICookie, ICookieOptions } from 'Application/_Interface/ICookie';
 import { ILocation } from 'Application/_Interface/ILocation';
 import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
 import { IStore } from 'Application/_Interface/IStore';
-export { default as App } from 'Application/_Env/App';
+export { App };
 /**
  * Модуль-библиотека для работы с окружением.
  * @remark

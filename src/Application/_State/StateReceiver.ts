@@ -1,10 +1,13 @@
 /// <amd-module name="Application/_State/StateReceiver" />
-import { logger as Logger } from 'Application/Env';
+import App from 'Application/_Env/App';
 import { IStateReceiver } from 'Application/Interface';
-
 /**
  * @author Санников К.
  */
+function getLogger(){
+    // return App.getInstance().console;
+    return App.getRequest().console;
+}
 
 interface ISerializedType {
     serialized: string;
@@ -132,7 +135,7 @@ export class StateReceiver implements IStateReceiver {
                 } else {
                     serializedFieldError = `${key}: ${serializedMap[key]}`;
                 }
-                Logger.error(`${state?.moduleName || key}, ${serializedFieldError} _beforeMount вернул несериализуемое состояние : ${e}` );
+                getLogger().error(`${state?.moduleName || key}, ${serializedFieldError} _beforeMount вернул несериализуемое состояние : ${e}` );
                 delete serializedMap[key];
             }
         });
@@ -161,7 +164,7 @@ export class StateReceiver implements IStateReceiver {
         try {
             this.deserialized = JSON.parse(str, slr.deserialize);
         } catch (error) {
-            Logger.error(`Ошибка десериализации ${str}`, null, error);
+            getLogger().error(`Ошибка десериализации ${str}`, null, error);
         }
     }
 
@@ -175,7 +178,7 @@ export class StateReceiver implements IStateReceiver {
             if (typeof this.receivedStateObjectsArray[key] !== 'undefined') {
                 const message = '[Application/_State/StateReceiver:register] - Try to register instance more than once ' +
                     `or duplication of keys happened; current key is ${key}`;
-                Logger.warn(message, inst);
+                getLogger().warn(message, inst);
             }
         }
         this.receivedStateObjectsArray[key] = inst;
