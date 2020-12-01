@@ -1,7 +1,6 @@
 /// <amd-module name="Application/_State/StateReceiver" />
 import { logger as Logger } from 'Application/Env';
 import { IStateReceiver } from 'Application/Interface';
-
 /**
  * @author Санников К.
  */
