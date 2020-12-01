@@ -193,12 +193,21 @@ export class Head implements IHead {
         return `head-${PREFIX}${this._id++}`;
     };
 
-    private static creator(): Head {
+    private static _creator(): Head {
         return new Head();
     }
 
-    // tslint:disable-next-line:no-any
+    static _instance: Head;
+
+    /**
+     * Сложилась очень сложная ситуация.
+     * Она разгребается в задаче https://online.sbis.ru/opendoc.html?guid=a3203b23-b620-4ebc-bc7a-0a59cfec006b
+     */
     static getInstance(): Head | never {
-        return <Head> AppEnv.getStore('HeadApi', Head.creator);
+        if (window !== undefined) {
+            Head._instance = Head._creator();
+            return Head._instance;
+        }
+        return <Head> AppEnv.getStore('HeadApi', Head._creator);
     }
 }
