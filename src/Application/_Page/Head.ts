@@ -211,7 +211,7 @@ export class Head implements IHead {
      */
     static getInstance(): Head | never {
         if (typeof window !== 'undefined') {
-            Head._instance = Head._creator();
+            Head._instance = Head._instance || Head._creator();
             return Head._instance;
         }
         return <Head> AppEnv.getStore('HeadApi', Head._creator);
