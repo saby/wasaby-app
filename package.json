@@ -25,6 +25,7 @@
       "build": "wasaby-cli --tasks=build",
       "build:app": "npm run build:typescript && npm run build",
       "start": "wasaby-cli --tasks=app",
+      "start:units": "wasaby-cli --tasks=startTest --server",
       "build:typescript": "wasaby-cli --tasks=prepare",
       "declare": "saby-typescript --compiler -p ./tsconfig.declare.json",
       "server": "wasaby-cli --tasks=startTest --server",
@@ -38,6 +39,7 @@
    "devDependencies": {
       "@types/node": "^12.0.4",
       "express": "^4.16.4",
+      "nyc": "^15.1.0",
       "requirejs": "^2.3.6",
       "wasaby-cli": "git+https://platform-git.sbis.ru/saby/wasaby-cli.git#rc-21.1000"
    },
