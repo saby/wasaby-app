@@ -76,6 +76,12 @@ export class Head implements IHead {
         attrs: {href: string, as: string, rel: string}
     ): IHeadTagId;
     createTag(
+        name: 'link',
+        attrs: IHeadTagAttrs,
+        content: null,
+        eventHandlers: IHeadTagEventHandlers
+    ): IHeadTagId;
+    createTag(
         name: string,
         attrs: IHeadTagAttrs,
         content?: string,
