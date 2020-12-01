@@ -4,7 +4,8 @@
     "Application/Env",
     "Application/Request",
     "Application/Config",
-    "Application/Page"
+    "Application/Page",
+    "Application/State"
   ],
   "extendsTo": "online-superbundle.package.js"
 }
