@@ -13,6 +13,9 @@ const Env = (typeof window === 'undefined') ? EnvNodeJS : EnvBrowser;
 type TConfig = Record<string, any>;
 
 function getRejectedPromise(): Promise<unknown> {
+    if (!(Promise as any).__getRequestUUID) {
+        return;
+    }
     return new Promise((resolve, reject) => {
         reject(new Error('Oops!'));
     });
