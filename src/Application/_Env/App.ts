@@ -12,6 +12,12 @@ const Env = (typeof window === 'undefined') ? EnvNodeJS : EnvBrowser;
 // tslint:disable-next-line: no-any
 type TConfig = Record<string, any>;
 
+function getRejectedPromise(): Promise<unknown> {
+    return new Promise((resolve, reject) => {
+        reject(new Error('Oops!'));
+    });
+}
+
 export default class App {
     constructor(
         cfg?: TConfig,
@@ -40,6 +46,8 @@ export default class App {
             stateReceiver.register(entry.value[0], entry.value[1]);
             entry = iterator.next();
         }
+
+        getRejectedPromise();
 
         App.getInstance().env
             .createRequest(config)
