@@ -210,7 +210,7 @@ export class Head implements IHead {
      * Она разгребается в задаче https://online.sbis.ru/opendoc.html?guid=a3203b23-b620-4ebc-bc7a-0a59cfec006b
      */
     static getInstance(): Head | never {
-        if (window !== undefined) {
+        if (typeof window !== 'undefined') {
             Head._instance = Head._creator();
             return Head._instance;
         }
