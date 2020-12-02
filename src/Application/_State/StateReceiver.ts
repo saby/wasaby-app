@@ -127,12 +127,12 @@ export class StateReceiver implements IStateReceiver {
                     serializedMap[key] = receivedState;
                 }
             } catch (e) {
-                let serializedFieldError = '';
-                if (typeof(serializedMap[key]) === 'object') {
-                    serializedFieldError = `${key}: ${typeof(serializedMap[key])}`;
-                } else {
-                    serializedFieldError = `${key}: ${serializedMap[key]}`;
-                }
+                // let serializedFieldError = '';
+                // if (typeof(serializedMap[key]) === 'object') {
+                //     serializedFieldError = `${key}: ${typeof(serializedMap[key])}`;
+                // } else {
+                //     serializedFieldError = `${key}: ${serializedMap[key]}`;
+                // }
                 //Logger.error(`${state?.moduleName || key}, ${serializedFieldError} _beforeMount вернул несериализуемое состояние : ${e}` );
                 delete serializedMap[key];
             }
