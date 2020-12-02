@@ -27,11 +27,11 @@ export default function (cfg?: Record<string, unknown>, env?: IEnv, sr?: IStateR
     onInitResolve();
 
     if (typeof window === 'undefined') { return; }
-};
+}
 
 export function registerComponent(uid: string, component: ISerializableState): void {
     App.registerSingleton(uid, component);
-};
+}
 
 /**
  * Обещание сообщить об инициализации приложения
