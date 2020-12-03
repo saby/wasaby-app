@@ -1,5 +1,4 @@
 /// <amd-module name="Application/_State/StateReceiver" />
-//import { logger as Logger } from 'Application/Env';
 import { IStateReceiver } from 'Application/Interface';
 
 /**
@@ -20,7 +19,7 @@ function getDepsFromSerializer(slr: any): any {
         if (modules.hasOwnProperty(key)) {
             moduleInfo = modules[key];
             if (moduleInfo.module) {
-                parts = Serializer.parseDeclaration(moduleInfo.module);
+                parts = slr.constructor.parseDeclaration(moduleInfo.module);
                 deps[parts.name] = true;
             }
         }
@@ -82,7 +81,10 @@ class Serializer {
         }
     ];
 
-    static parseDeclaration(module: any) {
+    static parseDeclaration(module: any): { name: string } {
+        return {
+            name: module
+        };
     }
 }
 
@@ -108,7 +110,7 @@ export class StateReceiver implements IStateReceiver {
          * Сериалайзер в своей памяти учитывает предыдущие результаты и может выдать ссылку на объект,
          * если его 2 раза прогнать через один инстанс. Поэтому для проверки один сериалайзер, а для итога другой.
          */
-        const slrForCheck = this.__getSerializer();
+        const slrForCheck = new this._constructorSerializer();
         const serializedMap = {};
         const allAdditionalDeps = {};
         const allRecStates = this.receivedStateObjectsArray;
