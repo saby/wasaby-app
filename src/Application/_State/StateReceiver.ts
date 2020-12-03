@@ -93,7 +93,7 @@ export class StateReceiver implements IStateReceiver {
     private deserialized: any = {};
     private __serializer;
 
-    constructor(private _constructorSerializer = Serializer) {
+    constructor(private _constructorSerializer = Serializer, private _logger ) {
     }
 
     private __getSerializer() {
@@ -103,7 +103,6 @@ export class StateReceiver implements IStateReceiver {
         this.__serializer = new this._constructorSerializer();
         return this.__serializer;
     }
-
     serialize(): ISerializedType {
         const slr = this.__getSerializer();
         /**
@@ -129,13 +128,13 @@ export class StateReceiver implements IStateReceiver {
                     serializedMap[key] = receivedState;
                 }
             } catch (e) {
-                // let serializedFieldError = '';
-                // if (typeof(serializedMap[key]) === 'object') {
-                //     serializedFieldError = `${key}: ${typeof(serializedMap[key])}`;
-                // } else {
-                //     serializedFieldError = `${key}: ${serializedMap[key]}`;
-                // }
-                //Logger.error(`${state?.moduleName || key}, ${serializedFieldError} _beforeMount вернул несериализуемое состояние : ${e}` );
+                let serializedFieldError = '';
+                if (typeof(serializedMap[key]) === 'object') {
+                    serializedFieldError = `${key}: ${typeof(serializedMap[key])}`;
+                } else {
+                    serializedFieldError = `${key}: ${serializedMap[key]}`;
+                }
+                this._logger.error(`${state?.moduleName || key}, ${serializedFieldError} _beforeMount вернул несериализуемое состояние : ${e}` );
                 delete serializedMap[key];
             }
         });
@@ -164,7 +163,7 @@ export class StateReceiver implements IStateReceiver {
         try {
             this.deserialized = JSON.parse(str, slr.deserialize);
         } catch (error) {
-            //Logger.error(`Ошибка десериализации ${str}`, null, error);
+            this._logger.error(`Ошибка десериализации ${str}`, null, error);
         }
     }
 
@@ -174,13 +173,13 @@ export class StateReceiver implements IStateReceiver {
             delete this.deserialized[key];
         }
         // todo проверка на сервис представления
-        // if (typeof process !== 'undefined' && !process.versions) {
-        //     if (typeof this.receivedStateObjectsArray[key] !== 'undefined') {
-        //         const message = '[Application/_State/StateReceiver:register] - Try to register instance more than once ' +
-        //             `or duplication of keys happened; current key is ${key}`;
-        //         Logger.warn(message, inst);
-        //     }
-        // }
+        if (typeof process !== 'undefined' && !process.versions) {
+            if (typeof this.receivedStateObjectsArray[key] !== 'undefined') {
+                const message = '[Application/_State/StateReceiver:register] - Try to register instance more than once ' +
+                    `or duplication of keys happened; current key is ${key}`;
+                this._logger.warn(message, inst);
+            }
+        }
         this.receivedStateObjectsArray[key] = inst;
     }
 
