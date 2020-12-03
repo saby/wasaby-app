@@ -1,5 +1,4 @@
 /// <amd-module name="Application/_State/StateReceiver" />
-import { logger as Logger } from 'Application/Env';
 import { IStateReceiver } from 'Application/Interface';
 
 /**
@@ -20,7 +19,7 @@ function getDepsFromSerializer(slr: any): any {
         if (modules.hasOwnProperty(key)) {
             moduleInfo = modules[key];
             if (moduleInfo.module) {
-                parts = Serializer.parseDeclaration(moduleInfo.module);
+                parts = slr.constructor.parseDeclaration(moduleInfo.module);
                 deps[parts.name] = true;
             }
         }
@@ -82,7 +81,10 @@ class Serializer {
         }
     ];
 
-    static parseDeclaration(module: any) {
+    static parseDeclaration(module: any): { name: string } {
+        return {
+            name: module
+        };
     }
 }
 
@@ -93,7 +95,8 @@ export class StateReceiver implements IStateReceiver {
 
     constructor(private _constructorSerializer = Serializer) {
     }
-    private __getSerializer(){
+
+    private __getSerializer() {
         if (this.__serializer) {
             return this.__serializer;
         }
@@ -107,7 +110,7 @@ export class StateReceiver implements IStateReceiver {
          * Сериалайзер в своей памяти учитывает предыдущие результаты и может выдать ссылку на объект,
          * если его 2 раза прогнать через один инстанс. Поэтому для проверки один сериалайзер, а для итога другой.
          */
-        const slrForCheck = this.__getSerializer();
+        const slrForCheck = new this._constructorSerializer();
         const serializedMap = {};
         const allAdditionalDeps = {};
         const allRecStates = this.receivedStateObjectsArray;
@@ -126,13 +129,13 @@ export class StateReceiver implements IStateReceiver {
                     serializedMap[key] = receivedState;
                 }
             } catch (e) {
-                let serializedFieldError = '';
-                if (typeof(serializedMap[key]) === 'object') {
-                    serializedFieldError = `${key}: ${typeof(serializedMap[key])}`;
-                } else {
-                    serializedFieldError = `${key}: ${serializedMap[key]}`;
-                }
-                Logger.error(`${state?.moduleName || key}, ${serializedFieldError} _beforeMount вернул несериализуемое состояние : ${e}` );
+                // let serializedFieldError = '';
+                // if (typeof(serializedMap[key]) === 'object') {
+                //     serializedFieldError = `${key}: ${typeof(serializedMap[key])}`;
+                // } else {
+                //     serializedFieldError = `${key}: ${serializedMap[key]}`;
+                // }
+                //Logger.error(`${state?.moduleName || key}, ${serializedFieldError} _beforeMount вернул несериализуемое состояние : ${e}` );
                 delete serializedMap[key];
             }
         });
@@ -161,7 +164,7 @@ export class StateReceiver implements IStateReceiver {
         try {
             this.deserialized = JSON.parse(str, slr.deserialize);
         } catch (error) {
-            Logger.error(`Ошибка десериализации ${str}`, null, error);
+            //Logger.error(`Ошибка десериализации ${str}`, null, error);
         }
     }
 
@@ -171,13 +174,13 @@ export class StateReceiver implements IStateReceiver {
             delete this.deserialized[key];
         }
         // todo проверка на сервис представления
-        if (typeof process !== 'undefined' && !process.versions) {
-            if (typeof this.receivedStateObjectsArray[key] !== 'undefined') {
-                const message = '[Application/_State/StateReceiver:register] - Try to register instance more than once ' +
-                    `or duplication of keys happened; current key is ${key}`;
-                Logger.warn(message, inst);
-            }
-        }
+        // if (typeof process !== 'undefined' && !process.versions) {
+        //     if (typeof this.receivedStateObjectsArray[key] !== 'undefined') {
+        //         const message = '[Application/_State/StateReceiver:register] - Try to register instance more than once ' +
+        //             `or duplication of keys happened; current key is ${key}`;
+        //         Logger.warn(message, inst);
+        //     }
+        // }
         this.receivedStateObjectsArray[key] = inst;
     }
 
