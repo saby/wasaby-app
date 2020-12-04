@@ -1,4 +1,5 @@
 /// <amd-module name="Application/_Interface/IStateReceiver" />
+import { IConsole } from 'Application/_Interface/IConsole';
 import { ISerializableState } from "Application/_Interface/ISerializableState";
 
 /**
@@ -38,4 +39,14 @@ export interface IStateReceiver {
      * @param {String} uid Идентификатор инстанса.
      */
     unregister(uid: string): void;
+    /**
+     * установить логгер
+     * @param  {Application/_Interface/IConsole} логгер.
+     */
+    setLogger(Logger: IConsole): void;
+    /**
+     * вернуть логгер
+     * @return {Application/_Interface/IConsole} логгер.
+     */
+    getLogger(): IConsole;
 }

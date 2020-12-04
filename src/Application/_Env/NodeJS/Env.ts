@@ -18,6 +18,11 @@ let appRequest: IRequestInternal;
  * @implements {Application/_Interface/IEnv}
  */
 export default class implements IEnv {
+    /**
+     * Флаг с обозначением того, что можно создавать Request
+     * @cfg {Boolean} initRequest
+     * @name Application/_Env/NodeJS/Env#initRequest
+     */
     initRequest: boolean = true;
     console: IConsole;
     cookie: ICookie;

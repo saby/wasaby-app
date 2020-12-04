@@ -5,8 +5,8 @@ import EnvBrowser from 'Application/_Env/Browser/Env';
 import EnvNodeJS from 'Application/_Env/NodeJS/Env';
 import { IEnv } from 'Application/_Interface/IEnv';
 import { IRequest } from 'Application/_Interface/IRequest';
-import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
 import { ISerializableState } from 'Application/_Interface/ISerializableState';
+import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
 
 const Env = (typeof window === 'undefined') ? EnvNodeJS : EnvBrowser;
 // tslint:disable-next-line: no-any
@@ -41,6 +41,7 @@ export default class App {
             entry = iterator.next();
         }
 
+        stateReceiver.setLogger(App.getInstance().env.console);
         App.getInstance().env
             .createRequest(config)
             .setStateReceiver(stateReceiver);

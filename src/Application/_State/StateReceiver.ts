@@ -1,5 +1,6 @@
 /// <amd-module name="Application/_State/StateReceiver" />
 import { IStateReceiver } from 'Application/Interface';
+import { IConsole } from 'Application/_Interface/IConsole';
 
 /**
  * @author Санников К.
@@ -34,8 +35,9 @@ function getDepsFromSerializer(slr: any): any {
     return deps;
 }
 
-/** класс заглушка в случае, если не был передан конструктор UI/_state/Serializer
- *  в UI/_base/StartApplicationScript.wml при создании текущего класса StateReceiver.
+/** класс заглушка в случае,
+ * если не был передан конструктор UI/_state/Serializer,
+ * при создании текущего класса StateReceiver.
  */
 class Serializer {
     _linksStorage = {};
@@ -88,21 +90,61 @@ class Serializer {
     }
 }
 
+/** объект-заглушка
+ *  в случае, если не был передан реальный логгер
+ */
+const logger: IConsole = {
+
+    /** вероятно, в getLogLevel возвращать 0 - плохая идея,
+     * но возвращать число требует интерфейс IConsole
+     */
+    getLogLevel(): number {
+        return 0;
+    },
+
+    info(...args: any): void {
+    },
+
+    log(...args: any): void {
+    },
+
+    setLogLevel(logLevel: number): void {
+    },
+
+    error(...args: any): void {
+    },
+
+    warn(...args: any): void {
+    },
+};
 export class StateReceiver implements IStateReceiver {
     private receivedStateObjectsArray: any = {};
     private deserialized: any = {};
     private __serializer;
-
-    constructor(private _constructorSerializer = Serializer, private _logger ) {
+    private _logger: IConsole;
+    constructor(private _constructorSerializer = Serializer) {
     }
 
-    private __getSerializer() {
+    private __getSerializer(){
         if (this.__serializer) {
             return this.__serializer;
         }
         this.__serializer = new this._constructorSerializer();
         return this.__serializer;
     }
+
+    setLogger(Logger: IConsole): void {
+        this._logger = Logger;
+    }
+
+    getLogger(): IConsole{
+        if (this._logger) {
+            return this._logger;
+        }
+        this._logger = logger;
+        return this._logger;
+    }
+
     serialize(): ISerializedType {
         const slr = this.__getSerializer();
         /**
@@ -134,7 +176,7 @@ export class StateReceiver implements IStateReceiver {
                 } else {
                     serializedFieldError = `${key}: ${serializedMap[key]}`;
                 }
-                this._logger.error(`${state?.moduleName || key}, ${serializedFieldError} _beforeMount вернул несериализуемое состояние : ${e}` );
+                this.getLogger().error(`${state?.moduleName || key}, ${serializedFieldError} _beforeMount вернул несериализуемое состояние : ${e}` );
                 delete serializedMap[key];
             }
         });
@@ -163,7 +205,7 @@ export class StateReceiver implements IStateReceiver {
         try {
             this.deserialized = JSON.parse(str, slr.deserialize);
         } catch (error) {
-            this._logger.error(`Ошибка десериализации ${str}`, null, error);
+            this.getLogger().error(`Ошибка десериализации ${str}`, null, error);
         }
     }
 
@@ -177,7 +219,7 @@ export class StateReceiver implements IStateReceiver {
             if (typeof this.receivedStateObjectsArray[key] !== 'undefined') {
                 const message = '[Application/_State/StateReceiver:register] - Try to register instance more than once ' +
                     `or duplication of keys happened; current key is ${key}`;
-                this._logger.warn(message, inst);
+                this.getLogger().warn(message, inst);
             }
         }
         this.receivedStateObjectsArray[key] = inst;
