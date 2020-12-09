@@ -125,24 +125,24 @@ export class StateReceiver implements IStateReceiver {
     constructor(private _constructorSerializer = Serializer) {
     }
 
-    private __getSerializer(){
-        if (this.__serializer) {
-            return this.__serializer;
-        }
-        this.__serializer = new this._constructorSerializer();
-        return this.__serializer;
-    }
-
     setLogger(Logger: IConsole): void {
         this._logger = Logger;
     }
 
-    getLogger(): IConsole{
+    private _getLogger(): IConsole {
         if (this._logger) {
             return this._logger;
         }
         this._logger = logger;
         return this._logger;
+    }
+
+    private __getSerializer() {
+        if (this.__serializer) {
+            return this.__serializer;
+        }
+        this.__serializer = new this._constructorSerializer();
+        return this.__serializer;
     }
 
     serialize(): ISerializedType {
@@ -176,7 +176,7 @@ export class StateReceiver implements IStateReceiver {
                 } else {
                     serializedFieldError = `${key}: ${serializedMap[key]}`;
                 }
-                this.getLogger().error(`${state?.moduleName || key}, ${serializedFieldError} _beforeMount вернул несериализуемое состояние : ${e}` );
+                this._getLogger().error(`${state?.moduleName || key}, ${serializedFieldError} _beforeMount вернул несериализуемое состояние : ${e}` );
                 delete serializedMap[key];
             }
         });
@@ -205,7 +205,7 @@ export class StateReceiver implements IStateReceiver {
         try {
             this.deserialized = JSON.parse(str, slr.deserialize);
         } catch (error) {
-            this.getLogger().error(`Ошибка десериализации ${str}`, null, error);
+            this._getLogger().error(`Ошибка десериализации ${str}`, null, error);
         }
     }
 
@@ -219,7 +219,7 @@ export class StateReceiver implements IStateReceiver {
             if (typeof this.receivedStateObjectsArray[key] !== 'undefined') {
                 const message = '[Application/_State/StateReceiver:register] - Try to register instance more than once ' +
                     `or duplication of keys happened; current key is ${key}`;
-                this.getLogger().warn(message, inst);
+                this._getLogger().warn(message, inst);
             }
         }
         this.receivedStateObjectsArray[key] = inst;
