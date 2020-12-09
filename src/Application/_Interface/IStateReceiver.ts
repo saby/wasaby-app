@@ -44,9 +44,4 @@ export interface IStateReceiver {
      * @param  {Application/_Interface/IConsole} логгер.
      */
     setLogger(Logger: IConsole): void;
-    /**
-     * вернуть логгер
-     * @return {Application/_Interface/IConsole} логгер.
-     */
-    getLogger(): IConsole;
 }
