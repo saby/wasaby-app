@@ -20,6 +20,11 @@ import { IStore, IStoreMap } from 'Application/_Interface/IStore';
  * @public
  */
 export default class EnvBrowser implements IEnv {
+    /**
+     * Флаг с обозначением того, что можно создавать Request
+     * @cfg {Boolean} initRequest
+     * @name Application/_Env/Browser/Env#initRequest
+     */
     initRequest: boolean = true;
     private _request: IRequest;
     /**

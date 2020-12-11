@@ -109,11 +109,18 @@ declare module "Application/Env" {
 /// <amd-module name="Application/Initializer" />
 declare module "Application/Initializer" {
     import { IEnv } from 'Application/_Interface/IEnv';
+    import { ISerializableState } from 'Application/_Interface/ISerializableState';
     import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
     export const startRequest: any;
     export const isInit: any;
     export default function (cfg?: Record<string, unknown>, env?: IEnv, sr?: IStateReceiver): void;
-    export const registerComponent: (uid: string, component: any) => void;
+    export function registerComponent(uid: string, component: ISerializableState): void;
+    /**
+     * Обещание сообщить об инициализации приложения
+     * @param callback Function
+     * @private
+     */
+    export function then<T = unknown>(callback: () => T): Promise<T>;
 }
 /// <amd-module name="Application/Interface" />
 declare module "Application/Interface" {
@@ -129,6 +136,7 @@ declare module "Application/Interface" {
      * @includes IStore Application/_Interface/IStore
      * @includes IStateReceiver Application/_Interface/IStateReceiver
      * @includes IRequest Application/_Interface/IRequest
+     * @includes IHead Application/_Interface/IHead
      * @public
      * @author Санников К.А.
      */
@@ -141,6 +149,19 @@ declare module "Application/Interface" {
     export * from 'Application/_Interface/IStore';
     export * from 'Application/_Interface/IStateReceiver';
     export * from 'Application/_Interface/IRequest';
+    export * from 'Application/_Interface/IHead';
+}
+/// <amd-module name="Application/Page" />
+declare module "Application/Page" {
+    /**
+     * Библиотека управления страницей. Например, ее заголовок, список загруженных ресурсов или og описание
+     *
+     * @library Application/Page
+     * @public
+     * @includes Head Application/_Page/Head
+     * @author Печеркин С.В.
+     */
+    export { Head } from "Application/_Page/Head";
 }
 /// <amd-module name="Application/Request" />
 declare module "Application/Request" {
@@ -156,10 +177,19 @@ declare module "Application/Request" {
     export default Request;
     export { default as Store } from 'Application/_Request/Store';
 }
+declare module "State" {
+    /**
+     * Библиотека для работы с сериализованным состоянием.
+     * @library Application/State
+     * @includes StateReceiver Application/_State/StateReceiver
+     * @author Санников К.А.
+     */
+    export { StateReceiver } from 'Application/_State/StateReceiver';
+}
 /// <amd-module name="Application/_Config/Config" />
 declare module "Application/_Config/Config" {
     import { ISerializableState } from 'Application/_Interface/ISerializableState';
-    type IData = Record<string, unknown>;
+    type IData = Record<string, any>;
     /**
      * Класс Config
      * @class Application/_Config/Config
@@ -198,9 +228,9 @@ declare module "Application/_Config/Config" {
 declare module "Application/_Env/App" {
     import { IEnv } from 'Application/_Interface/IEnv';
     import { IRequest } from 'Application/_Interface/IRequest';
-    import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
     import { ISerializableState } from 'Application/_Interface/ISerializableState';
-    type TConfig = Record<string, unknown>;
+    import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
+    type TConfig = Record<string, any>;
     export default class App {
         private env;
         constructor(cfg?: TConfig, env?: IEnv, stateReceiver?: IStateReceiver);
@@ -393,6 +423,11 @@ declare module "Application/_Env/Browser/Env" {
      * @public
      */
     export default class EnvBrowser implements IEnv {
+        /**
+         * Флаг с обозначением того, что можно создавать Request
+         * @cfg {Boolean} initRequest
+         * @name Application/_Env/Browser/Env#initRequest
+         */
         initRequest: boolean;
         private _request;
         /**
@@ -419,41 +454,6 @@ declare module "Application/_Env/Browser/Env" {
         constructor(data: Record<string, any>);
         getRequest(): IRequest;
         createRequest(): IRequestInternal;
-    }
-}
-/// <amd-module name="Application/_State/StateReceiver" />
-declare module "Application/_State/StateReceiver" {
-    import { IConsole, ISerializableState, IStateReceiver } from "Application/Interface";
-    type StateMap = Record<string, Record<string, any>>;
-    /**
-     * @typedef {Object} StateReceiverConfig
-     * @property {StateMap} [states] states
-     * @property {Application/_Interface/IConsole} [console] console
-     */
-    export type StateReceiverConfig = {
-        states?: StateMap;
-        console?: IConsole;
-    };
-    /**
-     * Класс, реализующий интерфейс {@link Application/_Interface/IStateReceiver},
-     * позволяющий сохранять состояние компонентов
-     *
-     * @class Application/_State/StateReceiver
-     * @implements Application/_Interface/IStateReceiver
-     * @author Санников К.А.
-     * @public
-     */
-    export default class StateReceiver implements IStateReceiver {
-        private __states;
-        private __components;
-        private readonly __console;
-        constructor(states?: any, console?: IConsole);
-        serialize(): string;
-        deserialize(data: string): void;
-        register(uid: string, component: ISerializableState): void;
-        unregister(uid: string): void;
-        private __updateState;
-        private __setComponentState;
     }
 }
 /// <amd-module name="Application/_Env/NodeJS/Console" />
@@ -501,6 +501,11 @@ declare module "Application/_Env/NodeJS/Env" {
      * @implements {Application/_Interface/IEnv}
      */
     export default class implements IEnv {
+        /**
+         * Флаг с обозначением того, что можно создавать Request
+         * @cfg {Boolean} initRequest
+         * @name Application/_Env/NodeJS/Env#initRequest
+         */
         initRequest: boolean;
         console: IConsole;
         cookie: ICookie;
@@ -663,6 +668,95 @@ declare module "Application/_Interface/IEnv" {
         createRequest: (cfg: IConfig) => IRequestInternal;
     }
 }
+/// <amd-module name="Application/_Interface/IHead" />
+declare module "Application/_Interface/IHead" {
+    import { IStore } from 'Application/_Interface/IStore';
+    /**
+     * Интерфейс объекта, описывающего аттрибуты тега для API Head
+     * @interface Application/_Interface/IHeadTagAttrs
+     * @public
+     * @author Печеркин С.В.
+     */
+    export interface IHeadTagAttrs {
+        charset?: string;
+        class?: string;
+        content?: string;
+        'css-entity-name'?: string;
+        'css-entity-theme'?: string;
+        defer?: string;
+        href?: string;
+        'http-equiv'?: string;
+        key?: string;
+        name?: string;
+        property?: string;
+        rel?: string;
+        src?: string;
+        'theme-type'?: string;
+        type?: string;
+        URL?: string;
+    }
+    /**
+     * Интерфейс объекта, описывающего обработчики событий тега для API Head
+     * @interface Application/_Interface/IHeadTagEventHandlers
+     * @public
+     * @author Печеркин С.В.
+     */
+    export interface IHeadTagEventHandlers {
+        load?: Function;
+        error?: Function;
+    }
+    /**
+     * Интерфейс одного тега для API Head
+     * @interface Application/_Interface/IHeadTag
+     * @property {string} name - имя тега (title, meta, script)
+     * @property {IHeadTagAttrs} attrs - дополнительные аттрибуты для тега
+     * @property {string} content - содержимое тега. Актульано, например, для тега script
+     * @author Печеркин С.В.
+     */
+    export interface IHeadTag {
+        name: string;
+        attrs: IHeadTagAttrs;
+        content?: string;
+        eventHandlers?: IHeadTagEventHandlers;
+    }
+    /** Технический интерфейс для разрешения циклических определений в типе JML */
+    interface JsonML extends JML {
+    }
+    /** Структура, которая однозначно описывает 1 тег первого уровня внутри head страницы */
+    export type IHeadTagId = string;
+    /**
+     * Тип для описания верстки, прнятый как стандарт в СБИС
+     * https://wi.sbis.ru/doc/platform/developmentapl/service-development/service-contract/logic/json-markup-language/
+     */
+    export type JML = [string, (object | JsonML | string)?, (JsonML | string)?];
+    /**
+     * API для работы с <head> страницы
+     * @interface Application/_Interface/IHead
+     * @property {Function} createComment - добавит строку с комментарием внутрь тега <head>
+     * @property {Function} createNoScript - добавит конструкцию noscript с указанным URL
+     * @property {Function} createTag - добавит тег внутрь <head>. Если такой тег уже есть - перерисует его
+     * @property {Function} getTag - вернет описание тега(ов), если он есть по входным данным: имя тега и какие-то аттрибуты
+     * @property {Function} deleteTag - удалит тег из <head>, если он есть
+     * @property {Function} getData - вернет текущее состояние тегов с учетом их добавления/удаления в формате JsonML
+     * @property {Function} getComments - вернет все зарегистрированные комментарии в виде строк без <!-- --> (wrap)
+     * @property {Function} clear - очистит внутреннее состояние. Имеет смысл вызывать только на ПП
+     * @see https://wi.sbis.ru/doc/platform/developmentapl/service-development/service-contract/logic/json-markup-language/
+     * @public
+     * @author Печеркин С.В.
+     */
+    export interface IInternalHead {
+        createComment(text: string): void;
+        createNoScript(URL: any): void;
+        createTag(name: string, attrs: IHeadTagAttrs, content?: string, eventHandlers?: IHeadTagEventHandlers): IHeadTagId;
+        deleteTag(id: IHeadTagId): void;
+        getTag(name?: string, attrs?: IHeadTagAttrs): IHeadTagId | IHeadTagId[] | null;
+        getData(id?: IHeadTagId): Array<JML> | JML;
+        getComments(wrap?: boolean): string[];
+        clear(): any;
+    }
+    export interface IHead extends IStore<IInternalHead>, IInternalHead {
+    }
+}
 /// <amd-module name="Application/_Interface/ILocation" />
 declare module "Application/_Interface/ILocation" {
     /**
@@ -792,12 +886,13 @@ declare module "Application/_Interface/ISerializableState" {
 }
 /// <amd-module name="Application/_Interface/IStateReceiver" />
 declare module "Application/_Interface/IStateReceiver" {
+    import { IConsole } from 'Application/_Interface/IConsole';
     import { ISerializableState } from "Application/_Interface/ISerializableState";
     /**
      * Интерфейс компонента для восстановления состояний компонентов.
      * Необходим для получения данных состояний компонентов созданных на сервер.
      * @interface Application/_Interface/IStateReceiver
-     * @public
+     * @private
      * @author Санников К.А.
      */
     export interface IStateReceiver {
@@ -827,6 +922,16 @@ declare module "Application/_Interface/IStateReceiver" {
          * @param {String} uid Идентификатор инстанса.
          */
         unregister(uid: string): void;
+        /**
+         * установить логгер
+         * @param  {Application/_Interface/IConsole} логгер.
+         */
+        setLogger(Logger: IConsole): void;
+        /**
+         * вернуть логгер
+         * @return {Application/_Interface/IConsole} логгер.
+         */
+        _getLogger(): IConsole;
     }
 }
 /// <amd-module name="Application/_Interface/IStore" />
@@ -894,6 +999,141 @@ declare module "Application/_Interface/IStore" {
         [propName: string]: IStore<any>;
     }
 }
+declare module "_Page/Head" {
+    import { IHead, IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId, IInternalHead, JML } from 'Application/_Interface/IHead';
+    /**
+     * API для работы с <head> страницы
+     * Класс реализуется как синглтон
+     * Получить инстанст синглтона можно через статичный метод getInstance()
+     * @author Печеркин С.В.
+     */
+    export class Head implements IHead {
+        private _elements;
+        private _comments;
+        private _noScriptUrl;
+        private _id;
+        createComment(text: string): void;
+        createNoScript(url: string): void;
+        createTag(name: 'title', attrs: {}, content: string): IHeadTagId;
+        createTag(name: 'title', attrs: {
+            class: string;
+        }, content: string): IHeadTagId;
+        createTag(name: 'script', attrs: {
+            type: string;
+        }, content: string): IHeadTagId;
+        createTag(name: 'script', attrs: {
+            type: string;
+            src: string;
+            key: string;
+        }, content: string): IHeadTagId;
+        createTag(name: 'script', attrs: {
+            type: string;
+            src: string;
+            key: string;
+        }, content: string, eventHandlers: IHeadTagEventHandlers): IHeadTagId;
+        createTag(name: 'meta', attrs: {
+            'http-equiv': string;
+            content: string;
+        }): IHeadTagId;
+        createTag(name: 'meta', attrs: {
+            content: string;
+            'http-equiv': string;
+            name: string;
+            URL: string;
+        }): IHeadTagId;
+        createTag(name: 'meta', attrs: {
+            property: string;
+            content: string;
+            class: string;
+        }): IHeadTagId;
+        createTag(name: 'link', attrs: {
+            src: '';
+        }): IHeadTagId;
+        createTag(name: 'link', attrs: {
+            href: string;
+            as: string;
+            rel: string;
+        }): IHeadTagId;
+        createTag(name: 'link', attrs: IHeadTagAttrs, content: null, eventHandlers: IHeadTagEventHandlers): IHeadTagId;
+        getTag(name?: string, attrs?: IHeadTagAttrs): IHeadTagId | IHeadTagId[] | null;
+        deleteTag(id: IHeadTagId): void;
+        clear(): void;
+        getData(id?: IHeadTagId): Array<JML> | JML;
+        getComments(wrap?: boolean): string[];
+        get<K extends keyof IInternalHead>(key: string): IInternalHead[K];
+        set<K extends keyof IInternalHead>(key: string, value: IInternalHead[K]): boolean;
+        remove(): void;
+        getKeys(): Array<keyof IInternalHead>;
+        toObject(): Record<keyof IInternalHead, any>;
+        /**
+         * Генератор noscript тега с содержимым, если был задан _noScriptUrl
+         * @private
+         */
+        private _generateNoScript;
+        /** Генератор уникального идентификатора для каждого тега */
+        private _generateGuid;
+        private static _creator;
+        static _instance: Head;
+        /**
+         * Сложилась очень сложная ситуация.
+         * Она разгребается в задаче https://online.sbis.ru/opendoc.html?guid=a3203b23-b620-4ebc-bc7a-0a59cfec006b
+         */
+        static getInstance(): Head | never;
+    }
+}
+declare module "_Page/_head/Element" {
+    import { IHeadTagAttrs, IHeadTagEventHandlers } from 'Application/_Interface/IHead';
+    import ElementPS from 'Application/_Page/_head/ElementPS';
+    /**
+     * Класс HTML элемента для вставки в head
+     * Основной функционал реализован в родительском классе ElementPS.
+     * В текущем, дочернем классе реализован метод для рендера элемента в DOM дереве.
+     * @author Хамбелов М.И.
+     */
+    export default class Element extends ElementPS {
+        /** Переопределенный метод для проверки тэга на идентичность.
+         * в текущем переопределенном методе отдельно сравнивается title напрямую в DOM,
+         * в отличии от родительского, в котором сравниваются по метаданным.
+         * title проверяется только по контенту.
+         */
+        isEqual(name: string, attrs: IHeadTagAttrs, content?: string, eventHandlers?: IHeadTagEventHandlers): boolean;
+        /** Метод отрисовки элемента в head в DOM-дереве.
+         * Переопределенный метод от родительского класса.
+         */
+        protected _render(): void;
+        /** Метод удаления элемента из head в DOM-дереве.
+         *  Переопределенный метод от родительского класса.
+         *  Нельзя оставлять страницу с пустым title - это приводит к морганию заголовка
+         */
+        protected _removeElement(): void;
+    }
+}
+declare module "_Page/_head/ElementPS" {
+    import { IHeadTag, IHeadTagAttrs, IHeadTagEventHandlers, JML } from 'Application/_Interface/IHead';
+    export default class ElementPS {
+        protected _name: string;
+        protected _attrs: IHeadTagAttrs;
+        protected _content: string;
+        protected _eventHandlers: IHeadTagEventHandlers;
+        protected _element: HTMLElement;
+        constructor(name: string, attrs: IHeadTagAttrs, content?: string, eventHandlers?: IHeadTagEventHandlers);
+        /** Возвращаем элемент в формате JML, предварительно сгенерировав его */
+        getData(): JML;
+        /** удаляет информацию из свойств класса */
+        clear(): void;
+        /** удаляет элемент из DOM дерева. Нет реализации в ElementPS */
+        protected _removeElement(): void;
+        /** Определяем одинаковый ли элемент или нет. Сравниваем по свойствам класса */
+        isEqual(name: string, attrs: IHeadTagAttrs, content?: string, eventHandlers?: IHeadTagEventHandlers): boolean;
+        /** Определяет подходит ли элемент под описание: сходится ли тег и атрибуты */
+        isFit(name?: string, attrs?: IHeadTagAttrs): boolean;
+        _isTitle(): boolean;
+        /** Отрисовка элемента в head. */
+        protected _render(): void;
+        /** генерируется тэг в формате JML */
+        static generateTag(data: IHeadTag): JML;
+    }
+}
 /// <amd-module name="Application/_Request/FakeWebStorage" />
 declare module "Application/_Request/FakeWebStorage" {
     /**
@@ -933,7 +1173,7 @@ declare module "Application/_Request/Request" {
      * @see Application/_Interface/IStateReceiver
      * @todo добавить пример
      */
-    export default class AppRequest implements IRequestInternal {
+    export default class Request implements IRequestInternal {
         private readonly __config;
         /**
          * @cfg {Application/_Interface/IConsole} console
@@ -991,6 +1231,7 @@ declare module "Application/_Request/Store" {
      * предназначенный для работы с localStorage и SessionStorage
      * @class Application/_Request/Store
      * @implements Application/_Interface/IStore
+     * @public
      * @author Санников К.А.
      */
     export default class Store implements IStore {
@@ -1001,5 +1242,48 @@ declare module "Application/_Request/Store" {
         remove(key: string): void;
         getKeys(): string[];
         toObject(): {};
+    }
+}
+/// <amd-module name="Application/_State/StateReceiver" />
+declare module "Application/_State/StateReceiver" {
+    import { IStateReceiver } from 'Application/Interface';
+    import { IConsole } from 'Application/_Interface/IConsole';
+    /**
+     * @author Санников К.
+     */
+    interface ISerializedType {
+        serialized: string;
+        additionalDeps: {
+            [depPath: string]: boolean;
+        };
+    }
+    /** класс заглушка в случае,
+     * если не был передан конструктор UI/_state/Serializer,
+     * при создании текущего класса StateReceiver.
+     */
+    class Serializer {
+        _linksStorage: {};
+        _depsStorage: {};
+        deserialize: any;
+        serializeStrict: any;
+        static componentOptsReArray: any[];
+        static parseDeclaration(module: any): {
+            name: string;
+        };
+    }
+    export class StateReceiver implements IStateReceiver {
+        private _constructorSerializer;
+        private receivedStateObjectsArray;
+        private deserialized;
+        private __serializer;
+        private _logger;
+        constructor(_constructorSerializer?: typeof Serializer);
+        setLogger(Logger: IConsole): void;
+        private _getLogger;
+        private __getSerializer;
+        serialize(): ISerializedType;
+        deserialize(str: string | undefined): void;
+        register(key: string, inst: any): void;
+        unregister(key: string): void;
     }
 }
