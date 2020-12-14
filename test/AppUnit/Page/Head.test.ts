@@ -15,7 +15,7 @@ describe('Application/_Page/Head', () => {
         const attrs = {};
 
         API.createTag(tag, attrs);
-        processingData.push([tag, attrs]);
+        processingData.push([tag]);
         assert.deepEqual(API.getData(), processingData);
     });
 
