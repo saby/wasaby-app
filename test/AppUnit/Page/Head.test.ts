@@ -3,9 +3,6 @@ import { default as AppInit } from 'Application/Initializer';
 import { Head as HeadAPI } from 'Application/Page';
 import { JML, IHead, IHeadTagAttrs } from "Application/Interface";
 
-const additionalAttrs = {
-    'data-vdomignore': true
-};
 const processingData: JML[] = [];
 
 describe('Application/_Page/Head', () => {
@@ -18,7 +15,7 @@ describe('Application/_Page/Head', () => {
         const attrs = {};
 
         API.createTag(tag, attrs);
-        processingData.push([tag, {...attrs, ...additionalAttrs}]);
+        processingData.push([tag]);
         assert.deepEqual(API.getData(), processingData);
     });
 
@@ -32,7 +29,7 @@ describe('Application/_Page/Head', () => {
         };
 
         API.createTag(tag, attrs);
-        processingData.push([tag, {...attrs, ...additionalAttrs}]);
+        processingData.push([tag, attrs]);
         assert.deepEqual(API.getData(), processingData);
     });
 
@@ -40,10 +37,10 @@ describe('Application/_Page/Head', () => {
         const url = 'noScript.html';
 
         API.createNoScript(url);
-        processingData.unshift(['noscript', ['meta', {...additionalAttrs, ...{
+        processingData.unshift(['noscript', ['meta', {
                 'http-equiv': 'refresh',
                 content: `2; URL=${url}`
-            }}]]);
+            }]]);
         assert.deepEqual(API.getData(), processingData);
     });
 
@@ -55,7 +52,7 @@ describe('Application/_Page/Head', () => {
         };
 
         API.createTag(tag, attrs);
-        processingData.push([tag, {...attrs, ...additionalAttrs}]);
+        processingData.push([tag, attrs]);
         assert.deepEqual(API.getData(), processingData);
 
         API.createTag(tag, attrs);
@@ -72,7 +69,7 @@ describe('Application/_Page/Head', () => {
         };
 
         API.createTag(tag, attrs);
-        processingData.push([tag, {...attrs, ...additionalAttrs}]);
+        processingData.push([tag, attrs]);
 
         /** title мы добавляли ранее */
         assert.isString(API.getTag('title'), 'Не нашелся пустой тег title в данных');
@@ -89,7 +86,7 @@ describe('Application/_Page/Head', () => {
         const attrs = {};
 
         API.createTag(tag, attrs);
-        processingData.push([tag, {...attrs, ...additionalAttrs}]);
+        processingData.push([tag]);
         assert.deepEqual(API.getData(), processingData);
 
         API.deleteTag((API.getTag(tag) as string));
