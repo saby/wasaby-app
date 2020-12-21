@@ -29,11 +29,13 @@ export default class ElementPS {
     constructor(name: string,
                 attrs: IHeadTagAttrs,
                 content?: string,
-                eventHandlers?: IHeadTagEventHandlers) {
+                eventHandlers?: IHeadTagEventHandlers,
+                element?: HTMLElement) {
         this._name = name;
         this._attrs = attrs;
         this._content = content ? String(content) : null;
         this._eventHandlers = eventHandlers;
+        this._element = element;
         this._render();
     }
 
@@ -69,7 +71,7 @@ export default class ElementPS {
             attrs: IHeadTagAttrs,
             content?: string,
             eventHandlers?: IHeadTagEventHandlers): boolean{
-        if (content != this._content || name !== this._name) {
+        if (content != this._content || name.toLowerCase() !== this._name.toLowerCase()) {
             return false;
         }
         /** найдем в списке тэгов с приоритетным аттрибутами нужный нам тэг.

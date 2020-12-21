@@ -3,6 +3,13 @@
 import { IHeadTagAttrs, IHeadTagEventHandlers } from 'Application/_Interface/IHead';
 import ElementPS from 'Application/_Page/_head/ElementPS';
 
+interface IElementRestoredData {
+    name: string;
+    attrs: IHeadTagAttrs;
+    content: string;
+    element: HTMLElement;
+}
+
 /**
  * Класс HTML элемента для вставки в head
  * Основной функционал реализован в родительском классе ElementPS.
@@ -10,6 +17,14 @@ import ElementPS from 'Application/_Page/_head/ElementPS';
  * @author Хамбелов М.И.
  */
 export default class Element extends ElementPS {
+    constructor(name?: string,
+                attrs?: IHeadTagAttrs,
+                content?: string,
+                eventHandlers?: IHeadTagEventHandlers,
+                element?: HTMLElement) {
+        const data: IElementRestoredData = Element._restoreElement(element);
+        super(data.name || name, data.attrs || attrs, data.content || content, eventHandlers, element);
+    }
 
     /** Переопределенный метод для проверки тэга на идентичность.
      * в текущем переопределенном методе отдельно сравнивается title напрямую в DOM,
@@ -30,6 +45,9 @@ export default class Element extends ElementPS {
      * Переопределенный метод от родительского класса.
      */
     protected _render(): void {
+        if (this._element) {
+            return;
+        }
         const title = this._isTitle() ? document.head.querySelector('title') : null;
         /** если в DOM дереве существует title и текущий элемент - title,
          *  в таком случае меняем только content у title в DOM дереве
@@ -65,5 +83,33 @@ export default class Element extends ElementPS {
             document.head.removeChild(this._element);
         }
         delete this._element;
+    }
+
+    /**
+     * Есть 2 путя создать инстанс класса Element:
+     * Из мета информации или из реального DOM элемента.
+     * Еси из реального элемента, надо восстановить мета информацию.
+     * Когда это используется? При оживлении страницы, чтобы Head API собрал информацию, вставленную на серваке.
+     * @private
+     */
+    private static _restoreElement(element?: HTMLElement): IElementRestoredData {
+        const result: IElementRestoredData = {
+            name: '',
+            attrs: null,
+            content: '',
+            element
+        };
+
+        if (element) {
+            result.attrs = {};
+            result.name = element.tagName.toLowerCase();
+            result.attrs = {};
+            for (const key in element.attributes) {
+                result.attrs[key] = element.attributes[key].value;
+            }
+            result.content = element.innerText;
+        }
+
+        return result
     }
 }

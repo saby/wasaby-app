@@ -22,6 +22,27 @@ export class Head implements IHead {
     private _noScriptUrl: string = null;
     private _id = 1;
 
+    constructor() {
+        this._collectTags();
+    }
+
+    /**
+     * Важно собрать на клиенте всю информацию о тегах внутри head при инициализации Head API
+     * @private
+     */
+    private _collectTags(): void {
+        if (typeof document === 'undefined') { return; }
+
+        Array.from(document.head.children)
+            .forEach((item: HTMLElement) => {
+                /** Нет смысла собирать noscript тег. В живой странице ты его не применишь. */
+                if (item.tagName === 'NOSCRIPT') {
+                    return
+                }
+                this._elements[this._generateGuid()] = new Element(null, null, null, null, item);
+            })
+    }
+
     createComment(text: string): void {
         if (this._comments.includes(text)) {
             const error = new Error('Application/_Page/Head duplicate comment:' +
