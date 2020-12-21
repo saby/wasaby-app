@@ -95,12 +95,13 @@ export default class Element extends ElementPS {
     private static _restoreElement(element?: HTMLElement): IElementRestoredData {
         const result: IElementRestoredData = {
             name: '',
-            attrs: {},
+            attrs: null,
             content: '',
             element
         };
 
         if (element) {
+            result.attrs = {};
             result.name = element.tagName.toLowerCase();
             result.attrs = {};
             for (const key in element.attributes) {
