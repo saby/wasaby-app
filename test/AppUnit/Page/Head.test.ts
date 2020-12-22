@@ -7,8 +7,41 @@ const processingData: JML[] = [];
 
 describe('Application/_Page/Head', () => {
     AppInit();
-    const API: IHead = HeadAPI.getInstance();
-    API.clear();
+    let API: IHead;
+
+    it('Восстановление состояния на клиенте', () => {
+        if (typeof window === 'undefined') {
+            /** Если мы не на клиенте, то ничего не делаем. Но инстанс создать надо. */
+            API = HeadAPI.getInstance();
+            API.clear();
+            return;
+        }
+
+        const tag = 'meta';
+        const attrs = {
+            'data-foo': 'bar',
+            'head-api-restore-test': 'true'
+        };
+
+        const el = document.createElement(tag);
+        for (const attrsKey in attrs) {
+            if (attrs.hasOwnProperty(attrsKey)) {
+                el.setAttribute(attrsKey, attrs[attrsKey]);
+            }
+        }
+        document.head.appendChild(el);
+
+        /** А ли мы на клиенте, то вот она: точка создания инстанса. После создания контрольных тегов. */
+        API = HeadAPI.getInstance();
+        const data = API.getData();
+        assert.isTrue(!!data.length, 'Не было собрано ни одного тега при оживлении');
+
+        const tagData = API.getData(( API.getTag(tag, ( attrs as IHeadTagAttrs )) as string ));
+        assert.isTrue(!!tagData, 'Не был восстановлен контрольный тег при оживлении');
+        assert.deepEqual(tagData, [tag, attrs], 'Неверно был восстановлен контрольный тег при оживлении');
+
+        API.clear();
+    });
 
     it('Создание пустого тега', () => {
         const tag = 'title';

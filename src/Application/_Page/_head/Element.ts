@@ -104,9 +104,9 @@ export default class Element extends ElementPS {
             result.attrs = {};
             result.name = element.tagName.toLowerCase();
             result.attrs = {};
-            for (const key in element.attributes) {
-                result.attrs[key] = element.attributes[key].value;
-            }
+            Array.prototype.slice.call(element.attributes).forEach((attr) => {
+                result.attrs[attr.name] = attr.value;
+            })
             result.content = element.innerText;
         }
 

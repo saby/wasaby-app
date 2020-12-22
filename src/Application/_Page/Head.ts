@@ -154,6 +154,8 @@ export class Head implements IHead {
         this._comments = [];
     }
 
+    getData(id: IHeadTagId): JML;
+    getData(): Array<JML>;
     getData(id?: IHeadTagId): Array<JML> | JML {
         if (id && this._elements[id]) {
             return this._elements[id].getData();
