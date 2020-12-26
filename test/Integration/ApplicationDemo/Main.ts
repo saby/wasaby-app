@@ -1,7 +1,7 @@
 /// <amd-module name="ApplicationDemo/Main" />
 
 // @ts-ignore
-import * as Control from 'Core/Control';
+import {Control} from 'UI/Base';
 // @ts-ignore
 import * as template from 'wml!ApplicationDemo/Main';
 
