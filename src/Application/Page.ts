@@ -9,3 +9,4 @@
  * @author Печеркин С.В.
  */
 export { Head } from "Application/_Page/Head";
+export { Body } from "Application/_Page/Body";

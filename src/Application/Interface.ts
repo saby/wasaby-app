@@ -27,3 +27,4 @@ export * from 'Application/_Interface/IStore';
 export * from 'Application/_Interface/IStateReceiver';
 export * from 'Application/_Interface/IRequest';
 export * from 'Application/_Interface/IHead';
+export * from 'Application/_Interface/IBody';
