@@ -7,7 +7,7 @@ import {
     SCRIPT_PROPS,
     LINK_PROPS,
     EVENT_HANDLER
-} from './utils';
+} from '.././utils';
 
 /**
  * У классов Element, ElementPS есть особенность, что если у данных классов поле _name является 'title',

@@ -1,0 +1,102 @@
+///// <amd-module name="Application/_Page/Body" />
+
+import * as AppEnv from 'Application/Env';
+import { IBody, IInternalBody } from 'Application/_Interface/IBody'
+import { ElementPS } from "Application/_Page/_body/ElementPS";
+
+/**
+ * API для работы с <head> страницы
+ * Класс реализуется как синглтон
+ * Получить инстанст синглтона можно через статичный метод getInstance()
+ * @author Печеркин С.В.
+ */
+
+export class Body implements IBody {
+    private readonly _bodyElement: ElementPS | DOMTokenList;
+
+    constructor() {
+        this._bodyElement = typeof window === 'undefined' ? new ElementPS() : document.body.classList;
+    }
+
+    addClass(...tokens): void {
+        try {
+            this._bodyElement.add.apply(this._bodyElement, tokens);
+        } catch (e) {
+            this._logError(e);
+        }
+    }
+
+    removeClass(...tokens): void {
+        try {
+            this._bodyElement.remove.apply(this._bodyElement, tokens);
+        } catch (e) {
+            this._logError(e);
+        }
+    }
+
+    toggleClass(token: string, force?: boolean): boolean {
+        try {
+            return this._bodyElement.toggle(token, force);
+        } catch (e) {
+            this._logError(e)
+        }
+    }
+
+    containsClass(token: string): boolean {
+        try {
+            return this._bodyElement.contains(token);
+        } catch (e) {
+            this._logError(e);
+        }
+    }
+
+    getClassString(): string {
+        return this._bodyElement.toString();
+    }
+
+    // #region IStore
+    get<K extends keyof IInternalBody>(key: string): IInternalBody[K] {
+        return this[key];
+    }
+    set<K extends keyof IInternalBody>(key: string, value: IInternalBody[K]): boolean {
+        try {
+            this[key] = value;
+            return true;
+        } catch (_e) {
+            return false;
+        }
+    }
+    // tslint:disable-next-line:no-empty
+    remove(): void { }
+    getKeys(): Array<keyof IInternalBody> {
+        return Object.keys(this) as Array<keyof IInternalBody>;
+    }
+    // tslint:disable-next-line:no-any
+    toObject(): Record<keyof IInternalBody, any> {
+        return Object.assign({}, this);
+    }
+    // #endregion
+
+    private _logError(e: Error): void {
+        const message = `'Application/_Page/Body'. ${e.message}`;
+        typeof window === 'undefined' ? AppEnv.logger.error(message) : console.error(message);
+    }
+
+    private static _creator(): Body {
+        return new Body();
+    }
+
+    static _instance: Body;
+
+    /**
+     * Сложилась очень сложная ситуация.
+     * Она разгребается в задаче https://online.sbis.ru/opendoc.html?guid=a3203b23-b620-4ebc-bc7a-0a59cfec006b
+     */
+    static getInstance(): Body | never {
+        if (typeof window !== 'undefined') {
+            Body._instance = Body._instance || Body._creator();
+            return Body._instance;
+        }
+        return <Body> AppEnv.getStore('BodyApi', Body._creator);
+    }
+}
