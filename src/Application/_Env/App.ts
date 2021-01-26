@@ -1,6 +1,7 @@
 /// <amd-module name="Application/_Env/App" />
 import { Config } from 'Application/Config';
 import { StateReceiver } from 'Application/State';
+import { IHttpRequest, IHttpResponse } from 'Application/Interface';
 import EnvBrowser from 'Application/_Env/Browser/Env';
 import EnvNodeJS from 'Application/_Env/NodeJS/Env';
 import { IEnv } from 'Application/_Interface/IEnv';
@@ -31,7 +32,8 @@ export default class App {
         return App.getInstance().env.getRequest();
     }
 
-    static startRequest(cfg?: TConfig, stateReceiver: IStateReceiver = new StateReceiver()): void {
+    static startRequest(cfg?: TConfig, stateReceiver: IStateReceiver = new StateReceiver(),
+                        req?: IHttpRequest, res?: IHttpResponse): void {
         const config = new Config(cfg);
         stateReceiver.register(config.getUID(), config);
         const iterator = App.singletonCrossEnv.entries();
@@ -43,7 +45,7 @@ export default class App {
 
         stateReceiver.setLogger(App.getInstance().env.console);
         App.getInstance().env
-            .createRequest(config)
+            .createRequest(config, req, res)
             .setStateReceiver(stateReceiver);
     }
 
@@ -59,7 +61,6 @@ export default class App {
             request.getStateReceiver().register(uid, component);
         }
     }
-
 
     static isInit(): boolean {
         return !!App.instance;

@@ -8,8 +8,6 @@ enum LogLevel {
     llEXTENDED,
     llDEBUG
 }
-// declare function warningMsg(...args: string[]);
-// declare function errorMsg(...args: string[]);
 
 /**
  * Функция для отображения значения в консоле chrome-devtool при отладке
@@ -29,8 +27,7 @@ export default class Console implements IConsole {
     private __logLevel: LogLevel;
 
     constructor() {
-        this.__logLevel = 2;  // пока не реализовано в СП: LogLevel.llSTANDARD;
-
+        this.__logLevel = LogLevel.llSTANDARD;
     }
 
     setLogLevel(mode: number) {

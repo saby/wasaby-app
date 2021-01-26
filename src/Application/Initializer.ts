@@ -17,7 +17,7 @@ export default function (cfg?: Record<string, unknown>, env?: IEnv, sr?: IStateR
         App.getRequest().console.warn(
             new Error(
                 'Повторная инициализация Application!\n' +
-                'Необходимо выписать задачу ответсвенному за Окружение (Application), приложить стек вызовов в debug режиме:\n'
+                'Необходимо выписать задачу ответственному за Окружение (Application), приложить стек вызовов в debug режиме:\n'
             ).stack
         );
         return;

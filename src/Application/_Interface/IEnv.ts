@@ -2,6 +2,8 @@
 import { IConfig } from 'Application/_Interface/IConfig';
 import { IConsole } from 'Application/_Interface/IConsole';
 import { ICookie } from 'Application/_Interface/ICookie';
+import { IHttpRequest } from "Application/_Interface/IHttpRequest";
+import { IHttpResponse } from "Application/_Interface/IHttpResponse";
 import { ILocation } from 'Application/_Interface/ILocation';
 import { IRequest, IRequestInternal } from 'Application/_Interface/IRequest';
 import { IStoreMap } from 'Application/_Interface/IStore';
@@ -20,7 +22,7 @@ export interface IEnv {
     location: ILocation;
     storages: IStoreMap;
     getRequest(): IRequest;
-    createRequest: (cfg: IConfig) => IRequestInternal;
+    createRequest(cfg: IConfig, req?: IHttpRequest, res?: IHttpResponse): IRequestInternal;
 }
 /**
  * @name Application/_Interface/IEnv#console
