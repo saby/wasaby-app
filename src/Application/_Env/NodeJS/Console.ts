@@ -10,16 +10,12 @@ enum LogLevel {
 }
 
 /**
- * Функция для отображения значения в консоле chrome-devtool при отладке
+ * Функция для отображения значения в консоли при отладке
  */
 function globalConsole(level: string, args: any[]) {
-    if (typeof console !== 'object') {
+    if (typeof console !== 'object' || typeof console[level] !== 'function') {
         return;
     }
-    if (typeof console[level] !== 'function') {
-        return;
-    }
-
     console[level].apply(undefined, args);
 }
 

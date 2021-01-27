@@ -7,9 +7,15 @@
  * @author Мустафин Л.И.
  */
 export interface IHttpRequest {
+    compatible: boolean;
+    baseUrl: string;
     path: string;
     protocol: string;
     hostname: string;
     url: string;
+    query?: object;
+    headers: Record<string, string>;
     cookies: Record<string, string>;
+    get(header: string): string;
+    header(header: string): string;
 }

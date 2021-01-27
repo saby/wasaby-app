@@ -31,7 +31,7 @@ function getHttpResponse(): Partial<IHttpResponse> {
  * @public
  * @implements {Application/_Interface/IEnv}
  */
-export default class implements IEnv {
+export default class EnvNodeJS implements IEnv {
     /**
      * Флаг с обозначением того, что можно создавать Request
      * @cfg {Boolean} initRequest
@@ -44,10 +44,10 @@ export default class implements IEnv {
     storages: IStoreMap;
     private cfg: Config;
 
-    constructor(data: Record<string, unknown>) {
+    constructor(data: Record<string, unknown>, console?: IConsole) {
         this.cfg = new Config(data);
         this.location = new Location(getHttpRequest);
-        this.console = new Console();
+        this.console = console || new Console();
         const logLevel = this.cfg.get('Application/Env.LogLevel');
         if (logLevel !== undefined) {
             const logLevelNum: number = typeof logLevel === 'number' ? logLevel : parseInt(logLevel.toString(), 10);

@@ -517,7 +517,7 @@ declare module 'Application/_Env/NodeJS/Env' {
      * @public
      * @implements {Application/_Interface/IEnv}
      */
-    export default class implements IEnv {
+    export default class EnvNodeJS implements IEnv {
         /**
          * Флаг с обозначением того, что можно создавать Request
          * @cfg {Boolean} initRequest
@@ -537,6 +537,7 @@ declare module 'Application/_Env/NodeJS/Env' {
 /// <amd-module name="Application/_Env/NodeJS/Location" />
 declare module 'Application/_Env/NodeJS/Location' {
     import { ILocation } from 'Application/Interface';
+    import { IHttpRequest } from 'Application/_Interface/IHttpRequest';
     export default class Location implements ILocation {
         private hostMask: RegExp;
         private searchMask: RegExp;
