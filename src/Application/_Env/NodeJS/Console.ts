@@ -1,7 +1,11 @@
 /// <amd-module name='Application/_Env/NodeJS/Console' />
 import { IConsole } from 'Application/Interface';
-/* eslint-disable */
-enum LogLevel {
+
+/**
+ * Уровень логирования.
+ * https://wi.sbis.ru/docs/py/sbis/LogLevel/
+ */
+export enum LogLevel {
     llDISABLED,
     llMINIMAL,
     llSTANDARD,
@@ -20,7 +24,7 @@ function globalConsole(level: string, args: any[]) {
 }
 
 export default class Console implements IConsole {
-    private __logLevel: LogLevel;
+    protected __logLevel: LogLevel;
 
     constructor() {
         this.__logLevel = LogLevel.llSTANDARD;
