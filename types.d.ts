@@ -1,6 +1,4 @@
 /// <amd-module name="Application/Config" />
-import {ICookieOptions} from "Application/_Interface/ICookie";
-
 declare module 'Application/Config' {
     /**
      * Библиотека Config
@@ -669,7 +667,6 @@ declare module 'Application/_Interface/IEnv' {
     import { ICookie } from 'Application/_Interface/ICookie';
     import { ILocation } from 'Application/_Interface/ILocation';
     import { IRequest, IRequestInternal } from 'Application/_Interface/IRequest';
-    import { IStoreMap } from 'Application/_Interface/IStore';
     import {IHttpRequest} from 'Application/_Interface/IHttpRequest';
     import {IHttpResponse} from 'Application/_Interface/IHttpResponse';
     /**
@@ -684,9 +681,9 @@ declare module 'Application/_Interface/IEnv' {
         console: IConsole;
         cookie: ICookie;
         location: ILocation;
-        storages: IStoreMap;
         getRequest(): IRequest;
-        createRequest(cfg: IConfig, req?: IHttpRequest, res?: IHttpResponse): IRequestInternal;
+        createRequest(cfg: IConfig, requestGetter: () => IHttpRequest,
+                      responseGetter: () => IHttpResponse): IRequestInternal;
     }
 }
 /// <amd-module name="Application/_Interface/IHead" />
@@ -859,6 +856,7 @@ declare module 'Application/_Interface/IRequest' {
 }
 /// <amd-module name="Application/_Interface/IHttpRequest" />
 declare module 'Application/_Interface/IHttpRequest' {
+    import { IRequest } from "Application/_Interface/IRequest";
     /**
      * Интерфейс, описывающий базовый API объекта запроса (request)
      * @interface Application/_Interface/IHttpRequest
@@ -866,11 +864,18 @@ declare module 'Application/_Interface/IHttpRequest' {
      * @author Мустафин Л.И.
      */
     export interface IHttpRequest {
+        appRequest: IRequest;
+        compatible: boolean;
+        baseUrl: string;
         path: string;
         protocol: string;
         hostname: string;
         url: string;
+        query?: object;
+        headers: Record<string, string>;
         cookies: Record<string, string>;
+        get(header: string): string;
+        header(header: string): string;
     }
 }
 /// <amd-module name="Application/_Interface/IHttpResponse" />
@@ -883,7 +888,13 @@ declare module 'Application/_Interface/IHttpResponse' {
      * @author Мустафин Л.И.
      */
     export interface IHttpResponse {
+        clearCookie(key: string, options?: Partial<ICookieOptions>): IHttpResponse;
         cookie(key: string, value: string, options?: Partial<ICookieOptions>): IHttpResponse;
+        header(name: string, value: unknown): IHttpResponse;
+        set(name: string, value: unknown): IHttpResponse;
+        redirect(path: string): IHttpResponse;
+        send(body: string): IHttpResponse;
+        status(code: number): IHttpResponse;
     }
 }
 /// <amd-module name="Application/_Interface/ISerializableState" />

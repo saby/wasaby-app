@@ -42,11 +42,6 @@ export default class EnvBrowser implements IEnv {
      * @name Application/_Env/Browser/Env#location
      */
     location: ILocation;
-    /**
-     * @cfg {Application/Interface/IStore/IStoreMap} storages
-     * @name Application/_Env/Browser/Env#storages
-     */
-    storages: IStoreMap;
 
     private cfg: Config;
 
@@ -64,25 +59,27 @@ export default class EnvBrowser implements IEnv {
             this.console.warn("Can't use Cookie", e);
         }
 
-        let localStorage: IStore;
-        try {
-            localStorage = new Store(window.localStorage);
-        } catch (e) {
-            localStorage = new ObjectStore();
-            this.console.warn("Can't use localStorage", e);
-        }
-        let sessionStorage: IStore;
-        try {
-            sessionStorage = new Store(window.sessionStorage);
-        } catch (e) {
-            sessionStorage = new ObjectStore();
-            this.console.warn("Can't use sessionStorage", e);
-        }
-
-        this.storages = {
-            "localStorage": localStorage,
-            "sessionStorage": sessionStorage
-        };
+        // TODO использование this.storages будет поправлено
+        //  по задаче https://online.sbis.ru/opendoc.html?guid=d51db079-e251-402b-9708-9db5fb06a2b8
+        // let localStorage: IStore;
+        // try {
+        //     localStorage = new Store(window.localStorage);
+        // } catch (e) {
+        //     localStorage = new ObjectStore();
+        //     this.console.warn("Can't use localStorage", e);
+        // }
+        // let sessionStorage: IStore;
+        // try {
+        //     sessionStorage = new Store(window.sessionStorage);
+        // } catch (e) {
+        //     sessionStorage = new ObjectStore();
+        //     this.console.warn("Can't use sessionStorage", e);
+        // }
+        //
+        // this.storages = {
+        //     "localStorage": localStorage,
+        //     "sessionStorage": sessionStorage
+        // };
     }
     getRequest(): IRequest {
         return this._request;

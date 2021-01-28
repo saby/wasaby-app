@@ -6,7 +6,6 @@ import { IHttpRequest } from "Application/_Interface/IHttpRequest";
 import { IHttpResponse } from "Application/_Interface/IHttpResponse";
 import { ILocation } from 'Application/_Interface/ILocation';
 import { IRequest, IRequestInternal } from 'Application/_Interface/IRequest';
-import { IStoreMap } from 'Application/_Interface/IStore';
 
 /**
  * Интерфейс IEnv
@@ -20,9 +19,9 @@ export interface IEnv {
     console: IConsole;
     cookie: ICookie;
     location: ILocation;
-    storages: IStoreMap;
     getRequest(): IRequest;
-    createRequest(cfg: IConfig, req?: IHttpRequest, res?: IHttpResponse): IRequestInternal;
+    createRequest(cfg: IConfig, requestGetter: () => IHttpRequest,
+                  responseGetter: () => IHttpResponse): IRequestInternal;
 }
 /**
  * @name Application/_Interface/IEnv#console
@@ -35,8 +34,4 @@ export interface IEnv {
 /**
  * @name Application/_Interface/IEnv#location
  * @cfg {Application/_Interface/ILocation} location
- */
-/**
- * @name Application/_Interface/IEnv#storages
- * @cfg {Application/_Interface/IStoreMap} storages
  */

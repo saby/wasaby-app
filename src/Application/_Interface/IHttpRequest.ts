@@ -1,4 +1,5 @@
 /// <amd-module name="Application/_Interface/IHttpRequest" />
+import { IRequest } from "./IRequest";
 
 /**
  * Интерфейс, описывающий базовый API объекта запроса (request)
@@ -7,6 +8,7 @@
  * @author Мустафин Л.И.
  */
 export interface IHttpRequest {
+    appRequest: IRequest;
     compatible: boolean;
     baseUrl: string;
     path: string;

@@ -24,7 +24,7 @@ function globalConsole(level: string, args: any[]) {
 }
 
 export default class Console implements IConsole {
-    protected __logLevel: LogLevel;
+    private __logLevel: LogLevel;
 
     constructor() {
         this.__logLevel = LogLevel.llSTANDARD;

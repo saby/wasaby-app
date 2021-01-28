@@ -21,7 +21,7 @@ export default class App {
     ) {
         App.instance = this;
         if (env.initRequest) {
-            App.startRequest(cfg, stateReceiver);
+            App.startRequest(cfg, stateReceiver, () => { return {} }, () => { return {} });
         }
     }
 
@@ -32,8 +32,8 @@ export default class App {
         return App.getInstance().env.getRequest();
     }
 
-    static startRequest(cfg?: TConfig, stateReceiver: IStateReceiver = new StateReceiver(),
-                        req?: IHttpRequest, res?: IHttpResponse): void {
+    static startRequest(cfg: TConfig, stateReceiver: IStateReceiver = new StateReceiver(),
+                        requestGetter: () => IHttpRequest, responseGetter: () => IHttpResponse): void {
         const config = new Config(cfg);
         stateReceiver.register(config.getUID(), config);
         const iterator = App.singletonCrossEnv.entries();
@@ -45,7 +45,7 @@ export default class App {
 
         stateReceiver.setLogger(App.getInstance().env.console);
         App.getInstance().env
-            .createRequest(config, req, res)
+            .createRequest(config, requestGetter, responseGetter)
             .setStateReceiver(stateReceiver);
     }
 

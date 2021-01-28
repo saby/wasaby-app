@@ -1,32 +1,16 @@
 /// <amd-module name="Application/_Env/NodeJS/Env" />
 import { Config } from 'Application/Config';
 import {
-    IConsole, ICookie, IEnv, ILocation, IRequest,
-    IRequestInternal, IStoreMap, IHttpRequest, IHttpResponse
+    IConsole, ICookie, IEnv, IHttpRequest, IHttpResponse,
+    ILocation, IRequest, IRequestInternal, IStoreMap
 } from 'Application/Interface';
 import Request from 'Application/Request';
 import Console from 'Application/_Env/NodeJS/Console';
 import Cookie from 'Application/_Env/NodeJS/Cookie';
 import Location from 'Application/_Env/NodeJS/Location';
 
-let appRequest: IRequestInternal;
-let httpRequest: IHttpRequest;
-let httpResponse: IHttpResponse;
-
-function getHttpRequest(): Partial<IHttpRequest> {
-    return httpRequest || {};
-}
-
-function getHttpResponse(): Partial<IHttpResponse> {
-    if (!httpResponse) {
-        throw new Error('httpResponse must be a valid response object');
-    }
-    return httpResponse;
-}
-
 /**
- * Неполноценное окружение для запуска Application под NodeJS
- * Используется в тестах, билдере, везде, где нет request'a
+ * Окружение для запуска Application под NodeJS
  * @class Application/_Env/NodeJS/Env
  * @public
  * @implements {Application/_Interface/IEnv}
@@ -41,32 +25,35 @@ export default class EnvNodeJS implements IEnv {
     console: IConsole;
     cookie: ICookie;
     location: ILocation;
-    storages: IStoreMap;
     private cfg: Config;
+    private getHttpRequest: () => IHttpRequest;
 
     constructor(data: Record<string, unknown>, console?: IConsole) {
         this.cfg = new Config(data);
-        this.location = new Location(getHttpRequest);
         this.console = console || new Console();
         const logLevel = this.cfg.get('Application/Env.LogLevel');
         if (logLevel !== undefined) {
             const logLevelNum: number = typeof logLevel === 'number' ? logLevel : parseInt(logLevel.toString(), 10);
             this.console.setLogLevel(logLevelNum);
         }
-
-        this.cookie = new Cookie(getHttpRequest, getHttpResponse);
-        this.storages = {};
     }
 
     getRequest(): IRequest {
-        return appRequest;
+        if (typeof this.getHttpRequest !== 'function') {
+            throw new Error('Нельзя использовать Request вне пользовательского запроса!');
+        }
+        return this.getHttpRequest().appRequest;
     }
-    createRequest(cfg: Config, req?: IHttpRequest, res?: IHttpResponse): IRequestInternal {
+
+    createRequest(cfg: Config, requestGetter: () => IHttpRequest,
+                  responseGetter: () => IHttpResponse): IRequestInternal {
         if (cfg) {
             cfg.setState({ ...this.cfg.getState(), ...cfg.getState() });
         }
-        httpRequest = req;
-        httpResponse = res;
-        return appRequest = new Request(this, cfg);
+        this.getHttpRequest = requestGetter;
+        this.location = new Location(requestGetter);
+        this.cookie = new Cookie(requestGetter, responseGetter);
+        return requestGetter().appRequest =
+            new Request({console: this.console, location: this.location, cookie: this.cookie}, cfg);
     }
 }
