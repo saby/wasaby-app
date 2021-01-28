@@ -142,30 +142,30 @@ export const cookie: ICookie = {
  */
 export const logger: IConsole = {
     setLogLevel(level: number) {
-        return App.getRequest().console.setLogLevel(level);
+        return App.getEnv().console.setLogLevel(level);
     },
 
     getLogLevel() {
-        return App.getRequest().console.getLogLevel();
+        return App.getEnv().console.getLogLevel();
     },
 
     log(...args) {
-        const console = App.getRequest().console;
+        const console = App.getEnv().console;
         return console.log.apply(console, args);
     },
 
     info(...args) {
-        const console = App.getRequest().console;
+        const console = App.getEnv().console;
         return console.info.apply(console, args);
     },
 
     warn(...args) {
-        const console = App.getRequest().console;
+        const console = App.getEnv().console;
         return console.warn.apply(console, args);
     },
 
     error(...args) {
-        const console = App.getRequest().console;
+        const console = App.getEnv().console;
         return console.error.apply(console, args);
     }
 };

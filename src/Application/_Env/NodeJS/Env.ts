@@ -21,7 +21,7 @@ export default class EnvNodeJS implements IEnv {
      * @cfg {Boolean} initRequest
      * @name Application/_Env/NodeJS/Env#initRequest
      */
-    initRequest: boolean = true;
+    initRequest: boolean = false;
     console: IConsole;
     cookie: ICookie;
     location: ILocation;

@@ -21,7 +21,7 @@ export default class App {
     ) {
         App.instance = this;
         if (env.initRequest) {
-            App.startRequest(cfg, stateReceiver, () => { return {} }, () => { return {} });
+            App.startRequest(cfg, stateReceiver);
         }
     }
 
@@ -33,7 +33,7 @@ export default class App {
     }
 
     static startRequest(cfg: TConfig, stateReceiver: IStateReceiver = new StateReceiver(),
-                        requestGetter: () => IHttpRequest, responseGetter: () => IHttpResponse): void {
+                        requestGetter?: () => IHttpRequest, responseGetter?: () => IHttpResponse): void {
         const config = new Config(cfg);
         stateReceiver.register(config.getUID(), config);
         const iterator = App.singletonCrossEnv.entries();
@@ -60,6 +60,13 @@ export default class App {
         if (request) {
             request.getStateReceiver().register(uid, component);
         }
+    }
+
+    /**
+     * Получить инстанс текущего инициализированного окружения
+     */
+    static getEnv(): IEnv {
+        return App.getInstance().env;
     }
 
     static isInit(): boolean {
