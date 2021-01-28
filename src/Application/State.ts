@@ -6,4 +6,4 @@
  * @author Санников К.А.
  */
 export { StateReceiver } from 'Application/_State/StateReceiver';
-export { default as DisposeControl } from 'Application/_State/DisposeControl';
+export { default as DisposeControl, IResourceDisposable } from 'Application/_State/DisposeControl';
