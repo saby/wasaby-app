@@ -1,6 +1,6 @@
 /// <amd-module name='Application/_Env/Browser/Env' />
 import { Config } from "Application/Config";
-import Request, { Store } from 'Application/Request';
+import Request from 'Application/Request';
 import Cookie from 'Application/_Env/Browser/Cookie';
 import Console, { LogLevel } from 'Application/_Env/Console';
 import ObjectStore from 'Application/_Env/ObjectStore';
@@ -9,7 +9,6 @@ import { ICookie } from 'Application/_Interface/ICookie';
 import { IEnv } from 'Application/_Interface/IEnv';
 import { ILocation } from 'Application/_Interface/ILocation';
 import { IRequest, IRequestInternal } from 'Application/_Interface/IRequest';
-import { IStore, IStoreMap } from 'Application/_Interface/IStore';
 
 /**
  * Браузерное окружение
@@ -86,6 +85,6 @@ export default class EnvBrowser implements IEnv {
     }
 
     createRequest(): IRequestInternal {
-        return this._request = new Request(this, this.cfg);
+        return this._request = new Request({cookie: this.cookie, location: this.location}, this.cfg);
     }
 }

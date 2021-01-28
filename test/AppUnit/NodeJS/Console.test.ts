@@ -39,22 +39,26 @@ describe('Application/_Env/NodeJS/Console', () => {
    it('info()', () => {
       nodeJSConsole.setLogLevel(1);
       nodeJSConsole.info('a', 'b');
+      // @ts-ignore
       assert.isTrue(console.info.calledOnceWith('a', 'b'));
    });
 
    it('log()', () => {
       nodeJSConsole.setLogLevel(1);
       nodeJSConsole.log('a', 'b');
+      // @ts-ignore
       assert.isTrue(console.log.calledOnceWith('a', 'b'));
    });
 
    it('warn()', () => {
       nodeJSConsole.warn('a', 'b');
+      // @ts-ignore
       assert.isTrue(console.warn.calledOnceWith('a', 'b'));
    });
 
    it('error()', () => {
       nodeJSConsole.error('a', 'b');
+      // @ts-ignore
       assert.isTrue(console.error.calledOnceWith('a', 'b'));
    });
 });

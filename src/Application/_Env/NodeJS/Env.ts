@@ -2,7 +2,7 @@
 import { Config } from 'Application/Config';
 import {
     IConsole, ICookie, IEnv, IHttpRequest, IHttpResponse,
-    ILocation, IRequest, IRequestInternal, IStoreMap
+    ILocation, IRequest, IRequestInternal
 } from 'Application/Interface';
 import Request from 'Application/Request';
 import Console from 'Application/_Env/NodeJS/Console';
@@ -54,6 +54,6 @@ export default class EnvNodeJS implements IEnv {
         this.location = new Location(requestGetter);
         this.cookie = new Cookie(requestGetter, responseGetter);
         return requestGetter().appRequest =
-            new Request({console: this.console, location: this.location, cookie: this.cookie}, cfg);
+            new Request({location: this.location, cookie: this.cookie}, cfg);
     }
 }

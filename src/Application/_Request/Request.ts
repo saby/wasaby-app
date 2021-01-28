@@ -1,14 +1,18 @@
 /// <amd-module name="Application/_Request/Request" />
 import { Config } from "Application/Config";
-import { IConsole } from 'Application/_Interface/IConsole';
 import { ICookie } from 'Application/_Interface/ICookie';
-import { IEnv } from 'Application/_Interface/IEnv';
 import { ILocation } from 'Application/_Interface/ILocation';
 import { IRequestInternal } from 'Application/_Interface/IRequest';
 import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
 import { IStore, IStoreMap } from 'Application/_Interface/IStore';
 import { FakeWebStorage } from "Application/_Request/FakeWebStorage";
 import Store from 'Application/_Request/Store';
+
+interface ICookieLocation {
+    cookie: ICookie;
+    location: ILocation;
+}
+
 /**
  * Класс Request
  * @class Application/_Request/Request
@@ -18,7 +22,6 @@ import Store from 'Application/_Request/Store';
  * @see Application/_Interface/IRequest
  * @see Application/_Interface/IStore
  * @see Application/_Interface/ILocation
- * @see Application/_Interface/IConsole
  * @see Application/_Interface/ISerializableState
  * @see Application/_Interface/IStateReceiver
  * @todo добавить пример
@@ -26,10 +29,6 @@ import Store from 'Application/_Request/Store';
 export default class Request implements IRequestInternal {
     private readonly __config: Config;
 
-    /**
-     * @cfg {Application/_Interface/IConsole} console
-     * @name Application/_Request/Request#console
-     */
     /**
      * @cfg {Application/_Interface/ICookie} cookie
      * @name Application/_Request/Request#cookie
@@ -43,22 +42,14 @@ export default class Request implements IRequestInternal {
      * @name Application/_Request/Request#__stateReceiver
      * @private
      */
-    console: IConsole;
     cookie: ICookie;
     location: ILocation;
     private __stateReceiver: IStateReceiver;
     private readonly __storages: IStoreMap = {};
 
-    constructor(env: IEnv, config: Config) {
-        let {
-            console,
-            cookie,
-            location
-        } = env;
-
-        this.console = console;
-        this.cookie = cookie;
-        this.location = location;
+    constructor(env: ICookieLocation, config: Config) {
+        this.cookie = env.cookie;
+        this.location = env.location;
         this.__config = config;
     }
 

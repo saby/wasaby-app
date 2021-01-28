@@ -1,4 +1,6 @@
 /// <amd-module name="Application/Config" />
+import {IConfig} from "Application/_Interface/IConfig";
+
 declare module 'Application/Config' {
     /**
      * Библиотека Config
@@ -530,7 +532,8 @@ declare module 'Application/_Env/NodeJS/Env' {
         private cfg: Config;
         constructor(data: Record<string, unknown>);
         getRequest(): IRequest;
-        createRequest(cfg: Config, req?: IHttpRequest, res?: IHttpResponse): IRequestInternal;
+        createRequest(cfg: IConfig, requestGetter: () => IHttpRequest,
+                      responseGetter: () => IHttpResponse): IRequestInternal
     }
 }
 /// <amd-module name="Application/_Env/NodeJS/Location" />
@@ -820,11 +823,6 @@ declare module 'Application/_Interface/IRequest' {
          * @cfg {ILocation} location
          */
         location: ILocation;
-        /**
-         * @name Application/_Interface/IRequest#console
-         * @cfg {IConsole} console
-         */
-        console: IConsole;
         /**
          * Получить Config
          * @return {Application/_Config/Config}
@@ -1215,11 +1213,14 @@ declare module 'Application/_Request/Request' {
     import { Config } from 'Application/Config';
     import { IConsole } from 'Application/_Interface/IConsole';
     import { ICookie } from 'Application/_Interface/ICookie';
-    import { IEnv } from 'Application/_Interface/IEnv';
     import { ILocation } from 'Application/_Interface/ILocation';
     import { IRequestInternal } from 'Application/_Interface/IRequest';
     import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
     import { IStore } from 'Application/_Interface/IStore';
+    interface ICookieLocation {
+        cookie: ICookie;
+        location: ILocation;
+    }
     /**
      * Класс Request
      * @class Application/_Request/Request
@@ -1237,10 +1238,6 @@ declare module 'Application/_Request/Request' {
     export default class Request implements IRequestInternal {
         private readonly __config;
         /**
-         * @cfg {Application/_Interface/IConsole} console
-         * @name Application/_Request/Request#console
-         */
-        /**
          * @cfg {Application/_Interface/ICookie} cookie
          * @name Application/_Request/Request#cookie
          */
@@ -1253,12 +1250,11 @@ declare module 'Application/_Request/Request' {
          * @name Application/_Request/Request#__stateReceiver
          * @private
          */
-        console: IConsole;
         cookie: ICookie;
         location: ILocation;
         private __stateReceiver;
         private readonly __storages;
-        constructor(env: IEnv, config: Config);
+        constructor(env: ICookieLocation, config: Config);
         /**
          * Получить хранилище
          * @param {string} key Ключ хранилища
