@@ -202,3 +202,11 @@ export function getStore<T = Record<string, string>>(type: string, createDefault
 export function setStore<T = Record<string, string>>(type: string, store: IStore<T>) {
     return App.getRequest().setStore<T>(type, store);
 }
+
+/**
+ * Получить текущий конфиг приложения
+ * @param key
+ */
+export function getConfig(key: string): any {
+    return App.getRequest().getConfig().get(key);
+}
