@@ -1,13 +1,6 @@
 /// <amd-module name="Application/_State/DisposeControl" />
-/**
- * Интерфейс ресурса
- */
-export interface IResourceDisposable {
-    /** Открыть ресурс */
-    enter(owner: unknown): void;
-    /** Освободить ресурс */
-    dispose(owner: unknown): void;
-}
+import { IResourceDisposable } from 'Application/_State/Interfaces';
+
 /**
  * Класс, который отвечает за сохрание и открытие ресурсов и их освобождение
  */

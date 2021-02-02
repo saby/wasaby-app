@@ -1,4 +1,5 @@
-import { default as DisposeControl, IResourceDisposable } from 'Application/_State/DisposeControl';
+import { default as DisposeControl } from 'Application/_State/DisposeControl';
+import { IResourceDisposable } from 'Application/_State/Interfaces';
 import { assert } from 'chai';
 
 class CustomClass {
