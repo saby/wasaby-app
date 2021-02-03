@@ -108,6 +108,8 @@ export default class ElementPS {
     /** генерируется тэг в формате JML */
     public static generateTag(data: IHeadTag): JML {
         const result: JML = [data.name];
+        //TODO: убрать после реалзации старта от div
+        data.attrs['data-vdomignore'] = true;
         if (Object.keys(data.attrs).length) {
             result.push(data.attrs);
         }
