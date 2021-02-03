@@ -2,6 +2,7 @@ import { assert } from 'chai';
 import { default as AppInit } from 'Application/Initializer';
 import { Head as HeadAPI } from 'Application/Page';
 import { JML, IHead, IHeadTagAttrs } from "Application/Interface";
+import { additionalAttrs } from "./utils";
 
 const processingData: JML[] = [];
 
@@ -38,7 +39,7 @@ describe('Application/_Page/Head', () => {
 
         const tagData = API.getData(( API.getTag(tag, ( attrs as IHeadTagAttrs )) as string ));
         assert.isTrue(!!tagData, 'Не был восстановлен контрольный тег при оживлении');
-        assert.deepEqual(tagData, [tag, attrs], 'Неверно был восстановлен контрольный тег при оживлении');
+        assert.deepEqual(tagData, [tag, {...attrs, ...additionalAttrs}], 'Неверно был восстановлен контрольный тег при оживлении');
 
         API.clear();
     });
@@ -48,7 +49,7 @@ describe('Application/_Page/Head', () => {
         const attrs = {};
 
         API.createTag(tag, attrs);
-        processingData.push([tag]);
+        processingData.push([tag, {...attrs, ...additionalAttrs}]);
         assert.deepEqual(API.getData(), processingData);
     });
 
@@ -62,7 +63,7 @@ describe('Application/_Page/Head', () => {
         };
 
         API.createTag(tag, attrs);
-        processingData.push([tag, attrs]);
+        processingData.push([tag, {...attrs, ...additionalAttrs}]);
         assert.deepEqual(API.getData(), processingData);
     });
 
@@ -70,10 +71,10 @@ describe('Application/_Page/Head', () => {
         const url = 'noScript.html';
 
         API.createNoScript(url);
-        processingData.unshift(['noscript', ['meta', {
+        processingData.unshift(['noscript', ['meta', {...additionalAttrs, ...{
                 'http-equiv': 'refresh',
                 content: `2; URL=${url}`
-            }]]);
+            }}]]);
         assert.deepEqual(API.getData(), processingData);
     });
 
@@ -85,7 +86,7 @@ describe('Application/_Page/Head', () => {
         };
 
         API.createTag(tag, attrs);
-        processingData.push([tag, attrs]);
+        processingData.push([tag, {...attrs, ...additionalAttrs}]);
         assert.deepEqual(API.getData(), processingData);
 
         API.createTag(tag, attrs);
@@ -102,7 +103,7 @@ describe('Application/_Page/Head', () => {
         };
 
         API.createTag(tag, attrs);
-        processingData.push([tag, attrs]);
+        processingData.push([tag, {...attrs, ...additionalAttrs}]);
 
         /** title мы добавляли ранее */
         assert.isString(API.getTag('title'), 'Не нашелся пустой тег title в данных');
@@ -119,7 +120,7 @@ describe('Application/_Page/Head', () => {
         const attrs = {};
 
         API.createTag(tag, attrs);
-        processingData.push([tag]);
+        processingData.push([tag, {...attrs, ...additionalAttrs}]);
         assert.deepEqual(API.getData(), processingData);
 
         API.deleteTag((API.getTag(tag) as string));

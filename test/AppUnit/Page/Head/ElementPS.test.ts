@@ -6,7 +6,8 @@ import {
     TITLE_PROPS,
     SCRIPT_PROPS,
     LINK_PROPS,
-    EVENT_HANDLER
+    EVENT_HANDLER,
+    additionalAttrs
 } from '.././utils';
 
 /**
@@ -36,7 +37,7 @@ describe('Application/_Page/_head/ElementPS', () => {
         it('Возврат данных ElementPS в формате JML', () => {
             const element = new ElementPS('title', TITLE_PROPS._attrs, TITLE_PROPS._content);
             assert.deepEqual(element.getData(),
-                ['title', TITLE_PROPS._attrs, TITLE_PROPS._content],
+                ['title', {...TITLE_PROPS._attrs, ...additionalAttrs}, TITLE_PROPS._content],
                 'данные формата JML класса ElementPS вернулись не должным образом');
         });
         it('Удаление свойств из элемента', () => {
@@ -81,7 +82,7 @@ describe('Application/_Page/_head/ElementPS', () => {
         it('Генерирует данные в формате JML', () => {
             assert.deepEqual(ElementPS.generateTag(
                 {name: 'title', attrs: TITLE_PROPS._attrs, content: TITLE_PROPS._content}),
-                ['title', TITLE_PROPS._attrs, TITLE_PROPS._content]);
+                ['title', {...TITLE_PROPS._attrs, ...additionalAttrs}, TITLE_PROPS._content]);
         });
     });
 });
