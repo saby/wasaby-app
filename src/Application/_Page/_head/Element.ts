@@ -63,6 +63,8 @@ export default class Element extends ElementPS {
         for (const [key, value] of Object.entries(this._attrs)) {
             element.setAttribute(key, value);
         }
+        //TODO: убрать после реалзации старта от div
+        element.setAttribute('data-vdomignore', 'true');
         document.head.appendChild(element);
         if (this._eventHandlers?.load) {
             (element as HTMLLinkElement)
