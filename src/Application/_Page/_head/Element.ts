@@ -23,6 +23,8 @@ export default class Element extends ElementPS {
                 eventHandlers?: IHeadTagEventHandlers,
                 element?: HTMLElement) {
         const data: IElementRestoredData = Element._restoreElement(element);
+        //TODO: убрать после реалзации старта от div
+        data.attrs['data-vdomignore'] = true;
         super(data.name || name, data.attrs || attrs, data.content || content, eventHandlers, element);
     }
 
