@@ -1,27 +1,25 @@
 /// <amd-module name='Application/_Env/NodeJS/Console' />
 import { IConsole } from 'Application/Interface';
-/* eslint-disable */
-enum LogLevel {
+
+/**
+ * Уровень логирования.
+ * https://wi.sbis.ru/docs/py/sbis/LogLevel/
+ */
+export enum LogLevel {
     llDISABLED,
     llMINIMAL,
     llSTANDARD,
     llEXTENDED,
     llDEBUG
 }
-// declare function warningMsg(...args: string[]);
-// declare function errorMsg(...args: string[]);
 
 /**
- * Функция для отображения значения в консоле chrome-devtool при отладке
+ * Функция для отображения значения в консоли при отладке
  */
 function globalConsole(level: string, args: any[]) {
-    if (typeof console !== 'object') {
+    if (typeof console !== 'object' || typeof console[level] !== 'function') {
         return;
     }
-    if (typeof console[level] !== 'function') {
-        return;
-    }
-
     console[level].apply(undefined, args);
 }
 
@@ -29,8 +27,7 @@ export default class Console implements IConsole {
     private __logLevel: LogLevel;
 
     constructor() {
-        this.__logLevel = 2;  // пока не реализовано в СП: LogLevel.llSTANDARD;
-
+        this.__logLevel = LogLevel.llSTANDARD;
     }
 
     setLogLevel(mode: number) {

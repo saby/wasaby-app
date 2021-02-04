@@ -1,13 +1,10 @@
 import { assert } from 'chai';
-import { default as AppInit } from 'Application/Initializer';
 import { Body as BodyAPI } from 'Application/Page';
 import { IBody } from 'Application/Interface';
 
 let classes = '';
 
 describe('Application/_Page/Body', () => {
-    AppInit();
-
     it('Инициализация стартовых значений теста', () => {
         const API: IBody = BodyAPI.getInstance();
 

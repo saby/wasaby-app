@@ -9,7 +9,7 @@
 export interface IConsole {
     /**
      * Задать уровень логирования
-     * @param {Number} loglevel
+     * @param {Number} logLevel
      */
     setLogLevel(logLevel: number): void;
     /**

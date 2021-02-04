@@ -1,6 +1,5 @@
 /// <amd-module name="Application/_Interface/IRequest" />
 import Config from 'Application/_Config/Config';
-import { IConsole } from "Application/_Interface/IConsole";
 import { ICookie } from 'Application/_Interface/ICookie';
 import { ILocation } from "Application/_Interface/ILocation";
 import { IStateReceiver } from "Application/_Interface/IStateReceiver";
@@ -23,11 +22,6 @@ export interface IRequest {
      * @cfg {ILocation} location
      */
     location: ILocation;
-    /**
-     * @name Application/_Interface/IRequest#console
-     * @cfg {IConsole} console
-     */
-    console: IConsole;
     /**
      * Получить Config
      * @return {Application/_Config/Config}

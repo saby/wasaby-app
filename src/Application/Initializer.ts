@@ -1,5 +1,5 @@
 /// <amd-module name="Application/Initializer" />
-import { App } from 'Application/Env';
+import { App, logger } from 'Application/Env';
 import { IEnv } from 'Application/_Interface/IEnv';
 import { ISerializableState } from 'Application/_Interface/ISerializableState';
 import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
@@ -14,10 +14,10 @@ const onInintPomise: Promise<void> = new Promise((res) => {
 
 export default function (cfg?: Record<string, unknown>, env?: IEnv, sr?: IStateReceiver): void {
     if (isInit()) {
-        App.getRequest().console.warn(
+        logger.warn(
             new Error(
                 'Повторная инициализация Application!\n' +
-                'Необходимо выписать задачу ответсвенному за Окружение (Application), приложить стек вызовов в debug режиме:\n'
+                'Необходимо выписать задачу ответственному за Окружение (Application), приложить стек вызовов в debug режиме:\n'
             ).stack
         );
         return;

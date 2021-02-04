@@ -1,5 +1,4 @@
 import { assert } from 'chai';
-import { default as AppInit } from 'Application/Initializer';
 import { Head as HeadAPI } from 'Application/Page';
 import { JML, IHead, IHeadTagAttrs } from "Application/Interface";
 import { additionalAttrs } from "./utils";
@@ -7,7 +6,6 @@ import { additionalAttrs } from "./utils";
 const processingData: JML[] = [];
 
 describe('Application/_Page/Head', () => {
-    AppInit();
     let API: IHead;
 
     it('Восстановление состояния на клиенте', () => {
