@@ -774,6 +774,8 @@ declare module 'Application/_Interface/IHead' {
         getData(id?: IHeadTagId): JML[] | JML;
         getComments(wrap?: boolean): string[];
         clear(): any;
+        getAttrs(tagId: IHeadTagId): IHeadTagAttrs | void;
+        changeTag(tagId: IHeadTagId, attrs: IHeadTagAttrs): void;
     }
     export interface IHead extends IStore<IInternalHead>, IInternalHead {
     }
@@ -1126,6 +1128,8 @@ declare module '_Page/Head' {
         clear(): void;
         getData(id?: IHeadTagId): JML[] | JML;
         getComments(wrap?: boolean): string[];
+        getAttrs(tagId: IHeadTagId): IHeadTagAttrs | void;
+        changeTag(tagId: IHeadTagId, attrs: IHeadTagAttrs): void;
         get<K extends keyof IInternalHead>(key: string): IInternalHead[K];
         set<K extends keyof IInternalHead>(key: string, value: IInternalHead[K]): boolean;
         remove(): void;

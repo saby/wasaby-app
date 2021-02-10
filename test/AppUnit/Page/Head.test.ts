@@ -150,4 +150,56 @@ describe('Application/_Page/Head', () => {
         assert.isEmpty(API.getData());
         assert.isEmpty(API.getComments());
     });
+
+    it('Изменение тега', () => {
+        /** Cоздаем теги */
+        const tagName = 'changeTag';
+        const attrs = {
+            content: 'width=100'
+        };
+        const newTag = API.createTag(tagName, attrs);
+
+        /** Новые аттрибуты*/
+        const changeAttrs = { 
+            content: 'width=1000; height=1000',
+            foo: 'barChange'
+        };
+
+         /**  Может возникнуть такая ситуация, что аттрибутов много, а изменим одну строчку. */
+        const secondTagName = "secondChangeTag" 
+        const secondAttrs = {
+            content: 'width=1000; height=1000',
+            foo: 'barChange'
+        }
+        const changeSecondAttrs = {
+            content: 'width=3000'
+        }
+        const secondNewTag= API.createTag(secondTagName, secondAttrs);
+
+        /** Меняем  данные */
+        API.changeTag(newTag, changeAttrs);
+        assert.deepEqual(API.getAttrs(newTag), changeAttrs);
+
+        API.changeTag(secondNewTag, changeSecondAttrs);
+        let testArr = {};
+        for(let key in  API.getAttrs(secondNewTag)) {
+            for(let attr in changeSecondAttrs) {
+                if (changeSecondAttrs.hasOwnProperty(key))
+                    testArr[attr] = changeSecondAttrs [attr];
+            }
+        }
+        assert.deepEqual(testArr, changeSecondAttrs);
+    });
+
+    it('Взять аттрибуты тега', () => {
+        const tagName = 'tagAttr';
+        const attrs = {
+            content: 'width=100',
+            foo: 'BarProp'
+    
+        };
+        const newTag = API.createTag(tagName, attrs);
+
+        assert.deepEqual(attrs, API.getAttrs(newTag));
+     });
 });

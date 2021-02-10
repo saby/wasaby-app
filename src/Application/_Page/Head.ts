@@ -1,6 +1,7 @@
 ///// <amd-module name="Application/_Page/Head" />
 
 import * as AppEnv from 'Application/Env';
+import { IHeadTag } from 'Application/Interface';
 import { IHead, IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId, IInternalHead, JML } from 'Application/_Interface/IHead'
 import { default as Element } from 'Application/_Page/_head/Element';
 import { default as ElementPS } from 'Application/_Page/_head/ElementPS';
@@ -199,6 +200,17 @@ export class Head implements IHead {
         return Object.assign({}, this);
     }
     // #endregion
+
+    // возращает аттрибуты тега
+    getAttrs(tagId: IHeadTagId): IHeadTagAttrs  | null {
+        let tag = this._elements[tagId];
+        return tag["_attrs"];
+    }
+
+    // меняет аттрибуты тега
+    changeTag(tagId: IHeadTagId, attrs: IHeadTagAttrs)  {
+        return Object.assign(this.getAttrs(tagId), attrs);
+    }
 
     /**
      * Генератор noscript тега с содержимым, если был задан _noScriptUrl
