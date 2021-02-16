@@ -1,8 +1,7 @@
 ///// <amd-module name="Application/_Page/Head" />
 
 import * as AppEnv from 'Application/Env';
-import { IHeadTag } from 'Application/Interface';
-import { IHead, IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId, IInternalHead, JML } from 'Application/_Interface/IHead'
+import { IHead, IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId, IInternalHead, JML} from 'Application/_Interface/IHead'
 import { default as Element } from 'Application/_Page/_head/Element';
 import { default as ElementPS } from 'Application/_Page/_head/ElementPS';
 
@@ -201,15 +200,43 @@ export class Head implements IHead {
     }
     // #endregion
 
-    // возращает аттрибуты тега
-    getAttrs(tagId: IHeadTagId): IHeadTagAttrs  | null {
-        let tag = this._elements[tagId];
-        return tag["_attrs"];
+    /**
+     * Возвращает аттрибуты тега
+     * @param tagId 
+     */
+    getAttrs(tagId: IHeadTagId): IHeadTagAttrs | {} {
+        const attrs = this._elements[tagId].getAttrs();
+        if (attrs.hasOwnProperty('data-vdomignore')) delete attrs['data-vdomignore'];
+        return attrs;
     }
 
-    // меняет аттрибуты тега
-    changeTag(tagId: IHeadTagId, attrs: IHeadTagAttrs)  {
-        return Object.assign(this.getAttrs(tagId), attrs);
+    /**
+     * Устанавливает аттрибуты тега 
+     * @param tagId 
+     * @param attrs 
+     */
+    setAttrs(tagId: IHeadTagId, attrs: IHeadTagAttrs) {
+        this._elements[tagId].setAttrs(attrs);
+    }
+
+    /**
+     * Меняет аттрибуты тега
+     * @param tagId 
+     * @param attrs 
+     */
+    changeTag(tagId: IHeadTagId, attrs: IHeadTagAttrs) {
+        let attrsElement = this.getAttrs(tagId);
+
+        /** Element - просто перезаписываем свойство аттрибутов */
+        if (typeof (window) === 'undefined') {
+            attrsElement = attrs;
+        } else {
+            /** иначе обновляем по ключам, если не существует, добавляем. */
+            for (let key in attrs) {
+                attrsElement[key] = attrs[key];
+            }
+        }
+        this.setAttrs(tagId, attrsElement);
     }
 
     /**

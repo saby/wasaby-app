@@ -118,6 +118,19 @@ export default class ElementPS {
         }
         return result;
     }
+
+    /** Возвращаем аттрибуты элемента */
+    getAttrs(): IHeadTagAttrs {
+        return this._attrs;
+    }
+
+    /**
+     *  Устанавливаем аттрибуты элемента
+     * @param attrs 
+     */
+    setAttrs(attrs: IHeadTagAttrs): void {
+        this._attrs = attrs;
+    }
 }
 
 /** сравнивает на идентичность аттрибутов */

@@ -88,7 +88,7 @@ export interface IInternalHead {
     getData(id?: IHeadTagId): Array<JML> | JML;
     getComments(wrap?: boolean): string[];
     clear();
-    getAttrs(tagId: IHeadTagId): IHeadTagAttrs | void;
+    getAttrs(tagId: IHeadTagId): IHeadTagAttrs | {};
     changeTag(tagId: IHeadTagId, attrs: IHeadTagAttrs): void;
 }
 

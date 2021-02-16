@@ -152,7 +152,9 @@ describe('Application/_Page/Head', () => {
     });
 
     it('Изменение тега', () => {
-        /** Cоздаем теги */
+        /** Cоздаем теги * /
+        /**TODO проверка на Element PS */
+    
         const tagName = 'changeTag';
         const attrs = {
             content: 'width=100'
@@ -160,13 +162,13 @@ describe('Application/_Page/Head', () => {
         const newTag = API.createTag(tagName, attrs);
 
         /** Новые аттрибуты*/
-        const changeAttrs = { 
+        const changeAttrs = {
             content: 'width=1000; height=1000',
             foo: 'barChange'
         };
 
-         /**  Может возникнуть такая ситуация, что аттрибутов много, а изменим одну строчку. */
-        const secondTagName = "secondChangeTag" 
+        /** Может возникнуть такая ситуация, что аттрибутов много, а изменим одну строчку. */
+        const secondTagName = "secondChangeTag"
         const secondAttrs = {
             content: 'width=1000; height=1000',
             foo: 'barChange'
@@ -174,7 +176,7 @@ describe('Application/_Page/Head', () => {
         const changeSecondAttrs = {
             content: 'width=3000'
         }
-        const secondNewTag= API.createTag(secondTagName, secondAttrs);
+        const secondNewTag = API.createTag(secondTagName, secondAttrs);
 
         /** Меняем  данные */
         API.changeTag(newTag, changeAttrs);
@@ -182,10 +184,10 @@ describe('Application/_Page/Head', () => {
 
         API.changeTag(secondNewTag, changeSecondAttrs);
         let testArr = {};
-        for(let key in  API.getAttrs(secondNewTag)) {
-            for(let attr in changeSecondAttrs) {
+        for (let key in API.getAttrs(secondNewTag)) {
+            for (let attr in changeSecondAttrs) {
                 if (changeSecondAttrs.hasOwnProperty(key))
-                    testArr[attr] = changeSecondAttrs [attr];
+                    testArr[attr] = changeSecondAttrs[attr];
             }
         }
         assert.deepEqual(testArr, changeSecondAttrs);
@@ -196,10 +198,26 @@ describe('Application/_Page/Head', () => {
         const attrs = {
             content: 'width=100',
             foo: 'BarProp'
-    
+
         };
         const newTag = API.createTag(tagName, attrs);
 
         assert.deepEqual(attrs, API.getAttrs(newTag));
-     });
+    });
+
+    it('Установить аттрибуты тега', () => {
+        const tagName = 'setTagAttr';
+        const attrs = {
+            content: 'width=100',
+
+        };
+        const newTag = API.createTag(tagName, attrs);
+        const nullAttrs = {};
+
+        API.setAttrs(newTag, attrs)
+        assert.deepEqual(attrs, API.getAttrs(newTag));
+
+        API.setAttrs(newTag, nullAttrs)
+        assert.deepEqual(nullAttrs, API.getAttrs(newTag));
+    });
 });
