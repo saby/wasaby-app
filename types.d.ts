@@ -1199,6 +1199,8 @@ declare module '_Page/_head/ElementPS' {
         getAttrs(): IHeadTagAttrs;
         /** Устанавливаем аттрибуты элемента */
         setAttrs(attrs: IHeadTagAttrs): void;
+        /** Меняет аттрибуты элемента */
+        changeTag(attrs: IHeadTagAttrs): void;
     }
 }
 /// <amd-module name="Application/_Request/FakeWebStorage" />

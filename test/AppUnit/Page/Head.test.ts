@@ -152,9 +152,8 @@ describe('Application/_Page/Head', () => {
     });
 
     it('Изменение тега', () => {
-        /** Cоздаем теги * /
-        /**TODO проверка на Element PS */
-    
+        /** Cоздаем теги */
+
         const tagName = 'changeTag';
         const attrs = {
             content: 'width=100'
@@ -174,7 +173,9 @@ describe('Application/_Page/Head', () => {
             foo: 'barChange'
         }
         const changeSecondAttrs = {
-            content: 'width=3000'
+            content: 'width=3000',
+            atr: '3000',
+            xMode: 'y' 
         }
         const secondNewTag = API.createTag(secondTagName, secondAttrs);
 
@@ -203,21 +204,8 @@ describe('Application/_Page/Head', () => {
         const newTag = API.createTag(tagName, attrs);
 
         assert.deepEqual(attrs, API.getAttrs(newTag));
+        assert.isNull(API.getAttrs('errorTag'));
     });
 
-    it('Установить аттрибуты тега', () => {
-        const tagName = 'setTagAttr';
-        const attrs = {
-            content: 'width=100',
-
-        };
-        const newTag = API.createTag(tagName, attrs);
-        const nullAttrs = {};
-
-        API.setAttrs(newTag, attrs)
-        assert.deepEqual(attrs, API.getAttrs(newTag));
-
-        API.setAttrs(newTag, nullAttrs)
-        assert.deepEqual(nullAttrs, API.getAttrs(newTag));
-    });
+  
 });

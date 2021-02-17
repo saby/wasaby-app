@@ -121,6 +121,7 @@ export default class ElementPS {
 
     /** Возвращаем аттрибуты элемента */
     getAttrs(): IHeadTagAttrs {
+        if (this._attrs.hasOwnProperty('data-vdomignore')) delete this._attrs['data-vdomignore'];
         return this._attrs;
     }
 
@@ -130,6 +131,37 @@ export default class ElementPS {
      */
     setAttrs(attrs: IHeadTagAttrs): void {
         this._attrs = attrs;
+    }
+
+    /**
+     * Меняет аттрибуты элемента
+     * @param attrsChange 
+     * @param isElementPS 
+     */
+    changeTag(attrsChange: IHeadTagAttrs, isElementPS: boolean): void {
+        let attrsElement = this.getAttrs();
+        if (isElementPS) {
+            /* находим все свойства*/
+            let attrsElementProperty = Object.getOwnPropertyNames(attrsElement);
+            let attrsChangeProperty = Object.getOwnPropertyNames(attrsChange);
+            for (let i = 0; i < attrsChangeProperty.length; i++) {
+                let key = attrsChangeProperty[i];
+                if (attrsElementProperty.includes(key)) {
+                    /* свойство есть - сравниваем значения в объектах, и если значения разные - удаляем и добавляем новое */
+                    if (attrsElement[key] !== attrsChange[key]) {
+                        delete attrsElement[key];
+                        attrsElement[key] = attrsChange[key];
+                    }
+                } else {
+                    // свойство не найдено, добавляем его
+                    attrsElement[key] = attrsChange[key];
+                }
+            }
+        } else {
+            /** Element - просто перезаписываем свойство аттрибутов */
+            attrsElement = attrsChange;
+        }
+        this.setAttrs(attrsElement);
     }
 }
 

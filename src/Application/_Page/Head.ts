@@ -204,39 +204,20 @@ export class Head implements IHead {
      * Возвращает аттрибуты тега
      * @param tagId 
      */
-    getAttrs(tagId: IHeadTagId): IHeadTagAttrs | {} {
-        const attrs = this._elements[tagId].getAttrs();
-        if (attrs.hasOwnProperty('data-vdomignore')) delete attrs['data-vdomignore'];
-        return attrs;
+    getAttrs(tagId: IHeadTagId): IHeadTagAttrs | null {
+        if (this._elements[tagId]) return this._elements[tagId].getAttrs();
+        return null;
     }
 
-    /**
-     * Устанавливает аттрибуты тега 
+    /* Меняет аттрибуты тега
      * @param tagId 
      * @param attrs 
      */
-    setAttrs(tagId: IHeadTagId, attrs: IHeadTagAttrs) {
-        this._elements[tagId].setAttrs(attrs);
-    }
-
-    /**
-     * Меняет аттрибуты тега
-     * @param tagId 
-     * @param attrs 
-     */
-    changeTag(tagId: IHeadTagId, attrs: IHeadTagAttrs) {
-        let attrsElement = this.getAttrs(tagId);
-
-        /** Element - просто перезаписываем свойство аттрибутов */
-        if (typeof (window) === 'undefined') {
-            attrsElement = attrs;
-        } else {
-            /** иначе обновляем по ключам, если не существует, добавляем. */
-            for (let key in attrs) {
-                attrsElement[key] = attrs[key];
-            }
-        }
-        this.setAttrs(tagId, attrsElement);
+    changeTag(tagId: IHeadTagId, attrs: IHeadTagAttrs): void {
+       if (this._elements[tagId]) {
+            this._elements[tagId].changeTag(attrs, typeof window === 'undefined'); 
+       }
+       return null;
     }
 
     /**
