@@ -65,14 +65,14 @@ export default class DisposeControl {
     }
 }
 
-type Constructor<T = {}> = new (...args: any[]) => T;
-type WasabyReactControl = Constructor<IControlOptions>;
+type Constructor = new (...args: any[]) => {};
+
 
 /**
  * функция, которая возвращает класс-mixin для прикрепления и освобождения ресурсов
  * @param Base класс, к которому будут примешиваться методы
  */
-export function toMixDisposable<TBase extends WasabyReactControl>(Base: TBase){
+export function toMixDisposable<TBase extends Constructor>(Base: TBase){
     return class ControlDisposable extends Base {
         /**
          * ресурсы контрола, за которыми можно следить и при удалении этого контрола все ресурсы освобождаются

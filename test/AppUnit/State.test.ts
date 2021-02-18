@@ -1,7 +1,7 @@
 import { default as DisposeControl, toMixDisposable } from 'Application/_State/DisposeControl';
 import { IResourceDisposable } from 'Application/_State/Interfaces';
 import { assert } from 'chai';
-import { Control as ReactControl } from "UI/ReactComponent";
+import { Control as ReactControl } from 'UI/ReactComponent';
 
 class CustomClass {
     value: boolean = false;
@@ -86,12 +86,15 @@ describe('Application/_State', () => {
                 'Ресурс2 не был освобожден. Проверяемое свойство не было удалено');
         });
     });
+    /* tslint:disable */
     describe('toMixDisposable', () => {
         const MixinDisposable = toMixDisposable(ReactControl);
         const disposableControl = new MixinDisposable({});
         const resourcesItem1 = new CustomResourceGlobalVar();
+        // @ts-ignore
         disposableControl.attach(resourcesItem1);
         assert.isTrue(GLOBAL_VAR);
+        // @ts-ignore
         disposableControl.unleash();
         assert.isNull(GLOBAL_VAR);
     });
