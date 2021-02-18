@@ -126,41 +126,36 @@ export default class ElementPS {
     }
 
     /**
-     *  Устанавливаем аттрибуты элемента
-     * @param attrs 
+     *  Устанавливаем атрибуты элемента
+     * @param attrs {IHeadTagAttrs} Объект атрибутов элемента
      */
     setAttrs(attrs: IHeadTagAttrs): void {
         this._attrs = attrs;
     }
 
     /**
-     * Меняет аттрибуты элемента
-     * @param attrsChange 
-     * @param isElementPS 
+     * Меняет атрибуты элемента
+     * @param attrsChange {IHeadTagAttrs} Атрибуты для замены  
      */
-    changeTag(attrsChange: IHeadTagAttrs, isElementPS: boolean): void {
+    changeTag(attrsChange: IHeadTagAttrs): void {
         let attrsElement = this.getAttrs();
-        if (isElementPS) {
-            /* находим все свойства*/
-            let attrsElementProperty = Object.getOwnPropertyNames(attrsElement);
-            let attrsChangeProperty = Object.getOwnPropertyNames(attrsChange);
-            for (let i = 0; i < attrsChangeProperty.length; i++) {
-                let key = attrsChangeProperty[i];
-                if (attrsElementProperty.includes(key)) {
-                    /* свойство есть - сравниваем значения в объектах, и если значения разные - удаляем и добавляем новое */
-                    if (attrsElement[key] !== attrsChange[key]) {
-                        delete attrsElement[key];
-                        attrsElement[key] = attrsChange[key];
-                    }
-                } else {
-                    // свойство не найдено, добавляем его
+
+        /* находим все свойства в оригинале и изменяемом объекте*/
+        let attrsElementProperty = Object.getOwnPropertyNames(attrsElement);
+        let attrsChangeProperty = Object.getOwnPropertyNames(attrsChange);
+        attrsChangeProperty.forEach((value, index) => {
+            let key = attrsChangeProperty[index];
+            if (attrsElementProperty.includes(key)) {
+                /* свойство есть - сравниваем значения в объектах, и если значения разные - удаляем старое свойство и добавляем новое */
+                if (attrsElement[key] !== attrsChange[key]) {
+                    delete attrsElement[key];
                     attrsElement[key] = attrsChange[key];
                 }
+            } else {
+                /* свойство не найдено, добавляем его */
+                attrsElement[key] = attrsChange[key];
             }
-        } else {
-            /** Element - просто перезаписываем свойство аттрибутов */
-            attrsElement = attrsChange;
-        }
+        });
         this.setAttrs(attrsElement);
     }
 }

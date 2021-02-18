@@ -175,7 +175,8 @@ describe('Application/_Page/Head', () => {
         const changeSecondAttrs = {
             content: 'width=3000',
             atr: '3000',
-            xMode: 'y' 
+            xMode: 'y',
+            c: {w:'b'} 
         }
         const secondNewTag = API.createTag(secondTagName, secondAttrs);
 
@@ -185,13 +186,16 @@ describe('Application/_Page/Head', () => {
 
         API.changeTag(secondNewTag, changeSecondAttrs);
         let testArr = {};
-        for (let key in API.getAttrs(secondNewTag)) {
-            for (let attr in changeSecondAttrs) {
-                if (changeSecondAttrs.hasOwnProperty(key))
+        Object.keys(secondAttrs).forEach(key => {
+            testArr[key] = secondAttrs[key];
+            Object.keys(changeSecondAttrs).forEach(attr => {
+                if (key === attr && secondNewTag[key] !== changeSecondAttrs[attr]) { testArr[key] = changeSecondAttrs[attr] }
+                if (!secondNewTag.hasOwnProperty(attr)) {
                     testArr[attr] = changeSecondAttrs[attr];
-            }
-        }
-        assert.deepEqual(testArr, changeSecondAttrs);
+                }
+            });
+        });
+        assert.deepEqual(testArr, API.getAttrs(secondNewTag));
     });
 
     it('Взять аттрибуты тега', () => {

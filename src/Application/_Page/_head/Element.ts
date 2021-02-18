@@ -41,6 +41,14 @@ export default class Element extends ElementPS {
         return super.isEqual(name, attrs, content, eventHandlers);
     }
 
+    /**
+     * Меняет атрибуты элемента
+     * @param attrsChange {IHeadTagAttrs} Атрибуты для замены
+     */
+    changeTag(attrsChange: IHeadTagAttrs): void {
+        this.setAttrs(attrsChange);
+    }
+
     /** Метод отрисовки элемента в head в DOM-дереве.
      * Переопределенный метод от родительского класса.
      */

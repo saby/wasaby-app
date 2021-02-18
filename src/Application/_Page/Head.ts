@@ -1,7 +1,7 @@
 ///// <amd-module name="Application/_Page/Head" />
 
 import * as AppEnv from 'Application/Env';
-import { IHead, IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId, IInternalHead, JML} from 'Application/_Interface/IHead'
+import { IHead, IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId, IInternalHead, JML } from 'Application/_Interface/IHead'
 import { default as Element } from 'Application/_Page/_head/Element';
 import { default as ElementPS } from 'Application/_Page/_head/ElementPS';
 
@@ -202,7 +202,7 @@ export class Head implements IHead {
 
     /**
      * Возвращает аттрибуты тега
-     * @param tagId 
+     * @param tagId {IHeadTagId} Идентификатор тега
      */
     getAttrs(tagId: IHeadTagId): IHeadTagAttrs | null {
         if (this._elements[tagId]) return this._elements[tagId].getAttrs();
@@ -210,13 +210,11 @@ export class Head implements IHead {
     }
 
     /* Меняет аттрибуты тега
-     * @param tagId 
-     * @param attrs 
+     * @param tagId {IHeadTagId} Идентификатор тега
+     * @param attrs {IHeadTagAttrs} Атрибуты для замены 
      */
     changeTag(tagId: IHeadTagId, attrs: IHeadTagAttrs): void {
-       if (this._elements[tagId]) {
-            this._elements[tagId].changeTag(attrs, typeof window === 'undefined'); 
-       }
+       if (this._elements[tagId]) this._elements[tagId].changeTag(attrs);
        return null;
     }
 
