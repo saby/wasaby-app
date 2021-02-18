@@ -1,5 +1,6 @@
 /// <amd-module name="Application/_State/DisposeControl" />
 import { IResourceDisposable } from 'Application/_State/Interfaces';
+import { IControlOptions } from "UI/ReactComponent";
 
 /**
  * Класс, который отвечает за сохранение и открытие ресурсов и их освобождение
@@ -57,11 +58,38 @@ export default class DisposeControl {
         resource.enter(this._owner);
     }
 
-    /**
-     * Освобождает все ресурсы.
-     */
+    /** Освобождение всех ресурсов */
     dispose(): void {
         this._totalResources.forEach((res) => res.dispose(this._owner));
         this._totalResources = [];
+    }
+}
+
+type Constructor<T = {}> = new (...args: any[]) => T;
+type WasabyReactControl = Constructor<IControlOptions>;
+
+/**
+ * функция, которая возвращает класс-mixin для прикрепления и освобождения ресурсов
+ * @param Base класс, к которому будут примешиваться методы
+ */
+export function toMixDisposable<TBase extends WasabyReactControl>(Base: TBase){
+    return class ControlDisposable extends Base {
+        /**
+         * ресурсы контрола, за которыми можно следить и при удалении этого контрола все ресурсы освобождаются
+         */
+        private _resources = new DisposeControl(Base);
+        /**
+         * прикрепить ресурс, за которым будет происходить слежка
+         * @param {IResourceDisposable} resource ресурс
+         */
+        protected attach(resource: IResourceDisposable): void {
+            this._resources.track(resource);
+        }
+        /**
+         * Освободить все ресурсы
+         */
+        protected unleash(): void {
+            this._resources.dispose();
+        }
     }
 }

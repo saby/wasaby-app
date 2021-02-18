@@ -1,6 +1,7 @@
-import { default as DisposeControl } from 'Application/_State/DisposeControl';
+import { default as DisposeControl, toMixDisposable } from 'Application/_State/DisposeControl';
 import { IResourceDisposable } from 'Application/_State/Interfaces';
 import { assert } from 'chai';
+import { Control as ReactControl } from "UI/ReactComponent";
 
 class CustomClass {
     value: boolean = false;
@@ -47,6 +48,18 @@ class CustomResourceNumber implements IResourceDisposable {
         return owner.getNumber();
     }
 }
+let GLOBAL_VAR = false;
+class CustomResourceGlobalVar implements IResourceDisposable {
+    enter(): void {
+        GLOBAL_VAR = true;
+    }
+    dispose(): void {
+        GLOBAL_VAR = null;
+    }
+    getValue(): boolean {
+        return GLOBAL_VAR;
+    }
+}
 const class1 = new CustomClass();
 describe('Application/_State', () => {
     describe('DisposeControl', () => {
@@ -72,5 +85,14 @@ describe('Application/_State', () => {
             assert.isUndefined(resourcesItem2.getValue(class1),
                 'Ресурс2 не был освобожден. Проверяемое свойство не было удалено');
         });
+    });
+    describe('toMixDisposable', () => {
+        const MixinDisposable = toMixDisposable(ReactControl);
+        const disposableControl = new MixinDisposable({});
+        const resourcesItem1 = new CustomResourceGlobalVar();
+        disposableControl.attach(resourcesItem1);
+        assert.isTrue(GLOBAL_VAR);
+        disposableControl.unleash();
+        assert.isNull(GLOBAL_VAR);
     });
 });
