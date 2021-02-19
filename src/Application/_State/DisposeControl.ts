@@ -1,6 +1,5 @@
 /// <amd-module name="Application/_State/DisposeControl" />
 import { IResourceDisposable } from 'Application/_State/Interfaces';
-import { IControlOptions } from "UI/ReactComponent";
 
 /**
  * Класс, который отвечает за сохранение и открытие ресурсов и их освобождение
