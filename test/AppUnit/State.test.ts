@@ -85,17 +85,17 @@ describe('Application/_State', () => {
             assert.isUndefined(resourcesItem2.getValue(class1),
                 'Ресурс2 не был освобожден. Проверяемое свойство не было удалено');
         });
-    });
-    /* tslint:disable */
-    describe('toMixDisposable', () => {
-        const MixinDisposable = toMixDisposable(ReactControl);
-        const disposableControl = new MixinDisposable({});
-        const resourcesItem1 = new CustomResourceGlobalVar();
-        // @ts-ignore
-        disposableControl.attach(resourcesItem1);
-        assert.isTrue(GLOBAL_VAR);
-        // @ts-ignore
-        disposableControl.unleash();
-        assert.isNull(GLOBAL_VAR);
+        /* tslint:disable */
+        it('toMixDisposable', () => {
+            const MixinDisposable = toMixDisposable(ReactControl);
+            const disposableControl = new MixinDisposable({}, {readOnly: false, theme: 'default'});
+            const resourcesItem1 = new CustomResourceGlobalVar();
+            // @ts-ignore
+            disposableControl.attach(resourcesItem1);
+            assert.isTrue(GLOBAL_VAR);
+            // @ts-ignore
+            disposableControl.unleash();
+            assert.isNull(GLOBAL_VAR);
+        });
     });
 });

@@ -66,7 +66,6 @@ export default class DisposeControl {
 
 type Constructor = new (...args: any[]) => {};
 
-
 /**
  * функция, которая возвращает класс-mixin для прикрепления и освобождения ресурсов
  * @param Base класс, к которому будут примешиваться методы
