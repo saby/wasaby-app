@@ -185,17 +185,7 @@ describe('Application/_Page/Head', () => {
         assert.deepEqual(API.getAttrs(newTag), changeAttrs);
 
         API.changeTag(secondNewTag, changeSecondAttrs);
-        let testArr = {};
-        Object.keys(secondAttrs).forEach(key => {
-            testArr[key] = secondAttrs[key];
-            Object.keys(changeSecondAttrs).forEach(attr => {
-                if (key === attr && secondNewTag[key] !== changeSecondAttrs[attr]) { testArr[key] = changeSecondAttrs[attr] }
-                if (!secondNewTag.hasOwnProperty(attr)) {
-                    testArr[attr] = changeSecondAttrs[attr];
-                }
-            });
-        });
-        assert.deepEqual(testArr, API.getAttrs(secondNewTag));
+        assert.deepEqual(changeSecondAttrs, API.getAttrs(secondNewTag));
     });
 
     it('Взять аттрибуты тега', () => {

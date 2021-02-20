@@ -119,44 +119,27 @@ export default class ElementPS {
         return result;
     }
 
-    /** Возвращаем аттрибуты элемента */
+    /** 
+     * Возвращаем аттрибуты элемента 
+     **/
     getAttrs(): IHeadTagAttrs {
-        if (this._attrs.hasOwnProperty('data-vdomignore')) delete this._attrs['data-vdomignore'];
         return this._attrs;
     }
 
     /**
-     *  Устанавливаем атрибуты элемента
-     * @param attrs {IHeadTagAttrs} Объект атрибутов элемента
-     */
+    * Устанавливаем атрибуты элемента
+    * @param attrs {IHeadTagAttrs} Объект атрибутов элемента
+    */
     setAttrs(attrs: IHeadTagAttrs): void {
         this._attrs = attrs;
     }
 
     /**
      * Меняет атрибуты элемента
-     * @param attrsChange {IHeadTagAttrs} Атрибуты для замены  
+     * @param attrsChange {IHeadTagAttrs} Атрибуты для замены
      */
     changeTag(attrsChange: IHeadTagAttrs): void {
-        let attrsElement = this.getAttrs();
-
-        /* находим все свойства в оригинале и изменяемом объекте*/
-        let attrsElementProperty = Object.getOwnPropertyNames(attrsElement);
-        let attrsChangeProperty = Object.getOwnPropertyNames(attrsChange);
-        attrsChangeProperty.forEach((value, index) => {
-            let key = attrsChangeProperty[index];
-            if (attrsElementProperty.includes(key)) {
-                /* свойство есть - сравниваем значения в объектах, и если значения разные - удаляем старое свойство и добавляем новое */
-                if (attrsElement[key] !== attrsChange[key]) {
-                    delete attrsElement[key];
-                    attrsElement[key] = attrsChange[key];
-                }
-            } else {
-                /* свойство не найдено, добавляем его */
-                attrsElement[key] = attrsChange[key];
-            }
-        });
-        this.setAttrs(attrsElement);
+        this.setAttrs(attrsChange);
     }
 }
 

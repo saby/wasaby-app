@@ -42,11 +42,40 @@ export default class Element extends ElementPS {
     }
 
     /**
-     * Меняет атрибуты элемента
-     * @param attrsChange {IHeadTagAttrs} Атрибуты для замены
-     */
+     *  Возвращаем аттрибуты элемента. Переопределенный метод
+     **/
+    getAttrs(): IHeadTagAttrs {
+        const attrs = { ...this._attrs };
+        delete attrs['data-vdomignore'];
+        return attrs;
+    }
+
+    /**
+      * Меняет атрибуты элемента. Переопределенный метод
+      * @param attrsChange {IHeadTagAttrs} Атрибуты для замены  
+      */
     changeTag(attrsChange: IHeadTagAttrs): void {
-        this.setAttrs(attrsChange);
+        const attrs = this.getAttrs();
+
+        /* находим все свойства в оригинале и изменяемом объекте - если свойства нет в изменяемом
+        удаляем его, если разные значения, то удаляем и создаем новое свойство, так нужно из-за
+        специфики DOM*/
+        const arrOriginalProperty = Object.getOwnPropertyNames(attrs);
+        const arrChangeProperty = Object.getOwnPropertyNames(attrsChange);
+        arrOriginalProperty.forEach(originalProperty => {
+            arrChangeProperty.forEach(propertyChange => {
+                if (!arrChangeProperty.includes(originalProperty)) delete attrs[originalProperty];
+                if (arrOriginalProperty.includes(propertyChange)) {
+                    if (attrs[propertyChange] !== attrsChange[propertyChange]) {
+                        delete attrs[propertyChange];
+                        attrs[propertyChange] = attrsChange[propertyChange];
+                    }
+                } else {
+                    attrs[propertyChange] = attrsChange[propertyChange];
+                }
+            });
+        });
+        this.setAttrs(attrs);
     }
 
     /** Метод отрисовки элемента в head в DOM-дереве.
