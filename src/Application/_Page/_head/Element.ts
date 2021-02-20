@@ -60,20 +60,23 @@ export default class Element extends ElementPS {
         /* находим все свойства в оригинале и изменяемом объекте - если свойства нет в изменяемом
         удаляем его, если разные значения, то удаляем и создаем новое свойство, так нужно из-за
         специфики DOM*/
-        const arrOriginalProperty = Object.getOwnPropertyNames(attrs);
-        const arrChangeProperty = Object.getOwnPropertyNames(attrsChange);
-        arrOriginalProperty.forEach(originalProperty => {
-            arrChangeProperty.forEach(propertyChange => {
-                if (!arrChangeProperty.includes(originalProperty)) delete attrs[originalProperty];
-                if (arrOriginalProperty.includes(propertyChange)) {
-                    if (attrs[propertyChange] !== attrsChange[propertyChange]) {
-                        delete attrs[propertyChange];
-                        attrs[propertyChange] = attrsChange[propertyChange];
-                    }
-                } else {
-                    attrs[propertyChange] = attrsChange[propertyChange];
+        let oldItems = Object.getOwnPropertyNames(attrs);
+        let newItems = Object.getOwnPropertyNames(attrsChange);
+        let allItems = oldItems.filter(item => !newItems.includes(item)).concat(newItems);
+
+        allItems.forEach((item) => {
+            const isOld = oldItems.includes(item);
+            const isNew = newItems.includes(item);
+            if (isOld && isNew) {
+                if (attrs[item] !== attrsChange[item]) {
+                    delete attrs[item];
+                    attrs[item] = attrsChange[item];
                 }
-            });
+            } else if (isOld) {
+                delete attrs[item];
+            } else {
+                attrs[item] = attrsChange[item];
+            }
         });
         this.setAttrs(attrs);
     }
