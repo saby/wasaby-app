@@ -206,6 +206,7 @@ export class Head implements IHead {
      */
     getAttrs(tagId: IHeadTagId): IHeadTagAttrs | null {
         if (this._elements[tagId]) return this._elements[tagId].getAttrs();
+        return null;
     }
 
     /* Меняет аттрибуты тега
@@ -214,6 +215,7 @@ export class Head implements IHead {
      */
     changeTag(tagId: IHeadTagId, attrs: IHeadTagAttrs): void {
        if (this._elements[tagId]) this._elements[tagId].changeTag(attrs);
+       return null;
     }
 
     /**
