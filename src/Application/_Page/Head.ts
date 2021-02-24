@@ -162,9 +162,17 @@ export class Head implements IHead {
         }
 
         const noscript = this._generateNoScript();
-        const result: Array<JML> = [].concat(noscript ? [noscript] : []);
+        const httpEquivId = this._getHttpEquivId();
+        const result: Array<JML> = [];
         for (const elementsKey in this._elements) {
-            result.push(this._elements[elementsKey].getData())
+            if (elementsKey === httpEquivId) {
+                result.unshift(this._elements[elementsKey].getData());
+            } else {
+                result.push(this._elements[elementsKey].getData());
+            }
+        }
+        if (noscript) {
+            result.unshift(noscript);
         }
 
         return result;
@@ -233,6 +241,27 @@ export class Head implements IHead {
                 attrs: {'http-equiv': 'refresh', 'content': `${TIME_TO_REFRESH}; URL=${this._noScriptUrl}`}
             })
         ]
+    }
+
+    /**
+     * Поддержка IE (Internet Explorer 11)
+     * Очень важно помещать тег вида
+     * <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+     * Сразу после открывающегося тега <head> (допустимо после noScript)
+     * tslint:disable-next-line:max-line-length
+     * @private
+     */
+    // tslint:disable-next-line:max-line-length
+    // https://stackoverflow.com/questions/11320069/internet-explorer-sending-different-user-agent-strings-to-different-sites
+
+    private _getHttpEquivId(): IHeadTagId | null {
+        for (const elementsKey in this._elements) {
+            if (this._elements[elementsKey].isFit('meta', {'http-equiv': 'X-UA-Compatible', content: 'IE=edge'})) {
+                return elementsKey;
+            }
+        }
+
+        return null;
     }
 
     /** Генератор уникального идентификатора для каждого тега */

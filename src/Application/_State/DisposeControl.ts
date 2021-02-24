@@ -57,11 +57,37 @@ export default class DisposeControl {
         resource.enter(this._owner);
     }
 
-    /**
-     * Освобождает все ресурсы.
-     */
+    /** Освобождение всех ресурсов */
     dispose(): void {
         this._totalResources.forEach((res) => res.dispose(this._owner));
         this._totalResources = [];
+    }
+}
+
+type Constructor = new (...args: any[]) => {};
+
+/**
+ * функция, которая возвращает класс-mixin для прикрепления и освобождения ресурсов
+ * @param Base класс, к которому будут примешиваться методы
+ */
+export function toMixDisposable<TBase extends Constructor>(Base: TBase){
+    return class ControlDisposable extends Base {
+        /**
+         * ресурсы контрола, за которыми можно следить и при удалении этого контрола все ресурсы освобождаются
+         */
+        private _resources = new DisposeControl(Base);
+        /**
+         * прикрепить ресурс, за которым будет происходить слежка
+         * @param {IResourceDisposable} resource ресурс
+         */
+        protected attach(resource: IResourceDisposable): void {
+            this._resources.track(resource);
+        }
+        /**
+         * Освободить все ресурсы
+         */
+        protected unleash(): void {
+            this._resources.dispose();
+        }
     }
 }
