@@ -34,6 +34,11 @@ export default class JSLinks extends HeadAPI implements IJSLinks {
         name: 'script',
         attrs: {type: string, src: string, defer: string},
         content?: string,
+        eventHandlers?: IJSLinksTagEventHandlers): JSLinksTagId;
+    createTag(
+        name: string,
+        attrs: {type: string, src: string, defer: string},
+        content?: string,
         eventHandlers?: IJSLinksTagEventHandlers): JSLinksTagId | Error {
         if (typeof window !== 'undefined') {
             AppEnv.logger.warn('Создавать JSLinks на клиенте запрещено.');
@@ -91,7 +96,6 @@ export default class JSLinks extends HeadAPI implements IJSLinks {
     /* tslint:disable:no-empty */
     createComment(): void {};
     createNoScript(): void {};
-    private _collectTags(): void {};
     /* tslint:enable:no-empty */
     private _generateGuid(): JSLinksTagId {
         return `scripts-${this._id++}`;
