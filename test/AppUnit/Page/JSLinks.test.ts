@@ -4,6 +4,7 @@ import {additionalAttrs, JSLINKS_PROPS} from './utils';
 import { JSLinks } from 'Application/Page';
 import { IJSLinks } from 'Application/_Interface/IJSLinks';
 import { JML } from "Application/_Interface/IHead";
+import Cookie from "Application/_Env/Browser/Cookie";
 
 const TAG = 'script';
 describe('Application/_Page/JSLinks', () => {
@@ -42,19 +43,15 @@ describe('Application/_Page/JSLinks', () => {
 
         });
         it('Создание тега c ошибочным name', () => {
-            // const NAMESPACE_STORE = 'custom_name3';
-            // const API: IJSLinks = JSLinks.getInstance(NAMESPACE_STORE);
-            //
-            // const attrs = {};
-            // const WRONG_TAG = 'meta';
-            // try {
-            //     API.createTag(WRONG_TAG, attrs);
-            // }
-            // catch(e){
-            //     console.log(e);
-            //     // assert.throws(, 'Создавать JSLinks с параметром name, который не равняется "script"  - запрещено.');
-            //     // assert.fail('ошибочка');
-            // }
+            const NAMESPACE_STORE = 'custom_name3';
+            const API: IJSLinks = JSLinks.getInstance(NAMESPACE_STORE);
+            const attrs = {};
+            const WRONG_TAG = 'meta';
+            try {
+                assert.throws(API.createTag(WRONG_TAG, attrs));
+            } catch (e) {
+                assert.isDefined(e,'createTag не выбрасывает исключение');
+            }
         });
         it('Данные не смешиваются при добавлении тегов по разным nameSpace', () => {
             const NAMESPACE_STORE = 'custom_name4';

@@ -19,33 +19,34 @@ export default class JSLinks extends HeadAPI implements IJSLinks {
     private _id = 0;
     createTag(
         name: 'script',
-        attrs: {src: string}): JSLinksTagId;
+        attrs: {src: string}): JSLinksTagId | Error;
     createTag(
         name: 'script',
         attrs: {},
-        content: string): JSLinksTagId;
+        content: string): JSLinksTagId | Error ;
     createTag(
         name: 'script',
-        attrs: {type: string, src: string}): JSLinksTagId;
+        attrs: {type: string, src: string}): JSLinksTagId | Error;
     createTag(
         name: 'script',
-        attrs: {type: string, src: string, defer: string}): JSLinksTagId;
+        attrs: {type: string, src: string, defer: string}): JSLinksTagId | Error;
     createTag(
         name: 'script',
         attrs: {type: string, src: string, defer: string},
         content?: string,
-        eventHandlers?: IJSLinksTagEventHandlers): JSLinksTagId;
+        eventHandlers?: IJSLinksTagEventHandlers): JSLinksTagId | Error;
     createTag(
         name: string,
         attrs: {type: string, src: string, defer: string},
         content?: string,
         eventHandlers?: IJSLinksTagEventHandlers): JSLinksTagId | Error {
+
         if (typeof window !== 'undefined') {
             AppEnv.logger.warn('Создавать JSLinks на клиенте запрещено.');
             return;
         }
         if (name !== 'script') {
-            return new Error('Создавать JSLinks с параметром name, который не равняется "script"  - запрещено.');
+            throw new Error('Создавать JSLinks с параметром name, который не равняется "script" - запрещено.');
         }
         /**
          * при работе с rsSerialized, rtpackModuleNames пробрасывается только content, аттрибуты не требуются.
