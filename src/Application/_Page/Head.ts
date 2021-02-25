@@ -215,11 +215,10 @@ export class Head implements IHead {
         return null;
     }
 
-    changeTag(tagId: IHeadTagId, attrs: IHeadTagAttrs): null {
+    changeTag(tagId: IHeadTagId, attrs: IHeadTagAttrs): void {
         if (this._elements[tagId]) {
             this._elements[tagId].changeTag(attrs);
         }
-        return null;
     }
 
     /**

@@ -775,7 +775,7 @@ declare module 'Application/_Interface/IHead' {
         getComments(wrap?: boolean): string[];
         clear(): any;
         getAttrs(tagId: IHeadTagId): IHeadTagAttrs | null;
-        changeTag(tagId: IHeadTagId, attrs: IHeadTagAttrs): null;
+        changeTag(tagId: IHeadTagId, attrs: IHeadTagAttrs): void;
     }
     export interface IHead extends IStore<IInternalHead>, IInternalHead {
     }
@@ -1129,7 +1129,7 @@ declare module '_Page/Head' {
         getData(id?: IHeadTagId): JML[] | JML;
         getComments(wrap?: boolean): string[];
         getAttrs(tagId: IHeadTagId): IHeadTagAttrs | null;
-        changeTag(tagId: IHeadTagId, attrs: IHeadTagAttrs): null;
+        changeTag(tagId: IHeadTagId, attrs: IHeadTagAttrs): void;
         get<K extends keyof IInternalHead>(key: string): IInternalHead[K];
         set<K extends keyof IInternalHead>(key: string, value: IInternalHead[K]): boolean;
         remove(): void;
@@ -1200,7 +1200,7 @@ declare module '_Page/_head/ElementPS' {
         /** Устанавливаем аттрибуты элемента */
         setAttrs(attrs: IHeadTagAttrs): void;
         /** Меняет аттрибуты элемента */
-        changeTag(attrs: IHeadTagAttrs): null;
+        changeTag(attrs: IHeadTagAttrs): void;
     }
 }
 /// <amd-module name="Application/_Request/FakeWebStorage" />
