@@ -19,27 +19,27 @@ export default class JSLinks extends HeadAPI implements IJSLinks {
     private _id = 0;
     createTag(
         name: 'script',
-        attrs: {src: string}): JSLinksTagId | Error;
+        attrs: {src: string}): JSLinksTagId;
     createTag(
         name: 'script',
         attrs: {},
-        content: string): JSLinksTagId | Error ;
+        content: string): JSLinksTagId ;
     createTag(
         name: 'script',
-        attrs: {type: string, src: string}): JSLinksTagId | Error;
+        attrs: {type: string, src: string}): JSLinksTagId;
     createTag(
         name: 'script',
-        attrs: {type: string, src: string, defer: string}): JSLinksTagId | Error;
+        attrs: {type: string, src: string, defer: string}): JSLinksTagId;
     createTag(
         name: 'script',
         attrs: {type: string, src: string, defer: string},
         content?: string,
-        eventHandlers?: IJSLinksTagEventHandlers): JSLinksTagId | Error;
+        eventHandlers?: IJSLinksTagEventHandlers): JSLinksTagId;
     createTag(
         name: string,
         attrs: {type: string, src: string, defer: string},
         content?: string,
-        eventHandlers?: IJSLinksTagEventHandlers): JSLinksTagId | Error {
+        eventHandlers?: IJSLinksTagEventHandlers): JSLinksTagId {
 
         if (typeof window !== 'undefined') {
             AppEnv.logger.warn('Создавать JSLinks на клиенте запрещено.');
