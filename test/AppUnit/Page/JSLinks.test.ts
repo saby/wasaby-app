@@ -2,9 +2,7 @@ import { assert } from 'chai';
 import { default as AppInit } from 'Application/Initializer';
 import {additionalAttrs, JSLINKS_PROPS} from './utils';
 import { JSLinks } from 'Application/Page';
-import { IJSLinks } from 'Application/_Interface/IJSLinks';
 import { JML } from "Application/_Interface/IHead";
-import Cookie from "Application/_Env/Browser/Cookie";
 
 const TAG = 'script';
 describe('Application/_Page/JSLinks', () => {
@@ -19,7 +17,7 @@ describe('Application/_Page/JSLinks', () => {
     describe('server side', () => {
         it('Создание тега', () => {
             const NAMESPACE_STORE = 'custom_name';
-            const API: IJSLinks = JSLinks.getInstance(NAMESPACE_STORE);
+            const API: JSLinks = JSLinks.getInstance(NAMESPACE_STORE);
             const attrs = {};
             const localData: JML[] = [];
             API.createTag(TAG, attrs);
@@ -28,7 +26,7 @@ describe('Application/_Page/JSLinks', () => {
         });
         it('Создание дублирующего тега', () => {
             const NAMESPACE_STORE = 'custom_name2';
-            const API: IJSLinks = JSLinks.getInstance(NAMESPACE_STORE);
+            const API: JSLinks = JSLinks.getInstance(NAMESPACE_STORE);
             const localData: JML[] = [];
             const attrs = {
                 src: `to/${NAMESPACE_STORE}`
@@ -44,7 +42,7 @@ describe('Application/_Page/JSLinks', () => {
         });
         it('Создание тега c ошибочным name', () => {
             const NAMESPACE_STORE = 'custom_name3';
-            const API: IJSLinks = JSLinks.getInstance(NAMESPACE_STORE);
+            const API: JSLinks = JSLinks.getInstance(NAMESPACE_STORE);
             const attrs = {};
             const WRONG_TAG = 'meta';
             try {
@@ -55,9 +53,9 @@ describe('Application/_Page/JSLinks', () => {
         });
         it('Данные не смешиваются при добавлении тегов по разным nameSpace', () => {
             const NAMESPACE_STORE = 'custom_name4';
-            const API: IJSLinks = JSLinks.getInstance(NAMESPACE_STORE);
+            const API: JSLinks = JSLinks.getInstance(NAMESPACE_STORE);
             const NAMESPACE_STORE2 = 'custom_name42';
-            const API2: IJSLinks = JSLinks.getInstance(NAMESPACE_STORE2);
+            const API2: JSLinks = JSLinks.getInstance(NAMESPACE_STORE2);
             API.createTag(JSLINKS_PROPS.name, {src: `to/${NAMESPACE_STORE}`});
             API2.createTag(JSLINKS_PROPS.name, {src: `to/${NAMESPACE_STORE2}`});
             // tslint:disable-next-line:ban-ts-ignore
@@ -69,7 +67,7 @@ describe('Application/_Page/JSLinks', () => {
         });
         it('Создание тега, который содержит контент', () => {
             const NAMESPACE_STORE = 'custom_name5';
-            const API: IJSLinks = JSLinks.getInstance(NAMESPACE_STORE);
+            const API: JSLinks = JSLinks.getInstance(NAMESPACE_STORE);
             const CONTENT = 'custom_content5';
             const localData: JML[] = [];
             API.createTag(TAG, {}, CONTENT);
