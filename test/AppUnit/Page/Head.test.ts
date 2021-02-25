@@ -155,25 +155,19 @@ describe('Application/_Page/Head', () => {
         );
     });
 
-    it('Очистка хранилища', () => {
-        API.clear();
-        assert.isEmpty(API.getData());
-        assert.isEmpty(API.getComments());
-    });
-
-    it('Изменение тега', () => {
+    it('Изменение атрибутов тега', () => {
         /** Cоздаем теги */
-
         const tagName = 'changeTag';
         const attrs = {
             content: 'width=100'
         };
-        const newTag = API.createTag(tagName, attrs);
+        const tag = API.createTag(tagName, attrs);
 
         /** Новые аттрибуты*/
         const changeAttrs = {
             content: 'width=1000; height=1000',
-            foo: 'barChange'
+            foo: 'barChange',
+            'data-vdomignore': true
         };
 
         /** Может возникнуть такая ситуация, что аттрибутов много, а изменим одну строчку. */
@@ -186,30 +180,37 @@ describe('Application/_Page/Head', () => {
             content: 'width=3000',
             atr: '3000',
             xMode: 'y',
-            c: {w:'b'} 
+            c: 'w',
+            'data-vdomignore': true
         }
-        const secondNewTag = API.createTag(secondTagName, secondAttrs);
+        const secondTag = API.createTag(secondTagName, secondAttrs);
 
         /** Меняем  данные */
-        API.changeTag(newTag, changeAttrs);
-        assert.deepEqual(API.getAttrs(newTag), changeAttrs);
+        API.changeTag(tag, changeAttrs);
 
-        API.changeTag(secondNewTag, changeSecondAttrs);
-        assert.deepEqual(changeSecondAttrs, API.getAttrs(secondNewTag));
+        API.changeTag(secondTag, changeSecondAttrs);
+        processingData.push([tagName, { ...changeAttrs }]);
+        processingData.push([secondTagName, { ...changeSecondAttrs }]);
+        assert.deepEqual(API.getData(), processingData);
     });
 
     it('Взять аттрибуты тега', () => {
         const tagName = 'tagAttr';
         const attrs = {
             content: 'width=100',
-            foo: 'BarProp'
+            foo: 'BarProp',
 
         };
-        const newTag = API.createTag(tagName, attrs);
+        const tag = API.createTag(tagName, attrs);
 
-        assert.deepEqual(attrs, API.getAttrs(newTag));
         assert.isNull(API.getAttrs('errorTag'));
+        processingData.push([tagName, { ...attrs }]);
+        assert.deepEqual(API.getAttrs(tag), attrs);
     });
 
-  
+    it('Очистка хранилища', () => {
+        API.clear();
+        assert.isEmpty(API.getData());
+        assert.isEmpty(API.getComments());
+    });  
 });

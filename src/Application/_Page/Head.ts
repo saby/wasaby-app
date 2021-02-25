@@ -208,22 +208,18 @@ export class Head implements IHead {
     }
     // #endregion
 
-    /**
-     * Возвращает аттрибуты тега
-     * @param tagId {IHeadTagId} Идентификатор тега
-     */
     getAttrs(tagId: IHeadTagId): IHeadTagAttrs | null {
-        if (this._elements[tagId]) return this._elements[tagId].getAttrs();
+        if (this._elements[tagId]) {
+            return this._elements[tagId].getAttrs();
+        }
         return null;
     }
 
-    /* Меняет аттрибуты тега
-     * @param tagId {IHeadTagId} Идентификатор тега
-     * @param attrs {IHeadTagAttrs} Атрибуты для замены 
-     */
-    changeTag(tagId: IHeadTagId, attrs: IHeadTagAttrs): void {
-       if (this._elements[tagId]) this._elements[tagId].changeTag(attrs);
-       return null;
+    changeTag(tagId: IHeadTagId, attrs: IHeadTagAttrs): null {
+        if (this._elements[tagId]) {
+            this._elements[tagId].changeTag(attrs);
+        }
+        return null;
     }
 
     /**

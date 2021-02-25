@@ -40,14 +40,17 @@ export default class Element extends ElementPS {
         }
         return super.isEqual(name, attrs, content, eventHandlers);
     }
-
+    
     /**
-     *  Возвращаем аттрибуты элемента. Переопределенный метод
-     **/
-    getAttrs(): IHeadTagAttrs {
-        const attrs = { ...this._attrs };
-        delete attrs['data-vdomignore'];
-        return attrs;
+     * Устанавливает атрибуты элементу
+     * @param attrs  {IHeadTagAttrs} Атрибуты
+     */
+    setAttrs(attrs: IHeadTagAttrs): void {
+        for (const key in attrs) {
+            if (attrs.hasOwnProperty(key)) {
+                this._element.setAttribute(key, attrs[key]);
+            }
+        }
     }
 
     /**
@@ -62,7 +65,7 @@ export default class Element extends ElementPS {
         специфики DOM*/
         let oldItems = Object.getOwnPropertyNames(attrs);
         let newItems = Object.getOwnPropertyNames(attrsChange);
-        let allItems = oldItems.filter(item => !newItems.includes(item)).concat(newItems);
+        let allItems = Object.getOwnPropertyNames({...attrs, ...attrsChange});
 
         allItems.forEach((item) => {
             const isOld = oldItems.includes(item);

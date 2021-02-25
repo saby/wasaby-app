@@ -119,11 +119,13 @@ export default class ElementPS {
         return result;
     }
 
-    /** 
-     * Возвращаем аттрибуты элемента 
+    /**
+     *  Возвращаем аттрибуты элемента.
      **/
     getAttrs(): IHeadTagAttrs {
-        return this._attrs;
+        const attrs = { ...this._attrs };
+        delete attrs['data-vdomignore'];
+        return attrs;
     }
 
     /**
