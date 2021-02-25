@@ -1,26 +1,21 @@
-import AppEnv from 'Application/Env';
-import { Head as HeadAPI } from 'Application/Page'
+import * as AppEnv from 'Application/Env';
 import {
-    IHeadTag,
-    IHeadTagAttrs,
-    IHeadTagEventHandlers,
-    IHeadTagId,
-    // JML
-} from 'Application/_Interface/IHead';
-import { IStore } from "Application/_Interface/IStore";
+    IJSLinks, IJSLinksInternal,
+    IJSLinksTagAttrs,
+    IJSLinksTagEventHandlers,
+    JSLinksTagId
+} from 'Application/_Interface/IJSLinks';
+import { Head as HeadAPI } from 'Application/_Page/Head';
+import { default as JSLinksElement } from 'Application/_Page/_jslinks/JSLinksElement';
 
-type JSLinksTag = IHeadTag;
-type JSLinksTagId = string;
-type IJSLinksTagEventHandlers = IHeadTagEventHandlers;
-interface IJSLinks extends IStore<IJSLinks> {
-    createTag(name: string, attrs: IHeadTagAttrs, content?: string, eventHandlers?: IHeadTagEventHandlers): IHeadTagId;
-    // deleteTag(id: IHeadTagId): void;
-    // getTag(name?: string, attrs?: IHeadTagAttrs): IHeadTagId | IHeadTagId[] | null;
-    // getData(id?: IHeadTagId): Array<JML> | JML;
-}
-
-export default class JSLinks extends HeadAPI implements IJSLinks{
-    private _elementsJSLinks: {[propName: string]: JSLinksTag } = {};
+/**
+ * API для работы jslinks, отнаследованный от HeadAPI
+ * Класс реализуется как синглтон
+ * Получить инстанст синглтона можно через статичный метод getInstance()
+ * @author Хамбелов М.И.
+ */
+export default class JSLinks extends HeadAPI implements IJSLinks {
+    private _elements: {[propName: string]: JSLinksElement } = {};
     private _id = 0;
     createTag(
         name: 'script',
@@ -39,8 +34,14 @@ export default class JSLinks extends HeadAPI implements IJSLinks{
         name: 'script',
         attrs: {type: string, src: string, defer: string},
         content?: string,
-        eventHandlers?: IJSLinksTagEventHandlers): JSLinksTagId {
-        const uuid = this._generateGuid();
+        eventHandlers?: IJSLinksTagEventHandlers): JSLinksTagId | Error {
+        if (typeof window !== 'undefined') {
+            AppEnv.logger.warn('Создавать JSLinks на клиенте запрещено.');
+            return;
+        }
+        if (name !== 'script') {
+            return new Error('Создавать JSLinks с параметром name, который не равняется "script"  - запрещено.');
+        }
         /**
          * при работе с rsSerialized, rtpackModuleNames пробрасывается только content, аттрибуты не требуются.
          * поэтому если контента нету, значит пробрасываем аттрибуты и дополняем необходимые, если они не пришли
@@ -52,19 +53,58 @@ export default class JSLinks extends HeadAPI implements IJSLinks{
                 defer:  attrs.defer ? attrs.defer : 'defer'
             }
         }
-        this._elementsJSLinks[uuid] = {name, attrs, content, eventHandlers};
+        for (const elementsKey in this._elements) {
+            if (this._elements[elementsKey].isEqual(name, attrs, content, eventHandlers)) {
+                eventHandlers?.load();
+                return elementsKey;
+            }
+        }
+        const uuid = this._generateGuid();
+        this._elements[uuid] = new JSLinksElement(name, attrs, content, eventHandlers);
         return uuid;
     }
-
-    private _generateGuid(): IHeadTagId {
+    getTag(name?: 'script', attrs?: IJSLinksTagAttrs): JSLinksTagId | JSLinksTagId[] | null {
+        return super.getTag(name, attrs);
+    }
+    // #region IStore
+    get<K extends keyof IJSLinksInternal>(key: string): IJSLinksInternal[K] {
+        return this[key];
+    }
+    set<K extends keyof IJSLinksInternal>(key: string, value: IJSLinksInternal[K]): boolean {
+        try {
+            this[key] = value;
+            return true;
+        } catch (_e) {
+            return false;
+        }
+    }
+    // tslint:disable-next-line:no-empty
+    remove(): void { }
+    getKeys(): Array<keyof IJSLinksInternal> {
+        return Object.keys(this) as Array<keyof IJSLinksInternal>;
+    }
+    // tslint:disable-next-line:no-any
+    toObject(): Record<keyof IJSLinksInternal, any> {
+        return Object.assign({}, this);
+    }
+    // #endregion
+    /* tslint:disable:no-empty */
+    createComment(): void {};
+    createNoScript(): void {};
+    private _collectTags(): void {};
+    /* tslint:enable:no-empty */
+    private _generateGuid(): JSLinksTagId {
         return `scripts-${this._id++}`;
     };
     private static _creator(): JSLinks {
-        return new this();
+        return new JSLinks();
     }
     static _instance: JSLinks;
-
-    static getInstance(nameSpace: string = 'root'): IJSLinks {
-        return <IJSLinks> AppEnv.getStore(`JSLinksAPI_${nameSpace}`, JSLinks._creator);
+    static getInstance(nameSpace: string = 'root'): JSLinks | never {
+        if (typeof window !== 'undefined') {
+            JSLinks._instance = JSLinks._instance || JSLinks._creator();
+            return JSLinks._instance;
+        }
+        return <JSLinks> AppEnv.getStore(`JSLinksAPI_${nameSpace}`, JSLinks._creator);
     }
 }

@@ -15,7 +15,6 @@ const PREFIX: string = typeof window === 'undefined' ? 'ps-' : '';
  * Получить инстанст синглтона можно через статичный метод getInstance()
  * @author Печеркин С.В.
  */
-// tslint:disable-next-line:no-any
 export class Head implements IHead {
     private _elements: {[propName: string]: Element | ElementPS} = {};
     private _comments: Array<string> = [];

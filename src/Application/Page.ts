@@ -10,3 +10,4 @@
  */
 export { Head } from "Application/_Page/Head";
 export { Body } from "Application/_Page/Body";
+export { default as JSLinks } from "Application/_Page/JSLinks";
