@@ -1,5 +1,7 @@
 /// <amd-module name="Application/Config" />
-declare module "Application/Config" {
+import {IConfig} from "Application/_Interface/IConfig";
+
+declare module 'Application/Config' {
     /**
      * Библиотека Config
      * @library Application/Config
@@ -10,9 +12,10 @@ declare module "Application/Config" {
     export { default as Config } from 'Application/_Config/Config';
 }
 /// <amd-module name="Application/Env" />
-declare module "Application/Env" {
+declare module 'Application/Env' {
     export { default as EnvBrowser } from 'Application/_Env/Browser/Env';
     export { default as EnvNodeJS } from 'Application/_Env/NodeJS/Env';
+    export { LogLevel as LogLevelNodeJS, Console as ConsoleNodeJS } from 'Application/_Env/NodeJS/Console';
     import { PARAMS } from 'Application/_Env/QueryParams';
     export { LogLevel } from 'Application/_Env/Console';
     import App from 'Application/_Env/App';
@@ -107,7 +110,7 @@ declare module "Application/Env" {
     export function setStore<T = Record<string, string>>(type: string, store: IStore<T>): any;
 }
 /// <amd-module name="Application/Initializer" />
-declare module "Application/Initializer" {
+declare module 'Application/Initializer' {
     import { IEnv } from 'Application/_Interface/IEnv';
     import { ISerializableState } from 'Application/_Interface/ISerializableState';
     import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
@@ -123,7 +126,7 @@ declare module "Application/Initializer" {
     export function then<T = unknown>(callback: () => T): Promise<T>;
 }
 /// <amd-module name="Application/Interface" />
-declare module "Application/Interface" {
+declare module 'Application/Interface' {
     /**
      * Библиотека интерфейсов
      * @library Application/Interface
@@ -137,6 +140,8 @@ declare module "Application/Interface" {
      * @includes IStateReceiver Application/_Interface/IStateReceiver
      * @includes IRequest Application/_Interface/IRequest
      * @includes IHead Application/_Interface/IHead
+     * @includes IHttpRequest Application/_Interface/IHttpRequest
+     * @includes IHttpResponse Application/_Interface/IHttpResponse
      * @public
      * @author Санников К.А.
      */
@@ -150,9 +155,11 @@ declare module "Application/Interface" {
     export * from 'Application/_Interface/IStateReceiver';
     export * from 'Application/_Interface/IRequest';
     export * from 'Application/_Interface/IHead';
+    export * from 'Application/_Interface/IHttpRequest';
+    export * from 'Application/_Interface/IHttpResponse';
 }
 /// <amd-module name="Application/Page" />
-declare module "Application/Page" {
+declare module 'Application/Page' {
     /**
      * Библиотека управления страницей. Например, ее заголовок, список загруженных ресурсов или og описание
      *
@@ -161,10 +168,10 @@ declare module "Application/Page" {
      * @includes Head Application/_Page/Head
      * @author Печеркин С.В.
      */
-    export { Head } from "Application/_Page/Head";
+    export { Head } from 'Application/_Page/Head';
 }
 /// <amd-module name="Application/Request" />
-declare module "Application/Request" {
+declare module 'Application/Request' {
     import { default as Request } from 'Application/_Request/Request';
     /**
      * Библиотека c классами для работы с запросами и хранилищем
@@ -177,7 +184,7 @@ declare module "Application/Request" {
     export default Request;
     export { default as Store } from 'Application/_Request/Store';
 }
-declare module "State" {
+declare module 'State' {
     /**
      * Библиотека для работы с сериализованным состоянием.
      * @library Application/State
@@ -187,7 +194,7 @@ declare module "State" {
     export { StateReceiver } from 'Application/_State/StateReceiver';
 }
 /// <amd-module name="Application/_Config/Config" />
-declare module "Application/_Config/Config" {
+declare module 'Application/_Config/Config' {
     import { ISerializableState } from 'Application/_Interface/ISerializableState';
     type IData = Record<string, any>;
     /**
@@ -225,19 +232,22 @@ declare module "Application/_Config/Config" {
     }
 }
 /// <amd-module name="Application/_Env/App" />
-declare module "Application/_Env/App" {
+declare module 'Application/_Env/App' {
     import { IEnv } from 'Application/_Interface/IEnv';
     import { IRequest } from 'Application/_Interface/IRequest';
     import { ISerializableState } from 'Application/_Interface/ISerializableState';
     import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
+    import {IHttpRequest} from 'Application/_Interface/IHttpRequest';
+    import {IHttpResponse} from 'Application/_Interface/IHttpResponse';
     type TConfig = Record<string, any>;
     export default class App {
-        private env;
+        private env: IEnv;
         constructor(cfg?: TConfig, env?: IEnv, stateReceiver?: IStateReceiver);
-        private static instance;
-        private static singletonCrossEnv;
+        private static instance: App;
+        private static singletonCrossEnv: Map<string, ISerializableState>;
         static getRequest(): IRequest;
-        static startRequest(cfg?: TConfig, stateReceiver?: IStateReceiver): void;
+        static startRequest(cfg?: TConfig, stateReceiver?: IStateReceiver,
+                            req?: IHttpRequest, res?: IHttpResponse): void;
         /**
          * Метод, для регистрации одиночки, который должен восстанавливать своё состояние на клиенте.
          * @param uid {String} Уникальный идентификатор одиночки.
@@ -249,7 +259,7 @@ declare module "Application/_Env/App" {
     }
 }
 /// <amd-module name="Application/_Env/Console" />
-declare module "Application/_Env/Console" {
+declare module 'Application/_Env/Console' {
     import { IConsole } from 'Application/_Interface/IConsole';
     /**
      * Содержит константы уровня логирования - {@link LogLevel}
@@ -293,8 +303,8 @@ declare module "Application/_Env/Console" {
     export default class Console implements IConsole {
         private __logLevel;
         private __console;
-        constructor(console: any);
         private isShow;
+        constructor(console: any);
         /**
          * Задать уровень логирования
          * @param {LogLevel} mode
@@ -312,7 +322,7 @@ declare module "Application/_Env/Console" {
     }
 }
 /// <amd-module name="Application/_Env/ObjectStore" />
-declare module "Application/_Env/ObjectStore" {
+declare module 'Application/_Env/ObjectStore' {
     import { IStore } from 'Application/_Interface/IStore';
     export default class ObjectStore implements IStore {
         private __data;
@@ -324,7 +334,7 @@ declare module "Application/_Env/ObjectStore" {
     }
 }
 /// <amd-module name="Application/_Env/QueryParams" />
-declare module "Application/_Env/QueryParams" {
+declare module 'Application/_Env/QueryParams' {
     /**
      * @cfg {String} query URL-Like строка, содержащая GET- и/или HASH- параметры
      * @name Application/_Env/QueryParams#query
@@ -386,8 +396,8 @@ declare module "Application/_Env/QueryParams" {
     type PARAMS_SET = Record<string, string>;
 }
 /// <amd-module name="Application/_Env/Browser/Cookie" />
-declare module "Application/_Env/Browser/Cookie" {
-    import { ICookie, ICookieOptions } from "Application/_Interface/ICookie";
+declare module 'Application/_Env/Browser/Cookie' {
+    import { ICookie, ICookieOptions } from 'Application/_Interface/ICookie';
     /**
      * Класс предназначенный для работы с cookie в браузере,
      * @class
@@ -407,7 +417,7 @@ declare module "Application/_Env/Browser/Cookie" {
     }
 }
 /// <amd-module name="Application/_Env/Browser/Env" />
-declare module "Application/_Env/Browser/Env" {
+declare module 'Application/_Env/Browser/Env' {
     import { IConsole } from 'Application/_Interface/IConsole';
     import { ICookie } from 'Application/_Interface/ICookie';
     import { IEnv } from 'Application/_Interface/IEnv';
@@ -457,7 +467,7 @@ declare module "Application/_Env/Browser/Env" {
     }
 }
 /// <amd-module name="Application/_Env/NodeJS/Console" />
-declare module "Application/_Env/NodeJS/Console" {
+declare module 'Application/_Env/NodeJS/Console' {
     import { IConsole } from 'Application/Interface';
     export default class Console implements IConsole {
         private __logLevel;
@@ -471,8 +481,10 @@ declare module "Application/_Env/NodeJS/Console" {
     }
 }
 /// <amd-module name="Application/_Env/NodeJS/Cookie" />
-declare module "Application/_Env/NodeJS/Cookie" {
+declare module 'Application/_Env/NodeJS/Cookie' {
     import { ICookie, ICookieOptions } from 'Application/Interface';
+    import { IHttpRequest } from 'Application/_Interface/IHttpRequest';
+    import { IHttpResponse } from 'Application/_Interface/IHttpResponse';
     /**
      * Класс, реализующий интерфейс {@link Core/Request/IStorage},
      * предназначенный для работы с cookie в браузере
@@ -482,17 +494,23 @@ declare module "Application/_Env/NodeJS/Cookie" {
      * @author Заляев А.В.
      */
     export default class Cookie implements ICookie {
-        get(): any;
+        constructor(getRequest: () => Partial<IHttpRequest>,
+                    getResponse: () => Partial<IHttpResponse>);
+        private getRequest(): Partial<IHttpRequest>;
+        private getResponse(): Partial<IHttpResponse>;
+        get(): string | null;
         set(_key: string, _value: string, _options?: Partial<ICookieOptions>): boolean;
         remove(key: string): void;
-        getKeys(): Array<string>;
+        getKeys(): string[];
         toObject(): Record<string, string>;
     }
 }
 /// <amd-module name="Application/_Env/NodeJS/Env" />
-declare module "Application/_Env/NodeJS/Env" {
+declare module 'Application/_Env/NodeJS/Env' {
     import { Config } from 'Application/Config';
     import { IConsole, ICookie, IEnv, ILocation, IRequest, IRequestInternal, IStoreMap } from 'Application/Interface';
+    import {IHttpResponse} from 'Application/_Interface/IHttpResponse';
+    import {IHttpRequest} from 'Application/_Interface/IHttpRequest';
     /**
      * Неполноценное окружение для запуска Application под NodeJS
      * Используется в тестах, билдере, везде, где нет request'a
@@ -500,7 +518,7 @@ declare module "Application/_Env/NodeJS/Env" {
      * @public
      * @implements {Application/_Interface/IEnv}
      */
-    export default class implements IEnv {
+    export default class EnvNodeJS implements IEnv {
         /**
          * Флаг с обозначением того, что можно создавать Request
          * @cfg {Boolean} initRequest
@@ -511,21 +529,23 @@ declare module "Application/_Env/NodeJS/Env" {
         cookie: ICookie;
         location: ILocation;
         storages: IStoreMap;
-        private cfg;
+        private cfg: Config;
         constructor(data: Record<string, unknown>);
         getRequest(): IRequest;
-        createRequest(cfg: Config): IRequestInternal;
+        createRequest(cfg: IConfig, requestGetter: () => IHttpRequest,
+                      responseGetter: () => IHttpResponse): IRequestInternal
     }
 }
 /// <amd-module name="Application/_Env/NodeJS/Location" />
-declare module "Application/_Env/NodeJS/Location" {
+declare module 'Application/_Env/NodeJS/Location' {
     import { ILocation } from 'Application/Interface';
+    import { IHttpRequest } from 'Application/_Interface/IHttpRequest';
     export default class Location implements ILocation {
-        private requestGetter?;
-        private hostMask;
-        private searchMask;
-        constructor(requestGetter?: Function);
-        private getReqProp;
+        private hostMask: RegExp;
+        private searchMask: RegExp;
+        constructor(requestGetter: Function);
+        private requestGetter(): Partial<IHttpRequest>;
+        private getReqProp<K extends keyof IHttpRequest>(prop: K): Partial<IHttpRequest>[K] | '';
         get pathname(): string;
         get protocol(): string;
         get port(): string;
@@ -537,7 +557,7 @@ declare module "Application/_Env/NodeJS/Location" {
     }
 }
 /// <amd-module name="Application/_Interface/IConfig" />
-declare module "Application/_Interface/IConfig" {
+declare module 'Application/_Interface/IConfig' {
     type IData = Record<string, any>;
     /**
      * Интерфейс IConfig
@@ -556,7 +576,7 @@ declare module "Application/_Interface/IConfig" {
     }
 }
 /// <amd-module name="Application/_Interface/IConsole" />
-declare module "Application/_Interface/IConsole" {
+declare module 'Application/_Interface/IConsole' {
     /**
      * Интерфейс для логгера. Для того что бы избавиться от IoC('ILogger').
      * IoC вызывает у нас много непонятных проблем с цикличной зависимостью.
@@ -598,7 +618,7 @@ declare module "Application/_Interface/IConsole" {
     }
 }
 /// <amd-module name="Application/_Interface/ICookie" />
-declare module "Application/_Interface/ICookie" {
+declare module 'Application/_Interface/ICookie' {
     import { IStore } from 'Application/_Interface/IStore';
     /**
      * Набор опций для cookie
@@ -644,13 +664,14 @@ declare module "Application/_Interface/ICookie" {
     }
 }
 /// <amd-module name="Application/_Interface/IEnv" />
-declare module "Application/_Interface/IEnv" {
+declare module 'Application/_Interface/IEnv' {
     import { IConfig } from 'Application/_Interface/IConfig';
     import { IConsole } from 'Application/_Interface/IConsole';
     import { ICookie } from 'Application/_Interface/ICookie';
     import { ILocation } from 'Application/_Interface/ILocation';
     import { IRequest, IRequestInternal } from 'Application/_Interface/IRequest';
-    import { IStoreMap } from 'Application/_Interface/IStore';
+    import {IHttpRequest} from 'Application/_Interface/IHttpRequest';
+    import {IHttpResponse} from 'Application/_Interface/IHttpResponse';
     /**
      * Интерфейс IEnv
      * @interface Application/_Interface/IEnv
@@ -663,13 +684,13 @@ declare module "Application/_Interface/IEnv" {
         console: IConsole;
         cookie: ICookie;
         location: ILocation;
-        storages: IStoreMap;
         getRequest(): IRequest;
-        createRequest: (cfg: IConfig) => IRequestInternal;
+        createRequest(cfg: IConfig, requestGetter: () => IHttpRequest,
+                      responseGetter: () => IHttpResponse): IRequestInternal;
     }
 }
 /// <amd-module name="Application/_Interface/IHead" />
-declare module "Application/_Interface/IHead" {
+declare module 'Application/_Interface/IHead' {
     import { IStore } from 'Application/_Interface/IStore';
     /**
      * Интерфейс объекта, описывающего аттрибуты тега для API Head
@@ -750,7 +771,7 @@ declare module "Application/_Interface/IHead" {
         createTag(name: string, attrs: IHeadTagAttrs, content?: string, eventHandlers?: IHeadTagEventHandlers): IHeadTagId;
         deleteTag(id: IHeadTagId): void;
         getTag(name?: string, attrs?: IHeadTagAttrs): IHeadTagId | IHeadTagId[] | null;
-        getData(id?: IHeadTagId): Array<JML> | JML;
+        getData(id?: IHeadTagId): JML[] | JML;
         getComments(wrap?: boolean): string[];
         clear(): any;
     }
@@ -758,7 +779,7 @@ declare module "Application/_Interface/IHead" {
     }
 }
 /// <amd-module name="Application/_Interface/ILocation" />
-declare module "Application/_Interface/ILocation" {
+declare module 'Application/_Interface/ILocation' {
     /**
      * Описание обобщенного window.location.
      * Выписаны те поля, которые есть на сервисе представления и в браузере
@@ -778,13 +799,13 @@ declare module "Application/_Interface/ILocation" {
     }
 }
 /// <amd-module name="Application/_Interface/IRequest" />
-declare module "Application/_Interface/IRequest" {
+declare module 'Application/_Interface/IRequest' {
     import Config from 'Application/_Config/Config';
-    import { IConsole } from "Application/_Interface/IConsole";
+    import { IConsole } from 'Application/_Interface/IConsole';
     import { ICookie } from 'Application/_Interface/ICookie';
-    import { ILocation } from "Application/_Interface/ILocation";
-    import { IStateReceiver } from "Application/_Interface/IStateReceiver";
-    import { IStore } from "Application/_Interface/IStore";
+    import { ILocation } from 'Application/_Interface/ILocation';
+    import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
+    import { IStore } from 'Application/_Interface/IStore';
     /**
      * Компонент, которые предоставляет в платформе доступ к синглтонам в рамках запроса пользователя.
      * @interface Application/_Interface/IRequest
@@ -802,11 +823,6 @@ declare module "Application/_Interface/IRequest" {
          * @cfg {ILocation} location
          */
         location: ILocation;
-        /**
-         * @name Application/_Interface/IRequest#console
-         * @cfg {IConsole} console
-         */
-        console: IConsole;
         /**
          * Получить Config
          * @return {Application/_Config/Config}
@@ -836,8 +852,51 @@ declare module "Application/_Interface/IRequest" {
         setStateReceiver(stateReceiver: IStateReceiver): void;
     }
 }
+/// <amd-module name="Application/_Interface/IHttpRequest" />
+declare module 'Application/_Interface/IHttpRequest' {
+    import { IRequest } from "Application/_Interface/IRequest";
+    /**
+     * Интерфейс, описывающий базовый API объекта запроса (request)
+     * @interface Application/_Interface/IHttpRequest
+     * @public
+     * @author Мустафин Л.И.
+     */
+    export interface IHttpRequest {
+        appRequest: IRequest;
+        compatible: boolean;
+        baseUrl: string;
+        path: string;
+        protocol: string;
+        hostname: string;
+        url: string;
+        query?: object;
+        headers: Record<string, string>;
+        cookies: Record<string, string>;
+        get(header: string): string;
+        header(header: string): string;
+    }
+}
+/// <amd-module name="Application/_Interface/IHttpResponse" />
+declare module 'Application/_Interface/IHttpResponse' {
+    import { ICookieOptions } from 'Application/_Interface/ICookie';
+    /**
+     * Интерфейс, описывающий базовый API объекта ответа (response)
+     * @interface Application/_Interface/IHttpResponse
+     * @public
+     * @author Мустафин Л.И.
+     */
+    export interface IHttpResponse {
+        clearCookie(key: string, options?: Partial<ICookieOptions>): IHttpResponse;
+        cookie(key: string, value: string, options?: Partial<ICookieOptions>): IHttpResponse;
+        header(name: string, value: unknown): IHttpResponse;
+        set(name: string, value: unknown): IHttpResponse;
+        redirect(path: string): IHttpResponse;
+        send(body: string): IHttpResponse;
+        status(code: number): IHttpResponse;
+    }
+}
 /// <amd-module name="Application/_Interface/ISerializableState" />
-declare module "Application/_Interface/ISerializableState" {
+declare module 'Application/_Interface/ISerializableState' {
     /**
      * Интерфейс, который нужно поддержать компонентам, что бы их можно было сериализовать
      * и восстановливать их состояние в любой момент
@@ -885,9 +944,9 @@ declare module "Application/_Interface/ISerializableState" {
     }
 }
 /// <amd-module name="Application/_Interface/IStateReceiver" />
-declare module "Application/_Interface/IStateReceiver" {
+declare module 'Application/_Interface/IStateReceiver' {
     import { IConsole } from 'Application/_Interface/IConsole';
-    import { ISerializableState } from "Application/_Interface/ISerializableState";
+    import { ISerializableState } from 'Application/_Interface/ISerializableState';
     /**
      * Интерфейс компонента для восстановления состояний компонентов.
      * Необходим для получения данных состояний компонентов созданных на сервер.
@@ -935,7 +994,7 @@ declare module "Application/_Interface/IStateReceiver" {
     }
 }
 /// <amd-module name="Application/_Interface/IStore" />
-declare module "Application/_Interface/IStore" {
+declare module 'Application/_Interface/IStore' {
     /**
      * Описание интерфейса компонента, для работы неким Storage.
      * Необходим для того что бы создавать хранилище на клиенте и на сервисе представления.
@@ -999,7 +1058,7 @@ declare module "Application/_Interface/IStore" {
         [propName: string]: IStore<any>;
     }
 }
-declare module "_Page/Head" {
+declare module '_Page/Head' {
     import { IHead, IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId, IInternalHead, JML } from 'Application/_Interface/IHead';
     /**
      * API для работы с <head> страницы
@@ -1012,6 +1071,13 @@ declare module "_Page/Head" {
         private _comments;
         private _noScriptUrl;
         private _id;
+        /**
+         * Генератор noscript тега с содержимым, если был задан _noScriptUrl
+         * @private
+         */
+        private _generateNoScript;
+        /** Генератор уникального идентификатора для каждого тега */
+        private _generateGuid;
         createComment(text: string): void;
         createNoScript(url: string): void;
         createTag(name: 'title', attrs: {}, content: string): IHeadTagId;
@@ -1058,20 +1124,13 @@ declare module "_Page/Head" {
         getTag(name?: string, attrs?: IHeadTagAttrs): IHeadTagId | IHeadTagId[] | null;
         deleteTag(id: IHeadTagId): void;
         clear(): void;
-        getData(id?: IHeadTagId): Array<JML> | JML;
+        getData(id?: IHeadTagId): JML[] | JML;
         getComments(wrap?: boolean): string[];
         get<K extends keyof IInternalHead>(key: string): IInternalHead[K];
         set<K extends keyof IInternalHead>(key: string, value: IInternalHead[K]): boolean;
         remove(): void;
-        getKeys(): Array<keyof IInternalHead>;
+        getKeys(): (keyof IInternalHead)[];
         toObject(): Record<keyof IInternalHead, any>;
-        /**
-         * Генератор noscript тега с содержимым, если был задан _noScriptUrl
-         * @private
-         */
-        private _generateNoScript;
-        /** Генератор уникального идентификатора для каждого тега */
-        private _generateGuid;
         private static _creator;
         static _instance: Head;
         /**
@@ -1081,7 +1140,7 @@ declare module "_Page/Head" {
         static getInstance(): Head | never;
     }
 }
-declare module "_Page/_head/Element" {
+declare module '_Page/_head/Element' {
     import { IHeadTagAttrs, IHeadTagEventHandlers } from 'Application/_Interface/IHead';
     import ElementPS from 'Application/_Page/_head/ElementPS';
     /**
@@ -1108,7 +1167,7 @@ declare module "_Page/_head/Element" {
         protected _removeElement(): void;
     }
 }
-declare module "_Page/_head/ElementPS" {
+declare module '_Page/_head/ElementPS' {
     import { IHeadTag, IHeadTagAttrs, IHeadTagEventHandlers, JML } from 'Application/_Interface/IHead';
     export default class ElementPS {
         protected _name: string;
@@ -1135,7 +1194,7 @@ declare module "_Page/_head/ElementPS" {
     }
 }
 /// <amd-module name="Application/_Request/FakeWebStorage" />
-declare module "Application/_Request/FakeWebStorage" {
+declare module 'Application/_Request/FakeWebStorage' {
     /**
      * Эмуляция любого Storage браузера
      */
@@ -1150,15 +1209,18 @@ declare module "Application/_Request/FakeWebStorage" {
     }
 }
 /// <amd-module name="Application/_Request/Request" />
-declare module "Application/_Request/Request" {
-    import { Config } from "Application/Config";
+declare module 'Application/_Request/Request' {
+    import { Config } from 'Application/Config';
     import { IConsole } from 'Application/_Interface/IConsole';
     import { ICookie } from 'Application/_Interface/ICookie';
-    import { IEnv } from 'Application/_Interface/IEnv';
     import { ILocation } from 'Application/_Interface/ILocation';
     import { IRequestInternal } from 'Application/_Interface/IRequest';
     import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
     import { IStore } from 'Application/_Interface/IStore';
+    interface ICookieLocation {
+        cookie: ICookie;
+        location: ILocation;
+    }
     /**
      * Класс Request
      * @class Application/_Request/Request
@@ -1176,10 +1238,6 @@ declare module "Application/_Request/Request" {
     export default class Request implements IRequestInternal {
         private readonly __config;
         /**
-         * @cfg {Application/_Interface/IConsole} console
-         * @name Application/_Request/Request#console
-         */
-        /**
          * @cfg {Application/_Interface/ICookie} cookie
          * @name Application/_Request/Request#cookie
          */
@@ -1192,12 +1250,11 @@ declare module "Application/_Request/Request" {
          * @name Application/_Request/Request#__stateReceiver
          * @private
          */
-        console: IConsole;
         cookie: ICookie;
         location: ILocation;
         private __stateReceiver;
         private readonly __storages;
-        constructor(env: IEnv, config: Config);
+        constructor(env: ICookieLocation, config: Config);
         /**
          * Получить хранилище
          * @param {string} key Ключ хранилища
@@ -1224,8 +1281,8 @@ declare module "Application/_Request/Request" {
     }
 }
 /// <amd-module name="Application/_Request/Store" />
-declare module "Application/_Request/Store" {
-    import { IStore } from "Application/_Interface/IStore";
+declare module 'Application/_Request/Store' {
+    import { IStore } from 'Application/_Interface/IStore';
     /**
      * Класс, реализующий интерфейс {@link Application/_Interface/IStore},
      * предназначенный для работы с localStorage и SessionStorage
@@ -1245,7 +1302,7 @@ declare module "Application/_Request/Store" {
     }
 }
 /// <amd-module name="Application/_State/StateReceiver" />
-declare module "Application/_State/StateReceiver" {
+declare module 'Application/_State/StateReceiver' {
     import { IStateReceiver } from 'Application/Interface';
     import { IConsole } from 'Application/_Interface/IConsole';
     /**
@@ -1277,10 +1334,10 @@ declare module "Application/_State/StateReceiver" {
         private deserialized;
         private __serializer;
         private _logger;
-        constructor(_constructorSerializer?: typeof Serializer);
-        setLogger(Logger: IConsole): void;
         private _getLogger;
         private __getSerializer;
+        constructor(_constructorSerializer?: typeof Serializer);
+        setLogger(Logger: IConsole): void;
         serialize(): ISerializedType;
         deserialize(str: string | undefined): void;
         register(key: string, inst: any): void;

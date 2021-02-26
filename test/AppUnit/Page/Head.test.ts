@@ -1,5 +1,4 @@
 import { assert } from 'chai';
-import { default as AppInit } from 'Application/Initializer';
 import { Head as HeadAPI } from 'Application/Page';
 import { JML, IHead, IHeadTagAttrs } from "Application/Interface";
 import { additionalAttrs } from "./utils";
@@ -7,7 +6,6 @@ import { additionalAttrs } from "./utils";
 const processingData: JML[] = [];
 
 describe('Application/_Page/Head', () => {
-    AppInit();
     let API: IHead;
 
     it('Восстановление состояния на клиенте', () => {
@@ -97,7 +95,7 @@ describe('Application/_Page/Head', () => {
         /** Добавим еще один тег meta для массы */
         const tag = 'meta';
         const attrs = {
-            'http-equiv': 'X-UA-Compatible',
+            'http-equiv': 'bar',
             content: 'IE=edge',
             foo: 'bar'
         };
@@ -112,6 +110,16 @@ describe('Application/_Page/Head', () => {
         assert.isString(API.getTag('meta', ({foo: 'bar'} as IHeadTagAttrs)),
             'Нашлось более 2-х тегов meta в данных');
         assert.equal(API.getTag('meta').length, 2, 'Не нашлось 2 тега meta в данных');
+    });
+
+    it('Получение тега для IE в нужном месте', () => {
+        const tag = 'meta';
+        const attrs = {'http-equiv': 'X-UA-Compatible', content: 'IE=edge'};
+
+        API.createTag(tag, attrs);
+        /** Особый тег для IE должен возвращаться сразу после открывающегося тега <head> (допустимо после noScript) */
+        processingData.splice(1, 0, [tag, {...attrs, ...additionalAttrs}]);
+        assert.deepEqual(API.getData(), processingData, 'Особый тег для IE встал на недопусимое место');
     });
 
     it('Удаление тега', () => {

@@ -1,6 +1,6 @@
 /// <amd-module name='Application/_Env/Browser/Env' />
 import { Config } from "Application/Config";
-import Request, { Store } from 'Application/Request';
+import Request from 'Application/Request';
 import Cookie from 'Application/_Env/Browser/Cookie';
 import Console, { LogLevel } from 'Application/_Env/Console';
 import ObjectStore from 'Application/_Env/ObjectStore';
@@ -9,7 +9,6 @@ import { ICookie } from 'Application/_Interface/ICookie';
 import { IEnv } from 'Application/_Interface/IEnv';
 import { ILocation } from 'Application/_Interface/ILocation';
 import { IRequest, IRequestInternal } from 'Application/_Interface/IRequest';
-import { IStore, IStoreMap } from 'Application/_Interface/IStore';
 
 /**
  * Браузерное окружение
@@ -42,11 +41,6 @@ export default class EnvBrowser implements IEnv {
      * @name Application/_Env/Browser/Env#location
      */
     location: ILocation;
-    /**
-     * @cfg {Application/Interface/IStore/IStoreMap} storages
-     * @name Application/_Env/Browser/Env#storages
-     */
-    storages: IStoreMap;
 
     private cfg: Config;
 
@@ -64,31 +58,33 @@ export default class EnvBrowser implements IEnv {
             this.console.warn("Can't use Cookie", e);
         }
 
-        let localStorage: IStore;
-        try {
-            localStorage = new Store(window.localStorage);
-        } catch (e) {
-            localStorage = new ObjectStore();
-            this.console.warn("Can't use localStorage", e);
-        }
-        let sessionStorage: IStore;
-        try {
-            sessionStorage = new Store(window.sessionStorage);
-        } catch (e) {
-            sessionStorage = new ObjectStore();
-            this.console.warn("Can't use sessionStorage", e);
-        }
-
-        this.storages = {
-            "localStorage": localStorage,
-            "sessionStorage": sessionStorage
-        };
+        // TODO использование this.storages будет поправлено
+        //  по задаче https://online.sbis.ru/opendoc.html?guid=d51db079-e251-402b-9708-9db5fb06a2b8
+        // let localStorage: IStore;
+        // try {
+        //     localStorage = new Store(window.localStorage);
+        // } catch (e) {
+        //     localStorage = new ObjectStore();
+        //     this.console.warn("Can't use localStorage", e);
+        // }
+        // let sessionStorage: IStore;
+        // try {
+        //     sessionStorage = new Store(window.sessionStorage);
+        // } catch (e) {
+        //     sessionStorage = new ObjectStore();
+        //     this.console.warn("Can't use sessionStorage", e);
+        // }
+        //
+        // this.storages = {
+        //     "localStorage": localStorage,
+        //     "sessionStorage": sessionStorage
+        // };
     }
     getRequest(): IRequest {
         return this._request;
     }
 
     createRequest(): IRequestInternal {
-        return this._request = new Request(this, this.cfg);
+        return this._request = new Request({cookie: this.cookie, location: this.location}, this.cfg);
     }
 }

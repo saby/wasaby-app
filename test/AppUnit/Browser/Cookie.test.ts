@@ -1,9 +1,7 @@
 import Cookie from 'Application/_Env/Browser/Cookie';
 import { assert } from 'chai';
 
-describe('Cookie', function () {
-
-
+describe('Application/_Env/Browser/Cookie', function () {
     describe('Env NodeJS', function () {
         if (typeof window !== "undefined") { return; }
 

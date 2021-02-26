@@ -1,6 +1,7 @@
 /// <amd-module name="Application/Env" />
 export { default as EnvBrowser } from 'Application/_Env/Browser/Env';
 export { default as EnvNodeJS } from 'Application/_Env/NodeJS/Env';
+export { LogLevel as LogLevelNodeJS, default as ConsoleNodeJS } from 'Application/_Env/NodeJS/Console';
 import { PARAMS, parseQueryGet, parseQueryHash } from 'Application/_Env/QueryParams';
 export { LogLevel } from 'Application/_Env/Console';
 import App from 'Application/_Env/App';
@@ -141,30 +142,30 @@ export const cookie: ICookie = {
  */
 export const logger: IConsole = {
     setLogLevel(level: number) {
-        return App.getRequest().console.setLogLevel(level);
+        return App.getEnv().console.setLogLevel(level);
     },
 
     getLogLevel() {
-        return App.getRequest().console.getLogLevel();
+        return App.getEnv().console.getLogLevel();
     },
 
     log(...args) {
-        const console = App.getRequest().console;
+        const console = App.getEnv().console;
         return console.log.apply(console, args);
     },
 
     info(...args) {
-        const console = App.getRequest().console;
+        const console = App.getEnv().console;
         return console.info.apply(console, args);
     },
 
     warn(...args) {
-        const console = App.getRequest().console;
+        const console = App.getEnv().console;
         return console.warn.apply(console, args);
     },
 
     error(...args) {
-        const console = App.getRequest().console;
+        const console = App.getEnv().console;
         return console.error.apply(console, args);
     }
 };

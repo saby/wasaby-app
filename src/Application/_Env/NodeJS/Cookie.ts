@@ -1,6 +1,6 @@
 /// <amd-module name="Application/_Env/NodeJS/Cookie" />
-import { ICookie, ICookieOptions } from 'Application/Interface';
-/* eslint-disable */
+import { ICookie, ICookieOptions, IHttpRequest, IHttpResponse } from 'Application/Interface';
+
 /**
  * Класс, реализующий интерфейс {@link Core/Request/IStorage},
  * предназначенный для работы с cookie в браузере
@@ -10,24 +10,60 @@ import { ICookie, ICookieOptions } from 'Application/Interface';
  * @author Заляев А.В.
  */
 export default class Cookie implements ICookie {
-
-    get() {
-        return null;
+    constructor(private getRequest: () => Partial<IHttpRequest>,
+                private getResponse: () => Partial<IHttpResponse>) {
     }
 
-    set(_key: string, _value: string, _options?: Partial<ICookieOptions>): boolean {
-        return false;
+    get(key: string): string | null {
+        return this.getRequest().cookies?.[key] || null;
     }
 
-    remove(key: string) {
+    set(key: string, value: string, options: Partial<ICookieOptions> = {}): boolean {
+        const { cookie } = this.getResponse();
+
+        if (typeof cookie !== 'function') {
+            return false;
+        }
+
+        cookie.apply(this.getResponse(), [key, value, {
+            ...options,
+            expires: Cookie.getExpires(value === null ? -1 : options.expires)
+        }]);
+
+        return true;
+    }
+
+    remove(key: string): void {
         this.set(key, null);
     }
 
-    getKeys(): Array<string> {
-        return [];
+    getKeys(): string[] {
+        return Object.keys(this.getRequest().cookies || {});
     }
 
     toObject(): Record<string, string> {
-        return {};
+        return {
+            ...this.getRequest().cookies
+        };
+    }
+
+    private static getExpires(expires?: number | Date): number | Date {
+        if (!expires) {
+            return expires;
+        }
+
+        let date;
+
+        if (typeof expires === 'number') {
+            date = new Date();
+            const MS_IN_DAY = 86400000;
+            date.setTime(date.getTime() + (expires * MS_IN_DAY));
+        } else if (expires.toUTCString) {
+            date = expires;
+        } else {
+            throw new TypeError('Option "expires" should be a Number or Date instance');
+        }
+
+        return date;
     }
 }
