@@ -96,30 +96,8 @@ export default class ElementPS {
         }
         return true;
     }
-    _isTitle(): boolean {
-        return this._name === 'title';
-    }
 
-    /** Отрисовка элемента в head. */
-    protected _render(): void {
-        this._eventHandlers?.load()
-    }
-
-    /** генерируется тэг в формате JML */
-    public static generateTag(data: IHeadTag): JML {
-        const result: JML = [data.name];
-        //TODO: убрать после реалзации старта от div
-        data.attrs['data-vdomignore'] = true;
-        if (Object.keys(data.attrs).length) {
-            result.push(data.attrs);
-        }
-        if (data.content) {
-            result.push(data.content);
-        }
-        return result;
-    }
-
-    /**
+     /**
      *  Возвращаем аттрибуты элемента.
      **/
     getAttrs(): IHeadTagAttrs {
@@ -142,6 +120,29 @@ export default class ElementPS {
      */
     changeTag(attrsChange: IHeadTagAttrs): void {
         this.setAttrs(attrsChange);
+    }
+
+    _isTitle(): boolean {
+        return this._name === 'title';
+    }
+
+    /** Отрисовка элемента в head. */
+    protected _render(): void {
+        this._eventHandlers?.load()
+    }
+
+    /** генерируется тэг в формате JML */
+    public static generateTag(data: IHeadTag): JML {
+        const result: JML = [data.name];
+        //TODO: убрать после реалзации старта от div
+        data.attrs['data-vdomignore'] = true;
+        if (Object.keys(data.attrs).length) {
+            result.push(data.attrs);
+        }
+        if (data.content) {
+            result.push(data.content);
+        }
+        return result;
     }
 }
 

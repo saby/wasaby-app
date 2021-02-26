@@ -212,5 +212,5 @@ describe('Application/_Page/Head', () => {
         API.clear();
         assert.isEmpty(API.getData());
         assert.isEmpty(API.getComments());
-    });  
+    });
 });

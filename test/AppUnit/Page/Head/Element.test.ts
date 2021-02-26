@@ -88,12 +88,17 @@ describe('Application/_Page/_head/Element', () => {
         it('Изменение атрибутов тега на клиенте', () => {
             const meta = new Element('changeTag', META_PROPS._attrs, META_PROPS._content);
             const newAttrs = {
+                name: 'meta_name_new',
                 content: 'width=100',
-                foo: 'BarProp'
+                class: 'css_new',
+                src: 'src.jpg'
             };
             meta.changeTag(newAttrs);
-            console.log(meta.getAttrs(), newAttrs);
             assert.deepEqual(meta.getAttrs(), newAttrs);
+            const doc = document.querySelector('changeTag').attributes;
+            Object.getOwnPropertyNames(newAttrs).forEach((item) => {
+                assert.isTrue(doc[item], newAttrs[item]);
+            });
         });
     });
 });

@@ -69,6 +69,7 @@ export default class Element extends ElementPS {
                 delete attrs[item];
             } else {
                 attrs[item] = attrsChange[item];
+                this._element.setAttribute(item, attrs[item]);
             }
         })
         this.setAttrs(attrs);
