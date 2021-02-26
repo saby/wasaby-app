@@ -1,8 +1,8 @@
 import { assert } from 'chai';
 import { default as AppInit } from 'Application/Initializer';
-import {additionalAttrs, JSLINKS_PROPS} from './utils';
+import { additionalAttrs, JSLINKS_PROPS } from './utils';
 import { JSLinks } from 'Application/Page';
-import { JML } from "Application/_Interface/IHead";
+import { JML } from 'Application/_Interface/IHead';
 
 const TAG = 'script';
 describe('Application/_Page/JSLinks', () => {
@@ -45,11 +45,13 @@ describe('Application/_Page/JSLinks', () => {
             const API: JSLinks = JSLinks.getInstance(NAMESPACE_STORE);
             const attrs = {};
             const WRONG_TAG = 'meta';
-            try {
-                assert.throws(API.createTag(WRONG_TAG, attrs));
+            let hasError = false;
+            try{
+                API.createTag(WRONG_TAG, attrs);
             } catch (e) {
-                assert.isDefined(e,'createTag не выбрасывает исключение');
+                hasError = true;
             }
+            assert.isTrue(hasError);
         });
         it('Данные не смешиваются при добавлении тегов по разным nameSpace', () => {
             const NAMESPACE_STORE = 'custom_name4';

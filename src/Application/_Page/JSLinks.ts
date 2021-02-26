@@ -1,10 +1,6 @@
 import * as AppEnv from 'Application/Env';
-import {
-    IJSLinks, IJSLinksInternal,
-    IJSLinksTagAttrs,
-    IJSLinksTagEventHandlers,
-    JSLinksTagId
-} from 'Application/_Interface/IJSLinks';
+import { IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId } from 'Application/_Interface/IHead';
+import { IJSLinks, IJSLinksInternal, JSLinksTagId } from 'Application/_Interface/IJSLinks';
 import { Head as HeadAPI } from 'Application/_Page/Head';
 import { default as JSLinksElement } from 'Application/_Page/_jslinks/JSLinksElement';
 
@@ -18,35 +14,17 @@ export default class JSLinks extends HeadAPI implements IJSLinks {
     private _elements: {[propName: string]: JSLinksElement } = {};
     private _id = 0;
     createTag(
-        name: 'script',
-        attrs: {src: string}): JSLinksTagId;
-    createTag(
-        name: 'script',
-        attrs: {},
-        content: string): JSLinksTagId ;
-    createTag(
-        name: 'script',
-        attrs: {type: string, src: string}): JSLinksTagId;
-    createTag(
-        name: 'script',
-        attrs: {type: string, src: string, defer: string}): JSLinksTagId;
-    createTag(
-        name: 'script',
-        attrs: {type: string, src: string, defer: string},
-        content?: string,
-        eventHandlers?: IJSLinksTagEventHandlers): JSLinksTagId;
-    createTag(
         name: string,
-        attrs: {type: string, src: string, defer: string},
+        attrs?: {type?: string, src?: string, defer?: string},
         content?: string,
-        eventHandlers?: IJSLinksTagEventHandlers): JSLinksTagId {
+        eventHandlers?: IHeadTagEventHandlers): IHeadTagId {
 
         if (typeof window !== 'undefined') {
-            AppEnv.logger.warn('Создавать JSLinks на клиенте запрещено.');
+            AppEnv.logger.warn('Вызывать метод createTag на клиенте запрещено.');
             return;
         }
         if (name !== 'script') {
-            throw new Error('Создавать JSLinks с параметром name, который не равняется "script" - запрещено.');
+            throw new Error('Вызывать метод JSLinks API с параметром name, отличным от script запрещено');
         }
         /**
          * при работе с rsSerialized, rtpackModuleNames пробрасывается только content, аттрибуты не требуются.
@@ -69,7 +47,7 @@ export default class JSLinks extends HeadAPI implements IJSLinks {
         this._elements[uuid] = new JSLinksElement(name, attrs, content, eventHandlers);
         return uuid;
     }
-    getTag(name?: 'script', attrs?: IJSLinksTagAttrs): JSLinksTagId | JSLinksTagId[] | null {
+    getTag(name?: 'script', attrs?: IHeadTagAttrs): JSLinksTagId | JSLinksTagId[] | null {
         return super.getTag(name, attrs);
     }
     // #region IStore
