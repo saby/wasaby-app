@@ -6,14 +6,13 @@ import { JML } from 'Application/_Interface/IHead';
 
 const TAG = 'script';
 describe('Application/_Page/JSLinks', () => {
-    AppInit();
     if(typeof(window) !== 'undefined'){
         it('Тесты JSLinks не проводятся на клиенте', function(): void{
             this.skip();
         });
         return;
     }
-
+    AppInit();
     describe('server side', () => {
         it('Создание тега', () => {
             const NAMESPACE_STORE = 'custom_name';

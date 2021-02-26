@@ -15,7 +15,7 @@ export default class JSLinksElement extends ElementPS {
     }
     isFit(name?: string, attrs?: IHeadTagAttrs): boolean {
         if (name && name !== 'script'){
-            throw new Error('В методе isEqual класса JSLinksElement п name должен равняться "script"');
+            throw new Error('В методе isFit класса JSLinksElement параметр name должен равняться "script"');
         }
         return super.isFit(name, attrs);
     }
