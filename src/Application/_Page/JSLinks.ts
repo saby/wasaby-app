@@ -10,6 +10,8 @@ import { default as JSLinksElement } from 'Application/_Page/_jslinks/JSLinksEle
  * Получить инстанст синглтона можно через статичный метод getInstance()
  * @author Хамбелов М.И.
  */
+// tslint:disable-next-line:ban-ts-ignore
+// @ts-ignore
 export default class JSLinks extends HeadAPI implements IJSLinks {
     private _elements: {[propName: string]: JSLinksElement } = {};
     private _id = 0;
