@@ -85,13 +85,14 @@ describe('Application/_Page/_head/Element', () => {
             const meta = new Element('meta', META_PROPS._attrs, META_PROPS._content);
             assert.deepEqual(META_PROPS._attrs as IHeadTagAttrs, meta.getAttrs());
         });
-        it('Изменение тега', () => {
-            const meta = new Element('meta', META_PROPS._attrs, META_PROPS._content);
+        it('Изменение атрибутов тега на клиенте', () => {
+            const meta = new Element('changeTag', META_PROPS._attrs, META_PROPS._content);
             const newAttrs = {
                 content: 'width=100',
                 foo: 'BarProp'
             };
             meta.changeTag(newAttrs);
+            console.log(meta.getAttrs(), newAttrs);
             assert.deepEqual(meta.getAttrs(), newAttrs);
         });
     });

@@ -85,11 +85,11 @@ describe('Application/_Page/_head/ElementPS', () => {
                 {name: 'title', attrs: TITLE_PROPS._attrs, content: TITLE_PROPS._content}),
                 ['title', {...TITLE_PROPS._attrs, ...additionalAttrs}, TITLE_PROPS._content]);
         });
-        it('Взять атрибуты тега', () => {
+        it('Взять атрибуты тега на сервере', () => {
             const script = new ElementPS('script', SCRIPT_PROPS._attrs, SCRIPT_PROPS._content, EVENT_HANDLER);
             assert.deepEqual(SCRIPT_PROPS._attrs as IHeadTagAttrs, script.getAttrs());
         });
-        it('Изменение тега', () => {
+        it('Изменение атрибутов тега на сервере', () => {
             const script = new ElementPS('script', SCRIPT_PROPS._attrs, SCRIPT_PROPS._content, EVENT_HANDLER);
             const newAttrs = {
                 content: 'width=100',
