@@ -97,7 +97,7 @@ describe('Application/_Page/_head/Element', () => {
             assert.deepEqual(meta.getAttrs(), newAttrs);
             const doc = document.querySelector('changeTag').attributes;
             Object.getOwnPropertyNames(newAttrs).forEach((item) => {
-                assert.isTrue(doc[item], newAttrs[item]);
+                assert.deepEqual(doc[item].value, newAttrs[item]);
             });
         });
     });
