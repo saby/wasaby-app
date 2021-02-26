@@ -16,10 +16,10 @@ const PREFIX: string = typeof window === 'undefined' ? 'ps-' : '';
  * @author Печеркин С.В.
  */
 export class Head implements IHead {
-    private _elements: {[propName: string]: Element | ElementPS} = {};
     private _comments: Array<string> = [];
     private _noScriptUrl: string = null;
-    private _id = 1;
+    protected _elements: {[propName: string]: Element | ElementPS} = {};
+    protected _id = 1;
 
     constructor() {
         this._collectTags();
@@ -217,11 +217,11 @@ export class Head implements IHead {
     }
 
     /** Генератор уникального идентификатора для каждого тега */
-    private _generateGuid(): IHeadTagId {
+    protected _generateGuid(): IHeadTagId {
         return `head-${PREFIX}${this._id++}`;
     };
 
-    private static _creator(): Head {
+    protected static _creator(): Head {
         return new Head();
     }
 

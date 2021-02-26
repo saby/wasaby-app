@@ -10,11 +10,9 @@ import { default as JSLinksElement } from 'Application/_Page/_jslinks/JSLinksEle
  * Получить инстанст синглтона можно через статичный метод getInstance()
  * @author Хамбелов М.И.
  */
-// tslint:disable-next-line:ban-ts-ignore
-// @ts-ignore
 export default class JSLinks extends HeadAPI implements IJSLinks {
-    private _elements: {[propName: string]: JSLinksElement } = {};
-    private _id = 0;
+    _elements: {[propName: string]: JSLinksElement } = {};
+    _id = 0;
     createTag(
         name: string,
         attrs?: IHeadTagAttrs,
@@ -78,10 +76,10 @@ export default class JSLinks extends HeadAPI implements IJSLinks {
     createComment(): void {};
     createNoScript(): void {};
     /* tslint:enable:no-empty */
-    private _generateGuid(): JSLinksTagId {
+    _generateGuid(): JSLinksTagId {
         return `scripts-${this._id++}`;
     };
-    private static _creator(): JSLinks {
+    static _creator(): JSLinks {
         return new JSLinks();
     }
     static _instance: JSLinks;
