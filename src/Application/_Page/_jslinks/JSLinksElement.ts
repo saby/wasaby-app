@@ -1,3 +1,5 @@
+///// <amd-module name="Application/_Page/_jslinks/JSLinksElement" />
+
 import { IHeadTagAttrs, IHeadTagEventHandlers } from 'Application/_Interface/IHead';
 import ElementPS from 'Application/_Page/_head/ElementPS';
 

@@ -1,5 +1,7 @@
+///// <amd-module name="Application/_Page/JSLinks" />
+
 import * as AppEnv from 'Application/Env';
-import { IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId } from 'Application/_Interface/IHead';
+import { IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId, JML } from 'Application/_Interface/IHead';
 import { IJSLinks, IJSLinksInternal, JSLinksTagId } from 'Application/_Interface/IJSLinks';
 import { Head as HeadAPI } from 'Application/_Page/Head';
 import { default as JSLinksElement } from 'Application/_Page/_jslinks/JSLinksElement';
@@ -49,6 +51,18 @@ export default class JSLinks extends HeadAPI implements IJSLinks {
     }
     getTag(name?: 'script', attrs?: IHeadTagAttrs): JSLinksTagId | JSLinksTagId[] | null {
         return super.getTag(name, attrs);
+    }
+    getData(id: IHeadTagId): JML;
+    getData(): Array<JML>;
+    getData(id?: IHeadTagId): Array<JML> | JML {
+        if (id && this._elements[id]) {
+            return this._elements[id].getData();
+        }
+        const result: Array<JML> = [];
+        for (const elementsKey in this._elements) {
+            result.push(this._elements[elementsKey].getData())
+        }
+        return result;
     }
     // #region IStore
     get<K extends keyof IJSLinksInternal>(key: string): IJSLinksInternal[K] {
