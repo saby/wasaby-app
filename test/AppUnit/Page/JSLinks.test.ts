@@ -38,7 +38,6 @@ describe('Application/_Page/JSLinks', () => {
 
             API.createTag(TAG, attrs);
             assert.deepEqual(API.getData(), localData, 'После добавления дубля он появился в данных');
-
         });
         it('Создание тега c ошибочным name', () => {
             const NAMESPACE_STORE = 'custom_name3';

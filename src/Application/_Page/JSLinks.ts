@@ -15,7 +15,7 @@ export default class JSLinks extends HeadAPI implements IJSLinks {
     private _id = 0;
     createTag(
         name: string,
-        attrs?: {type?: string, src?: string, defer?: string},
+        attrs?: IHeadTagAttrs,
         content?: string,
         eventHandlers?: IHeadTagEventHandlers): IHeadTagId {
 
