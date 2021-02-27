@@ -73,6 +73,8 @@ export type JML = [string, (object | JsonML | string)?, (JsonML | string)?];
  * @property {Function} getData - вернет текущее состояние тегов с учетом их добавления/удаления в формате JsonML
  * @property {Function} getComments - вернет все зарегистрированные комментарии в виде строк без <!-- --> (wrap)
  * @property {Function} clear - очистит внутреннее состояние. Имеет смысл вызывать только на ПП
+ * @property {Function} changeTag - сменит параметры тега
+ * @property {Function} getAttrs - вернет аттрибуты тега
  * @see https://wi.sbis.ru/doc/platform/developmentapl/service-development/service-contract/logic/json-markup-language/
  * @public
  * @author Печеркин С.В.
@@ -86,6 +88,8 @@ export interface IInternalHead {
     getData(id?: IHeadTagId): Array<JML> | JML;
     getComments(wrap?: boolean): string[];
     clear();
+    getAttrs(tagId: IHeadTagId): IHeadTagAttrs | null;
+    changeTag(tagId: IHeadTagId, attrs: IHeadTagAttrs): void;
 }
 
 export interface IHead extends IStore<IInternalHead>, IInternalHead {}

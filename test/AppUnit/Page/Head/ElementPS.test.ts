@@ -1,5 +1,6 @@
 import { assert } from 'chai';
 import { default as ElementPS } from 'Application/_Page/_head/ElementPS';
+import { IHeadTagAttrs } from "Application/Interface";
 import {
     ALL_KEYS_ELEMENT,
     KEY_TITLE,
@@ -83,6 +84,21 @@ describe('Application/_Page/_head/ElementPS', () => {
             assert.deepEqual(ElementPS.generateTag(
                 {name: 'title', attrs: TITLE_PROPS._attrs, content: TITLE_PROPS._content}),
                 ['title', {...TITLE_PROPS._attrs, ...additionalAttrs}, TITLE_PROPS._content]);
+        });
+        it('Взять атрибуты тега на сервере', () => {
+            const script = new ElementPS('script', SCRIPT_PROPS._attrs, SCRIPT_PROPS._content, EVENT_HANDLER);
+            assert.deepEqual(SCRIPT_PROPS._attrs as IHeadTagAttrs, script.getAttrs());
+        });
+        it('Изменение атрибутов тега на сервере', () => {
+            const script = new ElementPS('script', SCRIPT_PROPS._attrs, SCRIPT_PROPS._content, EVENT_HANDLER);
+            const newAttrs = {
+                content: 'width=100',
+                foo: 'BarProp'
+            };
+            script.changeTag(newAttrs);
+            assert.deepEqual(script.getAttrs(), newAttrs);
+            script.changeTag({});
+            assert.deepEqual(script.getAttrs(), {});
         });
     });
 });

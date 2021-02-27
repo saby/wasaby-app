@@ -1,5 +1,6 @@
 import { assert } from 'chai';
 import { default as Element } from 'Application/_Page/_head/Element';
+import { IHeadTagAttrs } from "Application/Interface";
 import {
     ALL_KEYS_ELEMENT,
     KEY_TITLE,
@@ -80,6 +81,24 @@ describe('Application/_Page/_head/Element', () => {
             assert.isNull(document.querySelector(`meta[name=${metaNameUnique}]`),
                 'Тестируемый элемент не был удален из DOM дерева');
         });
+        it('Взять атрибуты тега на клиенте', () => {
+            const meta = new Element('meta', META_PROPS._attrs, META_PROPS._content);
+            assert.deepEqual(META_PROPS._attrs as IHeadTagAttrs, meta.getAttrs());
+        });
+        it('Изменение атрибутов тега на клиенте', () => {
+            const meta = new Element('changeTag', META_PROPS._attrs, META_PROPS._content);
+            const newAttrs = {
+                name: 'meta_name_new',
+                content: 'width=100',
+                class: 'css_new',
+                src: 'src.jpg'
+            };
+            meta.changeTag(newAttrs);
+            assert.deepEqual(meta.getAttrs(), newAttrs);
+            const doc = document.querySelector('changeTag').attributes;
+            Object.getOwnPropertyNames(newAttrs).forEach((item) => {
+                assert.deepEqual(doc[item].value, newAttrs[item]);
+            });
+        });
     });
-
 });

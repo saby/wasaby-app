@@ -41,6 +41,40 @@ export default class Element extends ElementPS {
         return super.isEqual(name, attrs, content, eventHandlers);
     }
 
+    /**
+     * Меняет атрибуты элемента. Переопределенный метод
+     * @param attrsChange {IHeadTagAttrs} Атрибуты для замены
+     */
+    changeTag(attrsChange: IHeadTagAttrs): void {
+        const attrs = this.getAttrs();
+        /* находим все свойства в оригинале и изменяемом объекте - если свойства нет в изменяемом
+        удаляем его, если разные значения, то удаляем и создаем новое свойство, так нужно из-за
+        специфики DOM*/
+        let oldItems = Object.getOwnPropertyNames(attrs);
+        let newItems = Object.getOwnPropertyNames(attrsChange);
+        let allItems = Object.getOwnPropertyNames({ ...attrs, ...attrsChange });
+
+        allItems.forEach((item) => {
+            const isOld = oldItems.includes(item);
+            const isNew = newItems.includes(item);
+            if (isOld && isNew) {
+                if (attrs[item] !== attrsChange[item]) {
+                    this._element.removeAttribute(item);
+                    delete attrs[item];
+                    attrs[item] = attrsChange[item];
+                    this._element.setAttribute(item, attrs[item]);
+                }
+            } else if (isOld) {
+                this._element.removeAttribute(item);
+                delete attrs[item];
+            } else {
+                attrs[item] = attrsChange[item];
+                this._element.setAttribute(item, attrs[item]);
+            }
+        })
+        this.setAttrs(attrs);
+    }
+
     /** Метод отрисовки элемента в head в DOM-дереве.
      * Переопределенный метод от родительского класса.
      */
