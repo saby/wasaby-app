@@ -265,6 +265,6 @@ export class Head implements IHead {
             Head._instance = Head._instance || Head._creator();
             return Head._instance;
         }
-        return <Head> AppEnv.getStore('HeadApi', Head._creator);
+        return <Head> AppEnv.getStore('HeadAPI', Head._creator);
     }
 }
