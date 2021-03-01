@@ -63,7 +63,10 @@ export default class DisposeControl {
         this._totalResources = [];
     }
 }
-
+/**
+ * Тип класса, который может быть создан через new (создан через конструктор).
+ * Необходим для миксин-функции toMixDisposable.
+ */
 type Constructor = new (...args: any[]) => {};
 
 /**
@@ -85,6 +88,7 @@ export function toMixDisposable<TBase extends Constructor>(Base: TBase): TBase {
     /**
      * класс, возвращаемый из миксина, в который примешиваются методы для очистки ресурсов.
      * @class Application/_State/DisposeControl/ControlDisposable
+     * @public
      */
     return class ControlDisposable extends Base {
         /**
