@@ -155,6 +155,56 @@ describe('Application/_Page/Head', () => {
         );
     });
 
+    it('Изменение атрибутов тега', () => {
+        /** Cоздаем теги */
+        const tagName = 'changeTag';
+        const attrs = {
+            content: 'width=100'
+        };
+        const tag = API.createTag(tagName, attrs);
+
+        /** Новые аттрибуты */
+        const changeAttrs = {
+            content: 'width=1000; height=1000',
+            foo: 'barChange'
+        };
+
+        /** Может возникнуть такая ситуация, что аттрибутов много, а изменим одну строчку. */
+        const secondTagName = 'secondChangeTag';
+        const secondAttrs = {
+            content: 'width=1000; height=1000',
+            foo: 'barChange'
+        };
+        const changeSecondAttrs = {
+            content: 'width=3000',
+            atr: '3000',
+            xMode: 'y',
+            c: 'w'
+        };
+        const secondTag = API.createTag(secondTagName, secondAttrs);
+
+        /** Меняем  данные */
+        API.changeTag(tag, changeAttrs);
+
+        API.changeTag(secondTag, changeSecondAttrs);
+        processingData.push([tagName, {...changeAttrs, ...additionalAttrs}]);
+        processingData.push([secondTagName, {...changeSecondAttrs, ...additionalAttrs}]);
+        assert.deepEqual(API.getData(), processingData);
+    });
+
+    it('Взять атрибуты тега', () => {
+        const tagName = 'tagAttr';
+        const attrs = {
+            content: 'width=100',
+            foo: 'BarProp'
+        };
+        const tag = API.createTag(tagName, attrs);
+
+        assert.isNull(API.getAttrs('errorTag'));
+        processingData.push([tagName, { ...attrs }]);
+        assert.deepEqual(API.getAttrs(tag), attrs);
+    });
+
     it('Очистка хранилища', () => {
         API.clear();
         assert.isEmpty(API.getData());

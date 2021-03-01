@@ -96,6 +96,33 @@ export default class ElementPS {
         }
         return true;
     }
+
+    /**
+     * Возвращаем аттрибуты элемента.
+     */
+    getAttrs(): IHeadTagAttrs {
+        const attrs = { ...this._attrs };
+        //TODO: убрать после реалзации старта от div
+        delete attrs['data-vdomignore'];
+        return attrs;
+    }
+
+    /**
+     * Устанавливаем атрибуты элемента
+     * @param attrs {IHeadTagAttrs} Объект атрибутов элемента
+     */
+    setAttrs(attrs: IHeadTagAttrs): void {
+        this._attrs = attrs;
+    }
+
+    /**
+     * Меняет атрибуты элемента
+     * @param attrsChange {IHeadTagAttrs} Атрибуты для замены
+     */
+    changeTag(attrsChange: IHeadTagAttrs): void {
+        this.setAttrs(attrsChange);
+    }
+
     _isTitle(): boolean {
         return this._name === 'title';
     }
