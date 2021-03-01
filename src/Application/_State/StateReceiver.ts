@@ -214,12 +214,13 @@ export class StateReceiver implements IStateReceiver {
             inst.setState(this.deserialized[key]);
             delete this.deserialized[key];
         }
-        // todo проверка на сервис представления
+
+        // проверка на сервис представления
         if (typeof process !== 'undefined' && !process.versions) {
             if (typeof this.receivedStateObjectsArray[key] !== 'undefined') {
                 const message = '[Application/_State/StateReceiver:register] - Try to register instance more than once ' +
                     `or duplication of keys happened; current key is ${key}`;
-                this._getLogger().warn(message, inst);
+                this._getLogger().warn(message);
             }
         }
         this.receivedStateObjectsArray[key] = inst;
