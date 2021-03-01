@@ -26,3 +26,8 @@ export const EVENT_HANDLER = {load: () => {return 'load';}};
 export const additionalAttrs = {
     'data-vdomignore': true
 };
+
+export const JSLINKS_PROPS = {
+    name: 'script',
+    attrs: {defer: 'defer', type: 'text/javascript'}
+};

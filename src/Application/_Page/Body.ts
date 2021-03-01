@@ -97,6 +97,6 @@ export class Body implements IBody {
             Body._instance = Body._instance || Body._creator();
             return Body._instance;
         }
-        return <Body> AppEnv.getStore('BodyApi', Body._creator);
+        return <Body> AppEnv.getStore('BodyAPI', Body._creator);
     }
 }
