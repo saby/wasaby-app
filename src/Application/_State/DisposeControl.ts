@@ -67,10 +67,17 @@ export default class DisposeControl {
 type Constructor = new (...args: any[]) => {};
 
 /**
- * функция, которая возвращает класс-mixin для прикрепления и освобождения ресурсов
+ * функция, которая возвращает класс с примесью для прикрепления и освобождения ресурсов
+ * @function
+ * @name Application/_State/DisposeControl#toMixDisposable
  * @param Base класс, к которому будут примешиваться методы
+ * @return {ControlDisposable} класс, возвращаемый из миксина, в который примешиваются методы для очистки ресурсов.
  */
 export function toMixDisposable<TBase extends Constructor>(Base: TBase){
+    /**
+     * класс, возвращаемый из миксина, в который примешиваются методы для очистки ресурсов.
+     * @class ControlDisposable
+     */
     return class ControlDisposable extends Base {
         /**
          * ресурсы контрола, за которыми можно следить и при удалении этого контрола все ресурсы освобождаются
