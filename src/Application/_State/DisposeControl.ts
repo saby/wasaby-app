@@ -63,14 +63,33 @@ export default class DisposeControl {
         this._totalResources = [];
     }
 }
-
+/**
+ * Тип класса, который может быть создан через new (создан через конструктор).
+ * Необходим для миксин-функции toMixDisposable.
+ */
 type Constructor = new (...args: any[]) => {};
 
 /**
- * функция, которая возвращает класс-mixin для прикрепления и освобождения ресурсов
+ * функция, которая возвращает класс с примесью для прикрепления и освобождения ресурсов
+ * @function
+ * @name Application/_State/DisposeControl#toMixDisposable
+ * @example
+ * <pre>
+ *     import { Component } from 'react';
+ *     const ReactControl = toMixDisposable<Component>(Component);
+ *     const DisposableControl = new ReactControl({}, {readOnly: false, theme: 'default'});
+ * </pre>
  * @param Base класс, к которому будут примешиваться методы
+ * @return {Application/_State/DisposeControl/ControlDisposable}
+ * класс, возвращаемый из миксина, в который примешиваются методы для очистки ресурсов.
+ * @public
  */
-export function toMixDisposable<TBase extends Constructor>(Base: TBase){
+export function toMixDisposable<TBase extends Constructor>(Base: TBase): TBase {
+    /**
+     * класс, возвращаемый из миксина, в который примешиваются методы для очистки ресурсов.
+     * @class Application/_State/DisposeControl/ControlDisposable
+     * @public
+     */
     return class ControlDisposable extends Base {
         /**
          * ресурсы контрола, за которыми можно следить и при удалении этого контрола все ресурсы освобождаются
