@@ -41,9 +41,10 @@ export default class ElementPS {
 
     /** Возвращаем элемент в формате JML, предварительно сгенерировав его */
     getData(): JML {
+        /** В момент генерации информации убираем из title все атрибуты */
         return ElementPS.generateTag({
             name: this._name,
-            attrs: this._attrs,
+            attrs: this._isTitle() ? {} : this._attrs,
             content: this._content,
             eventHandlers: this._eventHandlers
         });

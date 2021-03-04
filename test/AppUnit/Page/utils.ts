@@ -2,7 +2,7 @@ export const ALL_KEYS_ELEMENT = ['_name', '_attrs', '_content', '_eventHandlers'
 export const KEY_TITLE = ['_content'];
 export const TITLE_PROPS = {
     _name: 'title',
-    _attrs: {class: 'title-class'},
+    _attrs: {},
     _content: 'title_content'
 };
 export const META_PROPS = {
