@@ -18,12 +18,22 @@ export class Body implements IBody {
         this._bodyElement = typeof window === 'undefined' ? new ElementPS() : document.body.classList;
     }
 
+    /** Удалить после перехода на рендер от div */
+    private _notifyEventCrunch(): void {
+        if (typeof window !== 'undefined') {
+            window.document.body.dispatchEvent(
+               new CustomEvent('_bodyClassesUpdateCrunch', {detail: this.getClassString()})
+            );
+        }
+    }
+
     addClass(...tokens): void {
         try {
             this._bodyElement.add.apply(this._bodyElement, tokens);
         } catch (e) {
             this._logError(e);
         }
+        this._notifyEventCrunch();
     }
 
     removeClass(...tokens): void {
@@ -32,6 +42,7 @@ export class Body implements IBody {
         } catch (e) {
             this._logError(e);
         }
+        this._notifyEventCrunch();
     }
 
     toggleClass(token: string, force?: boolean): boolean {
@@ -40,6 +51,7 @@ export class Body implements IBody {
         } catch (e) {
             this._logError(e)
         }
+        this._notifyEventCrunch();
     }
 
     containsClass(token: string): boolean {
