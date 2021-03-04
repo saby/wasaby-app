@@ -55,7 +55,7 @@ describe('Application/_Page/Head', () => {
 
     it('Создание тега title', () => {
         const tag = 'title';
-        const attrs = {attr: 'this_attr_will_be_delete'};
+        const attrs = {name: 'this_attr_will_be_delete'};
 
         const tagId = API.createTag(tag, attrs);
         /** При получении данных от title тега из него удаляются все теги */
