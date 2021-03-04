@@ -53,6 +53,20 @@ describe('Application/_Page/Head', () => {
         assert.deepEqual(API.getData(), processingData);
     });
 
+    it('Создание тега title', () => {
+        const tag = 'title';
+        const attrs = {attr: 'this_attr_will_be_delete'};
+
+        const tagId = API.createTag(tag, attrs);
+        /** При получении данных от title тега из него удаляются все теги */
+        processingData.push([tag, {...additionalAttrs}]);
+        assert.deepEqual(API.getData(), processingData);
+
+        /** Удалим наше творчество, чтобы не мешать другим тестам. Тег title мы уже добавляли ранее. */
+        API.deleteTag(tagId);
+        processingData.pop();
+    });
+
     it('Добавление тега в набор уже существующих тегов', () => {
         const tag = 'link';
         const attrs = {
