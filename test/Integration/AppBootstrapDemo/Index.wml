@@ -1,0 +1,8 @@
+<SbisEnvUI.Bootstrap title="Demo Application Bootstrap">
+   <ws:content>
+     <h1 class="bootstrapdemo_title">
+       Bootstrap Demo
+     </h1>
+     <AppBootstrapDemo.Main/>
+   </ws:content>
+</SbisEnvUI.Bootstrap>

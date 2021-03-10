@@ -1,0 +1,11 @@
+<div>
+    <h2>
+        Демонстрация работы StateReceiver
+    </h2>
+    <div id="status-sp">
+        Статус загрузки данных из СП: {{status}}
+    </div>
+    <div id="value-random">
+        Рандомное число из receivedState: {{value}}
+    </div>
+</div>
