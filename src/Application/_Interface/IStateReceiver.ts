@@ -2,6 +2,8 @@
 import { IConsole } from 'Application/_Interface/IConsole';
 import { ISerializableState } from "Application/_Interface/ISerializableState";
 
+export type IStateReceiverMeta =  {ulid: string} & Record<string, string>;
+
 /**
  * Интерфейс компонента для восстановления состояний компонентов.
  * Необходим для получения данных состояний компонентов созданных на сервер.
@@ -29,10 +31,11 @@ export interface IStateReceiver {
 
     /**
      * Зарегистрировать компоненты, состояние которых необходимо сохранить.
-     * @param {String} uid Идентификатор инстанса, для идентификации сохраненного для него состояния.
+     * @param {string | IStateReceiverMeta} uid Идентификатор инстанса,
+     * для идентификации сохраненного для него состояния.
      * @param {Application/_Interface/ISerializableState} component Сериализируемый компонент.
      */
-    register(uid: string, component: ISerializableState): void;
+    register(meta: string | IStateReceiverMeta, component: ISerializableState): void;
 
     /**
      * Отменить регистрацию по идентификатору инстанса.
