@@ -28,8 +28,13 @@ export class Body implements IBody {
         }
     }
 
-    addClass(...tokens): void {
+    addClass(...initialTokens: string[]): void {
         try {
+            const tokens = Body._prepareTokens(initialTokens);
+            if (!tokens.length) {
+                return
+            }
+
             this._bodyElement.add.apply(this._bodyElement, tokens);
         } catch (e) {
             this._logError(e);
@@ -37,8 +42,13 @@ export class Body implements IBody {
         this._notifyEventCrunch();
     }
 
-    removeClass(...tokens): void {
+    removeClass(...initialTokens: string[]): void {
         try {
+            const tokens = Body._prepareTokens(initialTokens);
+            if (!tokens.length) {
+                return
+            }
+
             this._bodyElement.remove.apply(this._bodyElement, tokens);
         } catch (e) {
             this._logError(e);
@@ -97,6 +107,18 @@ export class Body implements IBody {
 
     private static _creator(): Body {
         return new Body();
+    }
+
+    private static _prepareTokens(tokens: string[]): string[] {
+        const result: string[] = [];
+
+        tokens.forEach((token) => {
+            if (!!token) {
+                result.push(token.trim());
+            }
+        })
+
+        return result;
     }
 
     static _instance: Body;
