@@ -18,9 +18,10 @@ export class Body implements IBody {
         this._bodyElement = typeof window === 'undefined' ? new ElementPS() : document.body.classList;
     }
 
-    /** Удалить после перехода на рендер от div */
+    /** Костылямбрий, который будет жить, пока не закончится переход на построение от шаблона #bootsrap */
     private _notifyEventCrunch(): void {
         if (typeof window !== 'undefined') {
+            customEventPolyfill();
             window.document.body.dispatchEvent(
                new CustomEvent('_bodyClassesUpdateCrunch', {detail: this.getClassString()})
             );
@@ -111,4 +112,21 @@ export class Body implements IBody {
         }
         return <Body> AppEnv.getStore('BodyAPI', Body._creator);
     }
+}
+
+/** Костылямбрий, который будет жить, пока не закончится переход на построение от шаблона #bootsrap */
+function customEventPolyfill(): void {
+    if ( typeof window.CustomEvent === "function" ) {
+        return
+    }
+
+    function CustomEvent ( event, params ) {
+        params = params || { bubbles: false, cancelable: false, detail: null };
+        const evt = document.createEvent( 'CustomEvent' );
+        evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
+        return evt;
+    }
+
+    // @ts-ignore
+    window.CustomEvent = CustomEvent;
 }
