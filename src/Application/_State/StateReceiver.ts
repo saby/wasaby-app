@@ -1,5 +1,5 @@
 /// <amd-module name="Application/_State/StateReceiver" />
-import { IStateReceiver } from 'Application/Interface';
+import { IStateReceiver, IStateReceiverMeta, ISerializableState } from 'Application/Interface';
 import { IConsole } from 'Application/_Interface/IConsole';
 
 /**
@@ -94,7 +94,6 @@ class Serializer {
  *  в случае, если не был передан реальный логгер
  */
 const logger: IConsole = {
-
     /** вероятно, в getLogLevel возвращать 0 - плохая идея,
      * но возвращать число требует интерфейс IConsole
      */
@@ -117,8 +116,17 @@ const logger: IConsole = {
     warn(...args: any): void {
     },
 };
+
+interface IReceivedStateData {
+    /**
+     * В общем случае в поле meta.moduleName лежит название модуля, из которого зарегистрировали StateReceiver
+     */
+    meta: IStateReceiverMeta;
+    data: any;
+}
+
 export class StateReceiver implements IStateReceiver {
-    private receivedStateObjectsArray: any = {};
+    private receivedStateObjectsArray: Record<string, IReceivedStateData> = {};
     private deserialized: any = {};
     private __serializer;
     private _logger: IConsole;
@@ -156,8 +164,7 @@ export class StateReceiver implements IStateReceiver {
         const allAdditionalDeps = {};
         const allRecStates = this.receivedStateObjectsArray;
         Object.keys(allRecStates).forEach((key) => {
-            const state = allRecStates[key].getState();
-            const receivedState = typeof state === 'object' && 'receivedState' in state ? state.receivedState : state;
+            const receivedState = allRecStates[key].data.getState();
             if (!receivedState) { return; }
             try {
                 /**
@@ -176,7 +183,8 @@ export class StateReceiver implements IStateReceiver {
                 } else {
                     serializedFieldError = `${key}: ${serializedMap[key]}`;
                 }
-                this._getLogger().error(`${state?.moduleName || key}, ${serializedFieldError} _beforeMount вернул несериализуемое состояние : ${e}` );
+                const meta: IStateReceiverMeta = allRecStates[key].meta;
+                this._getLogger().error(`${meta?.moduleName || key}, ${serializedFieldError} несериализуемое состояние : ${e}` );
                 delete serializedMap[key];
             }
         });
@@ -209,7 +217,9 @@ export class StateReceiver implements IStateReceiver {
         }
     }
 
-    register(key: string, inst: any): void {
+    register(meta: string | IStateReceiverMeta, inst: ISerializableState): void {
+        const metaObject: IStateReceiverMeta = typeof meta === 'string' ? { ulid: meta } : meta;
+        const key: string = metaObject.ulid;
         if (this.deserialized[key]) {
             inst.setState(this.deserialized[key]);
             delete this.deserialized[key];
@@ -217,12 +227,13 @@ export class StateReceiver implements IStateReceiver {
         // todo проверка на сервис представления
         if (typeof process !== 'undefined' && !process.versions) {
             if (typeof this.receivedStateObjectsArray[key] !== 'undefined') {
-                const message = '[Application/_State/StateReceiver:register] - Try to register instance more than once ' +
+                const message = '[Application/_State/StateReceiver:register]' +
+                    ' - Try to register instance more than once ' +
                     `or duplication of keys happened; current key is ${key}`;
                 this._getLogger().warn(message, inst);
             }
         }
-        this.receivedStateObjectsArray[key] = inst;
+        this.receivedStateObjectsArray[key] = { meta: metaObject, data: inst };
     }
 
     unregister(key: string): void {
