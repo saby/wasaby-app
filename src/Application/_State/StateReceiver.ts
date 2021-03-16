@@ -1,5 +1,5 @@
 /// <amd-module name="Application/_State/StateReceiver" />
-import { IStateReceiver, IStateReceiverMeta } from 'Application/Interface';
+import { IStateReceiver, IStateReceiverMeta, ISerializableState } from 'Application/Interface';
 import { IConsole } from 'Application/_Interface/IConsole';
 
 /**
@@ -94,7 +94,6 @@ class Serializer {
  *  в случае, если не был передан реальный логгер
  */
 const logger: IConsole = {
-
     /** вероятно, в getLogLevel возвращать 0 - плохая идея,
      * но возвращать число требует интерфейс IConsole
      */
@@ -218,11 +217,9 @@ export class StateReceiver implements IStateReceiver {
         }
     }
 
-    register(meta: string | IStateReceiverMeta, inst: any): void {
-        if (typeof meta === 'string') {
-            meta = { ulid: meta}
-        }
-        const key: string = meta.ulid;
+    register(meta: string | IStateReceiverMeta, inst: ISerializableState): void {
+        const metaObject: IStateReceiverMeta = typeof meta === 'string' ? { ulid: meta } : meta;
+        const key: string = metaObject.ulid;
         if (this.deserialized[key]) {
             inst.setState(this.deserialized[key]);
             delete this.deserialized[key];
@@ -230,12 +227,13 @@ export class StateReceiver implements IStateReceiver {
         // todo проверка на сервис представления
         if (typeof process !== 'undefined' && !process.versions) {
             if (typeof this.receivedStateObjectsArray[key] !== 'undefined') {
-                const message = '[Application/_State/StateReceiver:register] - Try to register instance more than once ' +
+                const message = '[Application/_State/StateReceiver:register]' +
+                    ' - Try to register instance more than once ' +
                     `or duplication of keys happened; current key is ${key}`;
                 this._getLogger().warn(message, inst);
             }
         }
-        this.receivedStateObjectsArray[key] = {meta, data: inst};
+        this.receivedStateObjectsArray[key] = { meta: metaObject, data: inst };
     }
 
     unregister(key: string): void {
