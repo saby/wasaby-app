@@ -12,7 +12,7 @@ import { default as JSLinksElement } from 'Application/_Page/_jslinks/JSLinksEle
  * Получить инстанст синглтона можно через статичный метод getInstance()
  * @author Хамбелов М.И.
  */
-export default class JSLinks extends HeadAPI implements IJSLinks {
+export class JSLinks extends HeadAPI implements IJSLinks {
     _elements: {[propName: string]: JSLinksElement } = {};
     _id = 0;
     createTag(
