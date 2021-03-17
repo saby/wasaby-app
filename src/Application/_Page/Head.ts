@@ -75,6 +75,10 @@ export class Head implements IHead {
         content: string): IHeadTagId;
     createTag(
         name: 'script',
+        attrs: {type: string, src: string, key: string, defer: 'defer'},
+        content: string): IHeadTagId;
+    createTag(
+        name: 'script',
         attrs: {type: string, src: string, key: string},
         content: string,
         eventHandlers: IHeadTagEventHandlers): IHeadTagId;
