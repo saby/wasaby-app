@@ -18,17 +18,23 @@ export class Body implements IBody {
         this._bodyElement = typeof window === 'undefined' ? new ElementPS() : document.body.classList;
     }
 
-    /** Удалить после перехода на рендер от div */
+    /** Костылямбрий, который будет жить, пока не закончится переход на построение от шаблона #bootsrap */
     private _notifyEventCrunch(): void {
         if (typeof window !== 'undefined') {
+            customEventPolyfill();
             window.document.body.dispatchEvent(
                new CustomEvent('_bodyClassesUpdateCrunch', {detail: this.getClassString()})
             );
         }
     }
 
-    addClass(...tokens): void {
+    addClass(...initialTokens: string[]): void {
         try {
+            const tokens = Body._prepareTokens(initialTokens);
+            if (!tokens.length) {
+                return
+            }
+
             this._bodyElement.add.apply(this._bodyElement, tokens);
         } catch (e) {
             this._logError(e);
@@ -36,8 +42,13 @@ export class Body implements IBody {
         this._notifyEventCrunch();
     }
 
-    removeClass(...tokens): void {
+    removeClass(...initialTokens: string[]): void {
         try {
+            const tokens = Body._prepareTokens(initialTokens);
+            if (!tokens.length) {
+                return
+            }
+
             this._bodyElement.remove.apply(this._bodyElement, tokens);
         } catch (e) {
             this._logError(e);
@@ -98,6 +109,18 @@ export class Body implements IBody {
         return new Body();
     }
 
+    private static _prepareTokens(tokens: string[]): string[] {
+        const result: string[] = [];
+
+        tokens.forEach((token) => {
+            if (!!token) {
+                result.push(token.trim());
+            }
+        })
+
+        return result;
+    }
+
     static _instance: Body;
 
     /**
@@ -111,4 +134,21 @@ export class Body implements IBody {
         }
         return <Body> AppEnv.getStore('BodyAPI', Body._creator);
     }
+}
+
+/** Костылямбрий, который будет жить, пока не закончится переход на построение от шаблона #bootsrap */
+function customEventPolyfill(): void {
+    if ( typeof window.CustomEvent === "function" ) {
+        return
+    }
+
+    function CustomEvent ( event, params ) {
+        params = params || { bubbles: false, cancelable: false, detail: null };
+        const evt = document.createEvent( 'CustomEvent' );
+        evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
+        return evt;
+    }
+
+    // @ts-ignore
+    window.CustomEvent = CustomEvent;
 }
