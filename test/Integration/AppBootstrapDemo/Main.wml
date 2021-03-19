@@ -8,4 +8,5 @@
     <div id="value-random">
         Рандомное число из receivedState: {{value}}
     </div>
+    <AppBootstrapDemo.MetaStackToggler/>
 </div>

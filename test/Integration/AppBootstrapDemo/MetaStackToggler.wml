@@ -1,0 +1,5 @@
+<div class="metastacktoggler-container">
+    <Controls.buttons:Button caption="Toggle MetaStack" on:click="_toggleTitle()"/>
+    <button on:click="_toggleTitle()">
+    </button>
+</div>

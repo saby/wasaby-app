@@ -15,6 +15,8 @@ export default class Main extends Control {
 
    // tslint:disable-next-line:typedef
    _beforeMount(options, context, receivedState): any {
+
+      console.log('');
       if (!receivedState){
          return Promise.resolve(Math.random());
       }
