@@ -1,5 +1,7 @@
 <div class="metastacktoggler-container">
-    <Controls.buttons:Button caption="Toggle MetaStack" on:click="_toggleTitle()"/>
-    <button on:click="_toggleTitle()">
-    </button>
+    <h2>
+        Демонстрация работы MetaStack
+    </h2>
+    <Controls.buttons:Button caption="Push MetaStack" on:click="_updateTitle()"/>
+    <Controls.buttons:Button caption="Remove MetaStack" on:click="_restoreTitle()"/>
 </div>

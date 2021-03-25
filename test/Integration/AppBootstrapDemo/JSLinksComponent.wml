@@ -1,0 +1,8 @@
+<div>
+    <h2>
+        Демонстрация работы JSLinks
+    </h2>
+    <div class="valuejslinks">
+    {{ valueJSLinks }}
+    </div>
+</div>
