@@ -1,6 +1,6 @@
 /// <amd-module name="AppBootstrapDemo/MetaStackToggler" />
 
-import { getMetaStack, IMetaState } from 'UI/_base/HTML/meta';
+import { getMetaStack, IMetaState } from 'UI/Base';
 import { Control, TemplateFunction } from 'UI/Base';
 import * as template from 'wml!AppBootstrapDemo/MetaStackToggler';
 

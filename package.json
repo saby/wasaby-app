@@ -22,7 +22,7 @@
    },
    "scripts": {
       "prepare": "npm run update-cli-store && npm run build:typescript",
-      "build": "wasaby-cli --tasks=build",
+      "build": "wasaby-cli --tasks=build --release",
       "build:app": "npm run build:typescript && npm run build",
       "start": "wasaby-cli --tasks=app",
       "start:units": "wasaby-cli --tasks=startTest --server",
