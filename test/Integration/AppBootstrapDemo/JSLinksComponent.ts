@@ -1,7 +1,8 @@
 /// <amd-module name="AppBootstrapDemo/JSLinksComponent" />
-
-import { Control, TemplateFunction } from 'UI/Base';
+// tslint:disable-next-line
+// @ts-ignore
 import * as template from 'wml!AppBootstrapDemo/JSLinksComponent';
+import { Control, TemplateFunction } from 'UI/Base';
 import { JSLinks } from 'Application/Page';
 import {aggregateJS} from 'UI/Deps';
 import {default as TagMarkup} from 'UI/_base/HTML/_meta/TagMarkup';
@@ -12,9 +13,9 @@ export default class JSLinksComponent extends Control {
     jslinksData: String = '';
     status: String = 'jslinsk has not been loaded';
 
-    _beforeMount(opt, ctx, receivedState): Promise<void> {
+    _beforeMount(options?: {}, context?: {}, receivedState?: unknown): Promise<void> | void {
 
-        if(typeof window === 'undefined') {
+        if (typeof window === 'undefined') {
             const JSLinksAPI = JSLinks.getInstance();
             aggregateJS(
                 {
@@ -32,8 +33,10 @@ export default class JSLinksComponent extends Control {
         }
     }
 
-    _afterMount(options?: {}, contexts?: any) {
-        if(window.jslinkFlag){
+    _afterMount(options?: {}, contexts?: unknown): void {
+        // tslint:disable-next-line
+        // @ts-ignore
+        if (window.jslinkFlag) {
             this.status = 'jslinks has loaded successfully';
         }
     }

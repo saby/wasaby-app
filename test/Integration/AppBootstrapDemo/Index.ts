@@ -1,6 +1,7 @@
-import { Control, TemplateFunction } from 'UI/Base';
+// tslint:disable-next-line
 // @ts-ignore
 import * as template from 'wml!AppBootstrapDemo/Index';
+import { Control, TemplateFunction } from 'UI/Base';
 
 /**
  * Точка входа для демонстрации AppBootstrapDemo

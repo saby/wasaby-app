@@ -1,8 +1,9 @@
 /// <amd-module name="AppBootstrapDemo/HeadAPIComponent" />
-// tslint:disable:max-line-length
-import { Control, TemplateFunction } from 'UI/Base';
+// tslint:disable-next-line
+// @ts-ignore
 import * as template from 'wml!AppBootstrapDemo/HeadAPIComponent';
-import {Head, JSLinks} from 'Application/Page';
+import { Control, TemplateFunction } from 'UI/Base';
+import { Head } from 'Application/Page';
 
 const TAG_CONTENT =  'Test_Content_Script';
 
@@ -12,15 +13,15 @@ export default class HeadAPIComponent extends Control {
     foundItem: string | undefined;
     elementPS: string | undefined;
 
-    _beforeMount(options, context, receivedState): any {
-
-        if (!receivedState) {
+    _beforeMount(options?: {}, context?: {}, receivedState?: unknown): Promise<void> | void {
+        if (typeof window === 'undefined' && !receivedState) {
             const uid = this._HeadAPI.createTag('script', {type: 'text/javascipt'}, TAG_CONTENT);
             this.elementPS = JSON.stringify(this._HeadAPI.getData(uid));
         }
     }
-    _afterMount(options?: {}, contexts?: any) {
-        this.foundItem = Array.from(document.querySelectorAll('script')).find(item => item.textContent === TAG_CONTENT).outerHTML;
+    _afterMount(options?: {}, contexts?: unknown): void {
+        this.foundItem = Array.from(document.querySelectorAll('script'))
+            .find(item => item.textContent === TAG_CONTENT).outerHTML;
     }
     _createScript(): void {
         this._HeadAPI.createTag('script', {key: 'key-colorboxscript', src: 'from/colorboxscript', type: 'text/javascript'}, '', {

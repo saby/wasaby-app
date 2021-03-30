@@ -1,14 +1,9 @@
 /// <amd-module name="AppBootstrapDemo/Main" />
-
-import { Control, TemplateFunction } from 'UI/Base';
+/* tslint:disable-next-line */
 // @ts-ignore
 import * as template from 'wml!AppBootstrapDemo/Main';
-/**
- * Точка входа для демонстрации работы StateReceiver
- */
+import { Control, TemplateFunction } from 'UI/Base';
 
 export default class Main extends Control {
    _template: TemplateFunction = template;
-   _beforeMount(options, context, receivedState): any {
-   }
 }
