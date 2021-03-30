@@ -9,7 +9,7 @@ export default class ReceivedStateComponent extends Control {
     protected status: string = 'waiting';
 
     // tslint:disable-next-line:typedef
-    _beforeMount(options, context, receivedState): any {
+    _beforeMount(options, context, receivedState): Promise<number> {
 
         if (!receivedState){
             return Promise.resolve(Math.random());

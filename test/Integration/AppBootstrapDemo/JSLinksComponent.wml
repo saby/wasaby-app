@@ -1,8 +1,11 @@
-<div>
+<div class="jslinks">
     <h2>
         Демонстрация работы JSLinks
     </h2>
-    <div class="valuejslinks">
-    {{ valueJSLinks }}
+    <div class="jslinks_status">
+    {{status}}
+    </div>
+    <div class="jslinks_script">
+    {{jslinksData}}
     </div>
 </div>

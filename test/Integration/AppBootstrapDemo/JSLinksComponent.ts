@@ -3,25 +3,38 @@
 import { Control, TemplateFunction } from 'UI/Base';
 import * as template from 'wml!AppBootstrapDemo/JSLinksComponent';
 import { JSLinks } from 'Application/Page';
-// import {addPageDeps, headDataStore} from 'UI/Deps';
+import {aggregateJS} from 'UI/Deps';
+import {default as TagMarkup} from 'UI/_base/HTML/_meta/TagMarkup';
+import {fromJML} from 'UI/_base/HTML/_meta/JsonML';
 
 export default class JSLinksComponent extends Control {
     _template: TemplateFunction = template;
-    private _JSLinksAPI: JSLinks = JSLinks.getInstance('BootstrapDemo');
-    _id: string;
-    valueJSLinks: string = 'nothing';
-    _beforeMount(opt, ctx, receivedState) {
+    jslinksData: String = '';
+    status: String = 'jslinsk has not been loaded';
+
+    _beforeMount(opt, ctx, receivedState): Promise<void> {
 
         if(typeof window === 'undefined') {
-            // addPageDeps(['AppBootstrapDemo/ResourceJSLinks']);
-            // this._JSLinksAPI.createTag('script', {key: 'resourcejslinks', type: 'text/javascript', defer: 'defer', src: 'AppBootstrapDemo/ResourceJSLinks'}, '');
-            // this._id = this._JSLinksAPI.createTag('script', {type: 'text/javascript'}, '', {
-            //     load: () => {
-            //         this.valueJSLinks = 'something';
-            //         console.log(this.valueJSLinks);
-            //     }
-            // });
-            // console.log(this._JSLinksAPI.getData());
+            const JSLinksAPI = JSLinks.getInstance();
+            aggregateJS(
+                {
+                    css: { themedCss: [], simpleCss: [] },
+                    tmpl: [],
+                    wml: [],
+                    js: ['AppBootstrapDemo/JSLinksResource.js'],
+                    scripts: [],
+                    rsSerialized: '',
+                    rtpackModuleNames: [],
+                    additionalDeps: []
+                }
+            );
+            this.jslinksData += new TagMarkup(JSLinksAPI.getData().map(fromJML), { getResourceUrl: false }).outerHTML;
+        }
+    }
+
+    _afterMount(options?: {}, contexts?: any) {
+        if(window.jslinkFlag){
+            this.status = 'jslinks has loaded successfully';
         }
     }
 }
