@@ -1,0 +1,11 @@
+.bootstrapdemo_main{
+    display: flex;
+    flex-wrap: wrap;
+}
+.bootstrapdemo_control{
+    width: 600px;
+    margin: 0 200px 100px 0;
+}
+.bootstrapdemo_title {
+    margin-bottom: 50px;
+}

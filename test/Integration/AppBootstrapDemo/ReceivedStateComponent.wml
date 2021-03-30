@@ -1,4 +1,4 @@
-<div>
+<div class="bootstrapdemo_control bootstrapdemo_receivedstate">
     <h2>
         Демонстрация работы StateReceiver
     </h2>

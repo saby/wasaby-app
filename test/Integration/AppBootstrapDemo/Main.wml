@@ -1,9 +1,6 @@
-<div>
+<div class="bootstrapdemo_main">
     <AppBootstrapDemo.ReceivedStateComponent/>
-    <br/>
     <AppBootstrapDemo.MetaStackToggler/>
-    <br/>
     <AppBootstrapDemo.HeadAPIComponent/>
-    <br/>
     <AppBootstrapDemo.JSLinksComponent/>
 </div>
