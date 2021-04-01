@@ -1,11 +1,11 @@
 /// <amd-module name="Application/_Request/Request" />
-import { Config } from "Application/Config";
+import { Config } from 'Application/Config';
 import { ICookie } from 'Application/_Interface/ICookie';
 import { ILocation } from 'Application/_Interface/ILocation';
 import { IRequestInternal } from 'Application/_Interface/IRequest';
 import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
 import { IStore, IStoreMap } from 'Application/_Interface/IStore';
-import { FakeWebStorage } from "Application/_Request/FakeWebStorage";
+import { FakeWebStorage } from 'Application/_Request/FakeWebStorage';
 import Store from 'Application/_Request/Store';
 
 interface ICookieLocation {
@@ -27,24 +27,30 @@ interface ICookieLocation {
  * @todo добавить пример
  */
 export default class Request implements IRequestInternal {
+    // tslint:disable-next-line: variable-name
     private readonly __config: Config;
 
     /**
      * @cfg {Application/_Interface/ICookie} cookie
      * @name Application/_Request/Request#cookie
      */
+    cookie: ICookie;
+
     /**
      * @cfg {Application/_Interface/ILocation} location
      * @name Application/_Request/Request#location
      */
+    location: ILocation;
+
     /**
      * @cfg {Application/_Interface/IStateReceiver} __stateReceiver
      * @name Application/_Request/Request#__stateReceiver
      * @private
      */
-    cookie: ICookie;
-    location: ILocation;
+    // tslint:disable-next-line: variable-name
     private __stateReceiver: IStateReceiver;
+
+    // tslint:disable-next-line: variable-name
     private readonly __storages: IStoreMap = {};
 
     constructor(env: ICookieLocation, config: Config) {
@@ -65,27 +71,28 @@ export default class Request implements IRequestInternal {
         }
         return this.__storages[key];
     }
+
     /**
      * Задать хранилище
      */
-    setStore<T>(key: string, storage: IStore<T>) {
-        // if (this.__storages[key]) {
-        //     throw new Error(`attempt to overwrite used storage "${key}"`);
-        // }
+    setStore<T>(key: string, storage: IStore<T>): void {
         this.__storages[key] = storage;
     }
+
     /**
      * Задать stateReceiver
      */
-    setStateReceiver(stateReceiver: IStateReceiver) {
+    setStateReceiver(stateReceiver: IStateReceiver): void {
         this.__stateReceiver = stateReceiver;
     }
+
     /**
      * Получить stateReceiver
      */
-    getStateReceiver() {
+    getStateReceiver(): IStateReceiver {
         return this.__stateReceiver;
     }
+
     /**
      * Получить Config
      */
