@@ -24,4 +24,4 @@ export default class JSLinksElement extends ElementPS {
     _isTitle(): boolean {
         return false;
     }
-};
+}

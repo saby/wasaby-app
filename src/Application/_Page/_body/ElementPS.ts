@@ -6,23 +6,24 @@
  */
 
 export class ElementPS implements Partial<DOMTokenList> {
+    private _classes: string[] = [];
+
     [x: number]: string;
     length?: number;
     value?: string;
     item?(index: number): string {
-        throw new Error("Method not implemented.");
+        throw new Error('Method not implemented.');
     }
     replace?(oldToken: string, newToken: string): void {
-        throw new Error("Method not implemented.");
+        throw new Error('Method not implemented.');
     }
     supports?(token: string): boolean {
-        throw new Error("Method not implemented.");
+        throw new Error('Method not implemented.');
     }
+    // tslint:disable-next-line:no-any
     forEach?(callbackfn: (value: string, key: number, parent: DOMTokenList) => void, thisArg?: any): void {
-        throw new Error("Method not implemented.");
+        throw new Error('Method not implemented.');
     }
-
-    private _classes: string[] = [];
 
     toString(): string {
         return this._classes.join(' ');
@@ -34,14 +35,14 @@ export class ElementPS implements Partial<DOMTokenList> {
             if (!this._classes.includes(token)) {
                 this._classes.push(token);
             }
-        })
+        });
     }
 
     remove(...tokens: string[]): void {
-        tokens.forEach((token) => this._checkToken(token, 'remove'))
+        tokens.forEach((token) => this._checkToken(token, 'remove'));
         this._classes = this._classes.filter((item) => {
             return !tokens.includes(item);
-        })
+        });
     }
 
     toggle(token: string, force?: boolean): boolean {
@@ -81,14 +82,14 @@ export class ElementPS implements Partial<DOMTokenList> {
         if (!token) {
             throw new Error([
                 `Failed to execute '${method}' on 'ElementPS':`,
-                `The token provided must not be empty`
-            ].join(' '))
+                'The token provided must not be empty'
+            ].join(' '));
         }
         if (token.includes(' ')) {
             throw new Error([
                 `Failed to execute '${method}' on 'ElementPS':`,
                 `The token provided ('${token}') contains HTML space characters, which are not valid in tokens.`
-            ].join(' '))
+            ].join(' '));
         }
     }
 }

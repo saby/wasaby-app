@@ -1,8 +1,8 @@
 ///// <amd-module name="Application/_Page/Body" />
 
 import * as AppEnv from 'Application/Env';
-import { IBody, IInternalBody } from 'Application/_Interface/IBody'
-import { ElementPS } from "Application/_Page/_body/ElementPS";
+import { IBody, IInternalBody, KeyInternalBody } from 'Application/_Interface/IBody';
+import { ElementPS } from 'Application/_Page/_body/ElementPS';
 
 /**
  * API для работы с <head> страницы
@@ -32,7 +32,7 @@ export class Body implements IBody {
         try {
             const tokens = Body._prepareTokens(initialTokens);
             if (!tokens.length) {
-                return
+                return;
             }
 
             this._bodyElement.add.apply(this._bodyElement, tokens);
@@ -46,7 +46,7 @@ export class Body implements IBody {
         try {
             const tokens = Body._prepareTokens(initialTokens);
             if (!tokens.length) {
-                return
+                return;
             }
 
             this._bodyElement.remove.apply(this._bodyElement, tokens);
@@ -60,7 +60,7 @@ export class Body implements IBody {
         try {
             return this._bodyElement.toggle(token, force);
         } catch (e) {
-            this._logError(e)
+            this._logError(e);
         }
         this._notifyEventCrunch();
     }
@@ -91,8 +91,8 @@ export class Body implements IBody {
     }
     // tslint:disable-next-line:no-empty
     remove(): void { }
-    getKeys(): Array<keyof IInternalBody> {
-        return Object.keys(this) as Array<keyof IInternalBody>;
+    getKeys(): KeyInternalBody[] {
+        return Object.keys(this) as KeyInternalBody[];
     }
     // tslint:disable-next-line:no-any
     toObject(): Record<keyof IInternalBody, any> {
@@ -102,8 +102,11 @@ export class Body implements IBody {
 
     private _logError(e: Error): void {
         const message = `'Application/_Page/Body'. ${e.message}`;
+        // tslint:disable-next-line:no-console
         typeof window === 'undefined' ? AppEnv.logger.error(message) : console.error(message);
     }
+
+    static _instance: Body;
 
     private static _creator(): Body {
         return new Body();
@@ -116,12 +119,10 @@ export class Body implements IBody {
             if (!!token) {
                 result.push(token.trim());
             }
-        })
+        });
 
         return result;
     }
-
-    static _instance: Body;
 
     /**
      * Сложилась очень сложная ситуация.
@@ -132,16 +133,17 @@ export class Body implements IBody {
             Body._instance = Body._instance || Body._creator();
             return Body._instance;
         }
-        return <Body> AppEnv.getStore('BodyAPI', Body._creator);
+        return AppEnv.getStore('BodyAPI', Body._creator) as Body;
     }
 }
 
 /** Костылямбрий, который будет жить, пока не закончится переход на построение от шаблона #bootsrap */
 function customEventPolyfill(): void {
-    if ( typeof window.CustomEvent === "function" ) {
-        return
+    if ( typeof window.CustomEvent === 'function' ) {
+        return;
     }
 
+    // tslint:disable:typedef no-parameter-reassignment
     function CustomEvent ( event, params ) {
         params = params || { bubbles: false, cancelable: false, detail: null };
         const evt = document.createEvent( 'CustomEvent' );
@@ -149,6 +151,7 @@ function customEventPolyfill(): void {
         return evt;
     }
 
+    // tslint:disable-next-line:ban-ts-ignore
     // @ts-ignore
     window.CustomEvent = CustomEvent;
 }

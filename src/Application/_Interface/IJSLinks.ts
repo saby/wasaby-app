@@ -20,5 +20,6 @@ export interface IJSLinksInternal extends IInternalHead {
     getTag(name?: 'script', attrs?: IHeadTagAttrs): JSLinksTagId | JSLinksTagId[] | null;
     getData(id?: IHeadTagId): JML[] | JML;
 }
+export type KeyJSLinksInternal = keyof IJSLinksInternal;
 
 export interface IJSLinks extends IJSLinksInternal, IStore<IJSLinksInternal> {}

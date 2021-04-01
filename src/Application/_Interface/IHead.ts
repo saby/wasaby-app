@@ -93,4 +93,13 @@ export interface IInternalHead {
     changeTag(tagId: IHeadTagId, attrs: IHeadTagAttrs): void;
 }
 
+export type KeyInternalHead = keyof IInternalHead;
 export interface IHead extends IStore<IInternalHead>, IInternalHead {}
+
+/**
+ * интерфейс для аргумента tagPrior в функции "проверки идентичности аттрибутов" (isEqualAttributes) в head/ElementPS
+ */
+export interface ITagPrior {
+    name: string;
+    attrsPrior: string[];
+}

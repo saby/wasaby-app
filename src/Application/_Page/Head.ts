@@ -1,7 +1,7 @@
 ///// <amd-module name="Application/_Page/Head" />
 
 import * as AppEnv from 'Application/Env';
-import { IHead, IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId, IInternalHead, JML } from 'Application/_Interface/IHead'
+import { IHead, IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId, IInternalHead, JML, KeyInternalHead } from 'Application/_Interface/IHead';
 import { default as Element } from 'Application/_Page/_head/Element';
 import { default as ElementPS } from 'Application/_Page/_head/ElementPS';
 
@@ -16,10 +16,11 @@ const PREFIX: string = typeof window === 'undefined' ? 'ps-' : '';
  * @author Печеркин С.В.
  */
 export class Head implements IHead {
-    private _comments: Array<string> = [];
+
+    private _comments: string[] = [];
     private _noScriptUrl: string = null;
     protected _elements: {[propName: string]: Element | ElementPS} = {};
-    protected _id = 1;
+    protected _id: number = 1;
 
     constructor() {
         this._collectTags();
@@ -36,10 +37,10 @@ export class Head implements IHead {
             .forEach((item: HTMLElement) => {
                 /** Нет смысла собирать noscript тег. В живой странице ты его не применишь. */
                 if (item.tagName === 'NOSCRIPT') {
-                    return
+                    return;
                 }
                 this._elements[this._generateGuid()] = new Element(null, null, null, null, item);
-            })
+            });
     }
 
     createComment(text: string): void {
@@ -141,8 +142,6 @@ export class Head implements IHead {
         return result;
     }
 
-
-
     getAttrs(tagId: IHeadTagId): IHeadTagAttrs | null {
         if (this._elements[tagId]) {
             return this._elements[tagId].getAttrs();
@@ -158,14 +157,14 @@ export class Head implements IHead {
 
     deleteTag(id: IHeadTagId): void {
         if (!this._elements[id]) {
-            return
+            return;
         }
         this._elements[id].clear();
         delete this._elements[id];
     }
 
     clear(): void {
-        for (const elementsKey in this._elements) {
+        for (const elementsKey of Object.keys(this._elements)) {
             this.deleteTag(elementsKey);
         }
         delete this._noScriptUrl;
@@ -173,15 +172,15 @@ export class Head implements IHead {
     }
 
     getData(id: IHeadTagId): JML;
-    getData(): Array<JML>;
-    getData(id?: IHeadTagId): Array<JML> | JML {
+    getData(): JML[];
+    getData(id?: IHeadTagId): JML[] | JML {
         if (id && this._elements[id]) {
             return this._elements[id].getData();
         }
 
         const noscript = this._generateNoScript();
         const httpEquivId = this._getHttpEquivId();
-        const result: Array<JML> = [];
+        const result: JML[] = [];
         for (const elementsKey in this._elements) {
             if (elementsKey === httpEquivId) {
                 result.unshift(this._elements[elementsKey].getData());
@@ -217,8 +216,8 @@ export class Head implements IHead {
     }
     // tslint:disable-next-line:no-empty
     remove(): void { }
-    getKeys(): Array<keyof IInternalHead> {
-        return Object.keys(this) as Array<keyof IInternalHead>;
+    getKeys(): KeyInternalHead[] {
+        return Object.keys(this) as KeyInternalHead[];
     }
     // tslint:disable-next-line:no-any
     toObject(): Record<keyof IInternalHead, any> {
@@ -238,9 +237,9 @@ export class Head implements IHead {
             'noscript',
             ElementPS.generateTag({
                 name: 'meta',
-                attrs: {'http-equiv': 'refresh', 'content': `${TIME_TO_REFRESH}; URL=${this._noScriptUrl}`}
+                attrs: {'http-equiv': 'refresh', content: `${TIME_TO_REFRESH}; URL=${this._noScriptUrl}`}
             })
-        ]
+        ];
     }
 
     /**
@@ -267,13 +266,12 @@ export class Head implements IHead {
     /** Генератор уникального идентификатора для каждого тега */
     protected _generateGuid(): IHeadTagId {
         return `head-${PREFIX}${this._id++}`;
-    };
+    }
+    static _instance: Head;
 
     protected static _creator(): Head {
         return new Head();
     }
-
-    static _instance: Head;
 
     /**
      * Сложилась очень сложная ситуация.
@@ -284,6 +282,6 @@ export class Head implements IHead {
             Head._instance = Head._instance || Head._creator();
             return Head._instance;
         }
-        return <Head> AppEnv.getStore('HeadAPI', Head._creator);
+        return AppEnv.getStore('HeadAPI', Head._creator) as Head;
     }
 }

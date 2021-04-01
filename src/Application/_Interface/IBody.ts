@@ -20,4 +20,5 @@ export interface IInternalBody {
     getClassString(): string;
 }
 
+export type KeyInternalBody = keyof IInternalBody;
 export interface IBody extends IStore<IInternalBody>, IInternalBody {}
