@@ -1,5 +1,5 @@
 /// <amd-module name='Application/_Env/Browser/Env' />
-import { Config } from "Application/Config";
+import { Config } from 'Application/Config';
 import Request from 'Application/Request';
 import Cookie from 'Application/_Env/Browser/Cookie';
 import Console, { LogLevel } from 'Application/_Env/Console';
@@ -44,12 +44,12 @@ export default class EnvBrowser implements IEnv {
 
     private cfg: Config;
 
-    constructor(data: Record<string, any>) {
+    constructor(data: Record<string, unknown>) {
         this.cfg = new Config(data);
         this.location = window.location;
         this.console = new Console(window.console);
-        if (this.cfg.get("Application/Env.LogLevel") !== undefined) {
-            this.console.setLogLevel(<LogLevel> this.cfg.get("Application/Env.LogLevel"));
+        if (this.cfg.get('Application/Env.LogLevel') !== undefined) {
+            this.console.setLogLevel(this.cfg.get('Application/Env.LogLevel'));
         }
         try {
             this.cookie = new Cookie();
@@ -57,29 +57,8 @@ export default class EnvBrowser implements IEnv {
             this.cookie = new ObjectStore();
             this.console.warn("Can't use Cookie", e);
         }
-
-        // TODO использование this.storages будет поправлено
-        //  по задаче https://online.sbis.ru/opendoc.html?guid=d51db079-e251-402b-9708-9db5fb06a2b8
-        // let localStorage: IStore;
-        // try {
-        //     localStorage = new Store(window.localStorage);
-        // } catch (e) {
-        //     localStorage = new ObjectStore();
-        //     this.console.warn("Can't use localStorage", e);
-        // }
-        // let sessionStorage: IStore;
-        // try {
-        //     sessionStorage = new Store(window.sessionStorage);
-        // } catch (e) {
-        //     sessionStorage = new ObjectStore();
-        //     this.console.warn("Can't use sessionStorage", e);
-        // }
-        //
-        // this.storages = {
-        //     "localStorage": localStorage,
-        //     "sessionStorage": sessionStorage
-        // };
     }
+
     getRequest(): IRequest {
         return this._request;
     }

@@ -2,8 +2,8 @@
 import { IConfig } from 'Application/_Interface/IConfig';
 import { IConsole } from 'Application/_Interface/IConsole';
 import { ICookie } from 'Application/_Interface/ICookie';
-import { IHttpRequest } from "Application/_Interface/IHttpRequest";
-import { IHttpResponse } from "Application/_Interface/IHttpResponse";
+import { IHttpRequest } from 'Application/_Interface/IHttpRequest';
+import { IHttpResponse } from 'Application/_Interface/IHttpResponse';
 import { ILocation } from 'Application/_Interface/ILocation';
 import { IRequest, IRequestInternal } from 'Application/_Interface/IRequest';
 
