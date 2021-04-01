@@ -1,12 +1,12 @@
 import { assert } from 'chai';
 import { default as Element } from 'Application/_Page/_head/Element';
-import { IHeadTagAttrs } from "Application/Interface";
+import { IHeadTagAttrs } from 'Application/Interface';
 import {
     ALL_KEYS_ELEMENT,
     KEY_TITLE,
     TITLE_PROPS,
     META_PROPS,
-    EVENT_HANDLER,
+    EVENT_HANDLER
 } from '.././utils';
 
 /**

@@ -53,6 +53,7 @@ export interface IHeadTag {
     eventHandlers?: IHeadTagEventHandlers;
 }
 /** Технический интерфейс для разрешения циклических определений в типе JML */
+// tslint:disable-next-line:no-empty-interface
 interface JsonML extends JML {}
 /** Структура, которая однозначно описывает 1 тег первого уровня внутри head страницы */
 export type IHeadTagId = string;
@@ -81,13 +82,13 @@ export type JML = [string, (object | JsonML | string)?, (JsonML | string)?];
  */
 export interface IInternalHead {
     createComment(text: string): void;
-    createNoScript(URL): void;
+    createNoScript(URL: string): void;
     createTag(name: string, attrs: IHeadTagAttrs, content?: string, eventHandlers?: IHeadTagEventHandlers): IHeadTagId;
     deleteTag(id: IHeadTagId): void;
     getTag(name?: string, attrs?: IHeadTagAttrs): IHeadTagId | IHeadTagId[] | null;
-    getData(id?: IHeadTagId): Array<JML> | JML;
+    getData(id?: IHeadTagId): JML[] | JML;
     getComments(wrap?: boolean): string[];
-    clear();
+    clear(): void;
     getAttrs(tagId: IHeadTagId): IHeadTagAttrs | null;
     changeTag(tagId: IHeadTagId, attrs: IHeadTagAttrs): void;
 }
