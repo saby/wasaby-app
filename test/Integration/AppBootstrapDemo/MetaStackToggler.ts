@@ -12,6 +12,9 @@ export default class MetaStackToggler extends Control {
         this._metaState = getMetaStack().push({title: `New Title: ${Math.random()}`});
     }
     _restoreTitle(): void {
-        getMetaStack().remove(this._metaState);
+        try {
+            getMetaStack().remove(this._metaState);
+        }
+        catch (e) {}
     }
 }

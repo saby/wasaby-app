@@ -1,4 +1,5 @@
-<SbisEnvUI.Bootstrap title="Demo Application Bootstrap">
+<SbisEnvUI.Bootstrap
+bootstrapWrapperMode="{{ _options.bootstrapWrapperMode }}">
    <ws:content>
      <h1 class="bootstrapdemo_title">
        Bootstrap Demo

@@ -9,4 +9,10 @@ import { Control, TemplateFunction } from 'UI/Base';
 export default class Index extends Control {
     protected _template: TemplateFunction = template;
     protected _styles: string[] = ['AppBootstrapDemo/Index'];
+
+    _beforeMount(options?: {}, contexts?: object, receivedState?: void): Promise<void> | void {
+    }
+}
+export function getDataToRender(url: string): Promise<object | false> {
+    return Promise.resolve({s: 'SUPER TITLE!'});
 }
