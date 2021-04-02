@@ -60,23 +60,13 @@ export class Head implements IHead {
 
     createTag(
         name: 'title',
-        attrs: {},
-        content: string): IHeadTagId;
-    createTag(
-        name: 'title',
-        attrs: {class: string},
+        attrs: {} | {class: string},
         content: string): IHeadTagId;
     createTag(
         name: 'script',
-        attrs: {type: string},
-        content: string): IHeadTagId;
-    createTag(
-        name: 'script',
-        attrs: {type: string, src: string, key: string},
-        content: string): IHeadTagId;
-    createTag(
-        name: 'script',
-        attrs: {type: string, src: string, key: string, defer: 'defer'},
+        attrs: {type: string}
+            | {type: string, src: string, key: string}
+            | {type: string, src: string, key: string, defer: 'defer'},
         content: string): IHeadTagId;
     createTag(
         name: 'script',
@@ -85,21 +75,12 @@ export class Head implements IHead {
         eventHandlers: IHeadTagEventHandlers): IHeadTagId;
     createTag(
         name: 'meta',
-        attrs: {'http-equiv': string, content: string}): IHeadTagId;
-    createTag(
-        name: 'meta',
-        attrs: {content: string, 'http-equiv': string, name: string, URL: string}): IHeadTagId;
-    createTag(
-        name: 'meta',
-        attrs: {property: string, content: string, class: string}): IHeadTagId;
+        attrs: {'http-equiv': string, content: string}
+        | {content: string, 'http-equiv': string, name: string, URL: string}
+        | {property: string, content: string, class: string}): IHeadTagId;
     createTag(
         name: 'link',
-        attrs: {src: ''}
-    ): IHeadTagId;
-    createTag(
-        name: 'link',
-        attrs: {href: string, as: string, rel: string}
-    ): IHeadTagId;
+        attrs: {src: ''} | {href: string, as: string, rel: string}): IHeadTagId;
     createTag(
         name: 'link',
         attrs: IHeadTagAttrs,
@@ -164,8 +145,10 @@ export class Head implements IHead {
     }
 
     clear(): void {
-        for (const elementsKey of Object.keys(this._elements)) {
-            this.deleteTag(elementsKey);
+        for (const elementsKey in this._elements) {
+            if(this._elements.hasOwnProperty(elementsKey)){
+                this.deleteTag(elementsKey);
+            }
         }
         delete this._noScriptUrl;
         this._comments = [];

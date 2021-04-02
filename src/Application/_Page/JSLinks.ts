@@ -17,7 +17,7 @@ export class JSLinks extends HeadAPI implements IJSLinks {
     _id: number = 0;
     createTag(
         name: string,
-        attrs?: IHeadTagAttrs,
+        initialAttrs?: IHeadTagAttrs,
         content?: string,
         eventHandlers?: IHeadTagEventHandlers): IHeadTagId {
 
@@ -28,26 +28,26 @@ export class JSLinks extends HeadAPI implements IJSLinks {
         if (name !== 'script') {
             throw new Error('Вызывать метод JSLinks API с параметром name, отличным от script запрещено');
         }
-        let attrsMutated = attrs;
+        let attrs = initialAttrs;
         /**
          * при работе с rsSerialized, rtpackModuleNames пробрасывается только content, аттрибуты не требуются.
          * поэтому если контента нету, значит пробрасываем аттрибуты и дополняем необходимые, если они не пришли
          */
         if (!content) {
-            attrsMutated = {
-                ...attrs,
-                type: attrs.type ? attrs.type : 'text/javascript' ,
-                defer:  attrs.defer ? attrs.defer : 'defer'
+            attrs = {
+                ...initialAttrs,
+                type: initialAttrs.type ? initialAttrs.type : 'text/javascript' ,
+                defer:  initialAttrs.defer ? initialAttrs.defer : 'defer'
             };
         }
         for (const elementsKey in this._elements) {
-            if (this._elements[elementsKey].isEqual(name, attrsMutated, content, eventHandlers)) {
+            if (this._elements[elementsKey].isEqual(name, attrs, content, eventHandlers)) {
                 eventHandlers?.load();
                 return elementsKey;
             }
         }
         const uuid = this._generateGuid();
-        this._elements[uuid] = new JSLinksElement(name, attrsMutated, content, eventHandlers);
+        this._elements[uuid] = new JSLinksElement(name, attrs, content, eventHandlers);
         return uuid;
     }
     getTag(name?: 'script', attrs?: IHeadTagAttrs): JSLinksTagId | JSLinksTagId[] | null {
