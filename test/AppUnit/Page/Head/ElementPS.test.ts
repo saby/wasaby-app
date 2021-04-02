@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import { default as ElementPS } from 'Application/_Page/_head/ElementPS';
-import { IHeadTagAttrs } from "Application/Interface";
+import { IHeadTagAttrs } from 'Application/Interface';
 import {
     ALL_KEYS_ELEMENT,
     KEY_TITLE,

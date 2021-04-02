@@ -73,4 +73,4 @@ describe('Application/_Page/Body', () => {
         assert.equal(API.getClassString(), classes,
             'Нашелся искомый класс после принудительного удаления через toggle');
     });
-;});
+});
