@@ -1,3 +1,6 @@
+/**
+ * Вспомогательные переменные для юнит-тестов
+ */
 export const ALL_KEYS_ELEMENT = ['_name', '_attrs', '_content', '_eventHandlers'];
 export const KEY_TITLE = ['_content'];
 export const TITLE_PROPS = {
