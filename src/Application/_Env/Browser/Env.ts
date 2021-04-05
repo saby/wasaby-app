@@ -2,7 +2,7 @@
 import { Config } from 'Application/Config';
 import Request from 'Application/Request';
 import Cookie from 'Application/_Env/Browser/Cookie';
-import Console, { LogLevel } from 'Application/_Env/Console';
+import Console from 'Application/_Env/Console';
 import ObjectStore from 'Application/_Env/ObjectStore';
 import { IConsole } from 'Application/_Interface/IConsole';
 import { ICookie } from 'Application/_Interface/ICookie';
