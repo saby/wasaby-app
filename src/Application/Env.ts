@@ -200,7 +200,7 @@ export function getStore<T = Record<string, string>>(type: string, createDefault
  * @param {String} type type
  * @param {Application/_Interface/IStore} store store
  */
-export function setStore<T = Record<string, string>>(type: string, store: IStore<T>) {
+export function setStore<T = Record<string, string>>(type: string, store: IStore<T>): void {
     return App.getRequest().setStore<T>(type, store);
 }
 
