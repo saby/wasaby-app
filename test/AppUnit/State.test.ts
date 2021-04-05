@@ -1,7 +1,7 @@
 import { default as DisposeControl, toMixDisposable } from 'Application/_State/DisposeControl';
 import { IResourceDisposable } from 'Application/_State/Interfaces';
 import { assert } from 'chai';
-import { Control as ReactControl } from 'UI/ReactComponent';
+import { Control as ReactControl } from 'UI/Base';
 
 class CustomClass {
     value: boolean = false;
