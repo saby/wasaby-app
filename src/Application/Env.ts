@@ -3,7 +3,6 @@ export { default as EnvBrowser } from 'Application/_Env/Browser/Env';
 export { default as EnvNodeJS } from 'Application/_Env/NodeJS/Env';
 export { LogLevel as LogLevelNodeJS, default as ConsoleNodeJS } from 'Application/_Env/NodeJS/Console';
 import { PARAMS, parseQueryGet, parseQueryHash } from 'Application/_Env/QueryParams';
-// tslint:disable-next-line:no-unused-variable
 export { LogLevel } from 'Application/_Env/Console';
 import App from 'Application/_Env/App';
 import { IConsole } from 'Application/_Interface/IConsole';
