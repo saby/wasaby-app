@@ -50,9 +50,9 @@ export default class Element extends ElementPS {
         /* находим все свойства в оригинале и изменяемом объекте - если свойства нет в изменяемом
         удаляем его, если разные значения, то удаляем и создаем новое свойство, так нужно из-за
         специфики DOM*/
-        let oldItems = Object.getOwnPropertyNames(attrs);
-        let newItems = Object.getOwnPropertyNames(attrsChange);
-        let allItems = Object.getOwnPropertyNames({ ...attrs, ...attrsChange });
+        const oldItems = Object.getOwnPropertyNames(attrs);
+        const newItems = Object.getOwnPropertyNames(attrsChange);
+        const allItems = Object.getOwnPropertyNames({ ...attrs, ...attrsChange });
 
         allItems.forEach((item) => {
             const isOld = oldItems.includes(item);
@@ -71,7 +71,7 @@ export default class Element extends ElementPS {
                 attrs[item] = attrsChange[item];
                 this._element.setAttribute(item, attrs[item]);
             }
-        })
+        });
         this.setAttrs(attrs);
     }
 
@@ -97,7 +97,7 @@ export default class Element extends ElementPS {
         for (const [key, value] of Object.entries(this._attrs)) {
             element.setAttribute(key, value);
         }
-        //TODO: убрать после реалзации старта от div
+        // TODO: убрать после реалзации старта от div
         element.setAttribute('data-vdomignore', 'true');
         document.head.appendChild(element);
         if (this._eventHandlers?.load) {
@@ -142,10 +142,10 @@ export default class Element extends ElementPS {
             result.attrs = {};
             Array.prototype.slice.call(element.attributes).forEach((attr) => {
                 result.attrs[attr.name] = attr.value;
-            })
+            });
             result.content = element.innerText;
         }
 
-        return result
+        return result;
     }
 }

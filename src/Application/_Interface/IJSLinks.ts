@@ -1,5 +1,5 @@
 import { IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId, IInternalHead, JML } from 'Application/_Interface/IHead';
-import { IStore } from "Application/_Interface/IStore";
+import { IStore } from 'Application/_Interface/IStore';
 
 export type JSLinksTagId = string;
 
@@ -18,7 +18,8 @@ export interface IJSLinksInternal extends IInternalHead {
     // tslint:disable-next-line:max-line-length
     createTag(name: 'script', attrs: IHeadTagAttrs, content?: string, eventHandlers?: IHeadTagEventHandlers): IHeadTagId;
     getTag(name?: 'script', attrs?: IHeadTagAttrs): JSLinksTagId | JSLinksTagId[] | null;
-    getData(id?: IHeadTagId): Array<JML> | JML;
+    getData(id?: IHeadTagId): JML[] | JML;
 }
+export type KeyJSLinksInternal = keyof IJSLinksInternal;
 
 export interface IJSLinks extends IJSLinksInternal, IStore<IJSLinksInternal> {}
