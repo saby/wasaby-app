@@ -1,7 +1,10 @@
 import { assert } from 'chai';
 import { Head as HeadAPI } from 'Application/Page';
 import { JML, IHead, IHeadTagAttrs } from 'Application/Interface';
-import { additionalAttrs } from './utils';
+
+const additionalAttrs = {
+    'data-vdomignore': true
+};
 
 const processingData: JML[] = [];
 

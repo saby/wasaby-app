@@ -1,15 +1,28 @@
 import { assert } from 'chai';
 import { default as ElementPS } from 'Application/_Page/_head/ElementPS';
 import { IHeadTagAttrs } from 'Application/Interface';
-import {
-    ALL_KEYS_ELEMENT,
-    KEY_TITLE,
-    TITLE_PROPS,
-    SCRIPT_PROPS,
-    LINK_PROPS,
-    EVENT_HANDLER,
-    additionalAttrs
-} from '.././utils';
+
+const ALL_KEYS_ELEMENT = ['_name', '_attrs', '_content', '_eventHandlers'];
+const KEY_TITLE = ['_content'];
+const TITLE_PROPS = {
+    _name: 'title',
+    _attrs: {},
+    _content: 'title_content'
+};
+const EVENT_HANDLER = {load: () => {return 'load';}};
+const SCRIPT_PROPS = {
+    _name: 'script',
+    _attrs: {src: 'to/the/great/lands'},
+    _content: 'script_content'
+};
+const LINK_PROPS = {
+    _name: 'link',
+    _attrs: {href: 'to/the/great/lands'},
+    _content: 'link_content'
+};
+const additionalAttrs = {
+    'data-vdomignore': true
+};
 
 /**
  * У классов Element, ElementPS есть особенность, что если у данных классов поле _name является 'title',

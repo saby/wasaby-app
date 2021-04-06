@@ -1,8 +1,16 @@
 import { assert } from 'chai';
 import { default as AppInit } from 'Application/Initializer';
-import { additionalAttrs, JSLINKS_PROPS } from './utils';
 import { JSLinks } from 'Application/Page';
 import { JML } from 'Application/_Interface/IHead';
+
+const additionalAttrs = {
+    'data-vdomignore': true
+};
+
+const JSLINKS_PROPS = {
+    name: 'script',
+    attrs: {defer: 'defer', type: 'text/javascript'}
+};
 
 const TAG = 'script';
 describe('Application/_Page/JSLinks', () => {
