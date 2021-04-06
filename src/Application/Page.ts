@@ -8,6 +8,7 @@
  * @includes Head Application/_Page/Head
  * @author Печеркин С.В.
  */
+console.log('hello from Application/Page');
 export { Head } from "Application/_Page/Head";
 export { Body } from "Application/_Page/Body";
 export { JSLinks } from "Application/_Page/JSLinks";

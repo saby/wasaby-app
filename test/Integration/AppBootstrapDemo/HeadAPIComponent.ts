@@ -12,6 +12,7 @@ export default class HeadAPIComponent extends Control {
     private _HeadAPI: Head = Head.getInstance();
     foundItem: string | undefined;
     elementPS: string | undefined;
+    isFoundTitle: boolean = false;
 
     _beforeMount(options?: {}, context?: {}, receivedState?: unknown): Promise<void> | void {
         if (typeof window === 'undefined' && !receivedState) {
@@ -22,6 +23,7 @@ export default class HeadAPIComponent extends Control {
     _afterMount(options?: {}, contexts?: unknown): void {
         this.foundItem = Array.from(document.querySelectorAll('script'))
             .find(item => item.textContent === TAG_CONTENT).outerHTML;
+        this.isFoundTitle = document.title !== '';
     }
     _createScript(): void {
         this._HeadAPI.createTag('script', {key: 'key-colorboxscript', src: 'from/colorboxscript', type: 'text/javascript'}, '', {

@@ -7,15 +7,19 @@ import { JSLinks } from 'Application/Page';
 import {aggregateJS} from 'UI/Deps';
 import {default as TagMarkup} from 'UI/_base/HTML/_meta/TagMarkup';
 import {fromJML} from 'UI/_base/HTML/_meta/JsonML';
+import { constants } from 'Env/Constants';
+import { getConfig } from 'Application/Env';
 
 export default class JSLinksComponent extends Control {
     _template: TemplateFunction = template;
     jslinksData: String = '';
     status: String = 'jslinsk has not been loaded';
+    isBuildnumberString: boolean = false;
+    buildnumber: string = '';
 
     _beforeMount(options?: {}, context?: {}, receivedState?: unknown): Promise<void> | void {
 
-        if (typeof window === 'undefined') {
+        if (!constants.isBrowserPlatform) {
             const JSLinksAPI = JSLinks.getInstance();
             aggregateJS(
                 {
@@ -30,7 +34,10 @@ export default class JSLinksComponent extends Control {
                 }
             );
             this.jslinksData += new TagMarkup(JSLinksAPI.getData().map(fromJML), { getResourceUrl: false }).outerHTML;
+            return;
         }
+        this.buildnumber = window.buildnumber;
+        this.isBuildnumberString = typeof window.buildnumber === 'string';
     }
 
     _afterMount(options?: {}, contexts?: unknown): void {

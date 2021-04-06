@@ -8,4 +8,13 @@
     <div class="jslinks_script">
     {{jslinksData}}
     </div>
+    <h3>
+        Проверка работы wsConfig
+    </h3>
+    <div>
+        buildnumber: {{ buildnumber }}
+    </div>
+    <div>
+        typeof buildnumber равняется string: {{ isBuildnumberString }}
+    </div>
 </div>

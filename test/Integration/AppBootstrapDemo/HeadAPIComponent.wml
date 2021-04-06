@@ -2,9 +2,16 @@
     <h2>
         Демонстрация работы HeadAPI
     </h2>
+
     <div>Element PS as JML: {{ elementPS }} </div>
     <div>Element найденный в DOM: {{ foundItem }} </div>
-    <Controls.buttons:Button caption="Set red color via HeadAPI" on:click="_createScript()"/>
+    <Controls.buttons:Button caption="Change colour via HeadAPI" on:click="_createScript()"/>
     <div id="headapi_colorbox" style="background-color: blue; margin: 50px; padding: 10px; border: 5px solid black; width: 25px; height: 25px">
+    </div>
+    <h3>
+        Проверка работы title
+    </h3>
+    <div>
+        Title не равняется пустому значению: {{ isFoundTitle }}
     </div>
 </div>
