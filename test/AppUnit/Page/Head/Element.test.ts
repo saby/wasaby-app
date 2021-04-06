@@ -1,13 +1,21 @@
 import { assert } from 'chai';
 import { default as Element } from 'Application/_Page/_head/Element';
 import { IHeadTagAttrs } from 'Application/Interface';
-import {
-    ALL_KEYS_ELEMENT,
-    KEY_TITLE,
-    TITLE_PROPS,
-    META_PROPS,
-    EVENT_HANDLER
-} from '.././utils';
+
+const ALL_KEYS_ELEMENT = ['_name', '_attrs', '_content', '_eventHandlers'];
+const KEY_TITLE = ['_content'];
+const TITLE_PROPS = {
+    _name: 'title',
+    _attrs: {},
+    _content: 'title_content'
+};
+const META_PROPS = {
+    _name: 'meta',
+    _attrs: {name: 'meta_name'},
+    _content: 'meta_content'
+};
+const EVENT_HANDLER = {load: () => {return 'load';}};
+
 
 /**
  * У классов Element, ElementPS есть особенность, что если у данных классов поле _name является 'title',
