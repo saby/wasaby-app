@@ -1,4 +1,4 @@
-<div class="bootstrapdemo_main">
+<div class="bootstrapdemo">
     <AppBootstrapDemo.ReceivedStateComponent/>
     <AppBootstrapDemo.MetaStackToggler/>
     <AppBootstrapDemo.HeadAPIComponent/>

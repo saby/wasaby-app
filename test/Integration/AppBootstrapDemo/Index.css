@@ -1,4 +1,4 @@
-.bootstrapdemo_main{
+.bootstrapdemo{
     display: flex;
     flex-wrap: wrap;
 }
@@ -8,4 +8,20 @@
 }
 .bootstrapdemo_title {
     margin-bottom: 50px;
+}
+.status {
+    color: #aa2222;
+}
+.status_success {
+    font-weight: bold;
+    color: #00bb00;
+}
+.bootstrapdemo_metastacktoggler_buttons .controls-BaseButton + .controls-BaseButton{
+    margin-left: 10px;
+}
+h1, h2, h3 {
+    margin-bottom: 10px;
+}
+.description {
+    margin-bottom: 10px;
 }

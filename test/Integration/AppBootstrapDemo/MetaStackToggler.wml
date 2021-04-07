@@ -2,6 +2,17 @@
     <h2>
         Демонстрация работы MetaStack
     </h2>
-    <Controls.buttons:Button caption="Push MetaStack" on:click="_updateTitle()"/>
-    <Controls.buttons:Button caption="Remove MetaStack" on:click="_restoreTitle()"/>
+    <div class="description">
+    MetaStack позволяет изменять значения title посредством добавлением заголовка, либо его удаления (удаляется крайнее состояние MetaStack, если только оно не являлось первым).
+    </div>
+    <div class="bootstrapdemo_metastacktoggler_buttons">
+        <Controls.buttons:Button
+        attr:data-qa="boootstrapdemo-MetaStackToggler__button_update"
+        caption="Push MetaStack"
+        on:click="_updateTitle()"/>
+        <Controls.buttons:Button
+        attr:data-qa="boootstrapdemo-MetaStackToggler__button_restore"
+        caption="Remove MetaStack"
+        on:click="_restoreTitle()"/>
+    </div>
 </div>

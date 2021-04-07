@@ -7,14 +7,16 @@ import { IMetaState } from 'UI/_base/HTML/meta';
 
 export default class MetaStackToggler extends Control {
     _template: TemplateFunction = template;
-    _metaState: IMetaState;
+    _metaState: IMetaState = null;
     _updateTitle(): void {
         this._metaState = getMetaStack().push({title: `New Title: ${Math.random()}`});
     }
     _restoreTitle(): void {
         try {
             getMetaStack().remove(this._metaState);
+            this._metaState = null;
         }
-        catch (e) {}
+            // tslint:disable-next-line:no-empty
+        catch (_) {}
     }
 }

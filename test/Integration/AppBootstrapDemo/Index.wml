@@ -4,6 +4,12 @@ bootstrapWrapperMode="{{ _options.bootstrapWrapperMode }}">
      <h1 class="bootstrapdemo_title">
        Bootstrap Demo
      </h1>
+     <div>
+     Общий статус загрузки Bootstrap Demo:
+     <span data-qa="boootstrapdemo-Index__status"
+     class="status{{isBootstrapLoaded==='success' ? '_success' : ''}} ">  {{ isBootstrapLoaded }} </span>
+     </div>
+     <br/>
      <AppBootstrapDemo.Main/>
    </ws:content>
 </SbisEnvUI.Bootstrap>

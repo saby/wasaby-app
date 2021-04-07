@@ -10,9 +10,9 @@ const TAG_CONTENT =  'Test_Content_Script';
 export default class HeadAPIComponent extends Control {
     _template: TemplateFunction = template;
     private _HeadAPI: Head = Head.getInstance();
-    foundItem: string | undefined;
-    elementPS: string | undefined;
-    isFoundTitle: boolean = false;
+    foundElementDOM: string;
+    elementPS: string;
+    isFoundTitle: string = '';
 
     _beforeMount(options?: {}, context?: {}, receivedState?: unknown): Promise<void> | void {
         if (typeof window === 'undefined' && !receivedState) {
@@ -21,13 +21,12 @@ export default class HeadAPIComponent extends Control {
         }
     }
     _afterMount(options?: {}, contexts?: unknown): void {
-        this.foundItem = Array.from(document.querySelectorAll('script'))
+        this.foundElementDOM = Array.from(document.querySelectorAll('script'))
             .find(item => item.textContent === TAG_CONTENT).outerHTML;
-        this.isFoundTitle = document.title !== '';
+        this.isFoundTitle = document.title !== '' ? 'success' : 'fail';
     }
     _createScript(): void {
-        this._HeadAPI.createTag('script', {key: 'key-colorboxscript', src: 'from/colorboxscript', type: 'text/javascript'}, '', {
-            load: () => document.getElementById('headapi_colorbox').style.backgroundColor = 'green'
-        });
+        this._HeadAPI.createTag('script', {type: 'text/javascript'},
+            'document.getElementById("headapi_colorbox").style.backgroundColor = "green"');
     }
 }
