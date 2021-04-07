@@ -18,7 +18,7 @@ const TAGS_PRIOR = [
     {name: 'link', attrsPrior: ['href']},
     {name: 'title', attrsPrior: [] },
     {name: 'script', attrsPrior: ['src', 'data-require-module']},
-    {name: 'meta', attrsPrior: ['name', 'content']},
+    {name: 'meta', attrsPrior: ['name', 'content']}
 ];
 
 export default class ElementPS {
