@@ -9,13 +9,13 @@
         Для этого он грузится изначально на сервере, он должен появиться при начальной загрузке страницы на клиенте.
         После того как оживим страницу, найдем этот же ресурс, но уже загруженный в DOM в head.
     </div>
-    <div>Element PS, созданный на сервере: {{ elementPS }} </div>
-    <div>Element найденный в DOM: {{ foundElementDOM }} </div>
+    <div data-qa="boootstrapdemo-HeadApiComponent__ElementPS">Element PS, созданный на сервере: {{ elementPS }} </div>
+    <div data-qa="boootstrapdemo-HeadApiComponent__Element">Element найденный в DOM: {{ foundElementDOM }} </div>
 
     <br />
 
     <div class="description">
-        Используя HeadApi можно загружать ресурсы, встрваивая их в head.
+        Используя HeadApi можно загружать ресурсы, встраивая их в head.
         <br />
         Кликнув по кнопке - можно загрузить скрипт, который изменит цвет для контейнера,
     </div>

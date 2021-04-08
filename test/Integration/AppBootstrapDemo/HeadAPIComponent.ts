@@ -4,6 +4,7 @@
 import * as template from 'wml!AppBootstrapDemo/HeadAPIComponent';
 import { Control, TemplateFunction } from 'UI/Base';
 import { Head } from 'Application/Page';
+import { constants } from 'Env/Env';
 
 const TAG_CONTENT =  'Test_Content_Script';
 
@@ -15,7 +16,7 @@ export default class HeadAPIComponent extends Control {
     isFoundTitle: string = '';
 
     _beforeMount(options?: {}, context?: {}, receivedState?: unknown): Promise<void> | void {
-        if (typeof window === 'undefined' && !receivedState) {
+        if (!constants.isBrowserPlatform) {
             const uid = this._HeadAPI.createTag('script', {type: 'text/javascipt'}, TAG_CONTENT);
             this.elementPS = JSON.stringify(this._HeadAPI.getData(uid));
         }

@@ -35,12 +35,14 @@ export default class JSLinksComponent extends Control {
             this.jslinksData += new TagMarkup(JSLinksAPI.getData().map(fromJML), { getResourceUrl: false }).outerHTML;
             return;
         }
+        /* tslint:disable */
+        // @ts-ignore
         this.buildnumber = window.buildnumber;
+        // @ts-ignore
         this.isBuildnumberString = typeof window.buildnumber === 'string' ? 'success' : 'fail';
     }
 
     _afterMount(options?: {}, contexts?: unknown): void {
-        // tslint:disable-next-line
         // @ts-ignore
         if (window.jslinkFlag) {
             this.status = 'success';

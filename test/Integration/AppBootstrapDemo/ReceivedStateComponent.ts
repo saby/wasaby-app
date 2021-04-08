@@ -4,6 +4,7 @@
 // @ts-ignore
 import * as template from 'wml!AppBootstrapDemo/ReceivedStateComponent';
 import { Control, TemplateFunction } from 'UI/Base';
+import { constants } from 'Env/Env';
 
 export default class ReceivedStateComponent extends Control {
     _template: TemplateFunction = template;
@@ -16,7 +17,7 @@ export default class ReceivedStateComponent extends Control {
         if (!receivedState){
             return Promise.resolve(Math.random());
         }
-        if (typeof(window) !== 'undefined' && receivedState) {
+        if (constants.isBrowserPlatform && receivedState) {
             this.status = 'success';
         }
         this.value = receivedState;
