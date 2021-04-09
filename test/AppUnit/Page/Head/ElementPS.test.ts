@@ -91,7 +91,7 @@ describe('Application/_Page/_head/ElementPS', () => {
             assert.isTrue(element.isFit('link', LINK_PROPS._attrs), 'Общая проверка на соответствие описания не сработала');
         });
         it('Проверяет title ли этот элемент', () => {
-            assert.isTrue(new ElementPS('title', {}, TITLE_PROPS._content)._isTitle());
+            assert.isTrue(new ElementPS('title', {}, TITLE_PROPS._content).isTitle());
         });
         it('Генерирует данные в формате JML', () => {
             assert.deepEqual(ElementPS.generateTag(

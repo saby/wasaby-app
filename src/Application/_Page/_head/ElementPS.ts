@@ -33,7 +33,7 @@ export default class ElementPS {
                 eventHandlers?: IHeadTagEventHandlers,
                 element?: HTMLElement) {
         this._name = name;
-        this._attrs = attrs;
+        this._attrs = {...attrs};
         this._content = content ? String(content) : null;
         this._eventHandlers = eventHandlers;
         this._element = element;
@@ -45,14 +45,14 @@ export default class ElementPS {
         /** В момент генерации информации убираем из title все атрибуты */
         return ElementPS.generateTag({
             name: this._name,
-            attrs: this._isTitle() ? {} : this._attrs,
+            attrs: this.isTitle() ? {} : this._attrs,
             content: this._content,
             eventHandlers: this._eventHandlers
         });
     }
     /** удаляет информацию из свойств класса */
     clear(): void {
-        if (!this._isTitle()) {
+        if (!this.isTitle() && !this.isViewPort()) {
             delete this._attrs;
             delete this._content;
             delete this._eventHandlers;
@@ -124,12 +124,26 @@ export default class ElementPS {
         this.setAttrs(attrsChange);
     }
 
-    _isTitle(): boolean {
+    /**
+     * Описывает ли текущий элемент тег meta с параметрами для viewport?
+     */
+    isViewPort(): boolean {
+        return this._name === 'meta' && this._attrs.name === 'viewport' && !!this._attrs.content;
+    }
+
+    /**
+     * Описывает ли текущий элемент тег title?
+     */
+    isTitle(): boolean {
         return this._name === 'title';
     }
 
     /** Отрисовка элемента в head. */
     protected _render(): void {
+        this._startEvents();
+    }
+
+    protected _startEvents(): void {
         this._eventHandlers?.load();
     }
 

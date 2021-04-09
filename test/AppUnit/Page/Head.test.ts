@@ -33,7 +33,7 @@ describe('Application/_Page/Head', () => {
         }
         document.head.appendChild(el);
 
-        /** А ли мы на клиенте, то вот она: точка создания инстанса. После создания контрольных тегов. */
+        /** А если мы на клиенте, то вот она: точка создания инстанса. После создания контрольных тегов. */
         API = HeadAPI.getInstance();
         const data = API.getData();
         assert.isTrue(!!data.length, 'Не было собрано ни одного тега при оживлении');
@@ -45,27 +45,44 @@ describe('Application/_Page/Head', () => {
         API.clear();
     });
 
-    it('Создание пустого тега', () => {
-        const tag = 'title';
-        const attrs = {};
-
-        API.createTag(tag, attrs);
-        processingData.push([tag, {...attrs, ...additionalAttrs}]);
-        assert.deepEqual(API.getData(), processingData);
-    });
-
     it('Создание тега title', () => {
         const tag = 'title';
         const attrs = {name: 'this_attr_will_be_delete'};
+        let content = 'foo';
 
-        const tagId = API.createTag(tag, attrs);
+        API.createTag(tag, attrs, content);
         /** При получении данных от title тега из него удаляются все теги */
-        processingData.push([tag, {...additionalAttrs}]);
+        processingData.push([tag, {...additionalAttrs}, content]);
         assert.deepEqual(API.getData(), processingData);
 
-        /** Удалим наше творчество, чтобы не мешать другим тестам. Тег title мы уже добавляли ранее. */
-        API.deleteTag(tagId);
-        processingData.pop();
+        if (typeof window !== 'undefined') {
+            content = 'bar';
+            API.createTag(tag, attrs, content);
+            processingData.pop();
+            /** При добавлении второго тега title он заменяет предыдущий */
+            processingData.push([tag, {...additionalAttrs}, content]);
+            assert.deepEqual(API.getData(), processingData, 'Добавление второго тега title не привело к его замене');
+            assert.equal(content, document.title,
+               'Добавление второго тега title не привело к изменению заголовка HTML страницы');
+        }
+    });
+
+    it('Создание тега meta с name=viewport', () => {
+        const tag = 'meta';
+        const attrs = {name: 'viewport', content: 'width=1024'};
+
+        API.createTag(tag, attrs);
+        attrs.content = 'width=1920';
+        API.createTag(tag, attrs);
+        /** При добавлении второго тега meta с описанием viewport она заменяет предыдущий */
+        processingData.push([tag, {...attrs, ...additionalAttrs}]);
+        assert.deepEqual(API.getData(), processingData);
+
+        if (typeof window !== 'undefined') {
+            const element = document.head.querySelector<HTMLElement>('meta[name=viewport]');
+            assert.isTrue(!!element, 'Не нашелся элемент meta с описанием viewport');
+            assert.equal(element.getAttribute('content'), attrs.content, 'Данные в meta не обновились');
+        }
     });
 
     it('Добавление тега в набор уже существующих тегов', () => {
@@ -96,7 +113,7 @@ describe('Application/_Page/Head', () => {
     it('Добавление дубля ни к чему не приводит', () => {
         const tag = 'meta';
         const attrs = {
-            name: 'viewport',
+            type: 'test',
             content: 'width=1024'
         };
 
@@ -126,7 +143,7 @@ describe('Application/_Page/Head', () => {
             'Нашелся несуществующий тег title в данных');
         assert.isString(API.getTag('meta', ({foo: 'bar'} as IHeadTagAttrs)),
             'Нашлось более 2-х тегов meta в данных');
-        assert.equal(API.getTag('meta').length, 2, 'Не нашлось 2 тега meta в данных');
+        assert.equal(API.getTag('meta').length, 3, 'Не нашлось 3 тега meta в данных');
     });
 
     it('Получение тега для IE в нужном месте', () => {

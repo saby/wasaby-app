@@ -35,7 +35,7 @@ export default class Element extends ElementPS {
             attrs: IHeadTagAttrs,
             content?: string,
             eventHandlers?: IHeadTagEventHandlers): boolean{
-        if (this._isTitle()) {
+        if (this.isTitle()) {
             return document.title === content;
         }
         return super.isEqual(name, attrs, content, eventHandlers);
@@ -79,16 +79,17 @@ export default class Element extends ElementPS {
      * Переопределенный метод от родительского класса.
      */
     protected _render(): void {
-        if (this._element) {
-            return;
-        }
-        const title = this._isTitle() ? document.head.querySelector('title') : null;
+        const title = this.isTitle() ? document.head.querySelector('title') : null;
         /** если в DOM дереве существует title и текущий элемент - title,
          *  в таком случае меняем только content у title в DOM дереве
          */
         if (title) {
             document.title = this._content ? this._content : '';
             return;
+        }
+        const viewPort = this.isViewPort() ? document.head.querySelector<HTMLElement>('meta[name=viewport]') : null;
+        if (viewPort) {
+            this._element = viewPort;
         }
 
         /** проверяем создавался ли ранее элемент или нет */
@@ -99,15 +100,21 @@ export default class Element extends ElementPS {
         }
         // TODO: убрать после реалзации старта от div
         element.setAttribute('data-vdomignore', 'true');
-        document.head.appendChild(element);
+        if (!this._element) {
+            document.head.appendChild(element);
+            this._element = element;
+            this._startEvents();
+        }
+    }
+
+    protected _startEvents() {
         if (this._eventHandlers?.load) {
-            (element as HTMLLinkElement)
-                .addEventListener('load', (this._eventHandlers.load as EventListener));
+            (this._element as HTMLLinkElement)
+               .addEventListener('load', (this._eventHandlers.load as EventListener));
         }
         if (this._eventHandlers?.error) {
-            element.addEventListener('error', (this._eventHandlers.error as EventListener));
+            this._element.addEventListener('error', (this._eventHandlers.error as EventListener));
         }
-        this._element = element;
     }
 
     /** Метод удаления элемента из head в DOM-дереве.
@@ -115,7 +122,7 @@ export default class Element extends ElementPS {
      *  Нельзя оставлять страницу с пустым title - это приводит к морганию заголовка
      */
     protected _removeElement(): void {
-        if (!this._isTitle()) {
+        if (!this.isTitle() && !this.isViewPort()) {
             document.head.removeChild(this._element);
         }
         delete this._element;

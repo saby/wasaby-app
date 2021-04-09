@@ -101,7 +101,9 @@ export class Head implements IHead {
         }
         const elementClass = typeof window === 'undefined' ? ElementPS : Element;
         const uuid = this._generateGuid();
-        this._elements[uuid] = new elementClass(name, attrs, content, eventHandlers);
+        const newElement = new elementClass(name, attrs, content, eventHandlers);
+        this._checkUniq(newElement);
+        this._elements[uuid] = newElement;
 
         return uuid;
     }
@@ -146,7 +148,7 @@ export class Head implements IHead {
 
     clear(): void {
         for (const elementsKey in this._elements) {
-            if(this._elements.hasOwnProperty(elementsKey)){
+            if (this._elements.hasOwnProperty(elementsKey)){
                 this.deleteTag(elementsKey);
             }
         }
@@ -247,9 +249,35 @@ export class Head implements IHead {
     }
 
     /** Генератор уникального идентификатора для каждого тега */
-    protected _generateGuid(): IHeadTagId {
+    private _generateGuid(): IHeadTagId {
         return `head-${PREFIX}${this._id++}`;
     }
+
+    /**
+     * Перед добавлением нового элемента в набор необходимо обеспечить его уникальность в полном наборе
+     * Сейчас уникальными должны быть следующие теги:
+     * title (проверяется методом isTitle)
+     * meta с параметрами для viewport (проверяется методом isViewPort)
+     * @param element вновь созданный, но еще не добавленный элемент
+     * @private
+     */
+    private _checkUniq(element: Element | ElementPS): void {
+        const checkPoints = [ElementPS.prototype.isTitle, ElementPS.prototype.isViewPort];
+
+        checkPoints.filter((checkPoint: Function) => {
+            return checkPoint.call(element);
+        }).forEach((checkPoint) => {
+            for (const elementsKey in this._elements) {
+                if (this._elements.hasOwnProperty(elementsKey)) {
+                    if (checkPoint.call(this._elements[elementsKey])) {
+                        this._elements[elementsKey].clear();
+                        delete this._elements[elementsKey];
+                    }
+                }
+            }
+        })
+    }
+
     static _instance: Head;
 
     protected static _creator(): Head {
