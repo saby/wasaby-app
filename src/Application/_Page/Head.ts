@@ -249,7 +249,7 @@ export class Head implements IHead {
     }
 
     /** Генератор уникального идентификатора для каждого тега */
-    private _generateGuid(): IHeadTagId {
+    protected _generateGuid(): IHeadTagId {
         return `head-${PREFIX}${this._id++}`;
     }
 
