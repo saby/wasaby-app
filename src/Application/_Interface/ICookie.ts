@@ -25,6 +25,17 @@ export interface ICookieOptions {
  */
 export interface ICookie extends IStore {
     /**
+     * Кэширование запроса
+     * get - получения значения из cookie
+     * refresh - изменение значений в кэше 
+     * remove - удаление значения в кэше
+     */
+    cashe?: {
+        get(key: string): string;
+        refresh(key: string, value: string): void;
+        remove(key: string): void;
+    };
+    /**
      * Получение значение из cookie
      * @param {String}
      */

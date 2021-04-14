@@ -11,6 +11,8 @@ import { ILocation } from 'Application/_Interface/ILocation';
 import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
 import { IStore } from 'Application/_Interface/IStore';
 export { App };
+import { memoize } from 'Types/function';
+
 /**
  * Модуль-библиотека для работы с окружением.
  * @remark
@@ -103,6 +105,42 @@ export const location: ILocation = {
 };
 
 /**
+ * Класс для кэширования куки
+ */
+class CasheCookie {
+    storage = memoize.getStorage();
+    cacheFn = this.get;
+    constructor() {
+        this.get = memoize(this.get);
+    }
+
+    get(nameCookie: string) {
+        return App.getRequest().cookie.get(nameCookie);
+    }
+
+    refresh(key: string, value: string): void {
+        if (this.storage.has(this.cacheFn)) {
+            this.storage.get(this.cacheFn)[key] = value;
+        }
+    }
+
+    remove(key:string): void {
+        if (this.storage.has(this.cacheFn)) {
+            const cache = this.storage.get(this.cacheFn);
+            if (cache.hasOwnProperty(key)) {
+                delete cache[key];
+            }
+        }
+    }
+}
+
+function createCache(): void {
+    if (!cookie.cashe) {
+        cookie.cashe = new CasheCookie();
+    }
+};
+
+/**
  * Реализация {@link Application/_Interface/ICookie} — интерфейса по работе с cookie.
  * @class Application/Env/cookie
  * @implements Application/_Interface/ICookie
@@ -112,14 +150,19 @@ export const location: ILocation = {
  */
 export const cookie: ICookie = {
     get(key: string): string {
-        return App.getRequest().cookie.get(key);
+        createCache();
+        return cookie.cashe.get(key);
     },
 
     set(key: string, value: string, options?: ICookieOptions): boolean {
-        return App.getRequest().cookie.set(key, value, options);
+        createCache();
+        cookie.cashe.refresh(key, value);
+        return App.getRequest().cookie.set(key, value);
     },
 
     remove(key: string): void {
+        createCache();
+        cookie.cashe.remove(key);
         return App.getRequest().cookie.remove(key);
     },
 
