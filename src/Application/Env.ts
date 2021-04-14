@@ -107,7 +107,7 @@ export const location: ILocation = {
 /**
  * Класс для кэширования куки
  */
-class CasheCookie {
+class CacheCookie {
     storage = memoize.getStorage();
     cacheFn = this.get;
     constructor() {
@@ -135,8 +135,8 @@ class CasheCookie {
 }
 
 function createCache(): void {
-    if (!cookie.cashe) {
-        cookie.cashe = new CasheCookie();
+    if (!cookie.cache) {
+        cookie.cache = new CacheCookie();
     }
 };
 
@@ -151,18 +151,18 @@ function createCache(): void {
 export const cookie: ICookie = {
     get(key: string): string {
         createCache();
-        return cookie.cashe.get(key);
+        return cookie.cache.get(key);
     },
 
     set(key: string, value: string, options?: ICookieOptions): boolean {
         createCache();
-        cookie.cashe.refresh(key, value);
+        cookie.cache.refresh(key, value);
         return App.getRequest().cookie.set(key, value);
     },
 
     remove(key: string): void {
         createCache();
-        cookie.cashe.remove(key);
+        cookie.cache.remove(key);
         return App.getRequest().cookie.remove(key);
     },
 

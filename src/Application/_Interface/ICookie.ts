@@ -30,7 +30,7 @@ export interface ICookie extends IStore {
      * refresh - изменение значений в кэше 
      * remove - удаление значения в кэше
      */
-    cashe?: {
+    cache?: {
         get(key: string): string;
         refresh(key: string, value: string): void;
         remove(key: string): void;
