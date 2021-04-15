@@ -11,7 +11,7 @@ import { ILocation } from 'Application/_Interface/ILocation';
 import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
 import { IStore } from 'Application/_Interface/IStore';
 export { App };
-import { memoize } from 'Types/function';
+import Memoize from 'Application/_utils/memoize';
 
 /**
  * Модуль-библиотека для работы с окружением.
@@ -108,10 +108,12 @@ export const location: ILocation = {
  * Класс для кэширования куки
  */
 class CacheCookie {
-    storage = memoize.getStorage();
-    cacheFn = this.get;
+    memoize;
+    cacheFn: Function;
     constructor() {
-        this.get = memoize(this.get);
+        this.cacheFn = this.get;
+        this.memoize = new Memoize();
+        this.get = this.memoize.add(this.get);
     }
 
     get(nameCookie: string) {
@@ -119,18 +121,11 @@ class CacheCookie {
     }
 
     refresh(key: string, value: string): void {
-        if (this.storage.has(this.cacheFn)) {
-            this.storage.get(this.cacheFn)[key] = value;
-        }
+        this.memoize.refresh(this.cacheFn, key, value)
     }
 
-    remove(key:string): void {
-        if (this.storage.has(this.cacheFn)) {
-            const cache = this.storage.get(this.cacheFn);
-            if (cache.hasOwnProperty(key)) {
-                delete cache[key];
-            }
-        }
+    remove(key: string): void {
+        this.memoize.remove(this.cacheFn, key);
     }
 }
 
