@@ -2,7 +2,6 @@
 
 import * as AppEnv from 'Application/Env';
 import { IBody, IInternalBody } from 'Application/_Interface/IBody'
-import { ElementPS } from "Application/_Page/_body/ElementPS";
 
 /**
  * API для работы с <head> страницы
@@ -12,10 +11,27 @@ import { ElementPS } from "Application/_Page/_body/ElementPS";
  */
 
 export class Body implements IBody {
-    private readonly _bodyElement: ElementPS | DOMTokenList;
+    private readonly _attrs = {
+        'class':  ''
+    }
 
     constructor() {
-        this._bodyElement = typeof window === 'undefined' ? new ElementPS() : document.body.classList;
+        if (typeof window !== 'undefined') {
+            this._attrs.class = document.body.classList.toString();
+        }
+    }
+
+    private _updateClasses(removeList: string[], addList: string[]): void {
+        let list: string[] = Body._prepareTokens(this._attrs.class.split(' '));
+        list = list.filter((item) => !removeList.includes(item));
+        list = list.concat(addList.filter((item) => !list.includes(item)));
+
+        this._attrs.class = list.join(' ');
+
+        if (typeof window !== 'undefined') {
+            document.body.setAttribute('class', this._attrs.class);
+            this._notifyEventCrunch();
+        }
     }
 
     /** Костылямбрий, который будет жить, пока не закончится переход на построение от шаблона #bootsrap */
@@ -28,53 +44,31 @@ export class Body implements IBody {
         }
     }
 
-    addClass(...initialTokens: string[]): void {
-        try {
-            const tokens = Body._prepareTokens(initialTokens);
-            if (!tokens.length) {
-                return
-            }
-
-            this._bodyElement.add.apply(this._bodyElement, tokens);
-        } catch (e) {
-            this._logError(e);
-        }
-        this._notifyEventCrunch();
+    addClass(...tokens: string[]): void {
+        this._updateClasses([], Body._prepareTokens(tokens))
     }
 
-    removeClass(...initialTokens: string[]): void {
-        try {
-            const tokens = Body._prepareTokens(initialTokens);
-            if (!tokens.length) {
-                return
-            }
+    replaceClasses(removeList: string[], addList: string[]): void {
+        this._updateClasses(Body._prepareTokens(removeList), Body._prepareTokens(addList));
+    }
 
-            this._bodyElement.remove.apply(this._bodyElement, tokens);
-        } catch (e) {
-            this._logError(e);
-        }
-        this._notifyEventCrunch();
+    removeClass(...tokens: string[]): void {
+        this._updateClasses(Body._prepareTokens(tokens), [])
     }
 
     toggleClass(token: string, force?: boolean): boolean {
-        try {
-            return this._bodyElement.toggle(token, force);
-        } catch (e) {
-            this._logError(e)
-        }
-        this._notifyEventCrunch();
+        const needAdd: boolean = (force === undefined) ? !this.containsClass(token) : force;
+        needAdd ? this.addClass(token) : this.removeClass(token);
+
+        return this.containsClass(token);
     }
 
     containsClass(token: string): boolean {
-        try {
-            return this._bodyElement.contains(token);
-        } catch (e) {
-            this._logError(e);
-        }
+        return this._attrs.class.includes(token);
     }
 
     getClassString(): string {
-        return this._bodyElement.toString();
+        return this._attrs.class;
     }
 
     // #region IStore
@@ -99,11 +93,6 @@ export class Body implements IBody {
         return Object.assign({}, this);
     }
     // #endregion
-
-    private _logError(e: Error): void {
-        const message = `'Application/_Page/Body'. ${e.message}`;
-        typeof window === 'undefined' ? AppEnv.logger.error(message) : console.error(message);
-    }
 
     private static _creator(): Body {
         return new Body();
