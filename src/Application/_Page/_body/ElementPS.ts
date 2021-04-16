@@ -1,95 +1,76 @@
 ///// <amd-module name="Application/_Page/_body/ElementPS" />
 
 /**
- * Класс для Application/_Page/Body
- * Обеспечивает часть интерфейса https://developer.mozilla.org/ru/docs/Web/API/Element/classList
+ * Класс, которые непосредственно управляет тегом <body> на сервере
+ * @author Печеркин С.В.
  */
+export default class ElementPS {
+   protected readonly _attrs = {
+      'class':  ''
+   }
 
-export class ElementPS implements Partial<DOMTokenList> {
-    private _classes: string[] = [];
+   /**
+    * Аналог метода contains для DOMTokenList у <body>
+    * @see DOMTokenList
+    * @param token
+    */
+   containsClass(token: string): boolean {
+      return this._attrs.class.includes(token);
+   }
 
-    [x: number]: string;
-    length?: number;
-    value?: string;
-    item?(index: number): string {
-        throw new Error('Method not implemented.');
-    }
-    replace?(oldToken: string, newToken: string): void {
-        throw new Error('Method not implemented.');
-    }
-    supports?(token: string): boolean {
-        throw new Error('Method not implemented.');
-    }
-    // tslint:disable-next-line:no-any
-    forEach?(callbackfn: (value: string, key: number, parent: DOMTokenList) => void, thisArg?: any): void {
-        throw new Error('Method not implemented.');
-    }
+   /**
+    * Аналог метода toString для DOMTokenList у <body>
+    * @see DOMTokenList
+    */
+   getClasses(): string {
+      return this._attrs.class
+   }
 
-    toString(): string {
-        return this._classes.join(' ');
-    }
+   /**
+    * Аналог метода toggle для DOMTokenList у <body>
+    * @see DOMTokenList
+    * @param token
+    * @param force
+    */
+   toggleClass(token: string, force?: boolean): boolean {
+      const needAdd: boolean = (force === undefined) ? !this.containsClass(token) : force;
+      needAdd ? this.updateClasses([], [token]) : this.updateClasses( [token], []);
 
-    add(...tokens: string[]): void {
-        tokens.forEach((token) => {
-            this._checkToken(token, 'add');
-            if (!this._classes.includes(token)) {
-                this._classes.push(token);
-            }
-        });
-    }
+      return this.containsClass(token);
+   }
 
-    remove(...tokens: string[]): void {
-        tokens.forEach((token) => this._checkToken(token, 'remove'));
-        this._classes = this._classes.filter((item) => {
-            return !tokens.includes(item);
-        });
-    }
+   /**
+    * Аналог метода replace для DOMTokenList у <body>
+    * @see DOMTokenList
+    * @param initialRemoveList
+    * @param initialAddList
+    */
+   updateClasses(initialRemoveList: string[], initialAddList: string[]): void {
+      const removeList = ElementPS.prepareTokens(initialRemoveList);
+      const addList = ElementPS.prepareTokens(initialAddList);
 
-    toggle(token: string, force?: boolean): boolean {
-        this._checkToken(token, 'toggle');
+      let list: string[] = ElementPS.prepareTokens(this.getClasses().split(' '));
+      list = list.filter((item) => !removeList.includes(item));
+      list = list.concat(addList.filter((item) => !list.includes(item)));
 
-        if (typeof force === 'undefined') {
-            if (this._classes.includes(token)) {
-                this.remove(token);
-                return false;
-            } else {
-                this.add(token);
-                return true;
-            }
-        } else {
-            if (!!force) {
-                this.add(token);
-                return true;
-            } else {
-                this.remove(token);
-                return false;
-            }
-        }
-    }
+      this._attrs.class = list.join(' ');
+   }
 
-    contains(token: string): boolean {
-        this._checkToken(token, 'contains');
-        return this._classes.includes(token);
-    }
+   /**
+    * Токены классов нужно достаточно сильно фильтровать, иначе упадут нативные методы браузеров
+    * Нельзя пропускать дальше пустые строки и строки с пробелами
+    * @param tokens
+    * @protected
+    */
+   protected static prepareTokens(tokens: string[]): string[] {
+      const result: string[] = [];
 
-    /**
-     * Проверяем данные и стреляем ошибку как в браузере
-     * @param token
-     * @param method
-     * @protected
-     */
-    protected _checkToken(token: string, method: string): void | never {
-        if (!token) {
-            throw new Error([
-                `Failed to execute '${method}' on 'ElementPS':`,
-                'The token provided must not be empty'
-            ].join(' '));
-        }
-        if (token.includes(' ')) {
-            throw new Error([
-                `Failed to execute '${method}' on 'ElementPS':`,
-                `The token provided ('${token}') contains HTML space characters, which are not valid in tokens.`
-            ].join(' '));
-        }
-    }
+      tokens.forEach((token) => {
+         if (!!token) {
+            result.push(token.trim());
+         }
+      })
+
+      return result;
+   }
 }
