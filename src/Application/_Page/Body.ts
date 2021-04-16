@@ -2,73 +2,41 @@
 
 import * as AppEnv from 'Application/Env';
 import { IBody, IInternalBody } from 'Application/_Interface/IBody'
+import { default as Element } from 'Application/_Page/_body/Element';
+import { default as ElementPS } from 'Application/_Page/_body/ElementPS';
 
 /**
- * API для работы с <head> страницы
+ * API для работы с <body> страницы
  * Класс реализуется как синглтон
  * Получить инстанст синглтона можно через статичный метод getInstance()
  * @author Печеркин С.В.
  */
 
 export class Body implements IBody {
-    private readonly _attrs = {
-        'class':  ''
-    }
-
-    constructor() {
-        if (typeof window !== 'undefined') {
-            this._attrs.class = document.body.classList.toString();
-        }
-    }
-
-    private _updateClasses(removeList: string[], addList: string[]): void {
-        let list: string[] = Body._prepareTokens(this._attrs.class.split(' '));
-        list = list.filter((item) => !removeList.includes(item));
-        list = list.concat(addList.filter((item) => !list.includes(item)));
-
-        this._attrs.class = list.join(' ');
-
-        if (typeof window !== 'undefined') {
-            document.body.setAttribute('class', this._attrs.class);
-            this._notifyEventCrunch();
-        }
-    }
-
-    /** Костылямбрий, который будет жить, пока не закончится переход на построение от шаблона #bootsrap */
-    private _notifyEventCrunch(): void {
-        if (typeof window !== 'undefined') {
-            customEventPolyfill();
-            window.document.body.dispatchEvent(
-               new CustomEvent('_bodyClassesUpdateCrunch', {detail: this.getClassString()})
-            );
-        }
-    }
+    private _element: ElementPS | Element = (typeof window === 'undefined') ? new ElementPS() : new Element();
 
     addClass(...tokens: string[]): void {
-        this._updateClasses([], Body._prepareTokens(tokens))
+        this._element.updateClasses([], tokens)
     }
 
     replaceClasses(removeList: string[], addList: string[]): void {
-        this._updateClasses(Body._prepareTokens(removeList), Body._prepareTokens(addList));
+        this._element.updateClasses(removeList, addList);
     }
 
     removeClass(...tokens: string[]): void {
-        this._updateClasses(Body._prepareTokens(tokens), [])
+        this._element.updateClasses(tokens, [])
     }
 
     toggleClass(token: string, force?: boolean): boolean {
-        const needAdd: boolean = (force === undefined) ? !this.containsClass(token) : force;
-        needAdd ? this.addClass(token) : this.removeClass(token);
-
-        return this.containsClass(token);
+        return this._element.toggleClass(token, force);
     }
 
     containsClass(token: string): boolean {
-        return this._attrs.class.includes(token);
+        return this._element.containsClass(token)
     }
 
     getClassString(): string {
-        return this._attrs.class;
+        return this._element.getClasses();
     }
 
     // #region IStore
@@ -98,18 +66,6 @@ export class Body implements IBody {
         return new Body();
     }
 
-    private static _prepareTokens(tokens: string[]): string[] {
-        const result: string[] = [];
-
-        tokens.forEach((token) => {
-            if (!!token) {
-                result.push(token.trim());
-            }
-        })
-
-        return result;
-    }
-
     static _instance: Body;
 
     /**
@@ -123,21 +79,4 @@ export class Body implements IBody {
         }
         return <Body> AppEnv.getStore('BodyAPI', Body._creator);
     }
-}
-
-/** Костылямбрий, который будет жить, пока не закончится переход на построение от шаблона #bootsrap */
-function customEventPolyfill(): void {
-    if ( typeof window.CustomEvent === "function" ) {
-        return
-    }
-
-    function CustomEvent ( event, params ) {
-        params = params || { bubbles: false, cancelable: false, detail: null };
-        const evt = document.createEvent( 'CustomEvent' );
-        evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
-        return evt;
-    }
-
-    // @ts-ignore
-    window.CustomEvent = CustomEvent;
 }
