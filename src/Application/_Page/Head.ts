@@ -2,8 +2,8 @@
 
 import * as AppEnv from 'Application/Env';
 import { IHead, IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId, IInternalHead, JML, KeyInternalHead } from 'Application/_Interface/IHead';
-import { default as Element } from 'Application/_Page/_head/Element';
-import { default as ElementPS } from 'Application/_Page/_head/ElementPS';
+import { default as ElementPS, IHeadElement } from 'Application/_Page/_head/ElementPS';
+import { create } from 'Application/_Page/_head/Factory'
 
 /** Стандартное время до обновления страницы. Используется внутри <noscript> */
 const TIME_TO_REFRESH: Number = 2;
@@ -19,7 +19,7 @@ export class Head implements IHead {
 
     private _comments: string[] = [];
     private _noScriptUrl: string = null;
-    protected _elements: {[propName: string]: Element | ElementPS} = {};
+    protected _elements: {[propName: string]: IHeadElement} = {};
     protected _id: number = 1;
 
     constructor() {
@@ -39,7 +39,7 @@ export class Head implements IHead {
                 if (item.tagName === 'NOSCRIPT') {
                     return;
                 }
-                this._elements[this._generateGuid()] = new Element(null, null, null, null, item);
+                this._elements[this._generateGuid()] = create(null, null, null, null, item);
             });
     }
 
@@ -99,9 +99,10 @@ export class Head implements IHead {
                 return elementsKey;
             }
         }
-        const elementClass = typeof window === 'undefined' ? ElementPS : Element;
         const uuid = this._generateGuid();
-        this._elements[uuid] = new elementClass(name, attrs, content, eventHandlers);
+        const newElement = create(name, attrs, content, eventHandlers);
+        this._checkUniq(newElement);
+        this._elements[uuid] = newElement;
 
         return uuid;
     }
@@ -146,7 +147,7 @@ export class Head implements IHead {
 
     clear(): void {
         for (const elementsKey in this._elements) {
-            if(this._elements.hasOwnProperty(elementsKey)){
+            if (this._elements.hasOwnProperty(elementsKey)){
                 this.deleteTag(elementsKey);
             }
         }
@@ -212,7 +213,7 @@ export class Head implements IHead {
      * Генератор noscript тега с содержимым, если был задан _noScriptUrl
      * @private
      */
-    private _generateNoScript(): JML | null {
+    protected _generateNoScript(): JML | null {
         if (!this._noScriptUrl) {
             return  null;
         }
@@ -250,6 +251,33 @@ export class Head implements IHead {
     protected _generateGuid(): IHeadTagId {
         return `head-${PREFIX}${this._id++}`;
     }
+
+    /**
+     * Перед добавлением нового элемента в набор необходимо обеспечить его уникальность в полном наборе
+     * Сейчас уникальными должны быть следующие теги:
+     * title (проверяется методом isTitle)
+     * meta с параметрами для viewport (проверяется методом isViewPort)
+     * @param element вновь созданный, но еще не добавленный элемент
+     * @private
+     */
+    private _checkUniq(element: IHeadElement): void {
+        const checkPoints = ['isTitle', 'isViewPort']
+           .map((name) => element[name]);
+
+        checkPoints.filter((checkPoint: Function) => {
+            return checkPoint.call(element);
+        }).forEach(() => {
+            for (const elementsKey in this._elements) {
+                if (this._elements.hasOwnProperty(elementsKey)) {
+                    if (element.getType() === this._elements[elementsKey].getType()) {
+                        this._elements[elementsKey].clear();
+                        delete this._elements[elementsKey];
+                    }
+                }
+            }
+        })
+    }
+
     static _instance: Head;
 
     protected static _creator(): Head {

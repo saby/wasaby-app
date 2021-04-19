@@ -21,7 +21,4 @@ export default class JSLinksElement extends ElementPS {
         }
         return super.isFit(name, attrs);
     }
-    _isTitle(): boolean {
-        return false;
-    }
 }
