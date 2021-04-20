@@ -1,13 +1,20 @@
 /// <amd-module name='Application/_Env/memoize' />
-import { IMemoize } from 'Application/_Interface/IMemoize';
 /**
  * Модуль кэширования функции.
  * @author Новолокова Н.О.
  */
 
-const storage = new WeakMap();
-class Memoize implements IMemoize {
-    add(original: Function): Function {
+class Memoize {
+    storage = new WeakMap();
+
+    /**
+     * Возвращает функцию, запоминающую результат первого вызова оборачиваемого метода объекта.
+     * При повторных вызовах возвращает единожды вычисленный результат.
+     * @param original {Function} Кэшируемая функция
+     * @returns Результат выполнения функции
+     */
+    add(original: any): Function {
+        const storage = this.storage;
         return function (...args) {
             let cache = {};
             const key = JSON.stringify(args);
@@ -19,32 +26,27 @@ class Memoize implements IMemoize {
         };
     }
 
-    clear(original: Function): void {
-        if (storage.has(original)) {
-            const cache = storage.get(original);
-            Object.keys(cache).forEach(element => {
-                if (cache.hasOwnProperty(element)) {
-                    delete cache[element];
+    /**
+     * Очищает кэш переданной функции, если передали ключ, то очищает значение ключа
+     * @param original {Function} Кэшируемая функция
+     * @param key {string} Ключ удаляемой записи
+     */
+    clear(original: Function, key?: string): void {
+        if (this.storage?.has(original)) {
+            const cache = this.storage.get(original);
+            if (key) {
+                if (cache.hasOwnProperty(key)) {
+                    delete cache[key];
                 }
-            });
-            storage.delete(original);
-        }
-    }
-
-    refresh(original: Function, key: string, value: string): void {
-        if (storage.has(original)) {
-            storage.get(original)[key] = value;
-        }
-    }
-
-    remove(original: Function, key: string): void {
-        if (storage.has(original)) {
-            const cache = storage.get(original);
-            if (cache.hasOwnProperty(key)) {
-                delete cache[key];
+            } else {
+                Object.keys(cache).forEach(element => {
+                    if (cache.hasOwnProperty(element)) {
+                        delete cache[element];
+                    }
+                });
+                this.storage.delete(original);
             }
         }
     }
 }
-
-export default Memoize;
+export const memoize = new Memoize();

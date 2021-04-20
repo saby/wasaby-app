@@ -104,8 +104,7 @@ export const location: ILocation = {
     }
 };
 
-// переменная для кэширования куки
-let cacheCookie = new CacheCookie();
+const cacheCookie = new CacheCookie();
 
 /**
  * Реализация {@link Application/_Interface/ICookie} — интерфейса по работе с cookie.
@@ -117,19 +116,18 @@ let cacheCookie = new CacheCookie();
  */
 export const cookie: ICookie = {
     get(key: string): string {
-        // @ts-ignore
-        return cacheCookie.prepare(key, (key: string) => {
+        return cacheCookie.get(key, (key: string) => {
              return App.getRequest().cookie.get(key);
             });
     },
 
     set(key: string, value: string, options?: ICookieOptions): boolean {
-        cacheCookie.refresh(key, value);
+        cacheCookie.clear(key);
         return App.getRequest().cookie.set(key, value);
     },
 
     remove(key: string): void {
-        cacheCookie.remove(key);
+        cacheCookie.clear(key);
         return App.getRequest().cookie.remove(key);
     },
 
