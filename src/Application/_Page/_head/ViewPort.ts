@@ -17,7 +17,7 @@ export default class ViewPortAspect implements IHeadElementAspect {
    getData({name, attrs, content, eventHandlers}: IHeadTag): JML {
       return BaseElement.generateTag({name, attrs, content, eventHandlers});
    }
-   getDOMElement({name, attrs, content}: IHeadTag): HTMLElement | undefined {
+   getDOMElement({name}: IHeadTag): HTMLElement | undefined {
       let viewPort = document.head.querySelector<HTMLElement>('meta[name=viewport]');
       if (!viewPort) {
          viewPort = document.createElement(name);

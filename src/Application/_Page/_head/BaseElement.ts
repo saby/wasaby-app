@@ -56,7 +56,7 @@ export interface IHeadElement {
 export interface IHeadElementAspect {
    getUniqueKey(): boolean | string;
    isEqual(thisTag: IHeadTag, otherTag: IHeadTag): boolean;
-   getDOMElement({name, attrs, content}: IHeadTag): undefined | HTMLElement;
+   getDOMElement({name}: IHeadTag): undefined | HTMLElement;
    appendDomElement(element: HTMLElement): void;
    removeDOMElement(element: HTMLElement): void;
    getData({name, attrs, content, eventHandlers}: IHeadTag): JML;
@@ -69,7 +69,7 @@ export class DefaultAspect implements IHeadElementAspect {
    isEqual(thisTag: IHeadTag, otherTag: IHeadTag): boolean {
       return BaseElement.isEqual(thisTag, otherTag);
    }
-   getDOMElement({name, attrs, content}: IHeadTag): undefined | HTMLElement {
+   getDOMElement({name}: IHeadTag): undefined | HTMLElement {
       return document.createElement(name);
    }
    appendDomElement(element: HTMLElement): void {
@@ -95,14 +95,14 @@ export default abstract class BaseElement implements IHeadElement {
                attrs: IHeadTagAttrs,
                content?: string,
                eventHandlers?: IHeadTagEventHandlers,
-               aspect?: IHeadElementAspect,
+               aspect: IHeadElementAspect = new DefaultAspect(),
                hydratedElement?: HTMLElement) {
       this._name = name;
       this._attrs = {...attrs};
       this._content = content ? String(content) : null;
       this._eventHandlers = eventHandlers;
       this._hydratedElement = hydratedElement;
-      this._aspect = aspect || new DefaultAspect();
+      this._aspect = aspect;
       this._render();
    }
 
@@ -181,22 +181,6 @@ export default abstract class BaseElement implements IHeadElement {
 
    /** Отрисовка элемента в head. */
    protected abstract _render(): void
-
-   /** работа с событиями для тега */
-   protected abstract _startEvents(): void
-
-   /**
-    * Применение атрибутов на DOM элемент
-    * @param element
-    * @protected
-    */
-   protected _applyAttrs(element: HTMLElement): void {
-      for (const [key, value] of Object.entries(this._attrs)) {
-         element.setAttribute(key, value);
-      }
-      // TODO: убрать после реалзации старта от div
-      element.setAttribute('data-vdomignore', 'true');
-   }
 
    /** генерируется тэг в формате JML */
    static generateTag(data: IHeadTag): JML {

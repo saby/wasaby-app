@@ -23,9 +23,9 @@ export default class Element extends BaseElement {
                 content?: string,
                 eventHandlers?: IHeadTagEventHandlers,
                 aspect?: IHeadElementAspect,
-                element?: HTMLElement) {
-        const data: IElementRestoredData = Element._restoreElement(element);
-        super(data.name || name, data.attrs || attrs, data.content || content, eventHandlers, aspect, element);
+                hydrateElement?: HTMLElement) {
+        const data: IElementRestoredData = Element._restoreElement(hydrateElement);
+        super(data.name || name, data.attrs || attrs, data.content || content, eventHandlers, aspect, hydrateElement);
     }
 
     changeTag(attrsChange: IHeadTagAttrs): void {
@@ -72,6 +72,19 @@ export default class Element extends BaseElement {
         this._aspect.appendDomElement(element);
         this._element = element;
         this._startEvents();
+    }
+
+    /**
+     * Применение атрибутов на DOM элемент
+     * @param element
+     * @protected
+     */
+    protected _applyAttrs(element: HTMLElement): void {
+        for (const [key, value] of Object.entries(this._attrs)) {
+            element.setAttribute(key, value);
+        }
+        // TODO: убрать после реалзации старта от div
+        element.setAttribute('data-vdomignore', 'true');
     }
 
     protected _startEvents() {

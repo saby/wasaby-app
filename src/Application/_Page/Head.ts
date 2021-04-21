@@ -101,7 +101,7 @@ export class Head implements IHead {
         }
         const uuid = this._generateGuid();
         const newElement = create(name, attrs, content, eventHandlers);
-        this._checkUniq(newElement);
+        this._ensureUniq(newElement);
         this._elements[uuid] = newElement;
 
         return uuid;
@@ -260,16 +260,17 @@ export class Head implements IHead {
      * @param element вновь созданный, но еще не добавленный элемент
      * @private
      */
-    private _checkUniq(element: IHeadElement): void {
+    private _ensureUniq(element: IHeadElement): void {
         const uniqueKey = element.getUniqueKey();
+        if (!uniqueKey) {
+            return;
+        }
 
-        if (uniqueKey) {
-            for (const elementsKey in this._elements) {
-                if (this._elements.hasOwnProperty(elementsKey)) {
-                    if (this._elements[elementsKey].getUniqueKey() === uniqueKey) {
-                        this._elements[elementsKey].clear();
-                        delete this._elements[elementsKey];
-                    }
+        for (const elementsKey in this._elements) {
+            if (this._elements.hasOwnProperty(elementsKey)) {
+                if (this._elements[elementsKey].getUniqueKey() === uniqueKey) {
+                    this._elements[elementsKey].clear();
+                    delete this._elements[elementsKey];
                 }
             }
         }

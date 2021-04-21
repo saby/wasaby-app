@@ -16,12 +16,9 @@ export default class ElementPS extends BaseElement {
     }
 
     protected _render(): void {
-        this._startEvents();
-    }
-
-    protected _startEvents(): void {
         this._eventHandlers?.load();
     }
+
     protected _removeElement(): void {
         return;
     }

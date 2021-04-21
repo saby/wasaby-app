@@ -17,11 +17,10 @@ export function create(name: string,
    return new elementClass(name, attrs, content, eventHandlers, getAspect(name, attrs), hydratedElement);
 }
 
-function getAspect(name: string, attrs: IHeadTagAttrs): null | IHeadElementAspect {
+function getAspect(name: string, attrs: IHeadTagAttrs): undefined | IHeadElementAspect {
    const isTitle: boolean = name === 'title';
    const isViewPort: boolean = name === 'meta' && attrs.name === 'viewport' && !!attrs.content;
 
    return (isTitle && new TitleAspect())
-      || (isViewPort && new ViewPortAspect())
-      || null;
+      || (isViewPort && new ViewPortAspect());
 }

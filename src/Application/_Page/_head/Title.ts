@@ -17,7 +17,7 @@ export default class TitleAspect implements IHeadElementAspect {
       }
       return document.title === otherTag.content;
    }
-   getDOMElement({name, attrs, content}: IHeadTag): HTMLElement | undefined {
+   getDOMElement({name, content}: IHeadTag): HTMLElement | undefined {
       document.title = content || '';
       return document.head.querySelector('title');
    }
