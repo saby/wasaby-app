@@ -211,3 +211,13 @@ export function setStore<T = Record<string, string>>(type: string, store: IStore
 export function getConfig(key: string): any {
     return App.getRequest().getConfig().get(key);
 }
+
+/**
+ * Добавить значение в Config текущего запроса Request
+ * @param key
+ * @param value
+ * @private
+ */
+export function setConfig(key: string, value: any): any {
+    return App.getRequest().getConfig().set(key, value);
+}

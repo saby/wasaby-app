@@ -26,6 +26,15 @@ export default class Config implements ISerializableState {
     }
 
     /**
+     * Добавить/установить значение по ключу
+     * @param {String} key
+     * @param {String} value
+     * @return {Native}
+     */
+    set(key: keyof IData, value: any): void {
+        return this.data[key] = value;
+    }
+    /**
      * Получить состояние
      * @return {IData}
      */
