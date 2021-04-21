@@ -13,15 +13,12 @@ export default class JSLinksElement extends ElementPS {
         if (name !== 'script'){
             throw new Error('В методе isEqual класса JSLinksElement параметр name должен равняться "script"');
         }
-        return super.isEqual(name, attrs, content, eventHandlers);
+        return super.isEqual(name, attrs, content);
     }
     isFit(name?: string, attrs?: IHeadTagAttrs): boolean {
         if (name && name !== 'script'){
             throw new Error('В методе isFit класса JSLinksElement параметр name должен равняться "script"');
         }
         return super.isFit(name, attrs);
-    }
-    _isTitle(): boolean {
-        return false;
     }
 }

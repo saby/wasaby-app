@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { default as Element } from 'Application/_Page/_head/Element';
+import { create } from 'Application/_Page/_head/Factory';
 import { IHeadTagAttrs } from 'Application/Interface';
 
 const ALL_KEYS_ELEMENT = ['_name', '_attrs', '_content', '_eventHandlers'];
@@ -37,7 +37,7 @@ describe('Application/_Page/_head/Element', () => {
     describe('client side', () => {
         it('Проверяется создан/отрисовался ли title в DOM дереве', () => {
             const titleContentUnique = 'title_content_unique10';
-            const title = new Element('title', TITLE_PROPS._attrs, titleContentUnique, EVENT_HANDLER);
+            const title = create('title', TITLE_PROPS._attrs, titleContentUnique, EVENT_HANDLER);
             assert.deepInclude(title, {...TITLE_PROPS, _content: titleContentUnique},
                 'Все или некоторые свойства ElementPS (_name, _attrs, _content) не совпадают с образцом');
             // tslint:disable-next-line:ban-ts-ignore
@@ -49,7 +49,7 @@ describe('Application/_Page/_head/Element', () => {
         });
         it('Проверяется создан/отрисовался ли элемент в DOM дереве', () => {
             const metaNameUnique = 'meta_name_unique10';
-            const meta = new Element('meta', {name: metaNameUnique}, META_PROPS._content, EVENT_HANDLER);
+            const meta = create('meta', {name: metaNameUnique}, META_PROPS._content, EVENT_HANDLER);
             assert.deepInclude(meta, {...META_PROPS, _attrs: {name: metaNameUnique}},
                 'Все или некоторые свойства ElementPS (_name, _attrs, _content) не совпадают с образцом');
             // tslint:disable-next-line:ban-ts-ignore
@@ -60,17 +60,17 @@ describe('Application/_Page/_head/Element', () => {
                 'Элемент не создан в DOM дереве');
         });
         it('Проверка одинаковый ли title', () => {
-            const title = new Element('title', {}, '');
+            const title = create('title', {}, '');
             document.title = 'Foo';
             assert.isTrue(title.isEqual('title', {}, 'Foo'),'Элемент title не прошёл проверку на идентичность');
         });
         it('Проверка одинаковый ли element', () => {
-            assert.isTrue(new Element('meta', META_PROPS._attrs, META_PROPS._content)
+            assert.isTrue(create('meta', META_PROPS._attrs, META_PROPS._content)
                     .isEqual('meta', META_PROPS._attrs, META_PROPS._content),
                 'Элемент не прошёл проверку на идентичность');
         });
         it('Проверяется удалился ли title в DOM дереве', () => {
-            const title = new Element('title', {}, TITLE_PROPS._content);
+            const title = create('title', {}, TITLE_PROPS._content);
             title.clear();
             assert.doesNotHaveAnyKeys(title, KEY_TITLE,
                 'В элементе title не был удалён content');
@@ -82,7 +82,7 @@ describe('Application/_Page/_head/Element', () => {
         });
         it('Проверяется удалился ли элемент в DOM дереве', () => {
             const metaNameUnique = 'meta_name_unique20';
-            const meta = new Element('meta', {name: metaNameUnique}, META_PROPS._content, EVENT_HANDLER);
+            const meta = create('meta', {name: metaNameUnique}, META_PROPS._content, EVENT_HANDLER);
             meta.clear();
             assert.doesNotHaveAnyKeys(meta, ALL_KEYS_ELEMENT,
                 'В тестируемом элементе не были удалены свойства');
@@ -90,11 +90,11 @@ describe('Application/_Page/_head/Element', () => {
                 'Тестируемый элемент не был удален из DOM дерева');
         });
         it('Взять атрибуты тега на клиенте', () => {
-            const meta = new Element('meta', META_PROPS._attrs, META_PROPS._content);
+            const meta = create('meta', META_PROPS._attrs, META_PROPS._content);
             assert.deepEqual(META_PROPS._attrs as IHeadTagAttrs, meta.getAttrs());
         });
         it('Изменение атрибутов тега на клиенте', () => {
-            const meta = new Element('changeTag', META_PROPS._attrs, META_PROPS._content);
+            const meta = create('changeTag', META_PROPS._attrs, META_PROPS._content);
             const newAttrs = {
                 name: 'meta_name_new',
                 content: 'width=100',
