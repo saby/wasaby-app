@@ -22,5 +22,6 @@ function getAspect(name: string, attrs: IHeadTagAttrs): undefined | IHeadElement
    const isViewPort: boolean = name === 'meta' && attrs.name === 'viewport' && !!attrs.content;
 
    return (isTitle && new TitleAspect())
-      || (isViewPort && new ViewPortAspect());
+      || (isViewPort && new ViewPortAspect())
+      || undefined;
 }
