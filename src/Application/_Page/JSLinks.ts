@@ -91,7 +91,7 @@ export class JSLinks extends HeadAPI implements IJSLinks {
     createComment(): void {}
     createNoScript(): void {}
     /* tslint:enable:no-empty */
-    _generateGuid(): JSLinksTagId {
+    protected _generateGuid(): JSLinksTagId {
         return `scripts-${this._id++}`;
     }
     static _instance: JSLinks;
