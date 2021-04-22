@@ -215,6 +215,13 @@ declare module 'Application/_Config/Config' {
          */
         get(key: keyof IData): IData[keyof IData];
         /**
+         * Добавить/установить значение по ключу
+         * @param {String} key
+         * @param {String} value
+         * @return {Native}
+         */
+        set(key: keyof IData, value: any): void;
+        /**
          * Получить состояние
          * @return {IData}
          */
