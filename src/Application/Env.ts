@@ -104,7 +104,9 @@ export const location: ILocation = {
     }
 };
 
-const cacheCookie = new CacheCookie();
+const cacheCookie = new CacheCookie((key: string) => {
+    return App.getRequest().cookie.get(key);
+   });
 
 /**
  * Реализация {@link Application/_Interface/ICookie} — интерфейса по работе с cookie.
@@ -116,9 +118,7 @@ const cacheCookie = new CacheCookie();
  */
 export const cookie: ICookie = {
     get(key: string): string {
-        return cacheCookie.get(key, (key: string) => {
-             return App.getRequest().cookie.get(key);
-            });
+        return cacheCookie.get(key);
     },
 
     set(key: string, value: string, options?: ICookieOptions): boolean {

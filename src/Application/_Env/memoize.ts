@@ -4,7 +4,7 @@
  * @author Новолокова Н.О.
  */
 
-class Memoize {
+export class Memoize {
     storage = new WeakMap();
 
     /**
@@ -49,4 +49,3 @@ class Memoize {
         }
     }
 }
-export const memoize = new Memoize();

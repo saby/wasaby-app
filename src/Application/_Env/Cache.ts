@@ -1,35 +1,26 @@
 /// <amd-module name="Application/_Env/Cache" />
-import { memoize } from 'Application/_Env/memoize';
+import { Memoize } from 'Application/_Env/memoize';
 
 /**
  * Класс реализующий методы для кэширования куки
  * @author Новолокова Н.О.
  */
 export class CacheCookie {
-    // оригинал кэшируемой функции, для поиска в массиве
-    functionGet;
+    // Оригинал кэшируемой функции, сохраняю для поиска в массиве
+    functionGet: Function;
+    memoize: any;
+     constructor(funcGet: Function) {
+         this.functionGet = funcGet;
+         this.memoize = new Memoize();
+         this.get = this.memoize.add(this.functionGet);
+     }
 
     /**
      * Кэшированию функции запроса
      * @param key Ключ запрашиваемой куки
      * @param funcGet Функция запроса
-     * @returns Значение запрашиваемой куки
      */
-    get(key: string, funcGet: Function): string |null {
-        if (!this.functionGet || this.functionGet === 'undefined') {
-            this.functionGet = funcGet;
-            // @ts-ignore
-            this.getCookie = memoize.add(this.functionGet);
-        }
-        return this.getCookie(key);
-    }
-
-    /*
-     * Получить значение куки
-     * @param key Ключ запрашиваемой куки
-     * @returns Значение куки
-     */
-    getCookie(key: string): string {
+    get(key: string): string |null {
         return this.functionGet(key);
     }
 
@@ -38,6 +29,6 @@ export class CacheCookie {
      * @param key Ключ очищаемой куки, если не передан, то очищается весь кэш функции
      */
     clear(key?: string): void {
-        memoize.clear(this.functionGet, key);
+        this.memoize.clear(this.functionGet, key);
     }
 }
