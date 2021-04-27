@@ -1,24 +1,23 @@
-/// <amd-module name='Application/_Env/memoize' />
+/// <amd-module name='Application/_State/memoize' />
 /**
  * Модуль кэширования функции.
  * @author Новолокова Н.О.
  */
 
 export class Memoize {
-    storage = new WeakMap();
-
+    storage: any;
     /**
      * Возвращает функцию, запоминающую результат первого вызова оборачиваемого метода объекта.
      * При повторных вызовах возвращает единожды вычисленный результат.
      * @param original {Function} Кэшируемая функция
      * @returns Результат выполнения функции
      */
-    add(original: any): Function {
+    add(original: any): Function | any {
         const storage = this.storage;
         return function (...args) {
             let cache = {};
             const key = JSON.stringify(args);
-            storage.has(original) ? cache = storage.get(original) : storage.set(original, cache);
+            storage?.has(original) ? cache = storage.get(original) : storage?.set(original, cache);
             if (!cache.hasOwnProperty(key)) {
                 cache[key] = original.apply(this, args);
             }

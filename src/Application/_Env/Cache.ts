@@ -1,5 +1,5 @@
 /// <amd-module name="Application/_Env/Cache" />
-import { Memoize } from 'Application/_Env/memoize';
+import { Memoize } from 'Application/State';
 
 /**
  * Класс реализующий методы для кэширования куки
@@ -8,20 +8,26 @@ import { Memoize } from 'Application/_Env/memoize';
 export class CacheCookie {
     // Оригинал кэшируемой функции, сохраняю для поиска в массиве
     functionGet: Function;
-    memoize: any;
-     constructor(funcGet: Function) {
-         this.functionGet = funcGet;
-         this.memoize = new Memoize();
-         this.get = this.memoize.add(this.functionGet);
-     }
 
-    /**
-     * Кэшированию функции запроса
-     * @param key Ключ запрашиваемой куки
-     * @param funcGet Функция запроса
-     */
-    get(key: string): string |null {
-        return this.functionGet(key);
+    /* Возвращает запрашиваемую куку, мемизируемая функция.
+       @param key - Ключ запрашиваемой куки
+    */
+    get: Function;
+
+    // Переменная для функции мемомизации
+    memoize: any;
+
+    // Признак установки переменной для хранилища кэша
+    isFirstLoad: boolean = true;
+    constructor(funcGet: Function) {
+        this.functionGet = funcGet;
+    }
+
+    init(storage: Function) {
+        this.isFirstLoad = false;
+        this.memoize = new Memoize();
+        this.memoize.storage = storage;
+        this.get = this.memoize.add(this.functionGet);
     }
 
     /**

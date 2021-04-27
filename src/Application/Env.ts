@@ -12,7 +12,6 @@ import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
 import { IStore } from 'Application/_Interface/IStore';
 export { App };
 import { CacheCookie } from 'Application/_Env/Cache';
-export { CacheCookie } from 'Application/_Env/Cache';
 /**
  * Модуль-библиотека для работы с окружением.
  * @remark
@@ -103,7 +102,7 @@ export const location: ILocation = {
         return App.getRequest().location.hash;
     }
 };
-
+const cacheName = 'cacheApp';
 const cacheCookie = new CacheCookie((key: string) => {
     return App.getRequest().cookie.get(key);
    });
@@ -118,6 +117,10 @@ const cacheCookie = new CacheCookie((key: string) => {
  */
 export const cookie: ICookie = {
     get(key: string): string {
+        if (cacheCookie.isFirstLoad) {
+            //@ts-ignore
+            cacheCookie.init(App.getRequest().getStore(cacheName, () => { return new WeakMap() }));
+        }
         return cacheCookie.get(key);
     },
 
