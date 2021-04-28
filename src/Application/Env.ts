@@ -113,7 +113,7 @@ let cacheCookie;
  * @returns
  */
 
-function reloadCache(type: string, key: string): string {
+function changeCache(type: string, key: string): string {
     if (!cacheCookie) {
         cacheCookie = new CacheCookie((key: string) => {
             return App.getRequest().cookie.get(key);
@@ -136,16 +136,16 @@ function reloadCache(type: string, key: string): string {
  */
 export const cookie: ICookie = {
     get(key: string): string {
-        return reloadCache('get', key);
+        return changeCache('get', key);
     },
 
     set(key: string, value: string, options?: ICookieOptions): boolean {
-        reloadCache('clear', key);
+        changeCache('clear', key);
         return App.getRequest().cookie.set(key, value);
     },
 
     remove(key: string): void {
-        reloadCache('clear', key);
+        changeCache('clear', key);
         return App.getRequest().cookie.remove(key);
     },
 
