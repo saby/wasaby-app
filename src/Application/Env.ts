@@ -120,7 +120,7 @@ function reloadCache(type: string, key: string): string {
         },
             () => {
                 //@ts-ignore
-                return App.getRequest().getStore(cacheName, () => { return new WeakMap() })
+                return getStore(cacheName, () => { return new WeakMap() })
             });
     }
     return type === 'get' ? cacheCookie.get(key) : cacheCookie.clear(key);

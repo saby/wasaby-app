@@ -17,8 +17,6 @@ export class CacheCookie {
     // Переменная для функции мемомизации
     memoize: any;
 
-    // Признак установки переменной для хранилища кэша
-    isFirstLoad: Boolean = true;
     constructor(funcGet: Function, getStorage: Function) {
         this.functionGet = funcGet;
         this.memoize = new Memoize(getStorage);
