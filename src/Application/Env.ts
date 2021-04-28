@@ -103,9 +103,28 @@ export const location: ILocation = {
     }
 };
 const cacheName = 'cacheApp';
-const cacheCookie = new CacheCookie((key: string) => {
-    return App.getRequest().cookie.get(key);
-   });
+let cacheCookie;
+/**
+ * Функция для работы с кэшем.
+ * @param type {string} Тип работы с кэшем
+ * @variation get Взять значение куки в кэше по ключу
+ * @variation clear Очистить значение куки в кэше
+ * @param key {string} Идентификатор куки
+ * @returns
+ */
+
+function reloadCache(type: string, key: string): string {
+    if (!cacheCookie) {
+        cacheCookie = new CacheCookie((key: string) => {
+            return App.getRequest().cookie.get(key);
+        },
+            () => {
+                //@ts-ignore
+                return App.getRequest().getStore(cacheName, () => { return new WeakMap() })
+            });
+    }
+    return type === 'get' ? cacheCookie.get(key) : cacheCookie.clear(key);
+}
 
 /**
  * Реализация {@link Application/_Interface/ICookie} — интерфейса по работе с cookie.
@@ -117,20 +136,16 @@ const cacheCookie = new CacheCookie((key: string) => {
  */
 export const cookie: ICookie = {
     get(key: string): string {
-        if (cacheCookie.isFirstLoad) {
-            //@ts-ignore
-            cacheCookie.init(App.getRequest().getStore(cacheName, () => { return new WeakMap() }));
-        }
-        return cacheCookie.get(key);
+        return reloadCache('get', key);
     },
 
     set(key: string, value: string, options?: ICookieOptions): boolean {
-        cacheCookie.clear(key);
+        reloadCache('clear', key);
         return App.getRequest().cookie.set(key, value);
     },
 
     remove(key: string): void {
-        cacheCookie.clear(key);
+        reloadCache('clear', key);
         return App.getRequest().cookie.remove(key);
     },
 

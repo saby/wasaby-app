@@ -6,13 +6,21 @@
 
 export class Memoize {
     storage: any;
+    setStorage: Function
     /**
      * Возвращает функцию, запоминающую результат первого вызова оборачиваемого метода объекта.
      * При повторных вызовах возвращает единожды вычисленный результат.
      * @param original {Function} Кэшируемая функция
      * @returns Результат выполнения функции
      */
+    constructor(setStorage: Function) {
+        this.setStorage = setStorage;
+    }
+
     add(original: any): Function | any {
+        if (!this.storage) {
+            this.storage = this.setStorage();
+        }
         const storage = this.storage;
         return function (...args) {
             let cache = {};
