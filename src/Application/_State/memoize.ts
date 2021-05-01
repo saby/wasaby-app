@@ -24,7 +24,7 @@ export class Memoize {
         const storage = this.storage;
         return function (...args) {
             let cache = {};
-            const key = JSON.stringify(args);
+            const key = args.toString();
             storage?.has(original) ? cache = storage.get(original) : storage?.set(original, cache);
             if (!cache.hasOwnProperty(key)) {
                 cache[key] = original.apply(this, args);
