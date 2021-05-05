@@ -11,6 +11,7 @@ import { ILocation } from 'Application/_Interface/ILocation';
 import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
 import { IStore } from 'Application/_Interface/IStore';
 export { App };
+import { CacheCookie } from 'Application/_Env/Cache';
 /**
  * Модуль-библиотека для работы с окружением.
  * @remark
@@ -101,6 +102,29 @@ export const location: ILocation = {
         return App.getRequest().location.hash;
     }
 };
+const cacheName = 'cacheApp';
+let cacheCookie;
+/**
+ * Функция для работы с кэшем.
+ * @param type {string} Тип работы с кэшем
+ * @variation get Взять значение куки в кэше по ключу
+ * @variation clear Очистить значение куки в кэше
+ * @param key {string} Идентификатор куки
+ * @returns
+ */
+
+function changeCache(type: string, key: string): string {
+    if (!cacheCookie) {
+        cacheCookie = new CacheCookie((key: string) => {
+            return App.getRequest().cookie.get(key);
+        },
+            () => {
+                //@ts-ignore
+                return getStore(cacheName, () => { return new WeakMap() })
+            });
+    }
+    return type === 'get' ? cacheCookie.get(key) : cacheCookie.clear(key);
+}
 
 /**
  * Реализация {@link Application/_Interface/ICookie} — интерфейса по работе с cookie.
@@ -112,14 +136,16 @@ export const location: ILocation = {
  */
 export const cookie: ICookie = {
     get(key: string): string {
-        return App.getRequest().cookie.get(key);
+        return changeCache('get', key);
     },
 
     set(key: string, value: string, options?: ICookieOptions): boolean {
-        return App.getRequest().cookie.set(key, value, options);
+        changeCache('clear', key);
+        return App.getRequest().cookie.set(key, value);
     },
 
     remove(key: string): void {
+        changeCache('clear', key);
         return App.getRequest().cookie.remove(key);
     },
 
