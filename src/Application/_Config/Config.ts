@@ -1,5 +1,5 @@
 /// <amd-module name="Application/_Config/Config" />
-import { ISerializableState } from 'Application/_Interface/ISerializableState';
+import type { ISerializableState } from 'Application/_State/ISerializableState';
 
 // tslint:disable-next-line: no-any
 type IData = Record<string, any>;
@@ -8,7 +8,7 @@ type IData = Record<string, any>;
  * Класс Config
  * @class Application/_Config/Config
  * @public
- * @implements Application/_Interface/ISerializableState
+ * @implements Application/_State/ISerializableState
  * @author Санников К.А.
  */
 export default class Config implements ISerializableState {

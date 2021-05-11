@@ -6,7 +6,7 @@ import EnvBrowser from 'Application/_Env/Browser/Env';
 import EnvNodeJS from 'Application/_Env/NodeJS/Env';
 import { IEnv } from 'Application/_Interface/IEnv';
 import { IRequest } from 'Application/_Interface/IRequest';
-import { ISerializableState } from 'Application/_Interface/ISerializableState';
+import type { ISerializableState } from 'Application/_State/ISerializableState';
 import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
 
 const Env = (typeof window === 'undefined') ? EnvNodeJS : EnvBrowser;
@@ -52,7 +52,7 @@ export default class App {
     /**
      * Метод, для регистрации одиночки, который должен восстанавливать своё состояние на клиенте.
      * @param uid {String} Уникальный идентификатор одиночки.
-     * @param component {Application/Interface.ISerializableState} Экземпляр одиночки.
+     * @param component {Application/_State.ISerializableState} Экземпляр одиночки.
      */
     static registerSingleton(uid: string, component: ISerializableState): void {
         App.singletonCrossEnv.set(uid, component);

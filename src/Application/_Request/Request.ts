@@ -22,7 +22,7 @@ interface ICookieLocation {
  * @see Application/_Interface/IRequest
  * @see Application/_Interface/IStore
  * @see Application/_Interface/ILocation
- * @see Application/_Interface/ISerializableState
+ * @see Application/_State/ISerializableState
  * @see Application/_Interface/IStateReceiver
  * @todo добавить пример
  */
