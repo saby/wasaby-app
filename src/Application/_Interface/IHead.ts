@@ -1,6 +1,6 @@
 /// <amd-module name="Application/_Interface/IHead" />
 
-import { IStore } from 'Application/_Interface/IStore';
+import type { IStore } from 'Application/_Request/IStore';
 
 /**
  * Интерфейс объекта, описывающего аттрибуты тега для API Head

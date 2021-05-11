@@ -1,5 +1,5 @@
 /// <amd-module name="Application/_Env/ObjectStore" />
-import { IStore } from 'Application/_Interface/IStore';
+import type { IStore } from 'Application/_Request/IStore';
 
 export default class ObjectStore implements IStore {
     private __data = {};

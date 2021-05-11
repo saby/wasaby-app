@@ -1,5 +1,5 @@
 /// <amd-module name="Application/_Interface/ICookie" />
-import { IStore } from 'Application/_Interface/IStore';
+import type { IStore } from 'Application/_Request/IStore';
 
 /**
  * Набор опций для cookie
@@ -19,7 +19,7 @@ export interface ICookieOptions {
 /**
  * Интерфейс для работы с cookie
  * @interface Application/_Interface/ICookie
- * @extends Application/_Interface/IStore
+ * @extends Application/_Request/IStore
  * @public
  * @author Санников К.А.
  */

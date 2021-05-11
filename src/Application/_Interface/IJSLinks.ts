@@ -1,5 +1,5 @@
 import { IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId, IInternalHead, JML } from 'Application/_Interface/IHead';
-import { IStore } from 'Application/_Interface/IStore';
+import type { IStore } from 'Application/_Request/IStore';
 
 export type JSLinksTagId = string;
 

@@ -1,6 +1,6 @@
 /// <amd-module name="Application/_Interface/IBody" />
 
-import { IStore } from 'Application/_Interface/IStore';
+import type { IStore } from 'Application/_Request/IStore';
 
 /**
  * API для работы с <body> страницы

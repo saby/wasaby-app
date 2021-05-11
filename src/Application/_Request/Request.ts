@@ -4,7 +4,7 @@ import { ICookie } from 'Application/_Interface/ICookie';
 import { ILocation } from 'Application/_Interface/ILocation';
 import { IRequestInternal } from 'Application/_Interface/IRequest';
 import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
-import { IStore, IStoreMap } from 'Application/_Interface/IStore';
+import type { IStore, IStoreMap } from 'Application/_Request/IStore';
 import { FakeWebStorage } from 'Application/_Request/FakeWebStorage';
 import Store from 'Application/_Request/Store';
 
@@ -20,7 +20,7 @@ interface ICookieLocation {
  * @public
  * @author Санников К.А.
  * @see Application/_Interface/IRequest
- * @see Application/_Interface/IStore
+ * @see Application/_Request/IStore
  * @see Application/_Interface/ILocation
  * @see Application/_Interface/ISerializableState
  * @see Application/_Interface/IStateReceiver

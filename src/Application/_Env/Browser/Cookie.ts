@@ -9,7 +9,7 @@ const SEPARATOR = '; ';
  * @class
  * @name _Request/_Storage/Cookie
  * @implements Application/_Interface/ICookie
- * @implements Application/_Interface/IStore
+ * @implements Application/_Request/IStore
  * @author Санников К.А.
  */
 export default class Cookie implements ICookie {

@@ -3,7 +3,7 @@ import Config from 'Application/_Config/Config';
 import { ICookie } from 'Application/_Interface/ICookie';
 import { ILocation } from "Application/_Interface/ILocation";
 import { IStateReceiver } from "Application/_Interface/IStateReceiver";
-import { IStore } from "Application/_Interface/IStore";
+import type { IStore } from "Application/_Request/IStore";
 
 /**
  * Компонент, которые предоставляет в платформе доступ к синглтонам в рамках запроса пользователя.
@@ -39,14 +39,14 @@ export interface IRequest {
     /**
      * Получение хранилища для сохранений данных в рамках запроса.
      * @param {String} key Тип хранилища.
-     * @return {Application/_Interface/IStore} Хранилище
+     * @return {Application/_Request/IStore} Хранилище
      */
     getStore<T = Record<string, string>>(key: string, createDefaultStore?: () => IStore<T>): IStore<T>;
 
     /**
      * Установка хранилища
      * @param {String} key Тип хранилища.
-     * @param {Application/_Interface/IStore} storage Хранилище.
+     * @param {Application/_Request/IStore} storage Хранилище.
      */
     setStore<T = Record<string, string>>(key: string, storage: IStore<T>): void;
 }

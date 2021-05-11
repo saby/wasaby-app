@@ -9,7 +9,7 @@ import { IConsole } from 'Application/_Interface/IConsole';
 import { ICookie, ICookieOptions } from 'Application/_Interface/ICookie';
 import { ILocation } from 'Application/_Interface/ILocation';
 import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
-import { IStore } from 'Application/_Interface/IStore';
+import type { IStore } from 'Application/_Request/IStore';
 export { App };
 /**
  * Модуль-библиотека для работы с окружением.
@@ -186,8 +186,8 @@ export function getStateReceiver(): IStateReceiver {
  * @function
  * @name Application/Env#getStore
  * @param {String} type type
- * @return {Application/_Interface/IStore}
- * @see Application/_Interface/IStore
+ * @return {Application/_Request/IStore}
+ * @see Application/_Request/IStore
  */
 export function getStore<T = Record<string, string>>(type: string, createDefaultStore?: () => IStore<T>): IStore<T> {
     return App.getRequest().getStore<T>(type, createDefaultStore);
@@ -198,7 +198,7 @@ export function getStore<T = Record<string, string>>(type: string, createDefault
  * @function
  * @name Application/Env#setStore
  * @param {String} type type
- * @param {Application/_Interface/IStore} store store
+ * @param {Application/_Request/IStore} store store
  */
 export function setStore<T = Record<string, string>>(type: string, store: IStore<T>): void {
     return App.getRequest().setStore<T>(type, store);
