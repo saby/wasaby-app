@@ -2,8 +2,8 @@
 import Config from 'Application/_Config/Config';
 import { ICookie } from 'Application/_Interface/ICookie';
 import { ILocation } from "Application/_Interface/ILocation";
-import { IStateReceiver } from "Application/_Interface/IStateReceiver";
 import type { IStore } from "Application/_Request/IStore";
+import type { IStateReceiver } from 'Application/_State/Interfaces';
 
 /**
  * Компонент, которые предоставляет в платформе доступ к синглтонам в рамках запроса пользователя.
@@ -32,7 +32,7 @@ export interface IRequest {
      * Доступ к объекту сохранения состояния на сервиспе представлений,
      * для его получения на клиенте. Не привязан к VDOM механизмам,
      * поэтому можно будет его использовать в не визуальных компонентах.
-     * @return {Application/_Interface/IStateReceiver}
+     * @return {Application/_State/Interfaces}
      */
     getStateReceiver(): IStateReceiver;
 

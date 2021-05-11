@@ -9,7 +9,6 @@
  * @includes ILocation Application/_Interface/ILocation
  * @includes ISerializableState Application/_Interface/ISerializableState
  * @includes IStore Application/_Interface/IStore
- * @includes IStateReceiver Application/_Interface/IStateReceiver
  * @includes IRequest Application/_Interface/IRequest
  * @includes IHead Application/_Interface/IHead
  * @includes IHttpRequest Application/_Interface/IHttpRequest
@@ -25,7 +24,7 @@ export * from 'Application/_Interface/IEnv';
 export * from 'Application/_Interface/ILocation';
 export * from 'Application/_Interface/ISerializableState';
 export * from 'Application/_Interface/IStore';
-export * from 'Application/_Interface/IStateReceiver';
+// export * from 'Application/_Interface/IStateReceiver';
 export * from 'Application/_Interface/IRequest';
 export * from 'Application/_Interface/IHead';
 export * from 'Application/_Interface/IBody';

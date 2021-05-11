@@ -8,8 +8,8 @@ import App from 'Application/_Env/App';
 import type { IConsole } from 'Application/_Env/IConsole';
 import { ICookie, ICookieOptions } from 'Application/_Interface/ICookie';
 import { ILocation } from 'Application/_Interface/ILocation';
-import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
 import type { IStore } from 'Application/_Request/IStore';
+import type { IStateReceiver } from 'Application/_State/Interfaces';
 export { App };
 /**
  * Модуль-библиотека для работы с окружением.
@@ -174,8 +174,8 @@ export const logger: IConsole = {
  * Метод, возвращающий компонент для восстановления состояний компонентов.
  * @function
  * @name Application/Env#getStateReceiver
- * @return {Application/_Interface/IStateReceiver}
- * @see Application/_Interface/IStateReceiver
+ * @return {Application/_State/IStateReceiver}
+ * @see Application/_State/IStateReceiver
  */
 export function getStateReceiver(): IStateReceiver {
     return App.getRequest().getStateReceiver();

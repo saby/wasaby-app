@@ -1,3 +1,5 @@
+import type { IConsole } from 'Application/_Env/IConsole';
+
 /**
  * Интерфейс ресурса
  * @interface Application/_State/IResourceDisposable
@@ -63,4 +65,51 @@ export interface ISerializableState {
      * Устанавливаем состояния после десериализации
      */
     setState(data: Record<string, any>): void;
+}
+
+export type IStateReceiverMeta =  {ulid: string} & Record<string, string>;
+
+/**
+ * Интерфейс компонента для восстановления состояний компонентов.
+ * Необходим для получения данных состояний компонентов созданных на сервер.
+ * @interface Application/_State/IStateReceiver
+ * @private
+ * @author Санников К.А.
+ */
+export interface IStateReceiver {
+    /**
+     * Получить сериализованное состояние всех зарегестрированных компонентов.
+     * Используется для сохранения состояния страницы при построении на сервере.
+     * @remark
+     * TODO сделал возвращаемый тип any, потому что UI/_base/StateReceiver возвращает ISerializedType.
+     * Нужно будет переделывать.
+     * @return {any}
+     */
+    serialize(): any;
+
+    /**
+     * Установить состояние всем зарегестрированным компонентам.
+     * Используется при оживлении страницы после серверной вёрстки.
+     * @param {String} data Данные
+     */
+    deserialize(data: string): void;
+
+    /**
+     * Зарегистрировать компоненты, состояние которых необходимо сохранить.
+     * @param {string | IStateReceiverMeta} uid Идентификатор инстанса,
+     * для идентификации сохраненного для него состояния.
+     * @param {Application/_State/ISerializableState} component Сериализируемый компонент.
+     */
+    register(meta: string | IStateReceiverMeta, component: ISerializableState): void;
+
+    /**
+     * Отменить регистрацию по идентификатору инстанса.
+     * @param {String} uid Идентификатор инстанса.
+     */
+    unregister(uid: string): void;
+    /**
+     * установить логгер
+     * @param  {Application/_Env/IConsole} логгер.
+     */
+    setLogger(Logger: IConsole): void;
 }

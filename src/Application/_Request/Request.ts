@@ -3,10 +3,10 @@ import { Config } from 'Application/Config';
 import { ICookie } from 'Application/_Interface/ICookie';
 import { ILocation } from 'Application/_Interface/ILocation';
 import { IRequestInternal } from 'Application/_Interface/IRequest';
-import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
-import type { IStore, IStoreMap } from 'Application/_Request/IStore';
 import { FakeWebStorage } from 'Application/_Request/FakeWebStorage';
+import type { IStore, IStoreMap } from 'Application/_Request/IStore';
 import Store from 'Application/_Request/Store';
+import type { IStateReceiver } from 'Application/_State/Interfaces';
 
 interface ICookieLocation {
     cookie: ICookie;
@@ -23,7 +23,7 @@ interface ICookieLocation {
  * @see Application/_Request/IStore
  * @see Application/_Interface/ILocation
  * @see Application/_State/ISerializableState
- * @see Application/_Interface/IStateReceiver
+ * @see Application/_State/IStateReceiver
  * @todo добавить пример
  */
 export default class Request implements IRequestInternal {
@@ -43,7 +43,7 @@ export default class Request implements IRequestInternal {
     location: ILocation;
 
     /**
-     * @cfg {Application/_Interface/IStateReceiver} __stateReceiver
+     * @cfg {Application/_State/IStateReceiver} __stateReceiver
      * @name Application/_Request/Request#__stateReceiver
      * @private
      */
