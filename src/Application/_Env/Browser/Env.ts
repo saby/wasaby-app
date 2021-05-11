@@ -7,7 +7,7 @@ import type { IConsole } from 'Application/_Env/IConsole';
 import type { ICookie, ILocation } from 'Application/_Env/Interfaces';
 import ObjectStore from 'Application/_Env/ObjectStore';
 import { IEnv } from 'Application/_Interface/IEnv';
-import { IRequest, IRequestInternal } from 'Application/_Interface/IRequest';
+import type { IRequest, IRequestInternal } from 'Application/_Request/IRequest';
 
 /**
  * Браузерное окружение

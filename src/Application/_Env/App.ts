@@ -1,11 +1,11 @@
 /// <amd-module name="Application/_Env/App" />
 import { Config } from 'Application/Config';
-import { StateReceiver } from 'Application/State';
 import { IHttpRequest, IHttpResponse } from 'Application/Interface';
+import { StateReceiver } from 'Application/State';
 import EnvBrowser from 'Application/_Env/Browser/Env';
 import EnvNodeJS from 'Application/_Env/NodeJS/Env';
 import { IEnv } from 'Application/_Interface/IEnv';
-import { IRequest } from 'Application/_Interface/IRequest';
+import type { IRequest } from 'Application/_Request/IRequest';
 import type { ISerializableState, IStateReceiver } from 'Application/_State/Interfaces';
 
 const Env = (typeof window === 'undefined') ? EnvNodeJS : EnvBrowser;

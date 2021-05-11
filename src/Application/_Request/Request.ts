@@ -15,10 +15,10 @@ interface ICookieLocation {
 /**
  * Класс Request
  * @class Application/_Request/Request
- * @implements Application/_Interface/IRequest
+ * @implements Application/_Request/IRequest
  * @public
  * @author Санников К.А.
- * @see Application/_Interface/IRequest
+ * @see Application/_Request/IRequest
  * @see Application/_Request/IStore
  * @see Application/Env/ILocation
  * @see Application/_State/ISerializableState

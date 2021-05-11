@@ -11,4 +11,6 @@ import { default as Request } from 'Application/_Request/Request';
  */
 
 export default Request;
+export { IStore } from 'Application/_Request/IStore';
+export { IRequest, IRequestInternal } from 'Application/_Request/IRequest';
 export { default as Store } from 'Application/_Request/Store';

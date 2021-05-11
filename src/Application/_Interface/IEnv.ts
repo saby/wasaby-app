@@ -4,7 +4,7 @@ import type { ICookie, ILocation } from 'Application/_Env/Interfaces';
 import { IConfig } from 'Application/_Interface/IConfig';
 import { IHttpRequest } from 'Application/_Interface/IHttpRequest';
 import { IHttpResponse } from 'Application/_Interface/IHttpResponse';
-import { IRequest, IRequestInternal } from 'Application/_Interface/IRequest';
+import type { IRequest, IRequestInternal } from 'Application/_Request/IRequest';
 
 /**
  * Интерфейс IEnv
