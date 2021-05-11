@@ -3,8 +3,8 @@ import { Config } from 'Application/Config';
 import Request from 'Application/Request';
 import Cookie from 'Application/_Env/Browser/Cookie';
 import Console from 'Application/_Env/Console';
+import type { IConsole } from 'Application/_Env/IConsole';
 import ObjectStore from 'Application/_Env/ObjectStore';
-import { IConsole } from 'Application/_Interface/IConsole';
 import { ICookie } from 'Application/_Interface/ICookie';
 import { IEnv } from 'Application/_Interface/IEnv';
 import { ILocation } from 'Application/_Interface/ILocation';
@@ -27,7 +27,7 @@ export default class EnvBrowser implements IEnv {
     initRequest: boolean = true;
     private _request: IRequest;
     /**
-     * @cfg {Application/_Interface/IConsole} console
+     * @cfg {Application/_Env/IConsole} console
      * @name Application/_Env/Browser/Env#console
      */
     console: IConsole;

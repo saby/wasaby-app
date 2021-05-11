@@ -1,6 +1,6 @@
 /// <amd-module name="Application/_Interface/IEnv" />
+import type { IConsole } from 'Application/_Env/IConsole';
 import { IConfig } from 'Application/_Interface/IConfig';
-import { IConsole } from 'Application/_Interface/IConsole';
 import { ICookie } from 'Application/_Interface/ICookie';
 import { IHttpRequest } from 'Application/_Interface/IHttpRequest';
 import { IHttpResponse } from 'Application/_Interface/IHttpResponse';
@@ -25,7 +25,7 @@ export interface IEnv {
 }
 /**
  * @name Application/_Interface/IEnv#console
- * @cfg {Application/_Interface/IConsole} console
+ * @cfg {Application/_Env/IConsole} console
  */
 /**
  * @name Application/_Interface/IEnv#cookie

@@ -5,7 +5,7 @@ export { LogLevel as LogLevelNodeJS, default as ConsoleNodeJS } from 'Applicatio
 import { PARAMS, parseQueryGet, parseQueryHash } from 'Application/_Env/QueryParams';
 export { LogLevel } from 'Application/_Env/Console';
 import App from 'Application/_Env/App';
-import { IConsole } from 'Application/_Interface/IConsole';
+import type { IConsole } from 'Application/_Env/IConsole';
 import { ICookie, ICookieOptions } from 'Application/_Interface/ICookie';
 import { ILocation } from 'Application/_Interface/ILocation';
 import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
@@ -133,10 +133,10 @@ export const cookie: ICookie = {
 };
 
 /**
- * Реализация {@link Application/_Interface/IConsole} — логгера.
+ * Реализация {@link Application/_Env/IConsole} — логгера.
  * @class Application/Env/logger
- * @implements Application/_Interface/IConsole
- * @see Application/_Interface/IConsole
+ * @implements Application/_Env/IConsole
+ * @see Application/_Env/IConsole
  * @author Санников К.А.
  * @public
  */

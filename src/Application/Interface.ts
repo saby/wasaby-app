@@ -3,7 +3,6 @@
 /**
  * Библиотека интерфейсов
  * @library Application/Interface
- * @includes IConsole Application/_Interface/IConsole
  * @includes ICookie Application/_Interface/ICookie
  * @includes IConfig Application/_Interface/IConfig
  * @includes IEnv Application/_Interface/IEnv
@@ -19,7 +18,7 @@
  * @author Санников К.А.
  */
 
-export * from 'Application/_Interface/IConsole';
+// export * from 'Application/_Interface/IConsole';
 export * from 'Application/_Interface/ICookie';
 export * from 'Application/_Interface/IConfig';
 export * from 'Application/_Interface/IEnv';

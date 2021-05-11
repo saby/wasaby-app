@@ -1,10 +1,11 @@
 /// <amd-module name="Application/_Env/NodeJS/Env" />
 import { Config } from 'Application/Config';
 import {
-    IConsole, ICookie, IEnv, IHttpRequest, IHttpResponse,
+    ICookie, IEnv, IHttpRequest, IHttpResponse,
     ILocation, IRequest, IRequestInternal
 } from 'Application/Interface';
 import Request from 'Application/Request';
+import type { IConsole } from 'Application/_Env/IConsole';
 import Console from 'Application/_Env/NodeJS/Console';
 import Cookie from 'Application/_Env/NodeJS/Cookie';
 import Location from 'Application/_Env/NodeJS/Location';
