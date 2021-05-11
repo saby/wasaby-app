@@ -1,6 +1,6 @@
 /// <amd-module name="Application/_Interface/IStateReceiver" />
 import { IConsole } from 'Application/_Interface/IConsole';
-import { ISerializableState } from "Application/_Interface/ISerializableState";
+import type { ISerializableState } from "Application/_State/ISerializableState";
 
 export type IStateReceiverMeta =  {ulid: string} & Record<string, string>;
 
@@ -33,7 +33,7 @@ export interface IStateReceiver {
      * Зарегистрировать компоненты, состояние которых необходимо сохранить.
      * @param {string | IStateReceiverMeta} uid Идентификатор инстанса,
      * для идентификации сохраненного для него состояния.
-     * @param {Application/_Interface/ISerializableState} component Сериализируемый компонент.
+     * @param {Application/_State/ISerializableState} component Сериализируемый компонент.
      */
     register(meta: string | IStateReceiverMeta, component: ISerializableState): void;
 
