@@ -2,10 +2,11 @@
 import { Config } from 'Application/Config';
 import {
     ICookie, IEnv, IHttpRequest, IHttpResponse,
-    ILocation, IRequest, IRequestInternal
+    IRequest, IRequestInternal
 } from 'Application/Interface';
 import Request from 'Application/Request';
 import type { IConsole } from 'Application/_Env/IConsole';
+import type { ILocation } from 'Application/_Env/Interfaces';
 import Console from 'Application/_Env/NodeJS/Console';
 import Cookie from 'Application/_Env/NodeJS/Cookie';
 import Location from 'Application/_Env/NodeJS/Location';

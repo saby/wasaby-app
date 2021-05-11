@@ -7,7 +7,7 @@ import type { IConsole } from 'Application/_Env/IConsole';
 import ObjectStore from 'Application/_Env/ObjectStore';
 import { ICookie } from 'Application/_Interface/ICookie';
 import { IEnv } from 'Application/_Interface/IEnv';
-import { ILocation } from 'Application/_Interface/ILocation';
+import type { ILocation } from 'Application/_Env/Interfaces';
 import { IRequest, IRequestInternal } from 'Application/_Interface/IRequest';
 
 /**
@@ -37,7 +37,7 @@ export default class EnvBrowser implements IEnv {
      */
     cookie: ICookie;
     /**
-     * @cfg {Application/_Interface/ILocation} location
+     * @cfg {Application/Env/ILocation} location
      * @name Application/_Env/Browser/Env#location
      */
     location: ILocation;

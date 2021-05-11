@@ -6,8 +6,8 @@ import { PARAMS, parseQueryGet, parseQueryHash } from 'Application/_Env/QueryPar
 export { LogLevel } from 'Application/_Env/Console';
 import App from 'Application/_Env/App';
 import type { IConsole } from 'Application/_Env/IConsole';
+import type { ILocation } from 'Application/_Env/Interfaces';
 import { ICookie, ICookieOptions } from 'Application/_Interface/ICookie';
-import { ILocation } from 'Application/_Interface/ILocation';
 import type { IStore } from 'Application/_Request/IStore';
 import type { IStateReceiver } from 'Application/_State/Interfaces';
 export { App };
@@ -61,10 +61,10 @@ export const query: PARAMS = {
 };
 
 /**
- * Реализация {@link Application/_Interface/ILocation} — обобщенного window.location.
+ * Реализация {@link Application/Env/ILocation} — обобщенного window.location.
  * @class Application/Env/location
- * @implements Application/_Interface/ILocation
- * @see Application/_Interface/ILocation
+ * @implements Application/Env/ILocation
+ * @see Application/Env/ILocation
  * @author Санников К.А.
  * @public
  */

@@ -1,7 +1,7 @@
 /// <amd-module name="Application/_Request/Request" />
 import { Config } from 'Application/Config';
+import type { ILocation } from 'Application/_Env/Interfaces';
 import { ICookie } from 'Application/_Interface/ICookie';
-import { ILocation } from 'Application/_Interface/ILocation';
 import { IRequestInternal } from 'Application/_Interface/IRequest';
 import { FakeWebStorage } from 'Application/_Request/FakeWebStorage';
 import type { IStore, IStoreMap } from 'Application/_Request/IStore';
@@ -21,7 +21,7 @@ interface ICookieLocation {
  * @author Санников К.А.
  * @see Application/_Interface/IRequest
  * @see Application/_Request/IStore
- * @see Application/_Interface/ILocation
+ * @see Application/Env/ILocation
  * @see Application/_State/ISerializableState
  * @see Application/_State/IStateReceiver
  * @todo добавить пример
@@ -37,7 +37,7 @@ export default class Request implements IRequestInternal {
     cookie: ICookie;
 
     /**
-     * @cfg {Application/_Interface/ILocation} location
+     * @cfg {Application/Env/ILocation} location
      * @name Application/_Request/Request#location
      */
     location: ILocation;

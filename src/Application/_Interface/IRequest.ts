@@ -1,7 +1,7 @@
 /// <amd-module name="Application/_Interface/IRequest" />
 import Config from 'Application/_Config/Config';
+import type { ILocation } from "Application/_Env/Interfaces";
 import { ICookie } from 'Application/_Interface/ICookie';
-import { ILocation } from "Application/_Interface/ILocation";
 import type { IStore } from "Application/_Request/IStore";
 import type { IStateReceiver } from 'Application/_State/Interfaces';
 
@@ -32,7 +32,7 @@ export interface IRequest {
      * Доступ к объекту сохранения состояния на сервиспе представлений,
      * для его получения на клиенте. Не привязан к VDOM механизмам,
      * поэтому можно будет его использовать в не визуальных компонентах.
-     * @return {Application/_State/Interfaces}
+     * @return {Application/_State/IStateReceiver}
      */
     getStateReceiver(): IStateReceiver;
 
