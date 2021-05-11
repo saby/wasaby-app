@@ -1,7 +1,6 @@
 /// <amd-module name="Application/_Interface/IRequest" />
 import Config from 'Application/_Config/Config';
-import type { ILocation } from "Application/_Env/Interfaces";
-import { ICookie } from 'Application/_Interface/ICookie';
+import type { ICookie, ILocation } from 'Application/_Env/Interfaces';
 import type { IStore } from "Application/_Request/IStore";
 import type { IStateReceiver } from 'Application/_State/Interfaces';
 

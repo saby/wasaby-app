@@ -1,7 +1,6 @@
 /// <amd-module name="Application/_Request/Request" />
 import { Config } from 'Application/Config';
-import type { ILocation } from 'Application/_Env/Interfaces';
-import { ICookie } from 'Application/_Interface/ICookie';
+import type { ICookie, ILocation } from 'Application/_Env/Interfaces';
 import { IRequestInternal } from 'Application/_Interface/IRequest';
 import { FakeWebStorage } from 'Application/_Request/FakeWebStorage';
 import type { IStore, IStoreMap } from 'Application/_Request/IStore';
@@ -31,7 +30,7 @@ export default class Request implements IRequestInternal {
     private readonly __config: Config;
 
     /**
-     * @cfg {Application/_Interface/ICookie} cookie
+     * @cfg {Application/Env/ICookie} cookie
      * @name Application/_Request/Request#cookie
      */
     cookie: ICookie;

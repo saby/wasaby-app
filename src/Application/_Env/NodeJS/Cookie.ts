@@ -1,5 +1,6 @@
 /// <amd-module name="Application/_Env/NodeJS/Cookie" />
-import { ICookie, ICookieOptions, IHttpRequest, IHttpResponse } from 'Application/Interface';
+import { IHttpRequest, IHttpResponse } from 'Application/Interface';
+import type { ICookie, ICookieOptions } from 'Application/_Env/Interfaces';
 
 /**
  * Класс, реализующий интерфейс {@link Core/Request/IStorage},

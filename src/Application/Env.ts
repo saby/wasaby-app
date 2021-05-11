@@ -6,8 +6,7 @@ import { PARAMS, parseQueryGet, parseQueryHash } from 'Application/_Env/QueryPar
 export { LogLevel } from 'Application/_Env/Console';
 import App from 'Application/_Env/App';
 import type { IConsole } from 'Application/_Env/IConsole';
-import type { ILocation } from 'Application/_Env/Interfaces';
-import { ICookie, ICookieOptions } from 'Application/_Interface/ICookie';
+import type { ICookie, ICookieOptions, ILocation } from 'Application/_Env/Interfaces';
 import type { IStore } from 'Application/_Request/IStore';
 import type { IStateReceiver } from 'Application/_State/Interfaces';
 export { App };
@@ -103,10 +102,10 @@ export const location: ILocation = {
 };
 
 /**
- * Реализация {@link Application/_Interface/ICookie} — интерфейса по работе с cookie.
+ * Реализация {@link Application/Env/ICookie} — интерфейса по работе с cookie.
  * @class Application/Env/cookie
- * @implements Application/_Interface/ICookie
- * @see Application/_Interface/ICookie
+ * @implements Application/Env/ICookie
+ * @see Application/Env/ICookie
  * @author Санников К.А.
  * @public
  */

@@ -3,7 +3,6 @@
 /**
  * Библиотека интерфейсов
  * @library Application/Interface
- * @includes ICookie Application/_Interface/ICookie
  * @includes IConfig Application/_Interface/IConfig
  * @includes IEnv Application/_Interface/IEnv
  * @includes ISerializableState Application/_Interface/ISerializableState
@@ -17,7 +16,7 @@
  */
 
 // export * from 'Application/_Interface/IConsole';
-export * from 'Application/_Interface/ICookie';
+// export * from 'Application/_Interface/ICookie';
 export * from 'Application/_Interface/IConfig';
 export * from 'Application/_Interface/IEnv';
 // export * from 'Application/_Interface/ILocation';
