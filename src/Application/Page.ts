@@ -11,3 +11,4 @@
 export { Head } from "Application/_Page/Head";
 export { Body } from "Application/_Page/Body";
 export { JSLinks } from "Application/_Page/JSLinks";
+export * from 'Application/_Page/_head/IHead';

@@ -1,6 +1,6 @@
 ///// <amd-module name="Application/_Page/_head/BaseElement" />
 
-import { IHeadTag, IHeadTagAttrs, IHeadTagEventHandlers, ITagPrior, JML } from 'Application/_Interface/IHead';
+import type { IHeadTag, IHeadTagAttrs, IHeadTagEventHandlers, ITagPrior, JML } from 'Application/_Page/_head/IHead';
 
 /**
  * Базовый класс HTML элемента для вставки в head.

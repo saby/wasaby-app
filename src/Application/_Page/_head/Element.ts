@@ -1,8 +1,8 @@
 ///// <amd-module name="Application/_Page/_head/Element" />
 
-import { IHeadTagAttrs, IHeadTagEventHandlers } from 'Application/_Interface/IHead';
 import { IHeadElementAspect } from "Application/_Page/_head/BaseElement";
 import BaseElement from "Application/_Page/_head/BaseElement";
+import type { IHeadTagAttrs, IHeadTagEventHandlers } from 'Application/_Page/_head/IHead';
 
 export interface IElementRestoredData {
     name: string;

@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import { create } from 'Application/_Page/_head/Factory';
 import { default as ElementPS } from 'Application/_Page/_head/ElementPS';
-import { IHeadTagAttrs } from 'Application/Interface';
+import type { IHeadTagAttrs } from 'Application/Page';
 
 const ALL_KEYS_ELEMENT = ['_name', '_attrs', '_content', '_eventHandlers'];
 const KEY_TITLE = ['_content'];

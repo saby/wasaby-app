@@ -1,7 +1,7 @@
 ///// <amd-module name="Application/_Page/Head" />
 
 import * as AppEnv from 'Application/Env';
-import { IHead, IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId, IInternalHead, JML, KeyInternalHead } from 'Application/_Interface/IHead';
+import type { IHead, IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId, IInternalHead, JML, KeyInternalHead } from 'Application/_Page/_head/IHead';
 import BaseElement, { IHeadElement } from 'Application/_Page/_head/BaseElement';
 import { create } from 'Application/_Page/_head/Factory'
 
