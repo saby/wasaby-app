@@ -1,7 +1,7 @@
 /// <amd-module name="Application/_Interface/IEnv" />
+import type { IConfig } from 'Application/_Config/IConfig';
 import type { IConsole } from 'Application/_Env/IConsole';
 import type { ICookie, ILocation } from 'Application/_Env/Interfaces';
-import { IConfig } from 'Application/_Interface/IConfig';
 import { IHttpRequest } from 'Application/_Interface/IHttpRequest';
 import { IHttpResponse } from 'Application/_Interface/IHttpResponse';
 import type { IRequest, IRequestInternal } from 'Application/_Request/IRequest';

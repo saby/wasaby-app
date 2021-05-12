@@ -3,7 +3,6 @@
 /**
  * Библиотека интерфейсов
  * @library Application/Interface
- * @includes IConfig Application/_Interface/IConfig
  * @includes IEnv Application/_Interface/IEnv
  * @includes IHttpRequest Application/_Interface/IHttpRequest
  * @includes IHttpResponse Application/_Interface/IHttpResponse
@@ -13,7 +12,7 @@
 
 // export * from 'Application/_Interface/IConsole';
 // export * from 'Application/_Interface/ICookie';
-export * from 'Application/_Interface/IConfig';
+// export * from 'Application/_Interface/IConfig';
 export * from 'Application/_Interface/IEnv';
 // export * from 'Application/_Interface/ILocation';
 // export * from 'Application/_Interface/ISerializableState';
