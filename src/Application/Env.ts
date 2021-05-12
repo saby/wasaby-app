@@ -10,6 +10,9 @@ import type { ICookie, ICookieOptions, ILocation } from 'Application/_Env/Interf
 import type { IStore } from 'Application/_Request/IStore';
 import type { IStateReceiver } from 'Application/_State/Interfaces';
 export { IEnv } from 'Application/_Env/IEnv';
+export { IHttpRequest } from 'Application/_Env/IHttpRequest';
+export { IHttpResponse } from 'Application/_Env/IHttpResponse';
+export { IConsole, ICookieOptions, ICookie, ILocation };
 export { App };
 /**
  * Модуль-библиотека для работы с окружением.

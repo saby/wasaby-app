@@ -1,5 +1,5 @@
 /// <amd-module name="Application/_Config/Config" />
-import type { ISerializableState } from 'Application/_State/ISerializableState';
+import type { ISerializableState } from 'Application/_State/Interfaces';
 
 // tslint:disable-next-line: no-any
 type IData = Record<string, any>;
