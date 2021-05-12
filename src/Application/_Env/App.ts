@@ -1,8 +1,9 @@
 /// <amd-module name="Application/_Env/App" />
 import { Config } from 'Application/Config';
-import { IHttpRequest, IHttpResponse } from 'Application/Interface';
 import { StateReceiver } from 'Application/State';
 import EnvBrowser from 'Application/_Env/Browser/Env';
+import type { IHttpRequest } from 'Application/_Env/IHttpRequest';
+import type { IHttpResponse } from 'Application/_Env/IHttpResponse';
 import EnvNodeJS from 'Application/_Env/NodeJS/Env';
 import { IEnv } from 'Application/_Interface/IEnv';
 import type { IRequest } from 'Application/_Request/IRequest';

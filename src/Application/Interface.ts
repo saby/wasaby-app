@@ -4,8 +4,6 @@
  * Библиотека интерфейсов
  * @library Application/Interface
  * @includes IEnv Application/_Interface/IEnv
- * @includes IHttpRequest Application/_Interface/IHttpRequest
- * @includes IHttpResponse Application/_Interface/IHttpResponse
  * @public
  * @author Санников К.А.
  */
@@ -21,5 +19,5 @@ export * from 'Application/_Interface/IEnv';
 // export * from 'Application/_Interface/IRequest';
 // export * from 'Application/_Interface/IHead';
 // export * from 'Application/_Interface/IBody';
-export * from 'Application/_Interface/IHttpRequest';
-export * from 'Application/_Interface/IHttpResponse';
+// export * from 'Application/_Interface/IHttpRequest';
+// export * from 'Application/_Interface/IHttpResponse';

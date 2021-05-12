@@ -1,5 +1,5 @@
 /// <amd-module name="Application/_Env/NodeJS/Location" />
-import { IHttpRequest } from 'Application/Interface';
+import type { IHttpRequest } from 'Application/_Env/IHttpRequest';
 import type { ILocation } from 'Application/_Env/Interfaces;
 
 export default class Location implements ILocation {
