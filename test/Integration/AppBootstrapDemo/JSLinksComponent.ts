@@ -2,11 +2,9 @@
 // tslint:disable-next-line
 // @ts-ignore
 import * as template from 'wml!AppBootstrapDemo/JSLinksComponent';
-import { Control, TemplateFunction } from 'UI/Base';
 import { JSLinks } from 'Application/Page';
 import {aggregateJS} from 'UI/Deps';
-import {default as TagMarkup} from 'UI/_base/HTML/_meta/TagMarkup';
-import {fromJML} from 'UI/_base/HTML/_meta/JsonML';
+import { Control, TemplateFunction, TagMarkup, fromJML } from 'UI/Base';
 import { constants } from 'Env/Constants';
 
 export default class JSLinksComponent extends Control {
