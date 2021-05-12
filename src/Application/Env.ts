@@ -9,6 +9,7 @@ import type { IConsole } from 'Application/_Env/IConsole';
 import type { ICookie, ICookieOptions, ILocation } from 'Application/_Env/Interfaces';
 import type { IStore } from 'Application/_Request/IStore';
 import type { IStateReceiver } from 'Application/_State/Interfaces';
+export { IEnv } from 'Application/_Env/IEnv';
 export { App };
 /**
  * Модуль-библиотека для работы с окружением.

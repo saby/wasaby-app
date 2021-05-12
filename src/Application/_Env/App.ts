@@ -2,10 +2,10 @@
 import { Config } from 'Application/Config';
 import { StateReceiver } from 'Application/State';
 import EnvBrowser from 'Application/_Env/Browser/Env';
+import type { IEnv } from 'Application/_Env/IEnv';
 import type { IHttpRequest } from 'Application/_Env/IHttpRequest';
 import type { IHttpResponse } from 'Application/_Env/IHttpResponse';
 import EnvNodeJS from 'Application/_Env/NodeJS/Env';
-import { IEnv } from 'Application/_Interface/IEnv';
 import type { IRequest } from 'Application/_Request/IRequest';
 import type { ISerializableState, IStateReceiver } from 'Application/_State/Interfaces';
 

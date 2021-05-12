@@ -4,9 +4,9 @@ import Request from 'Application/Request';
 import Cookie from 'Application/_Env/Browser/Cookie';
 import Console from 'Application/_Env/Console';
 import type { IConsole } from 'Application/_Env/IConsole';
+import type { IEnv } from 'Application/_Env/IEnv';
 import type { ICookie, ILocation } from 'Application/_Env/Interfaces';
 import ObjectStore from 'Application/_Env/ObjectStore';
-import { IEnv } from 'Application/_Interface/IEnv';
 import type { IRequest, IRequestInternal } from 'Application/_Request/IRequest';
 
 /**
@@ -14,7 +14,7 @@ import type { IRequest, IRequestInternal } from 'Application/_Request/IRequest';
  * Класс EnvBrowser
  * @class Application/_Env/Browser/Env
  * @author Санников К.А.
- * @implements {Application/_Interface/IEnv}
+ * @implements {Application/Env/IEnv}
  * @public
  */
 export default class EnvBrowser implements IEnv {

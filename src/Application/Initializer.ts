@@ -1,7 +1,7 @@
 /// <amd-module name="Application/Initializer" />
 import { App, logger } from 'Application/Env';
-import { IEnv } from 'Application/_Interface/IEnv';
-import type { ISerializableState, IStateReceiver } from 'Application/_State/Interfaces';
+import type { IEnv } from 'Application/Env';
+import type { ISerializableState, IStateReceiver } from 'Application/State';
 
 export const startRequest = App.startRequest;
 export const isInit = App.isInit;

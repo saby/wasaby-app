@@ -1,9 +1,9 @@
 /// <amd-module name="Application/_Env/NodeJS/Env" />
 import { Config } from 'Application/Config';
-import { IEnv } from 'Application/Interface';
 import Request from 'Application/Request';
 import type { IRequest, IRequestInternal } from 'Application/Request';
 import type { IConsole } from 'Application/_Env/IConsole';
+import type { IEnv } from 'Application/_Env/IEnv';
 import type { IHttpRequest } from 'Application/_Env/IHttpRequest';
 import type { IHttpResponse } from 'Application/_Env/IHttpResponse';
 import type { ICookie, ILocation } from 'Application/_Env/Interfaces';
@@ -15,7 +15,7 @@ import Location from 'Application/_Env/NodeJS/Location';
  * Окружение для запуска Application под NodeJS
  * @class Application/_Env/NodeJS/Env
  * @public
- * @implements {Application/_Interface/IEnv}
+ * @implements {Application/Env/IEnv}
  */
 export default class EnvNodeJS implements IEnv {
     /**
