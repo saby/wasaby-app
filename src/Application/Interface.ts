@@ -20,6 +20,6 @@ export * from 'Application/_Interface/IEnv';
 // export * from 'Application/_Interface/IStateReceiver';
 // export * from 'Application/_Interface/IRequest';
 // export * from 'Application/_Interface/IHead';
-export * from 'Application/_Interface/IBody';
+// export * from 'Application/_Interface/IBody';
 export * from 'Application/_Interface/IHttpRequest';
 export * from 'Application/_Interface/IHttpResponse';
