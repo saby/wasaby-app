@@ -1,6 +1,6 @@
 ///// <amd-module name="Application/_Page/_head/BaseElement" />
 
-import { IHeadTag, JML } from 'Application/_Interface/IHead';
+import type { IHeadTag, JML } from 'Application/_Page/_head/IHead';
 import BaseElement, { IHeadElementAspect } from 'Application/_Page/_head/BaseElement';
 
 /**

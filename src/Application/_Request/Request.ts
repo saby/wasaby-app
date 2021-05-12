@@ -1,7 +1,7 @@
 /// <amd-module name="Application/_Request/Request" />
 import { Config } from 'Application/Config';
 import type { ICookie, ILocation } from 'Application/_Env/Interfaces';
-import { IRequestInternal } from 'Application/_Interface/IRequest';
+import type { IRequestInternal } from 'Application/_Request/IRequest';
 import { FakeWebStorage } from 'Application/_Request/FakeWebStorage';
 import type { IStore, IStoreMap } from 'Application/_Request/IStore';
 import Store from 'Application/_Request/Store';
