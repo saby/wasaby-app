@@ -1,13 +1,13 @@
 /// <amd-module name="Application/_Env/App" />
 import { Config } from 'Application/Config';
 import { StateReceiver } from 'Application/State';
-import { IHttpRequest, IHttpResponse } from 'Application/Interface';
 import EnvBrowser from 'Application/_Env/Browser/Env';
+import type { IEnv } from 'Application/_Env/IEnv';
+import type { IHttpRequest } from 'Application/_Env/IHttpRequest';
+import type { IHttpResponse } from 'Application/_Env/IHttpResponse';
 import EnvNodeJS from 'Application/_Env/NodeJS/Env';
-import { IEnv } from 'Application/_Interface/IEnv';
-import { IRequest } from 'Application/_Interface/IRequest';
-import { ISerializableState } from 'Application/_Interface/ISerializableState';
-import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
+import type { IRequest } from 'Application/_Request/IRequest';
+import type { ISerializableState, IStateReceiver } from 'Application/_State/Interfaces';
 
 const Env = (typeof window === 'undefined') ? EnvNodeJS : EnvBrowser;
 // tslint:disable-next-line: no-any
@@ -52,7 +52,7 @@ export default class App {
     /**
      * Метод, для регистрации одиночки, который должен восстанавливать своё состояние на клиенте.
      * @param uid {String} Уникальный идентификатор одиночки.
-     * @param component {Application/Interface.ISerializableState} Экземпляр одиночки.
+     * @param component {Application/_State.ISerializableState} Экземпляр одиночки.
      */
     static registerSingleton(uid: string, component: ISerializableState): void {
         App.singletonCrossEnv.set(uid, component);

@@ -1,5 +1,5 @@
 /// <amd-module name="Application/_Env/Browser/Cookie" />
-import { ICookie, ICookieOptions } from "Application/_Interface/ICookie";
+import type { ICookie, ICookieOptions } from 'Application/_Env/Interfaces';
 const MS_IN_DAY = 24 * 60 * 60 * 1000;
 const NAME_REPLACE_REGEXP = /=.*/;
 /** Разделитель между куками в documents.cookie */
@@ -8,8 +8,8 @@ const SEPARATOR = '; ';
  * Класс предназначенный для работы с cookie в браузере,
  * @class
  * @name _Request/_Storage/Cookie
- * @implements Application/_Interface/ICookie
- * @implements Application/_Interface/IStore
+ * @implements Application/Env/ICookie
+ * @implements Application/_Request/IStore
  * @author Санников К.А.
  */
 export default class Cookie implements ICookie {

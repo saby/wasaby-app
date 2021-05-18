@@ -1,11 +1,11 @@
 /// <amd-module name="Application/_Request/Store" />
-import { IStore } from "Application/_Interface/IStore";
+import type { IStore } from "Application/_Request/IStore";
 
 /**
- * Класс, реализующий интерфейс {@link Application/_Interface/IStore},
+ * Класс, реализующий интерфейс {@link Application/_Request/IStore},
  * предназначенный для работы с localStorage и SessionStorage
  * @class Application/_Request/Store
- * @implements Application/_Interface/IStore
+ * @implements Application/_Request/IStore
  * @public
  * @author Санников К.А.
  */

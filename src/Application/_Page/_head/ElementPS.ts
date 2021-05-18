@@ -1,7 +1,7 @@
 ///// <amd-module name="Application/_Page/_head/ElementPS" />
 
-import { IHeadTagAttrs } from 'Application/_Interface/IHead';
 import BaseElement from "Application/_Page/_head/BaseElement";
+import type { IHeadTagAttrs } from 'Application/_Page/_head/IHead';
 
 /**
  * Класс HTML элемента для вставки в head.

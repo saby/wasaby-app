@@ -1,9 +1,9 @@
-/// <amd-module name="Application/_Interface/IHttpRequest" />
-import { IRequest } from "./IRequest";
+/// <amd-module name="Application/_Env/IHttpRequest" />
+import type { IRequest } from 'Application/Request';
 
 /**
  * Интерфейс, описывающий базовый API объекта запроса (request)
- * @interface Application/_Interface/IHttpRequest
+ * @interface Application/Env/IHttpRequest
  * @public
  * @author Мустафин Л.И.
  */

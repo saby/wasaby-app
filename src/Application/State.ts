@@ -8,4 +8,4 @@
  */
 export { StateReceiver } from 'Application/_State/StateReceiver';
 export { default as DisposeControl, toMixDisposable } from 'Application/_State/DisposeControl';
-export { IResourceDisposable } from 'Application/_State/Interfaces';
+export { IResourceDisposable, ISerializableState, IStateReceiverMeta, IStateReceiver } from 'Application/_State/Interfaces';

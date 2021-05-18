@@ -1,6 +1,6 @@
 /// <amd-module name="Application/_State/StateReceiver" />
-import { ISerializableState, IStateReceiver, IStateReceiverMeta } from 'Application/Interface';
-import { IConsole } from 'Application/_Interface/IConsole';
+import type { IConsole } from 'Application/_Env/IConsole';
+import type { ISerializableState, IStateReceiver, IStateReceiverMeta } from 'Application/_State/Interfaces';
 
 /**
  * @author Санников К.

@@ -1,8 +1,8 @@
-/// <amd-module name="Application/_Interface/IConsole" />
+/// <amd-module name="Application/_Env/IConsole" />
 /**
  * Интерфейс для логгера. Для того что бы избавиться от IoC('ILogger').
  * IoC вызывает у нас много непонятных проблем с цикличной зависимостью.
- * @interface Application/_Interface/IConsole
+ * @interface Application/_Env/IConsole
  * @public
  * @author Санников К.А.
  */

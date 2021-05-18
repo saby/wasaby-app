@@ -1,10 +1,10 @@
-/// <amd-module name="Application/_Interface/IHead" />
+/// <amd-module name="Application/_Page/_head/IHead" />
 
-import { IStore } from 'Application/_Interface/IStore';
+import type { IStore } from 'Application/_Request/IStore';
 
 /**
  * Интерфейс объекта, описывающего аттрибуты тега для API Head
- * @interface Application/_Interface/IHeadTagAttrs
+ * @interface Application/Page/IHeadTagAttrs
  * @public
  * @author Печеркин С.В.
  */
@@ -29,7 +29,7 @@ export interface IHeadTagAttrs {
 
 /**
  * Интерфейс объекта, описывающего обработчики событий тега для API Head
- * @interface Application/_Interface/IHeadTagEventHandlers
+ * @interface Application/Page/IHeadTagEventHandlers
  * @public
  * @author Печеркин С.В.
  */
@@ -40,7 +40,7 @@ export interface IHeadTagEventHandlers {
 
 /**
  * Интерфейс одного тега для API Head
- * @interface Application/_Interface/IHeadTag
+ * @interface Application/Page/IHeadTag
  * @property {string} name - имя тега (title, meta, script)
  * @property {IHeadTagAttrs} attrs - дополнительные аттрибуты для тега
  * @property {string} content - содержимое тега. Актульано, например, для тега script
@@ -65,7 +65,7 @@ export type JML = [string, (object | JsonML | string)?, (JsonML | string)?];
 
 /**
  * API для работы с <head> страницы
- * @interface Application/_Interface/IHead
+ * @interface Application/Page/IHead
  * @property {Function} createComment - добавит строку с комментарием внутрь тега <head>
  * @property {Function} createNoScript - добавит конструкцию noscript с указанным URL
  * @property {Function} createTag - добавит тег внутрь <head>. Если такой тег уже есть - перерисует его

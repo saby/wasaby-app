@@ -1,9 +1,9 @@
-/// <amd-module name="Application/_Interface/IHttpResponse" />
-import { ICookieOptions } from "Application/_Interface/ICookie";
+/// <amd-module name="Application/_Env/IHttpResponse" />
+import type { ICookieOptions } from 'Application/_Env/Interfaces';
 
 /**
  * Интерфейс, описывающий базовый API объекта ответа (response)
- * @interface Application/_Interface/IHttpResponse
+ * @interface Application/Env/IHttpResponse
  * @public
  * @author Мустафин Л.И.
  */

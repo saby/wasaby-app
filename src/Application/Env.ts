@@ -5,11 +5,14 @@ export { LogLevel as LogLevelNodeJS, default as ConsoleNodeJS } from 'Applicatio
 import { PARAMS, parseQueryGet, parseQueryHash } from 'Application/_Env/QueryParams';
 export { LogLevel } from 'Application/_Env/Console';
 import App from 'Application/_Env/App';
-import { IConsole } from 'Application/_Interface/IConsole';
-import { ICookie, ICookieOptions } from 'Application/_Interface/ICookie';
-import { ILocation } from 'Application/_Interface/ILocation';
-import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
-import { IStore } from 'Application/_Interface/IStore';
+import type { IConsole } from 'Application/_Env/IConsole';
+import type { ICookie, ICookieOptions, ILocation } from 'Application/_Env/Interfaces';
+import type { IStore } from 'Application/_Request/IStore';
+import type { IStateReceiver } from 'Application/_State/Interfaces';
+export { IEnv } from 'Application/_Env/IEnv';
+export { IHttpRequest } from 'Application/_Env/IHttpRequest';
+export { IHttpResponse } from 'Application/_Env/IHttpResponse';
+export { IConsole, ICookieOptions, ICookie, ILocation };
 export { App };
 /**
  * Модуль-библиотека для работы с окружением.
@@ -61,10 +64,10 @@ export const query: PARAMS = {
 };
 
 /**
- * Реализация {@link Application/_Interface/ILocation} — обобщенного window.location.
+ * Реализация {@link Application/Env/ILocation} — обобщенного window.location.
  * @class Application/Env/location
- * @implements Application/_Interface/ILocation
- * @see Application/_Interface/ILocation
+ * @implements Application/Env/ILocation
+ * @see Application/Env/ILocation
  * @author Санников К.А.
  * @public
  */
@@ -103,10 +106,10 @@ export const location: ILocation = {
 };
 
 /**
- * Реализация {@link Application/_Interface/ICookie} — интерфейса по работе с cookie.
+ * Реализация {@link Application/Env/ICookie} — интерфейса по работе с cookie.
  * @class Application/Env/cookie
- * @implements Application/_Interface/ICookie
- * @see Application/_Interface/ICookie
+ * @implements Application/Env/ICookie
+ * @see Application/Env/ICookie
  * @author Санников К.А.
  * @public
  */
@@ -133,10 +136,10 @@ export const cookie: ICookie = {
 };
 
 /**
- * Реализация {@link Application/_Interface/IConsole} — логгера.
+ * Реализация {@link Application/_Env/IConsole} — логгера.
  * @class Application/Env/logger
- * @implements Application/_Interface/IConsole
- * @see Application/_Interface/IConsole
+ * @implements Application/_Env/IConsole
+ * @see Application/_Env/IConsole
  * @author Санников К.А.
  * @public
  */
@@ -174,8 +177,8 @@ export const logger: IConsole = {
  * Метод, возвращающий компонент для восстановления состояний компонентов.
  * @function
  * @name Application/Env#getStateReceiver
- * @return {Application/_Interface/IStateReceiver}
- * @see Application/_Interface/IStateReceiver
+ * @return {Application/_State/IStateReceiver}
+ * @see Application/_State/IStateReceiver
  */
 export function getStateReceiver(): IStateReceiver {
     return App.getRequest().getStateReceiver();
@@ -186,8 +189,8 @@ export function getStateReceiver(): IStateReceiver {
  * @function
  * @name Application/Env#getStore
  * @param {String} type type
- * @return {Application/_Interface/IStore}
- * @see Application/_Interface/IStore
+ * @return {Application/_Request/IStore}
+ * @see Application/_Request/IStore
  */
 export function getStore<T = Record<string, string>>(type: string, createDefaultStore?: () => IStore<T>): IStore<T> {
     return App.getRequest().getStore<T>(type, createDefaultStore);
@@ -198,7 +201,7 @@ export function getStore<T = Record<string, string>>(type: string, createDefault
  * @function
  * @name Application/Env#setStore
  * @param {String} type type
- * @param {Application/_Interface/IStore} store store
+ * @param {Application/_Request/IStore} store store
  */
 export function setStore<T = Record<string, string>>(type: string, store: IStore<T>): void {
     return App.getRequest().setStore<T>(type, store);

@@ -1,6 +1,5 @@
 import { assert } from 'chai';
-import { Body as BodyAPI } from 'Application/Page';
-import { IBody } from 'Application/Interface';
+import { Body as BodyAPI, IBody } from 'Application/Page';
 
 let classes = '';
 

@@ -3,19 +3,18 @@ import { Config } from 'Application/Config';
 import Request from 'Application/Request';
 import Cookie from 'Application/_Env/Browser/Cookie';
 import Console from 'Application/_Env/Console';
+import type { IConsole } from 'Application/_Env/IConsole';
+import type { IEnv } from 'Application/_Env/IEnv';
+import type { ICookie, ILocation } from 'Application/_Env/Interfaces';
 import ObjectStore from 'Application/_Env/ObjectStore';
-import { IConsole } from 'Application/_Interface/IConsole';
-import { ICookie } from 'Application/_Interface/ICookie';
-import { IEnv } from 'Application/_Interface/IEnv';
-import { ILocation } from 'Application/_Interface/ILocation';
-import { IRequest, IRequestInternal } from 'Application/_Interface/IRequest';
+import type { IRequest, IRequestInternal } from 'Application/_Request/IRequest';
 
 /**
  * Браузерное окружение
  * Класс EnvBrowser
  * @class Application/_Env/Browser/Env
  * @author Санников К.А.
- * @implements {Application/_Interface/IEnv}
+ * @implements {Application/Env/IEnv}
  * @public
  */
 export default class EnvBrowser implements IEnv {
@@ -27,17 +26,17 @@ export default class EnvBrowser implements IEnv {
     initRequest: boolean = true;
     private _request: IRequest;
     /**
-     * @cfg {Application/_Interface/IConsole} console
+     * @cfg {Application/_Env/IConsole} console
      * @name Application/_Env/Browser/Env#console
      */
     console: IConsole;
     /**
-     * @cfg {Application/_Interface/ICookie} cookie
+     * @cfg {Application/Env/ICookie} cookie
      * @name Application/_Env/Browser/Env#cookie
      */
     cookie: ICookie;
     /**
-     * @cfg {Application/_Interface/ILocation} location
+     * @cfg {Application/Env/ILocation} location
      * @name Application/_Env/Browser/Env#location
      */
     location: ILocation;
