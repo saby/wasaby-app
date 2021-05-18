@@ -1,9 +1,9 @@
 ///// <amd-module name="Application/_Page/Body" />
 
 import * as AppEnv from 'Application/Env';
-import { IBody, IInternalBody } from 'Application/_Interface/IBody'
 import { default as Element } from 'Application/_Page/_body/Element';
 import { default as ElementPS } from 'Application/_Page/_body/ElementPS';
+import type { IBody, IInternalBody } from 'Application/_Page/_body/IBody'
 
 /**
  * API для работы с <body> страницы

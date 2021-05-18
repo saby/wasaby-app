@@ -1,11 +1,11 @@
-import { IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId, IInternalHead, JML } from 'Application/_Interface/IHead';
-import { IStore } from 'Application/_Interface/IStore';
+import type { IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId, IInternalHead, JML } from 'Application/_Page/_head/IHead';
+import type { IStore } from 'Application/_Request/IStore';
 
 export type JSLinksTagId = string;
 
 /**
  * API для работы с JSLinks
- * @interface Application/_Interface/IJSLinks
+ * @interface Application/_Page/_jslinks/IJSLinks
  * @property {Function} createTag - добавит jslinks
  * @property {Function} getTag
  * переопределенный метод от Head, в котором параметр name всегда должен быть script.

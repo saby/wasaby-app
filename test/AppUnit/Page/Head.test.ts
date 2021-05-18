@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import { Head as HeadAPI } from 'Application/Page';
-import { JML, IHead, IHeadTagAttrs } from 'Application/Interface';
+import type { JML, IHead, IHeadTagAttrs } from 'Application/Page';
 
 const additionalAttrs = {
     'data-vdomignore': true

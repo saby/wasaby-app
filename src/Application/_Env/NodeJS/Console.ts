@@ -1,5 +1,5 @@
 /// <amd-module name='Application/_Env/NodeJS/Console' />
-import { IConsole } from 'Application/Interface';
+import type { IConsole } from 'Application/_Env/IConsole';
 
 /**
  * Уровень логирования.

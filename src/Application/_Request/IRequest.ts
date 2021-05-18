@@ -1,24 +1,23 @@
-/// <amd-module name="Application/_Interface/IRequest" />
+/// <amd-module name="Application/_Request/IRequest" />
 import Config from 'Application/_Config/Config';
-import { ICookie } from 'Application/_Interface/ICookie';
-import { ILocation } from "Application/_Interface/ILocation";
-import { IStateReceiver } from "Application/_Interface/IStateReceiver";
-import { IStore } from "Application/_Interface/IStore";
+import type { ICookie, ILocation } from 'Application/_Env/Interfaces';
+import type { IStore } from "Application/_Request/IStore";
+import type { IStateReceiver } from 'Application/_State/Interfaces';
 
 /**
  * Компонент, которые предоставляет в платформе доступ к синглтонам в рамках запроса пользователя.
- * @interface Application/_Interface/IRequest
+ * @interface Application/_Request/IRequest
  * @public
  * @author Санников К.А.
  */
 export interface IRequest {
     /**
-     * @name Application/_Interface/IRequest#cookie
+     * @name Application/_Request/IRequest#cookie
      * @cfg {ICookie} cookie
      */
     cookie: ICookie;
     /**
-     * @name Application/_Interface/IRequest#location
+     * @name Application/_Request/IRequest#location
      * @cfg {ILocation} location
      */
     location: ILocation;
@@ -32,21 +31,21 @@ export interface IRequest {
      * Доступ к объекту сохранения состояния на сервиспе представлений,
      * для его получения на клиенте. Не привязан к VDOM механизмам,
      * поэтому можно будет его использовать в не визуальных компонентах.
-     * @return {Application/_Interface/IStateReceiver}
+     * @return {Application/_State/IStateReceiver}
      */
     getStateReceiver(): IStateReceiver;
 
     /**
      * Получение хранилища для сохранений данных в рамках запроса.
      * @param {String} key Тип хранилища.
-     * @return {Application/_Interface/IStore} Хранилище
+     * @return {Application/_Request/IStore} Хранилище
      */
     getStore<T = Record<string, string>>(key: string, createDefaultStore?: () => IStore<T>): IStore<T>;
 
     /**
      * Установка хранилища
      * @param {String} key Тип хранилища.
-     * @param {Application/_Interface/IStore} storage Хранилище.
+     * @param {Application/_Request/IStore} storage Хранилище.
      */
     setStore<T = Record<string, string>>(key: string, storage: IStore<T>): void;
 }

@@ -1,12 +1,11 @@
 /// <amd-module name="Application/_Request/Request" />
 import { Config } from 'Application/Config';
-import { ICookie } from 'Application/_Interface/ICookie';
-import { ILocation } from 'Application/_Interface/ILocation';
-import { IRequestInternal } from 'Application/_Interface/IRequest';
-import { IStateReceiver } from 'Application/_Interface/IStateReceiver';
-import { IStore, IStoreMap } from 'Application/_Interface/IStore';
+import type { ICookie, ILocation } from 'Application/_Env/Interfaces';
+import type { IRequestInternal } from 'Application/_Request/IRequest';
 import { FakeWebStorage } from 'Application/_Request/FakeWebStorage';
+import type { IStore, IStoreMap } from 'Application/_Request/IStore';
 import Store from 'Application/_Request/Store';
+import type { IStateReceiver } from 'Application/_State/Interfaces';
 
 interface ICookieLocation {
     cookie: ICookie;
@@ -16,14 +15,14 @@ interface ICookieLocation {
 /**
  * Класс Request
  * @class Application/_Request/Request
- * @implements Application/_Interface/IRequest
+ * @implements Application/_Request/IRequest
  * @public
  * @author Санников К.А.
- * @see Application/_Interface/IRequest
- * @see Application/_Interface/IStore
- * @see Application/_Interface/ILocation
- * @see Application/_Interface/ISerializableState
- * @see Application/_Interface/IStateReceiver
+ * @see Application/_Request/IRequest
+ * @see Application/_Request/IStore
+ * @see Application/Env/ILocation
+ * @see Application/_State/ISerializableState
+ * @see Application/_State/IStateReceiver
  * @todo добавить пример
  */
 export default class Request implements IRequestInternal {
@@ -31,19 +30,19 @@ export default class Request implements IRequestInternal {
     private readonly __config: Config;
 
     /**
-     * @cfg {Application/_Interface/ICookie} cookie
+     * @cfg {Application/Env/ICookie} cookie
      * @name Application/_Request/Request#cookie
      */
     cookie: ICookie;
 
     /**
-     * @cfg {Application/_Interface/ILocation} location
+     * @cfg {Application/Env/ILocation} location
      * @name Application/_Request/Request#location
      */
     location: ILocation;
 
     /**
-     * @cfg {Application/_Interface/IStateReceiver} __stateReceiver
+     * @cfg {Application/_State/IStateReceiver} __stateReceiver
      * @name Application/_Request/Request#__stateReceiver
      * @private
      */

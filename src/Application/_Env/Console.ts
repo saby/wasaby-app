@@ -1,7 +1,7 @@
 /// <amd-module name='Application/_Env/Console' />
 /* tslint:disable:no-console */
 /* eslint-disable no-console */
-import { IConsole } from 'Application/_Interface/IConsole';
+import type { IConsole } from 'Application/_Env/IConsole';
 
 const checkConsoleMethod = (console, method: string) => console && (typeof console[method] === 'function');
 
@@ -41,7 +41,7 @@ export enum LogLevel {
 /**
  * Класс Console
  * @class
- * @implements Application/_Interface/IConsole
+ * @implements Application/_Env/IConsole
  * @author Санников К.А.
  * @private
  * @see {@link LogLevel}

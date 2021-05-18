@@ -1,9 +1,9 @@
 ///// <amd-module name="Application/_Page/JSLinks" />
 
 import * as AppEnv from 'Application/Env';
-import { IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId, JML } from 'Application/_Interface/IHead';
-import { IJSLinks, IJSLinksInternal, JSLinksTagId, KeyJSLinksInternal } from 'Application/_Interface/IJSLinks';
 import { Head as HeadAPI } from 'Application/_Page/Head';
+import type { IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId, JML } from 'Application/_Page/_head/IHead';
+import type { IJSLinks, IJSLinksInternal, JSLinksTagId, KeyJSLinksInternal } from 'Application/_Page/_jslinks/IJSLinks';
 import { default as JSLinksElement } from 'Application/_Page/_jslinks/JSLinksElement';
 
 /**

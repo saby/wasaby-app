@@ -1,7 +1,6 @@
 import { assert } from 'chai';
 import { default as AppInit } from 'Application/Initializer';
-import { JSLinks } from 'Application/Page';
-import { JML } from 'Application/_Interface/IHead';
+import { JSLinks, JML } from 'Application/Page';
 
 const additionalAttrs = {
     'data-vdomignore': true
