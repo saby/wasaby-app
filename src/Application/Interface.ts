@@ -8,6 +8,6 @@
  * @author Санников К.А.
  */
 
-export { ILocation } from 'Application/_Env/Interfaces';
-export { ISerializableState, IStateReceiver } from 'Application/_State/Interfaces';
-export * from 'Application/_Request/IStore';
+export { ILocation } from 'Application/Env';
+export { ISerializableState, IStateReceiver } from 'Application/State';
+export { IStore, IStoreMap } from 'Application/Request';
