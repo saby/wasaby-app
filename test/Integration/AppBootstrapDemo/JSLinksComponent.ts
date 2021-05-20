@@ -3,7 +3,7 @@
 // @ts-ignore
 import * as template from 'wml!AppBootstrapDemo/JSLinksComponent';
 import { JSLinks } from 'Application/Page';
-import {aggregateJS} from 'UI/Deps';
+import {aggregateJS} from 'UICommon/Deps';
 import { Control, TemplateFunction, TagMarkup, fromJML } from 'UI/Base';
 import { constants } from 'Env/Constants';
 
