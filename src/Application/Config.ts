@@ -3,8 +3,6 @@
 /**
  * Библиотека Config
  * @library Application/Config
- * @includes Config Application/_Config/Config
- * @includes Config Application/_Config/IConfig
  * @public
  * @author Санников К.А.
  */
