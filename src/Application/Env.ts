@@ -102,6 +102,10 @@ export const location: ILocation = {
 
     get hash(): string {
         return App.getRequest().location.hash;
+    },
+
+    replace: (url: string): void => {
+        App.getRequest().location.replace(url);
     }
 };
 

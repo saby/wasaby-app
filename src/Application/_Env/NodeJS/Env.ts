@@ -53,7 +53,7 @@ export default class EnvNodeJS implements IEnv {
             cfg.setState({ ...this.cfg.getState(), ...cfg.getState() });
         }
         this.getHttpRequest = requestGetter;
-        this.location = new Location(requestGetter);
+        this.location = new Location(requestGetter, responseGetter);
         this.cookie = new Cookie(requestGetter, responseGetter);
         return requestGetter().appRequest =
             new Request({location: this.location, cookie: this.cookie}, cfg);
