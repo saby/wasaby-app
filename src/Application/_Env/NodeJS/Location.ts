@@ -1,14 +1,19 @@
 /// <amd-module name="Application/_Env/NodeJS/Location" />
 import type { IHttpRequest } from 'Application/_Env/IHttpRequest';
 import type { ILocation } from 'Application/_Env/Interfaces';
+import { IHttpResponse } from '../IHttpResponse';
 
 export default class Location implements ILocation {
     private hostMask: RegExp = /([^:]+)(:\d+)?/;
     private searchMask: RegExp = /(\?.+)$/;
 
-    constructor(private requestGetter: () => Partial<IHttpRequest>) {
+    constructor(private requestGetter: () => Partial<IHttpRequest>,
+                private responseGetter: () => Partial<IHttpResponse>) {
         if (typeof requestGetter !== 'function') {
-            throw new Error('requestGetter must be a function in new Location(requestGetter)');
+            throw new Error('requestGetter must be a function in new Location(requestGetter, responseGetter)');
+        }
+        if (typeof responseGetter !== 'function') {
+            throw new Error('responseGetter must be a function in new Location(requestGetter, responseGetter)');
         }
     }
 
@@ -64,4 +69,8 @@ export default class Location implements ILocation {
     get hash(): string {
         return '';
     }
+
+    replace(path: string): void {
+        this.responseGetter().redirect(path);
+    };
 }

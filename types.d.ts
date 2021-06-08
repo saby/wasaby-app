@@ -561,6 +561,7 @@ declare module 'Application/_Env/NodeJS/Location' {
         get href(): string;
         get search(): string;
         get hash(): string;
+        replace(path: string): void;
     }
 }
 /// <amd-module name="Application/_Interface/IConfig" />
@@ -803,6 +804,7 @@ declare module 'Application/_Interface/ILocation' {
         pathname: string;
         search: string;
         hash: string;
+        replace(path: string): void;
     }
 }
 /// <amd-module name="Application/_Interface/IRequest" />

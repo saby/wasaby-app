@@ -16,6 +16,7 @@ export interface ILocation {
     pathname: string;
     search: string;
     hash: string;
+    replace(path: string): void;
 }
 /**
  * @name Application/Env/ILocation#protocol
