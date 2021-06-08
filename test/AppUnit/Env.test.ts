@@ -29,7 +29,11 @@ describe('Application/Env', function () {
     describe('location', function () {
         Object.keys(location).forEach((prop) => {
             it(prop, function () {
-                assert.deepEqual(location[prop], window.location[prop]);
+                if (typeof location[prop] === 'function') {
+                    assert.equal(typeof location[prop], typeof window.location[prop])
+                } else {
+                    assert.deepEqual(location[prop], window.location[prop]);
+                }
             })
         });
     });
