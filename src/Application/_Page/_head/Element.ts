@@ -118,14 +118,23 @@ export default class Element extends BaseElement {
         };
 
         if (element) {
-            result.attrs = {};
+            result.attrs = Element.getElementAttrs(element);;
             result.name = element.tagName.toLowerCase();
-            result.attrs = {};
-            Array.prototype.slice.call(element.attributes).forEach((attr) => {
-                result.attrs[attr.name] = attr.value;
-            });
             result.content = element.innerText;
         }
+
+        return result;
+    }
+
+    /**
+     * Вернет все атрибуты у тега
+     * @param element
+     */
+    static getElementAttrs(element?: HTMLElement): IHeadTagAttrs {
+        const result = {};
+        Array.prototype.slice.call(element.attributes).forEach((attr) => {
+            result[attr.name] = attr.value;
+        });
 
         return result;
     }

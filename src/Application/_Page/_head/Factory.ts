@@ -14,10 +14,27 @@ export function create(name: string,
                        hydratedElement?: HTMLElement): IHeadElement {
    const elementClass = BaseElement.isServer ? ElementPS : Element;
 
-   return new elementClass(name, attrs, content, eventHandlers, getAspect(name, attrs), hydratedElement);
+   return new elementClass(
+       name,
+       attrs,
+       content,
+       eventHandlers,
+       getAspect(name, attrs, hydratedElement),
+       hydratedElement
+   );
 }
 
-function getAspect(name: string, attrs: IHeadTagAttrs): undefined | IHeadElementAspect {
+function getAspect(
+    initialName: string,
+    initialAttrs: IHeadTagAttrs,
+    hydratedElement?: HTMLElement): undefined | IHeadElementAspect {
+   let name = initialName;
+   let attrs = initialAttrs;
+   if (hydratedElement) {
+      name = hydratedElement.tagName.toLowerCase();
+      attrs = Element.getElementAttrs(hydratedElement);
+   }
+
    const isTitle: boolean = name === 'title';
    const isViewPort: boolean = name === 'meta' && attrs.name === 'viewport' && !!attrs.content;
 
