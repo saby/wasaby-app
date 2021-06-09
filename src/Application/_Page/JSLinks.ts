@@ -50,9 +50,7 @@ export class JSLinks extends HeadAPI implements IJSLinks {
         this._elements[uuid] = new JSLinksElement(name, attrs, content, eventHandlers);
         return uuid;
     }
-    getTag(name?: 'script', attrs?: IHeadTagAttrs): JSLinksTagId | JSLinksTagId[] | null {
-        return super.getTag(name, attrs);
-    }
+
     getData(id: IHeadTagId): JML;
     getData(): JML[];
     getData(id?: IHeadTagId): JML[] | JML {
@@ -91,6 +89,9 @@ export class JSLinks extends HeadAPI implements IJSLinks {
     createComment(): void {}
     createNoScript(): void {}
     /* tslint:enable:no-empty */
+    protected _getTag(name?: 'script', attrs?: IHeadTagAttrs): JSLinksTagId | JSLinksTagId[] | null {
+        return super._getTag(name, attrs);
+    }
     protected _generateGuid(): JSLinksTagId {
         return `scripts-${this._id++}`;
     }

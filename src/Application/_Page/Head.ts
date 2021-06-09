@@ -76,6 +76,7 @@ export class Head implements IHead {
     createTag(
         name: 'meta',
         attrs: {'http-equiv': string, content: string}
+        | {content: string, name: string}
         | {content: string, 'http-equiv': string, name: string, URL: string}
         | {property: string, content: string, class: string}): IHeadTagId;
     createTag(
@@ -105,23 +106,6 @@ export class Head implements IHead {
         this._elements[uuid] = newElement;
 
         return uuid;
-    }
-    getTag(name?: string, attrs?: IHeadTagAttrs): IHeadTagId | IHeadTagId[] | null {
-        const result: IHeadTagId[] = [];
-
-        for (const elementsKey in this._elements) {
-            if (this._elements[elementsKey].isFit(name, attrs)) {
-                result.push(elementsKey);
-            }
-        }
-
-        if (!result.length) {
-            return null;
-        }
-        if (result.length === 1) {
-            return result.shift();
-        }
-        return result;
     }
 
     getAttrs(tagId: IHeadTagId): IHeadTagAttrs | null {
@@ -250,6 +234,29 @@ export class Head implements IHead {
     /** Генератор уникального идентификатора для каждого тега */
     protected _generateGuid(): IHeadTagId {
         return `head-${PREFIX}${this._id++}`;
+    }
+    /**
+     * вернет описание тега(ов), если он есть по входным данным: имя тега и какие-то аттрибуты
+     * @param name
+     * @param attrs
+     * @private
+     */
+    protected _getTag(name?: string, attrs?: IHeadTagAttrs): IHeadTagId | IHeadTagId[] | null {
+        const result: IHeadTagId[] = [];
+
+        for (const elementsKey in this._elements) {
+            if (this._elements[elementsKey].isFit(name, attrs)) {
+                result.push(elementsKey);
+            }
+        }
+
+        if (!result.length) {
+            return null;
+        }
+        if (result.length === 1) {
+            return result.shift();
+        }
+        return result;
     }
 
     /**
