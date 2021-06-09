@@ -1,9 +1,9 @@
 ///// <amd-module name="Application/_Page/Head" />
 
 import * as AppEnv from 'Application/Env';
-import type { IHead, IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId, IInternalHead, JML, KeyInternalHead } from 'Application/_Page/_head/IHead';
 import BaseElement, { IHeadElement } from 'Application/_Page/_head/BaseElement';
 import { create } from 'Application/_Page/_head/Factory'
+import type { IHead, IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId, IInternalHead, JML, KeyInternalHead } from 'Application/_Page/_head/IHead';
 
 /** Стандартное время до обновления страницы. Используется внутри <noscript> */
 const TIME_TO_REFRESH: Number = 2;
