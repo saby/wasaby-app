@@ -1,7 +1,6 @@
 import { assert } from 'chai';
 import { Head as HeadAPI } from 'Application/Page';
 import type { JML, IHead } from 'Application/Page';
-import { isEqualAttributes } from 'Application/_Page/_head/BaseElement';
 
 const additionalAttrs = {
     'data-vdomignore': true
@@ -42,7 +41,7 @@ describe('Application/_Page/Head', () => {
          * который headapi должен был при инициализации найти и добавить его к себе.
          */
         // tslint:disable-next-line:max-line-length
-        const tagData = (API.getData().find(arr => arr.some((item) => arr.includes(tag) && isEqualAttributes(attrs, item))));
+        const tagData = (API.getData().find((arr: JML[] | string[]) => arr.some((item: string | object ) => arr[0] === tag && isEqualAttributes(attrs, item as object))));
         assert.isTrue(!!tagData, 'Не был восстановлен контрольный тег при оживлении');
         assert.deepEqual(tagData, [tag, {...attrs, ...additionalAttrs}], 'Неверно был восстановлен контрольный тег при оживлении');
 
@@ -75,7 +74,7 @@ describe('Application/_Page/Head', () => {
     it('Создание тега meta с name=viewport', () => {
         const tag = 'meta';
         const attrs = {name: 'viewport', content: 'width=1024'};
-        countOfMeta++;
+        countOfMeta = countOfMeta + 1;
 
         API.createTag(tag, attrs);
         attrs.content = 'width=1920';
@@ -122,7 +121,7 @@ describe('Application/_Page/Head', () => {
             type: 'test',
             content: 'width=1024'
         };
-        countOfMeta++;
+        countOfMeta = countOfMeta + 1;
 
         API.createTag(tag, attrs);
         processingData.push([tag, {...attrs, ...additionalAttrs}]);
@@ -231,3 +230,10 @@ describe('Application/_Page/Head', () => {
         assert.isEmpty(API.getComments());
     });
 });
+
+
+function isEqualAttributes(attrs: object, attrsOrigin: object): boolean {
+    return Object.keys(attrs).every((key) => {
+        return Object.keys(attrsOrigin).some(keyOrigin => keyOrigin === key && attrsOrigin[keyOrigin] === attrs[key]);
+    });
+}

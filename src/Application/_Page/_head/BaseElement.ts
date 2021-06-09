@@ -216,7 +216,7 @@ export default abstract class BaseElement implements IHeadElement {
 /**
  * сравнивает на идентичность аттрибутов
  */
-export function isEqualAttributes(attrs: IHeadTagAttrs, attrsOrigin: IHeadTagAttrs, tagPrior?: ITagPrior): boolean {
+function isEqualAttributes(attrs: IHeadTagAttrs, attrsOrigin: IHeadTagAttrs, tagPrior: ITagPrior): boolean {
    /**
     * проверка пришёл ли объект tagPrior и пустоту массива с приоритетными аттрибутами.
     *  Проверять пустой массив необходимо, т.к. метод every при пустом массиве всегда возвращает true.
