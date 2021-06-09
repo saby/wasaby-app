@@ -235,29 +235,6 @@ export class Head implements IHead {
     protected _generateGuid(): IHeadTagId {
         return `head-${PREFIX}${this._id++}`;
     }
-    /**
-     * вернет описание тега(ов), если он есть по входным данным: имя тега и какие-то аттрибуты
-     * @param name
-     * @param attrs
-     * @private
-     */
-    protected _getTag(name?: string, attrs?: IHeadTagAttrs): IHeadTagId | IHeadTagId[] | null {
-        const result: IHeadTagId[] = [];
-
-        for (const elementsKey in this._elements) {
-            if (this._elements[elementsKey].isFit(name, attrs)) {
-                result.push(elementsKey);
-            }
-        }
-
-        if (!result.length) {
-            return null;
-        }
-        if (result.length === 1) {
-            return result.shift();
-        }
-        return result;
-    }
 
     /**
      * Перед добавлением нового элемента в набор необходимо обеспечить его уникальность в полном наборе
