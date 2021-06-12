@@ -1,9 +1,9 @@
 ///// <amd-module name="Application/_Page/Head" />
 
 import * as AppEnv from 'Application/Env';
-import type { IHead, IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId, IInternalHead, JML, KeyInternalHead } from 'Application/_Page/_head/IHead';
 import BaseElement, { IHeadElement } from 'Application/_Page/_head/BaseElement';
 import { create } from 'Application/_Page/_head/Factory'
+import type { IHead, IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId, IInternalHead, JML, KeyInternalHead } from 'Application/_Page/_head/IHead';
 
 /** Стандартное время до обновления страницы. Используется внутри <noscript> */
 const TIME_TO_REFRESH: Number = 2;
@@ -76,6 +76,7 @@ export class Head implements IHead {
     createTag(
         name: 'meta',
         attrs: {'http-equiv': string, content: string}
+        | {content: string, name: string}
         | {content: string, 'http-equiv': string, name: string, URL: string}
         | {property: string, content: string, class: string}): IHeadTagId;
     createTag(
@@ -105,23 +106,6 @@ export class Head implements IHead {
         this._elements[uuid] = newElement;
 
         return uuid;
-    }
-    getTag(name?: string, attrs?: IHeadTagAttrs): IHeadTagId | IHeadTagId[] | null {
-        const result: IHeadTagId[] = [];
-
-        for (const elementsKey in this._elements) {
-            if (this._elements[elementsKey].isFit(name, attrs)) {
-                result.push(elementsKey);
-            }
-        }
-
-        if (!result.length) {
-            return null;
-        }
-        if (result.length === 1) {
-            return result.shift();
-        }
-        return result;
     }
 
     getAttrs(tagId: IHeadTagId): IHeadTagAttrs | null {
