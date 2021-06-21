@@ -111,6 +111,9 @@ describe('Application/_Page/Head', () => {
                 content: `2; URL=${url}`
             }}]]);
         assert.deepEqual(API.getData(), processingData);
+
+        API.createNoScript(undefined);
+        assert.deepEqual(API.getData(), processingData, 'Добавление пустого noScript изменило внутреннее состояние');
     });
 
     it('Добавление дубля ни к чему не приводит', () => {
