@@ -15,7 +15,7 @@ export default class MetaStackToggler extends Control {
         return this._counter;
     }
     _updateTitle(): void {
-        this._metaState = getMetaStack().push({title: `New Title: ${this._getIncreasedCounter()}`});
+        this._metaState = getMetaStack().push({title: `New Title ${this._getIncreasedCounter()}`});
     }
     _restoreTitle(): void {
         try {
