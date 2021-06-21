@@ -55,6 +55,9 @@ export class Head implements IHead {
     }
 
     createNoScript(url: string): void {
+        if (!url) {
+            return;
+        }
         this._noScriptUrl = url;
     }
 
