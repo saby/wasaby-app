@@ -56,7 +56,7 @@ export class Head implements IHead {
 
     createNoScript(url: string): void {
         if (!url) {
-            return;
+            throw new Error('Полученный url пустой')
         }
         this._noScriptUrl = url;
     }
