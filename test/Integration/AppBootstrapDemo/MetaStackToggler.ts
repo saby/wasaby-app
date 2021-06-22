@@ -9,13 +9,8 @@ export default class MetaStackToggler extends Control {
     _template: TemplateFunction = template;
     _metaState: IMetaState = null;
     private _counter: number = 0;
-    /** увеличить счетчик и получить его */
-    _getIncreasedCounter(): number {
-        this._counter = this._counter + 1;
-        return this._counter;
-    }
     _updateTitle(): void {
-        this._metaState = getMetaStack().push({title: `New Title ${this._getIncreasedCounter()}`});
+        this._metaState = getMetaStack().push({title: `New Title ${++this._counter}`});
     }
     _restoreTitle(): void {
         try {
