@@ -14,6 +14,10 @@ const META_PROPS = {
     _attrs: {name: 'meta_name'},
     _content: 'meta_content'
 };
+const SCRIPT_PROPS = {
+    _name: 'script',
+    _attrs: {type: 'text/javascript'}
+};
 const EVENT_HANDLER = {load: () => {return 'load';}};
 
 
@@ -27,6 +31,7 @@ const EVENT_HANDLER = {load: () => {return 'load';}};
  *  в данном случае для более прозрачных результатов, необходимо указывать уникальные свойства,
  *  по которым необходимо проводить поиск
  */
+// tslint:disable:ban-ts-ignore
 describe('Application/_Page/_head/Element', () => {
     if(typeof(window) === 'undefined'){
         it('Если window undefined, то тесты для Element не проводятся', function(): void{
@@ -40,19 +45,23 @@ describe('Application/_Page/_head/Element', () => {
             const title = create('title', TITLE_PROPS._attrs, titleContentUnique, EVENT_HANDLER);
             assert.deepInclude(title, {...TITLE_PROPS, _content: titleContentUnique},
                 'Все или некоторые свойства ElementPS (_name, _attrs, _content) не совпадают с образцом');
-            // tslint:disable-next-line:ban-ts-ignore
             // @ts-ignore
             assert.isDefined(title._eventHandlers,
                 'Свойство _eventHandlers не определено');
             assert.isTrue(document.querySelector('title').textContent === titleContentUnique,
                 'title в DOM дереве не был изменен');
         });
+        it('Проверяется выполняется ли контент внутри тега script', () => {
+            const scriptContentUnique = 'window.GLOBAL_FLAG = true';
+            create('script', SCRIPT_PROPS._attrs, scriptContentUnique);
+            // @ts-ignore
+            assert.isTrue(window.GLOBAL_FLAG, 'контент в скрипте не был выполнен');
+        });
         it('Проверяется создан/отрисовался ли элемент в DOM дереве', () => {
             const metaNameUnique = 'meta_name_unique10';
             const meta = create('meta', {name: metaNameUnique}, META_PROPS._content, EVENT_HANDLER);
             assert.deepInclude(meta, {...META_PROPS, _attrs: {name: metaNameUnique}},
                 'Все или некоторые свойства ElementPS (_name, _attrs, _content) не совпадают с образцом');
-            // tslint:disable-next-line:ban-ts-ignore
             // @ts-ignore
             assert.isDefined(meta._eventHandlers,
                 'Свойство _eventHandlers не определено');
@@ -74,7 +83,6 @@ describe('Application/_Page/_head/Element', () => {
             title.clear();
             assert.doesNotHaveAnyKeys(title, KEY_TITLE,
                 'В элементе title не был удалён content');
-            // tslint:disable-next-line:ban-ts-ignore
             // @ts-ignore
             assert.notExists(title._element,
                 'В элементе "title" сохраняется свойство _element');
