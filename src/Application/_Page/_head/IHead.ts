@@ -122,6 +122,11 @@ export interface IInternalHead {
      * @name Application/_Page/_head/IInternalHead#changeTag
      */
     changeTag(tagId: IHeadTagId, attrs: IHeadTagAttrs): void;
+    /**
+     * @deprecated
+     * @name Application/_Page/_head/IInternalHead#getTag
+     */
+    getTag(name?: string, attrs?: IHeadTagAttrs): IHeadTagId | IHeadTagId[] | null;
 }
 
 export type KeyInternalHead = keyof IInternalHead;
