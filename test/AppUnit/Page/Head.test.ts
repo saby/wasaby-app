@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import { Head as HeadAPI } from 'Application/Page';
-import type { JML, IHead, IHeadTagAttrs } from 'Application/Page';
+import type { JML, IHead } from 'Application/Page';
 
 const additionalAttrs = {
     'data-vdomignore': true
@@ -19,7 +19,6 @@ describe('Application/_Page/Head', () => {
             API.clear();
             return;
         }
-
         const tag = 'meta';
         const attrs = {
             'data-foo': 'bar',
@@ -33,13 +32,16 @@ describe('Application/_Page/Head', () => {
             }
         }
         document.head.appendChild(el);
-
         /** А если мы на клиенте, то вот она: точка создания инстанса. После создания контрольных тегов. */
         API = HeadAPI.getInstance();
         const data = API.getData();
         assert.isTrue(!!data.length, 'Не было собрано ни одного тега при оживлении');
-
-        const tagData = API.getData(( API.getTag(tag, ( attrs as IHeadTagAttrs )) as string ));
+        /**
+         * попытаемся найти созданный напрямую в DOM html-элемент,
+         * который headapi должен был при инициализации найти и добавить его к себе.
+         */
+            // tslint:disable-next-line:max-line-length
+        const tagData = (API.getData().find((arr: JML[] | string[]) => arr.some((item: string | object ) => arr[0] === tag && isEqualAttributes(attrs, item as object))));
         assert.isTrue(!!tagData, 'Не был восстановлен контрольный тег при оживлении');
         assert.deepEqual(tagData, [tag, {...attrs, ...additionalAttrs}], 'Неверно был восстановлен контрольный тег при оживлении');
 
@@ -65,14 +67,14 @@ describe('Application/_Page/Head', () => {
             processingData.push([tag, {...additionalAttrs}, content]);
             assert.deepEqual(API.getData(), processingData, 'Добавление второго тега title не привело к его замене');
             assert.equal(content, document.title,
-               'Добавление второго тега title не привело к изменению заголовка HTML страницы');
+                'Добавление второго тега title не привело к изменению заголовка HTML страницы');
         }
     });
 
     it('Создание тега meta с name=viewport', () => {
         const tag = 'meta';
         const attrs = {name: 'viewport', content: 'width=1024'};
-        countOfMeta++;
+        countOfMeta = countOfMeta + 1;
 
         API.createTag(tag, attrs);
         attrs.content = 'width=1920';
@@ -111,9 +113,6 @@ describe('Application/_Page/Head', () => {
                 content: `2; URL=${url}`
             }}]]);
         assert.deepEqual(API.getData(), processingData);
-
-        API.createNoScript(undefined);
-        assert.deepEqual(API.getData(), processingData, 'Добавление пустого noScript изменило внутреннее состояние');
     });
 
     it('Добавление дубля ни к чему не приводит', () => {
@@ -122,7 +121,7 @@ describe('Application/_Page/Head', () => {
             type: 'test',
             content: 'width=1024'
         };
-        countOfMeta++;
+        countOfMeta = countOfMeta + 1;
 
         API.createTag(tag, attrs);
         processingData.push([tag, {...attrs, ...additionalAttrs}]);
@@ -130,28 +129,6 @@ describe('Application/_Page/Head', () => {
 
         API.createTag(tag, attrs);
         assert.deepEqual(API.getData(), processingData, 'После добавления дубля он появился в данных');
-    });
-
-    it('Получение id тега из хранилища по параметрам', () => {
-        /** Добавим еще один тег meta для массы */
-        const tag = 'meta';
-        const attrs = {
-            'http-equiv': 'bar',
-            content: 'IE=edge',
-            foo: 'bar'
-        };
-        countOfMeta++;
-
-        API.createTag(tag, attrs);
-        processingData.push([tag, {...attrs, ...additionalAttrs}]);
-
-        /** title мы добавляли ранее */
-        assert.isString(API.getTag('title'), 'Не нашелся пустой тег title в данных');
-        assert.isNull(API.getTag('title', ({foo: 'bar'} as IHeadTagAttrs)),
-            'Нашелся несуществующий тег title в данных');
-        assert.isString(API.getTag('meta', ({foo: 'bar'} as IHeadTagAttrs)),
-            'Нашлось более 2-х тегов meta в данных');
-        assert.equal(API.getTag('meta').length, countOfMeta, `Не нашлось ${countOfMeta} тега meta в данных`);
     });
 
     it('Получение тега для IE в нужном месте', () => {
@@ -169,11 +146,11 @@ describe('Application/_Page/Head', () => {
         const tag = 'script';
         const attrs = {};
 
-        API.createTag(tag, attrs);
+        const scriptId: string = API.createTag(tag, attrs);
         processingData.push([tag, {...attrs, ...additionalAttrs}]);
         assert.deepEqual(API.getData(), processingData);
 
-        API.deleteTag((API.getTag(tag) as string));
+        API.deleteTag(scriptId);
         processingData.pop();
         assert.deepEqual(API.getData(), processingData, 'Тег script не удалился из набора данных');
     });
@@ -253,3 +230,10 @@ describe('Application/_Page/Head', () => {
         assert.isEmpty(API.getComments());
     });
 });
+
+
+function isEqualAttributes(attrs: object, attrsOrigin: object): boolean {
+    return Object.keys(attrs).every((key) => {
+        return Object.keys(attrsOrigin).some(keyOrigin => keyOrigin === key && attrsOrigin[keyOrigin] === attrs[key]);
+    });
+}
