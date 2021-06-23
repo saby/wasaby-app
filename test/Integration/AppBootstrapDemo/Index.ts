@@ -21,5 +21,6 @@ export default class Index extends Control {
     }
 }
 export function getDataToRender(): Promise<object | false> {
-    return Promise.resolve({title: 'Default Title'});
+    /** задать дефолтный title */
+    return Promise.resolve({title: 'Default Title AppBootstrapDemo'});
 }
