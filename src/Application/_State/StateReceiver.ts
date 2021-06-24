@@ -196,7 +196,7 @@ export class StateReceiver implements IStateReceiver {
                 );
                 JSON.parse(serializedStateJSON)
             } catch (e) {
-                this._getLogger().error(`${meta?.moduleName || key}, ${serializedFieldError} недесериализуемое состояние : ${e}` );
+                this._getLogger().error(`${meta?.moduleName || key}, ${serializedFieldError} недесериализуемое состояние : ${e} | ${serializedStateJSON}` );
                 return;
             }
 
