@@ -194,7 +194,7 @@ export class StateReceiver implements IStateReceiver {
                         serializedStateJSON = serializedStateJSON.replace(re.toFind, re.toReplace);
                     }
                 );
-                JSON.parse(serializedStateJSON)
+                JSON.parse(serializedStateJSON, slrForCheck.deserialize);
             } catch (e) {
                 this._getLogger().error(`${meta?.moduleName || key}, ${serializedFieldError} недесериализуемое состояние : ${e} | ${serializedStateJSON}` );
                 return;
