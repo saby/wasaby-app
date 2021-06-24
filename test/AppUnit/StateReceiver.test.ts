@@ -8,6 +8,13 @@ const someData = {
     setState: () => {}
 };
 
+const someBadData = {
+    getState: () => {
+        return {d: ['span', {style: 'font-size:9.0pt;font-family: "Tahoma",sans-serif'}, '\n']};
+    },
+    setState: () => {}
+};
+
 describe('Application/State:StateReceiver', () => {
     describe('register', () => {
         it('string key', () => {
@@ -46,6 +53,17 @@ describe('Application/State:StateReceiver', () => {
         const serializedData = sr.serialize();
         // @ts-ignore
         assert.hasAllKeys(serializedData, ['serialized', 'additionalDeps']);
+    });
+    it('serialize bad state', () => {
+        const meta = {ulid: 'srKey', moduleName: 'MyModuleName'};
+        const badMeta = {ulid: 'srKeyBad', moduleName: 'MyModuleName'};
+        const sr = new StateReceiver();
+        sr.register(meta, someData);
+        sr.register(badMeta, someBadData);
+        const serializedData = sr.serialize();
+        sr.deserialize(serializedData.serialized);
+        assert.hasAllKeys(sr.deserialized, [meta.ulid], 'При сериализации битого состояния потерялся валидный ключ');
+        assert.doesNotHaveAllKeys(sr.deserialized, [badMeta.ulid], 'При сериализации битого состояния просочился невалидный ключ');
     });
     it('deserialize', () => {
         const meta = {ulid: 'srKey', moduleName: 'MyModuleName'};

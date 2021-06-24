@@ -164,29 +164,44 @@ export class StateReceiver implements IStateReceiver {
         const allAdditionalDeps = {};
         const allRecStates = this.receivedStateObjectsArray;
         Object.keys(allRecStates).forEach((key) => {
+            let serializedStateJSON;
             const receivedState = allRecStates[key].data.getState();
             if (!receivedState) { return; }
+            const meta: IStateReceiverMeta = allRecStates[key].meta;
+            let serializedFieldError = '';
+            if (typeof(receivedState) === 'object') {
+                serializedFieldError = `${key}: ${typeof(receivedState)}`;
+            } else {
+                serializedFieldError = `${key}: ${receivedState}`;
+            }
+
             try {
                 /**
-                 * Если удалось сериализовать отдельное состояние, то можно его добавить в общий несериализованный словарь
-                 * Раньше в этот словарь добавлялось уже сериализованное значение. И потом словарь еще раз сериализовывался.
-                 * Результат: экранирование тремя слешами
+                 * Если удалось сериализовать отдельное состояние, то можно его добавить в общий несериализованный
+                 * словарь. Раньше в этот словарь добавлялось уже сериализованное значение. И потом словарь еще раз
+                 * сериализовывался. Результат: экранирование тремя слешами
                  * https://online.sbis.ru/opendoc.html?guid=3b1fffe6-6f75-411f-989d-f0f90ec2ec46
                  */
-                if (JSON.stringify(receivedState, slrForCheck.serializeStrict)) {
-                    serializedMap[key] = receivedState;
-                }
+                serializedStateJSON = JSON.stringify(receivedState, slrForCheck.serializeStrict);
             } catch (e) {
-                let serializedFieldError = '';
-                if (typeof(serializedMap[key]) === 'object') {
-                    serializedFieldError = `${key}: ${typeof(serializedMap[key])}`;
-                } else {
-                    serializedFieldError = `${key}: ${serializedMap[key]}`;
-                }
-                const meta: IStateReceiverMeta = allRecStates[key].meta;
                 this._getLogger().error(`${meta?.moduleName || key}, ${serializedFieldError} несериализуемое состояние : ${e}` );
-                delete serializedMap[key];
+                return;
             }
+
+            try {
+                Serializer.componentOptsReArray.forEach(
+                    (re): void => {
+                        serializedStateJSON = serializedStateJSON.replace(re.toFind, re.toReplace);
+                    }
+                );
+                JSON.parse(serializedStateJSON)
+            } catch (e) {
+                this._getLogger().error(`${meta?.moduleName || key}, ${serializedFieldError} недесериализуемое состояние : ${e}` );
+                return;
+            }
+
+            serializedMap[key] = receivedState;
+
         });
         let serializedState = JSON.stringify(serializedMap, slr.serializeStrict);
         Serializer.componentOptsReArray.forEach(
