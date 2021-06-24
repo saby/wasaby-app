@@ -45,10 +45,10 @@ class Serializer {
     deserialize = undefined;
     serializeStrict = undefined;
     static componentOptsReArray: any[] = [
-        {
+        /*{
             toFind: /\\/g, // экранируем слеш первым
             toReplace: '\\\\'
-        },
+        },*/
         {
             toFind: /<\/(script)/gi,
             toReplace: '<\\/$1'
