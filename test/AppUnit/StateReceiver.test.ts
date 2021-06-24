@@ -62,7 +62,9 @@ describe('Application/State:StateReceiver', () => {
         sr.register(badMeta, someBadData);
         const serializedData = sr.serialize();
         sr.deserialize(serializedData.serialized);
+        // @ts-ignore
         assert.hasAllKeys(sr.deserialized, [meta.ulid], 'При сериализации битого состояния потерялся валидный ключ');
+        // @ts-ignore
         assert.doesNotHaveAllKeys(sr.deserialized, [badMeta.ulid], 'При сериализации битого состояния просочился невалидный ключ');
     });
     it('deserialize', () => {
