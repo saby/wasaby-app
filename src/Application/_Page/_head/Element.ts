@@ -69,7 +69,9 @@ export default class Element extends BaseElement {
 
         const element = this._aspect.getDOMElement(this.toHeadTag());
         this._applyAttrs(element);
-        element.innerText = this._content;
+        if (this._content) {
+            element.innerText = this._content;
+        }
         this._aspect.appendDomElement(element);
         this._element = element;
         this._startEvents();
