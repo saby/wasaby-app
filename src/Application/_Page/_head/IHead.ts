@@ -69,11 +69,10 @@ export type IHeadTagId = string;
 export type JML = [string, (object | JsonML | string)?, (JsonML | string)?];
 
 /**
- * API для работы с <head> страницы.
  * Внутренний интерфейс IHead, содержит весь основной функционал
  * @interface Application/_Page/_head/IInternalHead
  * @see https://wi.sbis.ru/doc/platform/developmentapl/service-development/service-contract/logic/json-markup-language/
- * @public
+ * @private
  * @author Печеркин С.В.
  */
 export interface IInternalHead {
