@@ -3,24 +3,41 @@
 import type { IStore } from 'Application/_Request/IStore';
 
 /**
- * API для работы с <body> страницы
- * @interface Application/_Page/_body/IBody
- * @property {Function} addClass - аналогичен методу add для свойства classList на элементе <body>
- * @property {Function} removeClass - аналогичен методу remove для свойства classList на элементе <body>
- * @property {Function} replaceClasses - заменит классы на <body> из массива removeList на классы из массива addList
- * @property {Function} toggleClass - аналогичен методу toggle для свойства classList на элементе <body>
- * @property {Function} containsClass - аналогичен методу contains для свойства classList на элементе <body>
- * @property {Function} getClassString - аналогичен методу toString для свойства classList на элементе <body>
- * @see https://developer.mozilla.org/ru/docs/Web/API/Element/classList
+ * Внутренний интерфейс IInternalBody, содержит весь основной функционал
+ * @private
  */
 export interface IInternalBody {
+    /**
+     * аналогичен методу add для свойства classList на элементе <body>
+     */
     addClass(...tokens: string[]): void;
+    /**
+     * аналогичен методу remove для свойства classList на элементе <body>
+     */
     removeClass(...tokens: string[]): void;
+    /**
+     * заменит классы на <body> из массива removeList на классы из массива addList
+     */
     replaceClasses(removeList: string[], addList: string[]): void;
+    /**
+     * аналогичен методу toggle для свойства classList на элементе <body>
+     */
     toggleClass(token: string, force?: boolean): boolean;
+    /**
+     * аналогичен методу contains для свойства classList на элементе <body>
+     */
     containsClass(token: string): boolean;
+    /**
+     * аналогичен методу toString для свойства classList на элементе <body>
+     */
     getClassString(): string;
 }
 
 export type KeyInternalBody = keyof IInternalBody;
+/**
+ * API для работы с <body> страницы
+ * @public
+ * @author Печеркин С.В.
+ * @see https://developer.mozilla.org/ru/docs/Web/API/Element/classList
+ */
 export interface IBody extends IStore<IInternalBody>, IInternalBody {}
