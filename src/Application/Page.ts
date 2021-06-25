@@ -5,9 +5,6 @@
  *
  * @library Application/Page
  * @public
- * @includes Head Application/_Page/Head
- * @includes IHead Application/_Page/_head/IHead
- * @includes IInternalHead Application/_Page/_head/IInternalHead
  * @author Печеркин С.В.
  */
 export { Head } from "Application/_Page/Head";
@@ -16,6 +13,6 @@ export { JSLinks } from "Application/_Page/JSLinks";
 export * from 'Application/_Page/_head/IHead';
 export * from 'Application/_Page/_jslinks/IJSLinks';
 export * from 'Application/_Page/_body/IBody';
-export { IInternalHead, IHead } from 'Application/_Page/_head/IHead';
-export { IJSLinksInternal, IJSLinks } from 'Application/_Page/_jslinks/IJSLinks';
-export { IInternalBody, IBody } from 'Application/_Page/_body/IBody';
+export { IHead } from 'Application/_Page/_head/IHead';
+export { IJSLinks } from 'Application/_Page/_jslinks/IJSLinks';
+export { IBody } from 'Application/_Page/_body/IBody';
