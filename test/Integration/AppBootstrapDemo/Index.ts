@@ -11,6 +11,7 @@ export default class Index extends Control {
     protected _template: TemplateFunction = template;
     protected _styles: string[] = ['AppBootstrapDemo/Index'];
     isBootstrapLoaded: string = 'waiting';
+    bodyHasNotUndefinedClass: string = 'waiting';
     _beforeMount(options?: {}, contexts?: object, receivedState?: void): Promise<void> | void {
         constants.buildnumber = '4.8.15.16.23.42';
     }
@@ -18,6 +19,7 @@ export default class Index extends Control {
     // tslint:disable-next-line:no-any
     _afterMount(options?: {}, contexts?: any): void {
         this.isBootstrapLoaded = 'success';
+        this.bodyHasNotUndefinedClass = !document.body.classList.contains('undefined') ? 'success' : 'fail';
     }
 }
 export function getDataToRender(): Promise<object | false> {

@@ -10,6 +10,11 @@ bootstrapWrapperMode="{{ _options.bootstrapWrapperMode }}">
      class="status{{isBootstrapLoaded==='success' ? '_success' : ''}} ">  {{ isBootstrapLoaded }} </span>
      </div>
      <br/>
+     <div>
+     Тег body не содержит класса undefined:
+     <span data-qa="boootstrapdemo-Index__bodyClass"
+     class="status{{bodyHasNotUndefinedClass==='success' ? '_success' : ''}} ">  {{ bodyHasNotUndefinedClass }} </span>
+     </div>
      <AppBootstrapDemo.Main/>
    </ws:content>
 </SbisEnvUI.Bootstrap>
