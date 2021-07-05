@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import { create } from 'Application/_Page/_head/Factory';
-import type { IHeadTagAttrs } from 'Application/Page';
+import type { IPageTagAttrs } from 'Application/Page';
 
 const ALL_KEYS_ELEMENT = ['_name', '_attrs', '_content', '_eventHandlers'];
 const KEY_TITLE = ['_content'];
@@ -99,7 +99,7 @@ describe('Application/_Page/_head/Element', () => {
         });
         it('Взять атрибуты тега на клиенте', () => {
             const meta = create('meta', META_PROPS._attrs, META_PROPS._content);
-            assert.deepEqual(META_PROPS._attrs as IHeadTagAttrs, meta.getAttrs());
+            assert.deepEqual(META_PROPS._attrs as IPageTagAttrs, meta.getAttrs());
         });
         it('Изменение атрибутов тега на клиенте', () => {
             const meta = create('changeTag', META_PROPS._attrs, META_PROPS._content);

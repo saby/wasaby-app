@@ -1,13 +1,9 @@
 ///// <amd-module name="Application/_Page/Head" />
 
 import * as AppEnv from 'Application/Env';
-import BaseElement, { IHeadElement } from 'Application/_Page/_head/BaseElement';
-import { create } from 'Application/_Page/_head/Factory'
-import type { IHead, IHeadTagAttrs, IHeadTagEventHandlers, IHeadTagId, IInternalHead, JML, KeyInternalHead } from 'Application/_Page/_head/IHead';
-
-/** Стандартное время до обновления страницы. Используется внутри <noscript> */
-const TIME_TO_REFRESH: Number = 2;
-const PREFIX: string = typeof window === 'undefined' ? 'ps-' : '';
+import { PageTagAPI } from 'Application/_Page/PageTagAPI';
+import { HeadAspect } from 'Application/_Page/_head/Aspect';
+import { create } from 'Application/_Page/_head/Factory';
 
 /**
  * API для работы с <head> страницы
@@ -15,14 +11,11 @@ const PREFIX: string = typeof window === 'undefined' ? 'ps-' : '';
  * Получить инстанст синглтона можно через статичный метод getInstance()
  * @author Печеркин С.В.
  */
-export class Head implements IHead {
-
-    private _comments: string[] = [];
-    private _noScriptUrl: string = null;
-    protected _elements: {[propName: string]: IHeadElement} = {};
-    protected _id: number = 1;
+export class Head extends PageTagAPI {
+    protected _aspect = new HeadAspect()
 
     constructor() {
+        super();
         this._collectTags();
     }
 
@@ -39,228 +32,8 @@ export class Head implements IHead {
                 if (item.tagName === 'NOSCRIPT') {
                     return;
                 }
-                this._elements[this._generateGuid()] = create(null, null, null, null, item);
+                this._elements[this._aspect.generateGuid()] = create(null, null, null, null, item);
             });
-    }
-
-    createComment(text: string): void {
-        if (this._comments.includes(text)) {
-            const error = new Error('Application/_Page/Head duplicate comment:' +
-                '\n\t' + text
-            );
-            throw new Error(error.stack);
-        }
-
-        this._comments.push(text);
-    }
-
-    createNoScript(url: string): void {
-        if (!url) {
-            throw new Error('Полученный url пустой');
-        }
-        this._noScriptUrl = url;
-    }
-
-    createTag(
-        name: 'title',
-        attrs: {} | {class: string},
-        content: string): IHeadTagId;
-    createTag(
-        name: 'script',
-        attrs: {type: string}
-            | {type: string, src: string, key: string}
-            | {type: string, src: string, key: string, defer: 'defer'},
-        content: string): IHeadTagId;
-    createTag(
-        name: 'script',
-        attrs: {type: string, src: string, key: string},
-        content: string,
-        eventHandlers: IHeadTagEventHandlers): IHeadTagId;
-    createTag(
-        name: 'meta',
-        attrs: {'http-equiv': string, content: string}
-        | {content: string, name: string}
-        | {content: string, 'http-equiv': string, name: string, URL: string}
-        | {property: string, content: string, class: string}): IHeadTagId;
-    createTag(
-        name: 'link',
-        attrs: {src: ''} | {href: string, as: string, rel: string}): IHeadTagId;
-    createTag(
-        name: 'link',
-        attrs: IHeadTagAttrs,
-        content: null,
-        eventHandlers: IHeadTagEventHandlers
-    ): IHeadTagId;
-    createTag(
-        name: string,
-        attrs: IHeadTagAttrs,
-        content?: string,
-        eventHandlers?: IHeadTagEventHandlers): IHeadTagId {
-
-        for (const elementsKey in this._elements) {
-            if (this._elements[elementsKey].isEqual(name, attrs, content)) {
-                eventHandlers?.load();
-                return elementsKey;
-            }
-        }
-        const uuid = this._generateGuid();
-        const newElement = create(name, attrs, content, eventHandlers);
-        this._ensureUniq(newElement);
-        this._elements[uuid] = newElement;
-
-        return uuid;
-    }
-
-    getAttrs(tagId: IHeadTagId): IHeadTagAttrs | null {
-        if (this._elements[tagId]) {
-            return this._elements[tagId].getAttrs();
-        }
-        return null;
-    }
-
-    changeTag(tagId: IHeadTagId, attrs: IHeadTagAttrs): void {
-        if (this._elements[tagId]) {
-            this._elements[tagId].changeTag(attrs);
-        }
-    }
-
-    deleteTag(id: IHeadTagId): void {
-        if (!this._elements[id]) {
-            return;
-        }
-        this._elements[id].clear();
-        delete this._elements[id];
-    }
-
-    clear(): void {
-        for (const elementsKey in this._elements) {
-            if (this._elements.hasOwnProperty(elementsKey)){
-                this.deleteTag(elementsKey);
-            }
-        }
-        delete this._noScriptUrl;
-        this._comments = [];
-    }
-
-    getData(id: IHeadTagId): JML;
-    getData(): JML[];
-    getData(id?: IHeadTagId): JML[] | JML {
-        if (id && this._elements[id]) {
-            return this._elements[id].getData();
-        }
-
-        const noscript = this._generateNoScript();
-        const httpEquivId = this._getHttpEquivId();
-        const result: JML[] = [];
-        for (const elementsKey in this._elements) {
-            if (elementsKey === httpEquivId) {
-                result.unshift(this._elements[elementsKey].getData());
-            } else {
-                result.push(this._elements[elementsKey].getData());
-            }
-        }
-        if (noscript) {
-            result.unshift(noscript);
-        }
-
-        return result;
-    }
-
-    getComments(wrap?: boolean): string[] {
-        /** Важно не позволить случайно повредить исходный массив */
-        return wrap ? this._comments.map((comment) => {
-            return `<!--${comment}-->`;
-        }) : this._comments.concat([]);
-    }
-
-    // #region IStore
-    get<K extends keyof IInternalHead>(key: string): IInternalHead[K] {
-        return this[key];
-    }
-    set<K extends keyof IInternalHead>(key: string, value: IInternalHead[K]): boolean {
-        try {
-            this[key] = value;
-            return true;
-        } catch (_e) {
-            return false;
-        }
-    }
-    // tslint:disable-next-line:no-empty
-    remove(): void { }
-    getKeys(): KeyInternalHead[] {
-        return Object.keys(this) as KeyInternalHead[];
-    }
-    // tslint:disable-next-line:no-any
-    toObject(): Record<keyof IInternalHead, any> {
-        return Object.assign({}, this);
-    }
-    // #endregion
-
-    /**
-     * Генератор noscript тега с содержимым, если был задан _noScriptUrl
-     * @private
-     */
-    protected _generateNoScript(): JML | null {
-        if (!this._noScriptUrl) {
-            return  null;
-        }
-        return [
-            'noscript',
-            BaseElement.generateTag({
-                name: 'meta',
-                attrs: {'http-equiv': 'refresh', content: `${TIME_TO_REFRESH}; URL=${this._noScriptUrl}`}
-            })
-        ];
-    }
-
-    /**
-     * Поддержка IE (Internet Explorer 11)
-     * Очень важно помещать тег вида
-     * <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-     * Сразу после открывающегося тега <head> (допустимо после noScript)
-     * tslint:disable-next-line:max-line-length
-     * @private
-     */
-    // tslint:disable-next-line:max-line-length
-    // https://stackoverflow.com/questions/11320069/internet-explorer-sending-different-user-agent-strings-to-different-sites
-
-    private _getHttpEquivId(): IHeadTagId | null {
-        for (const elementsKey in this._elements) {
-            if (this._elements[elementsKey].isFit('meta', {'http-equiv': 'X-UA-Compatible', content: 'IE=edge'})) {
-                return elementsKey;
-            }
-        }
-
-        return null;
-    }
-
-    /** Генератор уникального идентификатора для каждого тега */
-    protected _generateGuid(): IHeadTagId {
-        return `head-${PREFIX}${this._id++}`;
-    }
-
-    /**
-     * Перед добавлением нового элемента в набор необходимо обеспечить его уникальность в полном наборе
-     * Сейчас уникальными должны быть следующие теги:
-     * title (проверяется методом isTitle)
-     * meta с параметрами для viewport (проверяется методом isViewPort)
-     * @param element вновь созданный, но еще не добавленный элемент
-     * @private
-     */
-    private _ensureUniq(element: IHeadElement): void {
-        const uniqueKey = element.getUniqueKey();
-        if (!uniqueKey) {
-            return;
-        }
-
-        for (const elementsKey in this._elements) {
-            if (this._elements.hasOwnProperty(elementsKey)) {
-                if (this._elements[elementsKey].getUniqueKey() === uniqueKey) {
-                    this._elements[elementsKey].clear();
-                    delete this._elements[elementsKey];
-                }
-            }
-        }
     }
 
     static _instance: Head;

@@ -1,12 +1,11 @@
 ///// <amd-module name="Application/_Page/_head/Element" />
 
-import { IHeadElementAspect } from "Application/_Page/_head/BaseElement";
-import BaseElement from "Application/_Page/_head/BaseElement";
-import type { IHeadTagAttrs, IHeadTagEventHandlers } from 'Application/_Page/_head/IHead';
+import BaseElement, { IPageTagElementAspect } from "Application/_Page/_pageTagAPI/BaseElement";
+import type { IPageTagAttrs, IPageTagEventHandlers } from 'Application/_Page/_pageTagAPI/Interface';
 
 export interface IElementRestoredData {
     name: string;
-    attrs: IHeadTagAttrs;
+    attrs: IPageTagAttrs;
     content: string;
     element: HTMLElement;
 }
@@ -15,20 +14,20 @@ export interface IElementRestoredData {
  * Класс HTML элемента для вставки в head
  * Основной функционал реализован в родительском классе ElementPS.
  * В текущем, дочернем классе реализован метод для рендера элемента в DOM дереве.
- * @author Хамбелов М.И.
+ * @author Печеркин С.В.
  */
 export default class Element extends BaseElement {
     constructor(name?: string,
-                attrs?: IHeadTagAttrs,
+                attrs?: IPageTagAttrs,
                 content?: string,
-                eventHandlers?: IHeadTagEventHandlers,
-                aspect?: IHeadElementAspect,
+                eventHandlers?: IPageTagEventHandlers,
+                aspect?: IPageTagElementAspect,
                 hydrateElement?: HTMLElement) {
         const data: IElementRestoredData = Element._restoreElement(hydrateElement);
         super(data.name || name, data.attrs || attrs, data.content || content, eventHandlers, aspect, hydrateElement);
     }
 
-    changeTag(attrsChange: IHeadTagAttrs): void {
+    changeTag(attrsChange: IPageTagAttrs): void {
         const attrs = this.getAttrs();
         /* находим все свойства в оригинале и изменяемом объекте - если свойства нет в изменяемом
         удаляем его, если разные значения, то удаляем и создаем новое свойство, так нужно из-за
@@ -67,7 +66,7 @@ export default class Element extends BaseElement {
             return;
         }
 
-        const element = this._aspect.getDOMElement(this.toHeadTag());
+        const element = this._aspect.getDOMElement(this.toPageTag());
         this._applyAttrs(element);
         if (this._content) {
             element.innerText = this._content;
@@ -121,7 +120,7 @@ export default class Element extends BaseElement {
         };
 
         if (element) {
-            result.attrs = Element.getElementAttrs(element);;
+            result.attrs = Element.getElementAttrs(element);
             result.name = element.tagName.toLowerCase();
             result.content = element.innerText;
         }
@@ -133,7 +132,7 @@ export default class Element extends BaseElement {
      * Вернет все атрибуты у тега
      * @param element
      */
-    static getElementAttrs(element?: HTMLElement): IHeadTagAttrs {
+    static getElementAttrs(element?: HTMLElement): IPageTagAttrs {
         const result = {};
         Array.prototype.slice.call(element.attributes).forEach((attr) => {
             result[attr.name] = attr.value;

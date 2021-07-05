@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import { create } from 'Application/_Page/_head/Factory';
 import { default as ElementPS } from 'Application/_Page/_head/ElementPS';
-import type { IHeadTagAttrs } from 'Application/Page';
+import type { IPageTagAttrs } from 'Application/Page';
 
 const ALL_KEYS_ELEMENT = ['_name', '_attrs', '_content', '_eventHandlers'];
 const KEY_TITLE = ['_content'];
@@ -101,7 +101,7 @@ describe('Application/_Page/_head/ElementPS', () => {
         });
         it('Взять атрибуты тега на сервере', () => {
             const script = create('script', SCRIPT_PROPS._attrs, SCRIPT_PROPS._content, EVENT_HANDLER);
-            assert.deepEqual(SCRIPT_PROPS._attrs as IHeadTagAttrs, script.getAttrs());
+            assert.deepEqual(SCRIPT_PROPS._attrs as IPageTagAttrs, script.getAttrs());
         });
         it('Изменение атрибутов тега на сервере', () => {
             const script = create('script', SCRIPT_PROPS._attrs, SCRIPT_PROPS._content, EVENT_HANDLER);

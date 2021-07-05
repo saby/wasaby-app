@@ -1,23 +1,23 @@
 ///// <amd-module name="Application/_Page/_head/BaseElement" />
 
-import type { IHeadTag, JML } from 'Application/_Page/_head/IHead';
-import BaseElement, { IHeadElementAspect } from 'Application/_Page/_head/BaseElement';
+import BaseElement, { IPageTagElementAspect } from 'Application/_Page/_pageTagAPI/BaseElement';
+import type { IPageTag, JML } from 'Application/_Page/_pageTagAPI/Interface';
 
 /**
  * Аспект для уникального элемента типа title
  * @author Печеркин С.В.
  */
-export default class TitleAspect implements IHeadElementAspect {
+export default class TitleAspect implements IPageTagElementAspect {
    getUniqueKey(): boolean | string {
       return 'Title';
    }
-   isEqual(thisTag: IHeadTag, otherTag: IHeadTag): boolean {
+   isEqual(thisTag: IPageTag, otherTag: IPageTag): boolean {
       if (BaseElement.isServer) {
          return BaseElement.isEqual(thisTag, otherTag);
       }
       return document.title === otherTag.content;
    }
-   getDOMElement({name, content}: IHeadTag): HTMLElement | undefined {
+   getDOMElement({name, content}: IPageTag): HTMLElement | undefined {
       document.title = content || '';
       return document.head.querySelector('title');
    }
@@ -29,7 +29,7 @@ export default class TitleAspect implements IHeadElementAspect {
       /** Нельзя оставлять страницу без заголовка */
       return;
    }
-   getData({name, attrs, content, eventHandlers}: IHeadTag): JML {
+   getData({name, attrs, content, eventHandlers}: IPageTag): JML {
       /** В момент генерации информации убираем из title все атрибуты */
       return BaseElement.generateTag({name, attrs: {}, content, eventHandlers});
    }
