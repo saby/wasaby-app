@@ -1,23 +1,23 @@
 ///// <amd-module name="Application/_Page/_head/BaseElement" />
 
-import BaseElement, { IHeadElementAspect } from 'Application/_Page/_head/BaseElement';
-import type { IHeadTag, JML } from 'Application/_Page/_head/IHead';
+import BaseElement, { IPageTagElementAspect } from 'Application/_Page/_pageTagAPI/BaseElement';
+import type { IPageTag, JML } from 'Application/_Page/_pageTagAPI/Interface';
 
 /**
  * Аспект для уникального элемента типа meta с параметрами для viewport
  * @author Печеркин С.В.
  */
-export default class ViewPortAspect implements IHeadElementAspect {
+export default class ViewPortAspect implements IPageTagElementAspect {
    getUniqueKey(): boolean | string {
       return 'ViewPort';
    }
-   isEqual(thisTag: IHeadTag, otherTag: IHeadTag): boolean {
+   isEqual(thisTag: IPageTag, otherTag: IPageTag): boolean {
       return BaseElement.isEqual(thisTag, otherTag);
    }
-   getData({name, attrs, content, eventHandlers}: IHeadTag): JML {
+   getData({name, attrs, content, eventHandlers}: IPageTag): JML {
       return BaseElement.generateTag({name, attrs, content, eventHandlers});
    }
-   getDOMElement({name}: IHeadTag): HTMLElement | undefined {
+   getDOMElement({name}: IPageTag): HTMLElement | undefined {
       let viewPort = document.head.querySelector<HTMLElement>('meta[name=viewport]');
       if (!viewPort) {
          viewPort = document.createElement(name);

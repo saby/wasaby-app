@@ -8,6 +8,7 @@
       <module id="0df0fce3-53ba-47f8-987d-edf1fd078295" name="WS.Core"/>
       <module id="832cda0a-e19c-4ffc-a1d1-47edbb6b7501" name="I18n"/>
       <module id="a10cb1cb-b23d-4ef6-a757-4f7382e0e8d1" name="SbisEnvUI"/>
+      <module id="37e402f1-2fb0-4b73-81c5-113cf94dbf1c" name="WasabyLoader"/>
     </depends>
   <load_after/>
 

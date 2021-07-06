@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import { Head as HeadAPI } from 'Application/Page';
-import type { JML, IHead } from 'Application/Page';
+import type { JML, IPageTagAPI } from 'Application/Page';
 
 const additionalAttrs = {
     'data-vdomignore': true
@@ -10,7 +10,7 @@ const processingData: JML[] = [];
 let countOfMeta: number = 0;
 
 describe('Application/_Page/Head', () => {
-    let API: IHead;
+    let API: IPageTagAPI;
 
     it('Восстановление состояния на клиенте', () => {
         if (typeof window === 'undefined') {
