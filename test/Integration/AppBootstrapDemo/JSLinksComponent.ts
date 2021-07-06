@@ -3,9 +3,9 @@
 // @ts-ignore
 import * as template from 'wml!AppBootstrapDemo/JSLinksComponent';
 import { JSLinks } from 'Application/Page';
-import {aggregateJS} from 'UICommon/Deps';
 import { Control, TemplateFunction, TagMarkup, fromJML } from 'UI/Base';
 import { constants } from 'Env/Constants';
+import * as ModulesLoader from 'WasabyLoader/ModulesLoader';
 
 export default class JSLinksComponent extends Control {
     _template: TemplateFunction = template;
@@ -18,18 +18,9 @@ export default class JSLinksComponent extends Control {
 
         if (!constants.isBrowserPlatform) {
             const JSLinksAPI = JSLinks.getInstance();
-            aggregateJS(
-                {
-                    css: { themedCss: [], simpleCss: [] },
-                    tmpl: [],
-                    wml: [],
-                    js: ['AppBootstrapDemo/JSLinksResource.js'],
-                    scripts: [],
-                    rsSerialized: '',
-                    rtpackModuleNames: [],
-                    additionalDeps: []
-                }
-            );
+            JSLinksAPI.createTag('script', {
+                src: ModulesLoader.getModuleUrl('AppBootstrapDemo/JSLinksResource.js')
+            });
             this.jslinksData += new TagMarkup(JSLinksAPI.getData().map(fromJML), { getResourceUrl: false }).outerHTML;
             return;
         }

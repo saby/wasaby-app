@@ -1,14 +1,21 @@
-///// <amd-module name="Application/_Page/_head/BaseElement" />
+///// <amd-module name="Application/_Page/_pageTagAPI/BaseElement" />
 
-import type { IHeadTag, IHeadTagAttrs, IHeadTagEventHandlers, ITagPrior, JML } from 'Application/_Page/_head/IHead';
+import {
+   IPageTag,
+   IPageTagAttrs,
+   IPageTagElement,
+   IPageTagEventHandlers,
+   ITagPrior,
+   JML
+} from 'Application/_Page/_pageTagAPI/Interface';
 
 /**
- * Базовый класс HTML элемента для вставки в head.
+ * Базовый класс HTML элемента для вставки в верстку (head, например).
  * @author Печеркин С.В.
  */
 
 /**
- * шаблон, в котором содержится список тегов и приоритетные аттрибуты,
+ * Шаблон, в котором содержится список тегов и приоритетные аттрибуты,
  * по последним будем проходить при сравнении (использование метода isEqual),
  * для того, чтобы не сравнивать все аттрибуты.
  */
@@ -20,31 +27,7 @@ const TAGS_PRIOR = [
 ];
 
 /**
- * @interface IHeadElement класс HTML элемента для вставки в head
- * @property {Function} getData - возвращаем элемент в формате JML, предварительно сгенерировав его
- * @property {Function} getUniqueKey - возвращаем вид уникальности. Если не вернул ничего - не уникален.
- * @property {Function} toHeadTag - преобразует текущий Element к формату IHeadTag
- * @property {Function} clear - удаляет информацию из свойств класса
- * @property {Function} isEqual - определяем одинаковый ли элемент или нет. Сравниваем по свойствам класса
- * @property {Function} isFit - определяет подходит ли элемент под описание: сходится ли тег и атрибуты
- * @property {Function} getAttrs - возвращаем аттрибуты элемента
- * @property {Function} setAttrs - устанавливаем атрибуты элемента
- * @property {Function} changeTag - меняет атрибуты элемента
- */
-export interface IHeadElement {
-   getData(): JML;
-   getUniqueKey(): boolean | string;
-   toHeadTag(): IHeadTag;
-   clear(): void;
-   isEqual(name: string, attrs: IHeadTagAttrs, content?: string, eventHandlers?: IHeadTagEventHandlers): boolean;
-   isFit(name?: string, attrs?: IHeadTagAttrs): boolean;
-   getAttrs(): IHeadTagAttrs;
-   setAttrs(attrs: IHeadTagAttrs): void;
-   changeTag(attrsChange: IHeadTagAttrs): void;
-}
-
-/**
- * @interface IHeadElementAspect аспект поведения для 1 элемента
+ * @interface IPageTagElementAspect аспект поведения для 1 элемента
  * Например, с какой точки зрения он уникален или как его воткнуть в DOM
  * @property {Function} getUniqueKey - возвращаем вид уникальности. Если не вернул ничего - не уникален.
  * @property {Function} isEqual - определяем одинаковый ли элемент или нет. Сравниваем по свойствам класса
@@ -53,23 +36,23 @@ export interface IHeadElement {
  * @property {Function} removeDOMElement - метод непосредственного удаления DOM элемента из DOM дерева
  * @property {Function} getData - метод генерации JML данных из одного элемента
  */
-export interface IHeadElementAspect {
+export interface IPageTagElementAspect {
    getUniqueKey(): boolean | string;
-   isEqual(thisTag: IHeadTag, otherTag: IHeadTag): boolean;
-   getDOMElement({name}: IHeadTag): undefined | HTMLElement;
+   isEqual(thisTag: IPageTag, otherTag: IPageTag): boolean;
+   getDOMElement({name}: IPageTag): undefined | HTMLElement;
    appendDomElement(element: HTMLElement): void;
    removeDOMElement(element: HTMLElement): void;
-   getData({name, attrs, content, eventHandlers}: IHeadTag): JML;
+   getData({name, attrs, content, eventHandlers}: IPageTag): JML;
 }
 
-export class DefaultAspect implements IHeadElementAspect {
+export class DefaultAspect implements IPageTagElementAspect {
    getUniqueKey(): boolean | string {
       return false;
    }
-   isEqual(thisTag: IHeadTag, otherTag: IHeadTag): boolean {
+   isEqual(thisTag: IPageTag, otherTag: IPageTag): boolean {
       return BaseElement.isEqual(thisTag, otherTag);
    }
-   getDOMElement({name}: IHeadTag): undefined | HTMLElement {
+   getDOMElement({name}: IPageTag): undefined | HTMLElement {
       return document.createElement(name);
    }
    appendDomElement(element: HTMLElement): void {
@@ -78,24 +61,24 @@ export class DefaultAspect implements IHeadElementAspect {
    removeDOMElement(element: HTMLElement): void {
       document.head.removeChild(element);
    }
-   getData({name, attrs, content, eventHandlers}: IHeadTag): JML {
+   getData({name, attrs, content, eventHandlers}: IPageTag): JML {
       return BaseElement.generateTag({name, attrs, content, eventHandlers});
    }
 }
 
-export default abstract class BaseElement implements IHeadElement {
+export default abstract class BaseElement implements IPageTagElement {
    protected _name: string;
-   protected _attrs: IHeadTagAttrs;
+   protected _attrs: IPageTagAttrs;
    protected _content: string;
-   protected _eventHandlers: IHeadTagEventHandlers;
+   protected _eventHandlers: IPageTagEventHandlers;
    protected _element: HTMLElement;
    protected _hydratedElement: HTMLElement;
-   protected _aspect: IHeadElementAspect;
+   protected _aspect: IPageTagElementAspect;
    constructor(name: string,
-               attrs: IHeadTagAttrs,
+               attrs: IPageTagAttrs,
                content?: string,
-               eventHandlers?: IHeadTagEventHandlers,
-               aspect: IHeadElementAspect = new DefaultAspect(),
+               eventHandlers?: IPageTagEventHandlers,
+               aspect: IPageTagElementAspect = new DefaultAspect(),
                hydratedElement?: HTMLElement) {
       this._name = name;
       this._attrs = {...attrs};
@@ -111,10 +94,10 @@ export default abstract class BaseElement implements IHeadElement {
    }
 
    getData(): JML {
-      return this._aspect.getData(this.toHeadTag());
+      return this._aspect.getData(this.toPageTag());
    }
 
-   toHeadTag(): IHeadTag {
+   toPageTag(): IPageTag {
       return {
          name: this._name,
          attrs: this._attrs,
@@ -135,7 +118,7 @@ export default abstract class BaseElement implements IHeadElement {
    protected abstract _removeElement(): void
 
    isEqual(name: string,
-           attrs: IHeadTagAttrs,
+           attrs: IPageTagAttrs,
            content?: string): boolean {
       return this._aspect.isEqual({
          name: this._name,
@@ -148,7 +131,7 @@ export default abstract class BaseElement implements IHeadElement {
       })
    }
 
-   isFit(name?: string, attrs?: IHeadTagAttrs): boolean {
+   isFit(name?: string, attrs?: IPageTagAttrs): boolean {
       if (name && name !== this._name) {
          return false;
       }
@@ -160,7 +143,7 @@ export default abstract class BaseElement implements IHeadElement {
       return true;
    }
 
-   getAttrs(): IHeadTagAttrs {
+   getAttrs(): IPageTagAttrs {
       const attrs = { ...this._attrs };
       // TODO: убрать после реалзации старта от div
       delete attrs['data-vdomignore'];
@@ -168,22 +151,22 @@ export default abstract class BaseElement implements IHeadElement {
    }
 
    /**
-    * @param attrs {IHeadTagAttrs} Объект атрибутов элемента
+    * @param attrs {IPageTagAttrs} Объект атрибутов элемента
     */
-   setAttrs(attrs: IHeadTagAttrs): void {
+   setAttrs(attrs: IPageTagAttrs): void {
       this._attrs = attrs;
    }
 
    /**
-    * @param attrsChange {IHeadTagAttrs} Атрибуты для замены
+    * @param attrsChange {IPageTagAttrs} Атрибуты для замены
     */
-   abstract changeTag(attrsChange: IHeadTagAttrs): void
+   abstract changeTag(attrsChange: IPageTagAttrs): void
 
    /** Отрисовка элемента в head. */
    protected abstract _render(): void
 
    /** генерируется тэг в формате JML */
-   static generateTag(data: IHeadTag): JML {
+   static generateTag(data: IPageTag): JML {
       const result: JML = [data.name];
       // TODO: убрать после реалзации старта от div
       data.attrs['data-vdomignore'] = true;
@@ -196,7 +179,7 @@ export default abstract class BaseElement implements IHeadElement {
       return result;
    }
 
-   static isEqual(thisTag: IHeadTag, otherTag: IHeadTag): boolean {
+   static isEqual(thisTag: IPageTag, otherTag: IPageTag): boolean {
       // tslint:disable-next-line:triple-equals
       if (otherTag.content != thisTag.content || otherTag.name.toLowerCase() !== thisTag.name.toLowerCase()) {
          return false;
@@ -216,7 +199,7 @@ export default abstract class BaseElement implements IHeadElement {
 /**
  * сравнивает на идентичность аттрибутов
  */
-function isEqualAttributes(attrs: IHeadTagAttrs, attrsOrigin: IHeadTagAttrs, tagPrior: ITagPrior): boolean {
+function isEqualAttributes(attrs: IPageTagAttrs, attrsOrigin: IPageTagAttrs, tagPrior: ITagPrior): boolean {
    /**
     * проверка пришёл ли объект tagPrior и пустоту массива с приоритетными аттрибутами.
     *  Проверять пустой массив необходимо, т.к. метод every при пустом массиве всегда возвращает true.
