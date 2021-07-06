@@ -40,11 +40,23 @@ export class PageTagAPI implements IPageTagAPI {
             | {src: string}
             | {type: string}
             | {type: string, src: string, key: string}
+            | {type: string, src: string, key: string, defer: 'defer'}
+    )
+    createTag(
+        name: 'script',
+        attrs: {}
+            | {src: string}
+            | {type: string}
+            | {type: string, src: string, key: string}
             | {type: string, src: string, key: string, defer: 'defer'},
         content: string): IPageTagId;
     createTag(
         name: 'script',
-        attrs: {type: string, src: string, key: string},
+        attrs: {}
+            | {src: string}
+            | {type: string}
+            | {type: string, src: string, key: string}
+            | {type: string, src: string, key: string, defer: 'defer'},
         content: string,
         eventHandlers: IPageTagEventHandlers): IPageTagId;
     createTag(
