@@ -18,7 +18,7 @@ export default class FaviconAspect implements IPageTagElementAspect {
         return BaseElement.generateTag({name, attrs, content, eventHandlers});
     }
     getDOMElement({name}: IPageTag): HTMLElement | undefined {
-        let favicon = document.head.querySelector<HTMLElement>('link[rel~=\'icon\']');
+        let favicon = document.head.querySelector<HTMLElement>('link[rel*=\'icon\']');
         if (!favicon) {
             favicon = document.createElement(name);
             document.head.appendChild(favicon);
