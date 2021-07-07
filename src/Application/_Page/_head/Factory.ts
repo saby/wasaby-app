@@ -45,7 +45,7 @@ function getAspect(
    const isTitle: boolean = name === 'title';
    const isViewPort: boolean = name === 'meta' && attrs.name === 'viewport' && !!attrs.content;
    const isFavicon: boolean = name === 'link' && !!attrs.href
-       && attrs.rel.split(' ').some((el) => FAVICON_REL_TYPES.includes(el));
+       && attrs.rel?.split(' ').some((el) => FAVICON_REL_TYPES.includes(el));
 
    return (isTitle && new TitleAspect())
       || (isViewPort && new ViewPortAspect())
