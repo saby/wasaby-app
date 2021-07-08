@@ -245,8 +245,9 @@ describe('Application/_Page/Head', () => {
         });
         it('проверка что на странцие только один favicon', () => {
             API.createTag(TAG_NAME, {...attrs, rel: 'apple-touch-icon'});
+            API.createTag(TAG_NAME, {...attrs, rel: 'icon'});
+            API.createTag(TAG_NAME, {...attrs, rel: 'wrong_icon'});
             API.createTag(TAG_NAME, attrs);
-            API.createTag(TAG_NAME, {...attrs, rel: 'somerel'});
             assert.isTrue(document.head.querySelectorAll('link[rel*=icon]').length === 1 ,
                 'На странице должен быть один favicon');
         });
