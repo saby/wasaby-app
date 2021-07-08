@@ -226,7 +226,7 @@ describe('Application/_Page/Head', () => {
     describe('Проверка favicon', () => {
         const DEFAULT_REL = "\'shortcut icon\'";
         const TAG_NAME = 'link';
-        const attrs = {href: 'AppUnit\\Page\\Head\\favicon.ico', rel: 'shortcut icon' };
+        const attrs = {href: 'AppUnit\\Page\\Head\\favicon.ico', rel: 'shortcut icon', type: 'image/x-icon' };
         it('создание default favicon', () => {
             API.createTag(TAG_NAME, attrs);
             assert.isNotNull(document.head.querySelector(`link[rel=${DEFAULT_REL}]`), 'Favicon не был применен к странице');

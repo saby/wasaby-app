@@ -116,6 +116,5 @@ describe('Application/_Page/_head/Element', () => {
                 assert.deepEqual(doc[item].value, newAttrs[item]);
             });
         });
-
     });
 });
