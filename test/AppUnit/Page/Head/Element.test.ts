@@ -116,22 +116,6 @@ describe('Application/_Page/_head/Element', () => {
                 assert.deepEqual(doc[item].value, newAttrs[item]);
             });
         });
-        describe('Проверка favicon', () => {
-            const DEFAULT_REL = "\'shortcut icon\'";
-            const attrs = {href: 'AppUnit\\Page\\Head\\favicon.ico', rel: 'shortcut icon' };
-            it('создание default favicon', () => {
-                create('link', attrs);
-                assert.isNotNull(document.head.querySelector(`link[rel=${DEFAULT_REL}]`), 'Favicon не был применен к странице');
-            });
-            it('создание favicon с неправильным rel', () => {
-                const lastFavicon = document.head.querySelector(`link[rel=${DEFAULT_REL}]`);
-                create('link', {...attrs, rel: 'wrong_icon'});
-                assert.isNotNull(lastFavicon, 'Предыдущий favicon был уничтожен. Favicon с неправильным rel был применен к странице');
-            });
-            it('создание favicon с невалидным, но работающим rel', () => {
-                create('link', {...attrs, rel: 'notvalid icon'});
-                assert.isNotNull(document.head.querySelector('link[rel=\'notvalid icon\']'), 'Favicon не был применен к странице');
-            });
-        });
+
     });
 });

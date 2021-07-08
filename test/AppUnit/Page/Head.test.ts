@@ -223,7 +223,34 @@ describe('Application/_Page/Head', () => {
         processingData.push([tagName, { ...attrs }]);
         assert.deepEqual(API.getAttrs(tag), attrs);
     });
-
+    describe('Проверка favicon', () => {
+        const DEFAULT_REL = "\'shortcut icon\'";
+        const TAG_NAME = 'link';
+        const attrs = {href: 'AppUnit\\Page\\Head\\favicon.ico', rel: 'shortcut icon' };
+        it('создание default favicon', () => {
+            API.createTag(TAG_NAME, attrs);
+            assert.isNotNull(document.head.querySelector(`link[rel=${DEFAULT_REL}]`), 'Favicon не был применен к странице');
+        });
+        it('создание favicon с неправильным rel', () => {
+            const lastFavicon = document.head.querySelector(`link[rel=${DEFAULT_REL}]`);
+            API.createTag(TAG_NAME, {...attrs, rel: 'wrong_icon'});
+            assert.isNotNull(lastFavicon, 'Предыдущий favicon был уничтожен.');
+            assert.isTrue(document.head.querySelector('link[rel=\'wrong_icon\']') !== document.head.querySelector('link[rel*=icon]'),
+                'Favicon с неправильным rel был применен к странице');
+        });
+        it('создание favicon с невалидным, но работающим rel', () => {
+            const lastFavicon = document.head.querySelector('link[rel*=icon]');
+            assert.isTrue(lastFavicon !== document.head.querySelector('link[rel=\'notvalid icon\']'),
+                'Favicon с невалидным rel был применен к странице');
+        });
+        it('проверка что на странцие только один favicon', () => {
+            API.createTag(TAG_NAME, {...attrs, rel: 'apple-touch-icon'});
+            API.createTag(TAG_NAME, attrs);
+            API.createTag(TAG_NAME, {...attrs, rel: 'somerel'});
+            assert.isTrue(document.head.querySelectorAll('link[rel*=icon]').length === 1 ,
+                'На странице должен быть один favicon');
+        });
+    });
     it('Очистка хранилища', () => {
         API.clear();
         assert.isEmpty(API.getData());
