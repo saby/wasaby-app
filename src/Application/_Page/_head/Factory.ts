@@ -2,10 +2,17 @@
 
 import Element from "Application/_Page/_head/Element";
 import ElementPS from "Application/_Page/_head/ElementPS";
+import FaviconAspect from 'Application/_Page/_head/Favicon';
 import TitleAspect from "Application/_Page/_head/Title";
 import ViewPortAspect from "Application/_Page/_head/ViewPort";
 import BaseElement, { IPageTagElementAspect } from "Application/_Page/_pageTagAPI/BaseElement";
 import type { IPageTagAttrs, IPageTagElement, IPageTagEventHandlers } from 'Application/_Page/_pageTagAPI/Interface';
+
+/**
+ * Значение rel в favicon является отличительным признаком favicon от других тегов.
+ * Сравниваем значения rel, чтобы определить FaviconAspect.
+ */
+const FAVICON_REL_TYPES = ['icon', 'apple-touch-icon', 'shortcut icon', 'apple-touch-icon-precomposed'];
 
 export function create(name: string,
                        attrs: IPageTagAttrs,
@@ -37,8 +44,11 @@ function getAspect(
 
    const isTitle: boolean = name === 'title';
    const isViewPort: boolean = name === 'meta' && attrs.name === 'viewport' && !!attrs.content;
+   const isFavicon: boolean = name === 'link' && !!attrs.href
+       && attrs.rel?.split(' ').some((el) => FAVICON_REL_TYPES.includes(el));
 
    return (isTitle && new TitleAspect())
       || (isViewPort && new ViewPortAspect())
+      || (isFavicon && new FaviconAspect())
       || undefined;
 }

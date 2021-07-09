@@ -212,6 +212,7 @@ describe('Application/_Page/Head', () => {
     });
 
     it('Взять атрибуты тега', () => {
+
         const tagName = 'tagAttr';
         const attrs = {
             content: 'width=100',
@@ -220,8 +221,48 @@ describe('Application/_Page/Head', () => {
         const tag = API.createTag(tagName, attrs);
 
         assert.isNull(API.getAttrs('errorTag'));
-        processingData.push([tagName, { ...attrs }]);
+        processingData.push([tagName, { ...attrs, ...additionalAttrs }]);
         assert.deepEqual(API.getAttrs(tag), attrs);
+    });
+
+    it('создание default favicon ', () => {
+        const tagName = 'link';
+        const attrs = {href: 'AppUnit\\Page\\Head\\favicon.ico', rel: 'shortcut icon', type: 'image/x-icon',
+            ...additionalAttrs };
+        API.createTag(tagName, attrs);
+        processingData.push([tagName, {...attrs } ]);
+        assert.deepEqual(API.getData(), processingData);
+    });
+
+    it('попытка создания favicon с неправильным rel', () => {
+        /** новый favicon не должен быть создан */
+        const tagName = 'link';
+        const attrs = { href: 'AppUnit\\Page\\Head\\favicon.ico', rel: 'shortcut icon', type: 'image/x-icon',
+            ...additionalAttrs };
+        API.createTag(tagName, {...attrs, rel: 'wrong_icon'});
+        assert.deepEqual(API.getData(), processingData, 'favicon с неправильным rel был создан');
+    });
+    it('попытка создания favicon с невалидным, но работающим rel', () => {
+        /** новый favicon не должен быть создан */
+        const tagName = 'link';
+        const attrs = { href: 'AppUnit\\Page\\Head\\favicon.ico', rel: 'shortcut icon', type: 'image/x-icon',
+            ...additionalAttrs };
+        API.createTag(tagName, {...attrs, rel: 'wrong_icon'});
+        assert.deepEqual(API.getData(), processingData, 'favicon с невалидным rel был создан');
+    });
+    it('проверка headapi содержит только один favicon', () => {
+        const tagName = 'link';
+        const attrs = { href: 'AppUnit\\Page\\Head\\favicon.ico', rel: 'shortcut icon', type: 'image/x-icon',
+            ...additionalAttrs };
+        API.createTag(tagName, {...attrs, rel: 'apple-touch-icon'});
+        API.createTag(tagName, {...attrs, rel: 'icon'});
+        API.createTag(tagName, {...attrs, rel: 'wrong_icon'});
+        API.createTag(tagName, attrs);
+        assert.deepEqual(API.getData(), processingData);
+        if(typeof window !== 'undefined'){
+            assert.isTrue(document.head.querySelectorAll('link[rel*=icon]').length === 1 ,
+                'На странице должен быть один favicon');
+        }
     });
 
     it('Очистка хранилища', () => {
