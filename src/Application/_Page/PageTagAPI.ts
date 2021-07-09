@@ -68,7 +68,9 @@ export class PageTagAPI implements IPageTagAPI {
             | {property: string, content: string, class: string}): IPageTagId;
     createTag(
         name: 'link',
-        attrs: {src: ''} | {href: string, as: string, rel: string}): IPageTagId;
+        attrs: {src: ''}
+            | {href: string, as: string, rel: string}
+            | {href: string, type: string, rel: string}): IPageTagId;
     createTag(
         name: 'link',
         attrs: IPageTagAttrs,
