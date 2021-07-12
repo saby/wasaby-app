@@ -63,8 +63,8 @@ describe('Application/_Page/JSLinks', () => {
             const API: JSLinks = JSLinks.getInstance(NAMESPACE_STORE);
             const NAMESPACE_STORE2 = 'custom_name42';
             const API2: JSLinks = JSLinks.getInstance(NAMESPACE_STORE2);
-            API.createTag(JSLINKS_PROPS.name, {src: `to/${NAMESPACE_STORE}`});
-            API2.createTag(JSLINKS_PROPS.name, {src: `to/${NAMESPACE_STORE2}`});
+            API.createTag('script', {src: `to/${NAMESPACE_STORE}`});
+            API2.createTag('script', {src: `to/${NAMESPACE_STORE2}`});
             // tslint:disable-next-line:ban-ts-ignore
             // @ts-ignore
             assert.isFalse(API.getData().includes(item=> item.attrs?.src === `to/${NAMESPACE_STORE2}`));
