@@ -72,7 +72,7 @@ class Serializer {
         {
             toFind: /\n/g,
             toReplace: '\\\\n'
-        }
+        },
         {
             toFind: /\n/g,
             toReplace: '\\u000a'
