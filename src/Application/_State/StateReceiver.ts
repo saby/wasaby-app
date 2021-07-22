@@ -71,10 +71,6 @@ class Serializer {
         },
         {
             toFind: /\n/g,
-            toReplace: '\\\\n'
-        },
-        {
-            toFind: /\n/g,
             toReplace: '\\u000a'
         },
         {
@@ -84,6 +80,10 @@ class Serializer {
         {
             toFind: /[^\\"]\\u000a/g,
             toReplace: '\\\\u000a'
+        },
+        {
+            toFind: /"\\u000a"/g, // если к нам прилетел JML с пустым контентом, он будет содержать "\u000a"
+            toReplace: '\"\\\\u000a\"'
         }
     ];
 
