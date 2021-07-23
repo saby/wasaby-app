@@ -56,4 +56,19 @@ describe('Application/State:StateReceiver', () => {
         // @ts-ignore
         assert.hasAllKeys(sr.deserialized, [meta.ulid]);
     });
+    it('second serialize', () => {
+        let hasError: boolean = false;
+        const meta = {ulid: 'srKey', moduleName: 'MyModuleName'};
+        const sr = new StateReceiver();
+        sr.register(meta, someData);
+        sr.serialize();
+
+        try {
+            sr.serialize();
+        } catch (e) {
+            hasError = true;
+        }
+
+        assert.isTrue(hasError, 'Повторный вызов метода serialize не вызвал ошибку');
+    });
 });

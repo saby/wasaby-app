@@ -134,6 +134,7 @@ export class StateReceiver implements IStateReceiver {
     private deserialized: any = {};
     private __serializer;
     private _logger: IConsole;
+    private _serializedOnce: boolean = false;
     constructor(private _constructorSerializer = Serializer) {
     }
 
@@ -158,6 +159,11 @@ export class StateReceiver implements IStateReceiver {
     }
 
     serialize(): ISerializedType {
+        if (this._serializedOnce) {
+            const msg = 'Application/_State/StateReceiver: повторный вызов serialize. Результат будет некорректным!';
+            throw new Error(msg);
+        }
+
         const slr = this.__getSerializer();
         /**
          * Сериалайзер в своей памяти учитывает предыдущие результаты и может выдать ссылку на объект,
@@ -205,6 +211,7 @@ export class StateReceiver implements IStateReceiver {
             }
         }
 
+        this._serializedOnce = true;
         return {
             serialized: serializedState,
             additionalDeps: allAdditionalDeps
