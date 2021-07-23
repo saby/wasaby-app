@@ -132,6 +132,7 @@ interface IReceivedStateData {
 export class StateReceiver implements IStateReceiver {
     private receivedStateObjectsArray: Record<string, IReceivedStateData> = {};
     private deserialized: any = {};
+    private _serialized: ISerializedType;
     private __serializer;
     private _logger: IConsole;
     constructor(private _constructorSerializer = Serializer) {
@@ -158,6 +159,13 @@ export class StateReceiver implements IStateReceiver {
     }
 
     serialize(): ISerializedType {
+        if (this._serialized) {
+            const e = new Error('Application/_State/StateReceiver повторный вызов метода serialize')
+            this._getLogger().error(e.stack);
+
+            return this._serialized;
+        }
+
         const slr = this.__getSerializer();
         /**
          * Сериалайзер в своей памяти учитывает предыдущие результаты и может выдать ссылку на объект,
@@ -205,10 +213,11 @@ export class StateReceiver implements IStateReceiver {
             }
         }
 
-        return {
+        this._serialized = {
             serialized: serializedState,
             additionalDeps: allAdditionalDeps
         };
+        return this._serialized;
     }
 
     deserialize(str: string | undefined): void {

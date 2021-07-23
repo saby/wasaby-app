@@ -47,6 +47,15 @@ describe('Application/State:StateReceiver', () => {
         // @ts-ignore
         assert.hasAllKeys(serializedData, ['serialized', 'additionalDeps']);
     });
+    it('second serialize', () => {
+        const meta = {ulid: 'srKey', moduleName: 'MyModuleName'};
+        const sr = new StateReceiver();
+        sr.register(meta, someData);
+        const serializedData = sr.serialize();
+        const secondSerializedData = sr.serialize();
+        assert.deepEqual(serializedData, secondSerializedData,
+            'Данные второй сериализации не совпали с данными первой');
+    });
     it('deserialize', () => {
         const meta = {ulid: 'srKey', moduleName: 'MyModuleName'};
         const sr = new StateReceiver();
