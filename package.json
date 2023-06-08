@@ -1,0 +1,60 @@
+{
+   "name": "wasaby-app",
+   "version": "23.3100.0",
+   "license": "GPL-3.0",
+   "repository": {
+      "type": "git",
+      "url": "git@git.sbis.ru:saby/wasaby-app.git"
+   },
+   "files": [
+      "src/*",
+      "tsconfig.json",
+      "tsconfig.declare.json",
+      "types.d.ts"
+   ],
+   "types": "types.d.ts",
+   "typesVersions": {
+      ">=3.1": {
+         "*": [
+            "./*"
+         ]
+      }
+   },
+   "scripts": {
+      "prepare": "npm run update-cli-store && npm run build:typescript && wasaby-cli initGitHooks",
+      "build": "wasaby-cli buildProject --umd",
+      "build:watch": "wasaby-cli buildProject --umd --watcher",
+      "build:app": "npm run build:typescript && npm run build",
+      "start": "wasaby-cli startServer",
+      "start:units": "wasaby-cli runUnitTests --server",
+      "build:typescript": "wasaby-cli initTSEnv",
+      "declare": "saby-typescript --compiler -p ./tsconfig.declare.json",
+      "server": "wasaby-cli runUnitTests --server",
+      "test": "wasaby-cli runUnitTests --umd --NodeJS --report=console",
+      "test:pattern": "wasaby-cli runUnitTests --NodeJS --report=console -- --testPathPattern=AppUnit/State.test",
+      "test:updateSnapshot": "wasaby-cli runUnitTests --umd --NodeJS --report=console -- --updateSnapshot",
+      "update-cli-store": "wasaby-cli loadProject",
+      "lint": "eslint .",
+      "lint:fix": "eslint . --fix",
+      "lint:css": "stylelint \"**/*.{css,less}\"",
+      "lint:css:fix": "stylelint \"**/*.{css,less}\" --fix",
+      "prettier": "prettier --write ."
+   },
+   "demo": {
+      "port": 8000
+   },
+   "devDependencies": {
+      "@types/node": "^12.0.4",
+      "express": "^4.16.4",
+      "nyc": "^15.1.0",
+      "requirejs": "^2.3.6",
+      "wasaby-cli": "git+https://git.sbis.ru/saby/wasaby-cli.git#rc-23.3100"
+   },
+   "wasaby-cli": {
+      "preCommitHooks": [
+         "Prettier",
+         "ESLint",
+         "Stylelint"
+      ]
+   }
+}

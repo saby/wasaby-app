@@ -1,0 +1,6 @@
+<div class="bootstrapdemo_control boootstrapdemo-serializerdemo">
+    <h2> Демонстрация работы сериализации на сервере </h2>
+    <AppBootstrapDemo.SerializerDemo.AsyncSerializerRequire/>
+    <br/>
+    <AppBootstrapDemo.SerializerDemo.SyncSerializerRequire/>
+</div>
