@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<cloud family_name="wasaby-app" id="686462cb-8051-4e72-9a8e-5f7e3cd8ce0f" name="wasaby-app" platform="По умолчанию" responsible="Санников К.А." sdk_version="23.3200">
+
+  <description/>
+
+  <items>
+    <service id="3d9f3783-6a5e-43f8-9df2-0ae41be7bd7f" name="wasaby-app" url="./wasaby-app.s3srv"/>
+  </items>
+
+</cloud>
