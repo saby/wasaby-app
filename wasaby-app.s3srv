@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<service id="3d9f3783-6a5e-43f8-9df2-0ae41be7bd7f" name="wasaby-app" responsible="Санников К.А." system_name="wasaby-app">
+
+  <description>wasaby-app</description>
+
+  <items>
+    <ui_module id="323fd54f-1fab-42a6-8aea-6726d6392d53" name="Application" url="./src/Application/Application.s3mod"/>
+  </items>
+
+  <resources/>
+
+</service>
