@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ui_module id="62bf645b-207a-4e83-b06d-41e8c51d3166" name="AppUnit" package="Wasaby" version="1.00">
+
+  <description/>
+
+  <depends>
+      <module id="323fd54f-1fab-42a6-8aea-6726d6392d53" name="Application"/>
+      <module id="0df0fce3-53ba-47f8-987d-edf1fd078295" name="WS.Core"/>
+  </depends>
+
+  <load_after/>
+
+  <parameters/>
+
+  <test framework="Jest" environment="NodeJS" />
+
+  <resources/>
+
+</ui_module>
