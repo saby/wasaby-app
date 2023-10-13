@@ -1,0 +1,23 @@
+<UI.Bootstrap>
+   <ws:content>
+     <h1 class="bootstrapdemo_title">
+        Bootstrap Demo
+     </h1>
+     <h2>
+        Проверка работы корневого контрола
+     </h2>
+     <div>
+        Общий статус загрузки Bootstrap Demo:
+        <span data-qa="boootstrapdemo-Index__status"
+        class="status{{isBootstrapLoaded==='success' ? '_success' : ''}} ">  {{ isBootstrapLoaded }} </span>
+     </div>
+     <br/>
+     <div>
+        Тег body не содержит класса undefined:
+        <span data-qa="boootstrapdemo-Index__bodyClass"
+        class="status{{bodyHasNotUndefinedClass==='success' ? '_success' : ''}} "> {{ bodyHasNotUndefinedClass }} </span>
+     </div>
+      <br/>
+     <AppBootstrapDemo.Main/>
+   </ws:content>
+</UI.Bootstrap>
