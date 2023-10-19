@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui_module for_cdn="0" id="323fd54f-1fab-42a6-8aea-6726d6392d53" name="Application" kaizen_zone="b1b57bba-bc4d-4efe-9e96-403a7c5fdafc" package="Wasaby" required="1" responsible="Санников К.А." version="1.00">
+
+  <description>Изоморфное Wasaby API для унифицированного взаимодействия с окружением в браузере и на сервере.</description>
+
+  <depends/>
+
+  <load_after/>
+
+  <parameters/>
+
+  <resources/>
+
+  <preload/>
+
+</ui_module>

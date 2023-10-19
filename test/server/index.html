@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://requirejs.org/docs/release/2.3.6/comments/require.js"></script>
+        <script>
+            require.config({
+                baseUrl: "/src",
+                paths: {
+                    "react": "https://unpkg.com/react@16/umd/react.development",
+                    "react-dom": "https://unpkg.com/react-dom@16.7.0/umd/react-dom.development"
+                }
+            });
+        </script>
+    </head>
+    <body>
+        <div id="root"></div>
+        <script src="/src/Application/Initializer.js"></script>
+        <script>
+            const serverState = {
+                "root": { "name": "server value!" },
+                "appConfig": {
+                    "Application/Env.LogLevel": 0,
+                    "someKey": true,
+                    "foo": 'foo',
+                    "baz": 88,
+                }
+            };
+            require([
+                "Application/Initializer",
+                "Application/Env",
+                "Application/Config",
+                "Application/_Env/Browser/StateReceiver"],
+            (AppInit, { EnvBrowser, logger, LogLevel }, Config, StateReceiver) => {
+                const defaultCfg = {
+                    "Application/Env.LogLevel": LogLevel.error,
+                    someKey: false,
+                    foo: 'bar',
+                    baz: 5
+                };
+                let request = AppInit.default(defaultCfg, EnvBrowser, new StateReceiver.default(serverState));
+                logger.info("Info", Config.get("someKey"));
+                logger.warn("Warning", Config.get("foo"));
+                logger.error("Error: ", Config.get("baz"));
+             });
+        </script>
+        <script>
+            require(["react", "react-dom", "Application/Initializer", "Application/Env"], function (React, ReactDOM, { registerComponent }, { logger }) {
+                class Welcome extends React.Component {
+                    constructor(props) {
+                        super(props);
+                    }
+                    render() {
+                        logger.info("React render Welcome, props:", this.props);
+                        return React.createElement("h1", null, "Hello, ", this.props.name);
+                    }
+                }
+
+                class MyComponent {
+                    constructor() {
+                        this.setState({ name: "client value!" });
+                    }
+                    getState() {
+                        return this.state;
+                    }
+                    setState(state) {
+                        if (!state) { return; }
+                        this.state = state;
+                        const element = React.createElement(Welcome, { name: state.name });
+                        ReactDOM.render(element, document.getElementById("root"));
+                    }
+                }
+                registerComponent("root", new MyComponent());
+            });
+        </script>
+    </body>
+</html>
