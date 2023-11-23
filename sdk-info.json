@@ -1,0 +1,5 @@
+{
+    "ui-modules": [
+        "src/Application"
+    ]
+}
