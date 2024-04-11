@@ -1,0 +1,39 @@
+.bootstrapdemo {
+   display: flex;
+   flex-wrap: wrap;
+}
+
+.bootstrapdemo_control {
+   width: 600px;
+   margin: 0 100px 100px 0;
+}
+
+.bootstrapdemo_title {
+   margin-bottom: 50px;
+}
+
+.status {
+   color: #a22;
+}
+
+.status_success {
+   font-weight: bold;
+   color: #0b0;
+}
+
+.bootstrapdemo_metastacktoggler_buttons
+   .controls-BaseButton
+   + .controls-BaseButton {
+   margin-left: 10px;
+}
+
+/* stylelint-disable-next-line selector-max-type */
+h1,
+h2,
+h3 {
+   margin-bottom: 10px;
+}
+
+.description {
+   margin-bottom: 10px;
+}
