@@ -1,0 +1,52 @@
+<div class="bootstrapdemo_control bootstrapdemo_headapi">
+    <h2>
+        Демонстрация работы HeadAPI
+    </h2>
+
+    <div class="description">
+        Загрузим ресурс через HeadAPI.
+        <br />
+        Для этого он грузится изначально на сервере, он должен появиться при начальной загрузке страницы на клиенте.
+        После того как оживим страницу, найдем этот же ресурс, но уже загруженный в DOM в head.
+    </div>
+    <div data-qa="boootstrapdemo-HeadApiComponent__ElementPS">Element PS, созданный на сервере: {{ elementPS }} </div>
+    <div data-qa="boootstrapdemo-HeadApiComponent__Element">Element найденный в DOM: {{ foundElementDOM }} </div>
+
+    <br />
+
+    <div class="description">
+        Используя HeadApi можно загружать ресурсы, встраивая их в head.
+        <br />
+        Кликнув по кнопке - можно загрузить скрипт, который изменит цвет для контейнера,
+    </div>
+    <Controls.buttons:Button
+    attr:data-qa="boootstrapdemo-HeadApiComponent__colorboxToggler"
+    caption="Задать цвет для бокса"
+    on:click="_createScript()"/>
+
+    <div
+    data-qa="boootstrapdemo-HeadApiComponent__colorbox"
+    id="headapi_colorbox"
+    class="bootstrapdemo_headapi_colorbox"
+    style="background-color: red; margin: 50px; padding: 10px; border: 5px solid black; width: 25px; height: 25px">
+    </div>
+
+    <h3>
+        Проверка работы title
+    </h3>
+    <div> Title не равняется пустому значению:
+        <span
+        data-qa="boootstrapdemo-HeadApiComponent__title"
+        class="status{{isFoundTitle==='success' ? '_success' : ''}} ">  {{ isFoundTitle }} </span>
+    </div>
+
+    <h3>
+      Проверка сквозной идентификации тегов
+    </h3>
+    <div> На клиенте можно удалить тег, созданный на сервере:
+      <span
+          data-qa="boootstrapdemo-HeadApiComponent__serverId"
+          class="bootstrapdemo_headapi-serverID" style="color: green; margin: 12px;">
+          Этот текст должен быть зеленым</span>
+    </div>
+</div>

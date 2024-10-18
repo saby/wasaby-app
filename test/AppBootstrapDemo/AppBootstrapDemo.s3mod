@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui_module id="2da1f07a-4b6e-40db-b5af-a356f4c2620d" name="AppBootstrapDemo" package="Wasaby" responsible="Санников К.А." required="1" version="1.00">
+
+  <description>Application Bootstrap</description>
+    <depends>
+      <module id="323fd54f-1fab-42a6-8aea-6726d6392d53" name="Application"/>
+      <module id="a857d050-c754-4d39-90ec-fca5e2ddf022" name="Router"/>
+      <module id="0df0fce3-53ba-47f8-987d-edf1fd078295" name="WS.Core"/>
+      <module id="832cda0a-e19c-4ffc-a1d1-47edbb6b7501" name="I18n"/>
+      <module id="f27abe12-19df-4c9f-b886-634bd20a0011" name="UI"/>
+      <module id="37e402f1-2fb0-4b73-81c5-113cf94dbf1c" name="WasabyLoader"/>
+    </depends>
+  <load_after/>
+
+  <parameters/>
+
+  <resources/>
+
+  <preload/>
+
+  <typescript>
+    <arg key="typecheck" value="0"/>
+  </typescript>
+</ui_module>
