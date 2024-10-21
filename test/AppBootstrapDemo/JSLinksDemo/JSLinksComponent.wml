@@ -1,0 +1,29 @@
+<div class="bootstrapdemo_control bootstrapdemo_jslinksapi">
+    <h2>
+        Демонстрация работы JSLinks
+    </h2>
+    <div class="description">
+        Ресурс JSLinksAPI создается на сервере и загружается после на клиенте.
+        Загрузившись, ресурс создает уникальное свойство в window. Если данное свойство было создано, значит тест пройден успешно.
+    </div>
+    <div>
+    Element PS, созданный на сервере:
+    {{jslinksData}}
+    </div>
+    <div>
+    Статус загрузки JSLinks:
+    <span data-qa="boootstrapdemo-JSLinksComponent__jslinksStatus"
+    class="status{{status==='success' ? '_success' : ''}} ">   {{ status }} </span>
+    </div>
+    <h3>
+        Проверка работы wsConfig
+    </h3>
+    <div>
+        buildnumber: {{ buildnumber }}
+    </div>
+    <div>
+        typeof buildnumber равняется string:
+        <span data-qa="boootstrapdemo-JSLinksComponent__buildnumberStatus"
+        class="status{{isBuildnumberString==='success' ? '_success' : ''}} ">   {{ isBuildnumberString }} </span>
+    </div>
+</div>
