@@ -1,0 +1,232 @@
+import { IStore } from 'Application/_Request/IStore';
+
+export const SERVER_ID_FIELD = 'sid';
+
+/**
+ * Интерфейс объекта, описывающего аттрибуты тега для API Head
+ * @public
+ * @author Печеркин С.В.
+ */
+export interface IPageTagAttrs {
+    charset?: string;
+    class?: string;
+    content?: string;
+    'css-theme'?: string;
+    defer?: string;
+    href?: string;
+    'http-equiv'?: string;
+    key?: string;
+    name?: string;
+    property?: string;
+    rel?: string;
+    src?: string;
+    'theme-type'?: string;
+    type?: string;
+    URL?: string;
+    disabled?: string;
+    title?: string;
+    media?: string;
+    onerror?: string;
+    onload?: string;
+    [SERVER_ID_FIELD]?: IPageTagId;
+    sizes?: string;
+    as?: string;
+    important?: string;
+    crossorigin?: string;
+}
+
+/** Аттрибуты тега meta */
+export type TMetaAttrs = Pick<
+    IPageTagAttrs,
+    'name' | 'URL' | 'content' | 'charset' | 'class' | 'property' | 'http-equiv'
+>;
+
+/** Аттрибуты HttpEquiv - являются аттрибутами мета, кроме name, который не должен оказаться в HttpEquiv */
+export type THttpEquivAttrs = Omit<TMetaAttrs, 'name'>;
+
+/** Аттрибуты тега script */
+export type TScriptAttrs = Pick<IPageTagAttrs, 'src' | 'type' | 'key' | 'defer'>;
+
+/** Аттрибуты favicon */
+export type TFaviconAttrs = Pick<IPageTagAttrs, 'href' | 'rel' | 'type' | 'sizes'>;
+
+/** Аттрибуты шрифтов */
+export type TFontAttrs = Pick<IPageTagAttrs, 'href' | 'rel' | 'type' | 'as'>;
+/**
+ * Интерфейс объекта, описывающего обработчики событий тега для API Head
+ * @public
+ * @author Печеркин С.В.
+ */
+export interface IPageTagEventHandlers {
+    load?: Function;
+    error?: Function;
+}
+
+/**
+ * Интерфейс одного тега для API Head
+ * @property name - имя тега (title, meta, script)
+ * @property attrs - дополнительные аттрибуты для тега
+ * @property content - содержимое тега. Актульано, например, для тега script
+ * @public
+ * @author Печеркин С.В.
+ */
+export interface IPageTag {
+    name: string;
+    attrs: IPageTagAttrs;
+    content?: string;
+    eventHandlers?: IPageTagEventHandlers;
+}
+/**
+ * Технический интерфейс для разрешения циклических определений в типе JML
+ * @private
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface JsonML extends JML {}
+/**
+ * Интерфейс для аргумента tagPrior в функции "проверки идентичности аттрибутов" (isEqualAttributes) в head/ElementPS
+ * @public
+ */
+export interface ITagPrior {
+    name: string;
+    attrsPrior: string[];
+}
+/**
+ * Структура, которая однозначно описывает 1 тег первого уровня внутри head страницы
+ * @public
+ */
+export type IPageTagId = string;
+/**
+ * Тип для описания верстки, прнятый как стандарт в СБИС
+ * https://wi.sbis.ru/doc/platform/developmentapl/service-development/service-contract/logic/json-markup-language/
+ */
+export type JML = [string, (object | JsonML | string)?, (JsonML | string)?];
+
+/**
+ * @property getData - возвращаем элемент в формате JML, предварительно сгенерировав его
+ * @property getUniqueKey - возвращаем вид уникальности. Если не вернул ничего - не уникален.
+ * @property toPageTag - преобразует текущий Element к формату IPageTag
+ * @property clear - удаляет информацию из свойств класса
+ * @property isEqual - определяем одинаковый ли элемент или нет. Сравниваем по свойствам класса
+ * @property isFit - определяет подходит ли элемент под описание: сходится ли тег и атрибуты
+ * @property isImportant - определяет является ли тег приоритетным и нужно ли его указывать как можно раньше
+ * @property getAttrs - возвращаем аттрибуты элемента
+ * @property setAttrs - устанавливаем атрибуты элемента
+ * @property changeTag - меняет атрибуты элемента
+ * @private
+ */
+export interface IPageTagElement {
+    getData(): JML;
+    getUniqueKey(): boolean | string;
+    toPageTag(): IPageTag;
+    clear(): void;
+    isEqual(
+        name: string,
+        attrs: IPageTagAttrs,
+        content?: string,
+        eventHandlers?: IPageTagEventHandlers
+    ): boolean;
+    isFit(name?: string, attrs?: IPageTagAttrs): boolean;
+    isImportant(): boolean;
+    getAttrs(): IPageTagAttrs;
+    setAttrs(attrs: IPageTagAttrs): void;
+    changeTag(attrsChange: IPageTagAttrs): void;
+}
+
+/**
+ * В объектах, имплементирующих этот интерфейс будет описано то, что отделяет Head API от JSLinks API, например
+ * Функционально пересекается с интерфейсом IPageTagAPI. Различающиеся методы описаны отдельно.
+ * @private
+ */
+export interface IPageTagAPIAspect {
+    createComment(text: string): void;
+    createNoScript(URL: string): void;
+    createTag(
+        name: string,
+        attrs: IPageTagAttrs,
+        content: string,
+        eventHandlers: IPageTagEventHandlers,
+        elements: { [propName: string]: IPageTagElement }
+    ): IPageTagElement | void;
+    createMergeTag(name: string, attrs: IPageTagAttrs, content: string): void;
+    getComments(wrap?: boolean): string[];
+    getData(elements: { [propName: string]: IPageTagElement }): JML[];
+    clear(): void;
+
+    /**
+     * Генератор уникального идентификатора для каждого тега
+     */
+    generateGuid(): IPageTagId;
+}
+
+/**
+ * Внутренний интерфейс IPageTagAPI, содержит весь основной функционал
+ * @see https://wi.sbis.ru/doc/platform/developmentapl/service-development/service-contract/logic/json-markup-language/
+ * @private
+ * @author Печеркин С.В.
+ */
+export interface IPageTagAPIInternal {
+    /**
+     * добавит строку с комментарием внутрь тега <head>
+     */
+    createComment(text: string): void;
+    /**
+     * добавит конструкцию noscript с указанным URL
+     */
+    createNoScript(URL: string): void;
+    /**
+     * добавит тег внутрь <head>. Если такой тег уже есть - перерисует его
+     */
+    createTag(
+        name: string,
+        attrs: IPageTagAttrs,
+        content?: string,
+        eventHandlers?: IPageTagEventHandlers
+    ): IPageTagId;
+    /**
+     * удалит тег из <head>, если он есть
+     */
+    deleteTag(id: IPageTagId): void;
+    /**
+     * Добавит в спец. очередь данные о теге script.
+     * При вставке такого тега в <head>, объединит все данные из очереди в один общий тег.
+     * Актуально только на СП.
+     */
+    createMergeTag(name: string, attrs: IPageTagAttrs, content: string): void;
+    /**
+     * вернет текущее состояние тегов с учетом их добавления/удаления в формате JsonML
+     */
+    getData(id?: IPageTagId): JML[] | JML;
+    /**
+     * вернет все зарегистрированные комментарии в виде строк без <!-- --> (wrap)
+     */
+    getComments(wrap?: boolean): string[];
+    /**
+     * очистит внутреннее состояние. Имеет смысл вызывать только на ПП
+     */
+    clear(): void;
+    /**
+     * вернет аттрибуты тега
+     */
+    getAttrs(tagId: IPageTagId): IPageTagAttrs | null;
+    /**
+     * сменит параметры тега
+     */
+    changeTag(tagId: IPageTagId, attrs: IPageTagAttrs): void;
+}
+
+/**
+ *
+ */
+export type KeyInternalPageTagAPI = keyof IPageTagAPIInternal;
+
+/**
+ * @see https://wi.sbis.ru/doc/platform/developmentapl/service-development/service-contract/logic/json-markup-language/
+ * @public
+ * @remark
+ * Данный интерфейс является наследником от внутреннего интерфейса.
+ * Необходимость во внутреннем интерфейсе обусловенно тем, что
+ * IPageTagAPI наследуется от IStore, в Generic которого пробрасывается IPageTagAPIInternal.
+ * Typescript не позволяет наследоваться от интерфейса с дженериком собственной сущности.
+ * @author Печеркин С.В.
+ */
+export interface IPageTagAPI extends IStore<IPageTagAPIInternal>, IPageTagAPIInternal {}
