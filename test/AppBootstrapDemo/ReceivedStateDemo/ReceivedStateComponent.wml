@@ -1,0 +1,13 @@
+<div class="bootstrapdemo_control bootstrapdemo_receivedstate">
+    <h2>
+        Демонстрация работы StateReceiver
+    </h2>
+    <div id="status-sp">
+        Статус загрузки данных:
+        <span  data-qa="boootstrapdemo-ReceivedStateComponent__status"
+        class="status{{status==='success' ? '_success' : ''}} ">  {{status}} </span>
+    </div>
+    <div id="value-random">
+        Рандомное число из receivedState: {{value}}
+    </div>
+</div>
