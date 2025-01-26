@@ -1,0 +1,7 @@
+<div class="bootstrapdemo">
+    <AppBootstrapDemo.SerializerDemo.SerializerDemo/>
+    <AppBootstrapDemo.ReceivedStateDemo.ReceivedStateComponent/>
+    <AppBootstrapDemo.MetaStackDemo.MetaStackToggler/>
+    <AppBootstrapDemo.JSLinksDemo.JSLinksComponent/>
+    <AppBootstrapDemo.HeadAPIDemo.HeadAPIComponent/>
+</div>
