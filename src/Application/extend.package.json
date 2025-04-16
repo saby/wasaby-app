@@ -1,0 +1,11 @@
+{
+  "include": [
+    "Application/Initializer",
+    "Application/Env",
+    "Application/Request",
+    "Application/Config",
+    "Application/State",
+    "Application/Page"
+  ],
+  "output": "online-superbundle.package.js"
+}
