@@ -1,0 +1,6 @@
+<div>
+    <div>
+        Статус сериализации в асинхронном _beforeMount:
+        <span data-qa="boootstrapdemo-AsyncSerializerRequire__status" class="status{{status==='success' ? '_success' : ''}} "> {{ status }}</span>
+    </div>
+</div>
